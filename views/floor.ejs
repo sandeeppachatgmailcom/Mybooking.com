@@ -1,0 +1,74 @@
+<%- include('header') %>
+<%- include('menubar') %>
+   
+    <div class="container-fluid d-flex  " id="DivFloorMaster">
+        
+        <div class="container-fluid col-5" id="id_div_Floor_left" >
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Name (Floor /Location)</span>
+                    <input name="floorname" id="floorname" type="text" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Floor Number</span>
+                <input name="floornumber" id="floornumber" type="text" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Floor size(Sqf)</span>
+                <input name="floorsize" id="floorsize" type="number" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <div class="d-flex justify-content-end" >
+                <button id="Bt_Save_Update" name="floorIndex" onclick="SaveFloor()" class="btn btn-success bi bi-send-plus-fill" type="submit"> </button>
+                <button class="btn btn-dark bi bi-trash3" onclick="deleteFloor()" type="button"> </button>
+                <button  class="btn btn-warning bi bi-pencil-fill" onclick="MakeReadonlyFalse()"  type="button"> </button>           
+                 <label id="floorIndex"  style="opacity: 0;" for=""></label> 
+            </div>
+        </div>
+        <div class="container-fluid col-7">
+            <form action="/floorMaster/search" method="post">
+                <div class="input-group mb-3">
+                    <input name="searchvalue" id="idSearchname" type="text" class="form-control col-5" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+                    <button type="submit" class="input-group-text bi bi-search " onclick="" id="basic-addon1"></button>
+                </div>
+            </form>
+            <table class="table  table-hover table-bordered ">
+            <thead class="thead-light"             >
+                <tr>
+                    <th class="">FLOOR</th>
+                    <th class="">NUMBER</th>
+                    <th class="">SIZE</th>
+                    <th class="">OPTIONS</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <% data.forEach(element => { %>
+                <tr  >
+                    <td><%= element.floorname %></td>
+                    <td><%= element.floornumber %></td>
+                    <td><%= element.floorsize %></td>
+                    <td>
+                            <button class="btn" id="Rowid " name="floorIndex"  >  <%= element.floorIndex %></label>
+                            <button id="Focus_edit" value="<%= JSON.stringify(element) %>" onclick="loadData(event.target.value)"  class="btn btn-secondary bi bi-search" type="button"> </button> 
+                    </td>
+                  </tr>
+                <% }) %>
+            </tbody>
+           
+         </table>
+         <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                
+                <%for (let index = 1; index <= pagecount; index++) { %>
+                    <form action="/floorMaster/loadfloorbypagenumber" method="post">
+                        <li class="page-item"> <button class="page-link" name="index" value="<%= index %>" type="submit"  href="#"> <%=  index %>  </button></li>
+                    </form>
+                <% }  %>
+                
+            
+            </ul>
+          </nav>
+        </div>
+    </div>
+</div>
+<script src="Script/human.js"></script>
+<%- include('footer') %>

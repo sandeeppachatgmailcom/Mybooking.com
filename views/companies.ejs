@@ -1,0 +1,223 @@
+<%- include('header') %>
+<%- include('menubar') %>
+
+<div>
+    <div class="d-flex container-fluid">
+        <div class="">
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">REGISTERED NAME *</span>
+                <input name="CompanyName" id="idFirstName"  type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">PUBLICHED NAME *</span>
+                <input name="GuestName" id="idlastName" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">CONTACT NUMBER *</span>
+                <input name="contactNumber" id="idcontactNumber" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">SECONDARY NUMBER *</span>
+                <input name="SecondNumber" id="idsecondaryNumber" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">EMAIL *</span>
+                <input name="emil" id="idemail" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">PAN CARD *</span>
+                <input name="country" id="idpancard"  style="text-transform:uppercase" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">REGISTRED DATE*</span>
+                <input name="country" id="iddor"  type="datetime-local" class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">CLIENT ID*</span>
+                <input name="country" id="idCompanyID"  style="text-transform:uppercase" type="text"  style="text-transform:uppercase"  readonly="true" class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+        </div>
+        <div class=""> 
+            <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">BUILDINGNUMBER *</span>
+                <input name="buildingNumber" id="idbuildingNumber" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">BUILDINGNAMENAME *</span>
+                <input name="BuildingNameName" id="idBuildingNameName" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">STREETNAME *</span>
+                <input name="StreetName" id="idStreetName" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">PINCODE *</span>
+                <input name="pincode" id="idpincode" type="number" onchange="loadPincode()" style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">CITY *</span>
+                <select name="city" id="idcity" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">  
+                <option value=""></option>
+                </select>
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">DISTRICT *</span>
+                 <select name="district" id="iddistrict" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">  </select>
+              </div>
+              
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">STATE *</span>
+                <select name="state" id="idstate" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">  </select>
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text col-6" id="basic-addon1">COUNTRY *</span>
+                <select name="country" id="idcountry" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                  aria-label="Username" aria-describedby="basic-addon1">  </select>
+              </div>
+       </div>
+            <div>
+              
+              <div class="input-group mb-3">
+                <span class="input-group-text col-4" id="basic-addon1">Discription</span>
+                <textarea class="form-control" id="idCompanydiscription" name="discription" rows="14" cols="50"></textarea>
+        
+            </div>
+             
+             
+              
+              
+        </div>
+        <div>
+          <div class="input-group mb-2">
+            <label for="idActive" class="input-group-text col-6" id="basic-addon1">ACTIVE *</label> 
+            <input name="Active" id="idActive" type="checkbox" class=""   
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+              
+              <div class="d-flex  ">
+                <button id="IdCompanyImagesbuton1"   data-bs-toggle="modal" data-bs-target="#CompanyImage1" class="btn btn-outline-primary " style="height: 250px;background-size: cover;background-position: center;" >
+                  <input class="" onchange="uploadImageToParent('IdCompanyImages1','IdCompanyImagesbuton1','idShowCompanyImage1')" name="roomiMages" id="IdCompanyImages1" type="file" class="form-control btn" multiple> 
+                   
+                </button>
+                <button id="IdCompanyImagesbuton2"   data-bs-toggle="modal" data-bs-target="#CompanyImage2" class="btn btn-outline-primary " style="height: 250px;background-size: cover;background-position: center;" >
+                                  <input onchange="uploadImageToParent('IdCompanyImages2','IdCompanyImagesbuton2','idShowCompanyImage2')" name="roomiMages" id="IdCompanyImages2" type="file" class="form-control btn" multiple> 
+                </button>
+              </div>
+        </div>
+         
+       
+
+    </div>
+    <div>
+        <div class="container-fluid ">
+            <button id="Bt_Save_Update" name="floorIndex" onclick="SaveCompany()"
+              class="btn btn-success bi bi-send-plus-fill" type="submit">SAVE </button>
+            <button id="Bt_Save_Update" name="frontIndex" onclick="deletEdHuman()" class="btn btn-dark bi bi-trash3"
+              type="submit"> DELETE </button>
+            <button class="btn btn-warning bi bi-pencil-fill" onclick="MakeCheckinReadonlyFalse()" type="button">
+            EDIT </button>
+            <button class="btn btn-primary bi bi-file-earmark-plus" onclick="CreatenewCheckin()" type="button"> RESTART </button>
+          </div>
+     </div>
+<div>
+   <div>
+    <table class="table  table-hover table-bordered" ">
+         
+        <THEAD >
+            
+            <TR>
+                <div class="input-group mb-2 col-2  ">
+                    <span class="input-group-text col-6" id="basic-addon1">RECORDS *</span>
+                     <select name="" id="idPageCount">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                    </select>
+        <th>CLIENT ID</th>
+        <th>NAME </th>
+        <th>TRADE NAME </th>
+        <th>CONTACTNUMBER </th>
+        <th>SECONDARYNUMBER </th>
+        <th>EMAIL </th>
+        <th>DISTRICT </th>
+        <th>CITY </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(element => { %>
+                <tr>
+                    <td><%= element.CompanyID %> </td>
+                    <td><%= element.firstName %> </td>
+                    <td><%= element.lastName %> </td>
+                    <td><%= element.contactNumber %> </td>
+                    <td><%= element.secondaryNumber %> </td>
+                    <td><%= element.email %> </td>
+                    <td><%= element.district %> </td>
+                    <td><%= element.city %> </td>
+                    <td><button id="Focus_edit" value="<%= JSON.stringify(element) %>" onclick="loadCompanies(event.target.value)"  class="btn btn-warning bi bi-search" type="button"> </button></td>
+                        
+                </tr> 
+            <% }) %>
+            
+            
+        </tbody>
+       
+    </table>
+   </div>
+   <div>
+    <div id="idPageCount">
+
+        <% for( let index = 1; index <=count; index++  ) { %>
+            <button class="btn btn-outline-primary" value="<%= index %>" onclick="loadpage(event.target.value)" > <%= index %> </button>
+         
+        <% } %>
+        
+    </div>
+   </div>
+ 
+
+</div>
+ 
+
+<div class="modal fade" id="CompanyImage1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-body" id="idShowCompanyImage1" style="background-position: center;background-size: cover; height: 500px; width: 600px;">
+             
+      </div>
+    </div>
+  
+</div>
+
+<div class="modal fade" id="CompanyImage2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-body" id="idShowCompanyImage2" style="background-position: center;background-size: cover; height: 500px; width: 600px;">
+           
+    </div>
+  </div>
+</div>
+
+<script src="/Script/Companies.js"> </script>
+<%- include('footer') %>
+
+
+
+
+

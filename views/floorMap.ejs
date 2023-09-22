@@ -1,0 +1,125 @@
+<%- include('header') %>
+  <%- include('menubar') %>
+
+    <div class="d-flex "    style="background-image: url('/Images/1694680714940-image (6).jpg');  background-position: center; background-size: cover; background-repeat: no-repeat; position: fixed; height: 1000px;" >
+      <div class="col-10 container-flex d-flex myDynamicDiv  " id="myDynamicDivinFloorMap">
+        <% rooms.forEach(item=> { %>
+          <div class="m-1 "  
+            style="background-image: url('<%= item.roomiMages %>');border: 10px rgba(243, 191, 93, 0.288) solid;  background-color: rgba(106, 102, 102, 0.378); width: 15%; height: 250px;  border-radius: 10px;  background-size:cover  ;">
+            <div class="p-1">
+              <div>
+                <div class="d-flex">
+                  <h4 class="text-light ">
+                    <%= item.tariffDetails.tariffName %>
+                  </h4 class="text-light ">
+                  <h6 class="text-light ">( MAX load: <%= item.maxOccupancy %>)</h6>
+                </div>
+                <div class="row">
+                  <div class="row">
+                    <div class="col-6 text-start">
+                      <button class="btn btn-transparent50" data-bs-title="This top tooltip is themed via CSS variables." data-toggle="modal" data-target="#exampleModal"
+                        style="border-radius: 50px;">
+                        <h1 class="text-light ">
+                          <%= item.roomNumber %>
+                        </h1>
+                      </button>
+                    </div>
+                    <div class="col-6 text-end">
+                      <button data-bs-toggle="collapse" data-bs-target="#collapseExample"
+                        class="btn  text-light  btn-transparent  bi bi-bootstrap-reboot "> </button>
+                      <button class="btn  txt-success text-light   bi bi bi-box-arrow-in-down-left"> </button>
+                      <button class="btn  txt-success text-light   bi bi-bell"> </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="transparent-div">
+                  <h6 class=" text-light  "> Tariff :<%= item.tariffDetails.roomRentSingle %>
+                  </h6>
+                  <h6 class=" text-light  "> EP :<%= item.tariffDetails.extraPerson %>
+                  </h6>
+                </div>
+
+
+              </div>
+
+            </div>
+          </div> 
+
+          <% }) %>
+      </div>
+      <div class="col-2 container-flex   ">
+        <div class="d-flex">
+          <span class="input-group-text col-6" id="basic-addon1">START</span>
+          <input name="fromDate" id="idfromDate"   onchange="loadFloorMap()" type="date" class="form-control col-6" aria-label="Username"
+            aria-describedby="basic-addon1">
+
+        </div>
+        <div class="d-flex">
+          <span class="input-group-text col-6" id="basic-addon1">END</span>
+          <input name="toDate" id="idtoDate" onchange="loadFloorMap()"  type="date" class="form-control col-6" aria-label="Username"
+            aria-describedby="basic-addon1">
+        </div>
+        <div class="d-flex">
+          <span class="input-group-text col-6" id="basic-addon1">FLOOR</span>
+          <select name="floorindex" id="idfloorindex" onchange="loadFloorMap()" type="list" class="form-control" placeholder="tariff"
+            aria-label="Username" aria-describedby="basic-addon1">
+            <option value=""> ALL </option>
+            <% floor.forEach(item=> { %>
+              <option data-tariff="<%=JSON.stringify(item)%>" value="<%= item.floorindex %>">
+
+                <%= item.floorname %>
+              </option>
+              <% }) %>
+          </select>
+        </div>
+        <div class="d-flex">
+          <span class="input-group-text col-6" id="basic-addon1">TARIFF</span>
+          <select name="roomType" id="idRoomtype"onchange="loadFloorMap()" type="list" class="form-control" placeholder="tariff"
+            aria-label="Username" aria-describedby="basic-addon1">
+            <option value=""> ALL </option>
+            <% tariff.forEach(item=> { %>
+              <option data-tariff="<%=JSON.stringify(item)%>" value="<%= item.tariffIndex %>">
+
+                <%= item.tariffName %>
+              </option>
+              <% }) %>
+          </select>
+        </div>
+        <div class="d-flex">
+          <span class="input-group-text col-6" id="basic-addon1">ROOM</span>
+          <select name="roomNumber" id="idroomNumber" onchange="loadFloorMap()" type="list" class="form-control"
+            placeholder="tariff" aria-label="Username" aria-describedby="basic-addon1">
+            <option value="">ALL </option>
+            <% rooms.forEach(item=> { %>
+              <option data-tariff="<%=JSON.stringify(item)%>" value="<%= item.roomIndex %>">
+                <%= item.roomNumber %>
+              </option>
+              <% }) %>
+          </select>
+        </div>
+        
+        <div class="d-flex col-12" style="width: 100px;">
+           
+          <div class="d-flex">
+            <label for="idBlocked" class="input-group-text " id="basic-addon1">BLOCKED</label>
+            <input name="isDirty" id="idBlocked" onchange="loadFloorMap()" type="checkbox" class="form-control col-12" aria-label="Username"
+              aria-describedby="basic-addon1">
+          </div>
+
+        </div>
+        <div class="d-flex">
+        </div>
+        <div class="d-flex">
+
+        </div>
+        <div class="d-flex">
+          
+        </div>
+
+
+      </div>
+    </div>
+    <script src="/Script/human.js"> </script> 
+    <!-- Button trigger modal -->
+
+    <%- include('footer') %>

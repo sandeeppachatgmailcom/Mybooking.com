@@ -1,0 +1,124 @@
+<%- include('header') %>
+    <%- include('menubar') %>
+        <div class="container-fluid ">
+            <div class="container-fluid roomscontainer d-flex">
+                <div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Name</span>
+                        <input name="tariffname" id="idtariffname" type="text" class="form-control" placeholder="tariffname"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Rent-Single </span>
+                        <input name="Rent-Single" id="idRent-Single" type="number" class="form-control"
+                            placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Extra person</span>
+                        <input name="ExtraPerson" id="idExtraPerson" type="number" class="form-control"
+                            placeholder="ExtraPerson" aria-label="ExtraPerson" aria-describedby="basic-addon1">
+                    </div>
+                    
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">includeChild</span>
+                        <input name="includeChild" id="idincludeChild" type="checkbox" class="form-control" placeholder="floor"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3 ">
+                        <div  class="d-flex">
+                        <span class="input-group-text col-4" id="basic-addon1">Default Plan</span>
+                        <select name="DefaultPlan" id="IdDefaultPlan" class="button text-secondary col-8" ><% chkplans.forEach(function(item) { %>
+                            <option value="<%= item.planIndex %>"</option> > <%= item.planName %></option>
+                        <% }); %>
+                        </select>
+                    </div>
+                    </div>
+
+                   
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Item Name    </span>
+                        <input name="Itemname" id="IdItemname" type="text" class="form-control" placeholder="Item Name "
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    
+                </div>
+                <div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">HSN Code  </span>
+                        <input name="Hsncode" id="IdHsncode" type="text"   class="form-control" placeholder="HSN Code "
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Tax Rate    </span>
+                        <input name="Taxrate" id="IdTaxrate" type="text"   class="form-control" placeholder="Tax Rate"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Tariff Index   </span>
+                        <input name="TariffIndex" id="IdTariffIndex" type="text" readonly="true"  class="form-control" placeholder="tariffId"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    
+                </div>
+                <div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Plan Discription</span>
+                        <textarea class="form-control" id="iddiscription" name="discription" rows="11" cols="50"></textarea>
+                
+                </div>
+                </div>
+               
+            </div>
+            <div class="container-fluid ">
+                <form action="/roomType/tariffsearch" method="post">
+                    <div class="input-group mb-3">
+                        <input name="searchvalue" id="idSearchname" type="text" class="form-control col-5" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+                        <button type="submit" class="input-group-text bi bi-search " onclick="" id="basic-addon1"></button>
+                        <div class="d-flex justify-content-end" >
+                            <button id="Bt_Save_Update" name="floorIndex" onclick="SaveTariff()" class="btn btn-success bi bi-send-plus-fill" type="submit"> </button>
+                            <button class="btn btn-dark bi bi-trash3" onclick="deletetariff()" type="button"> </button>
+                            <button  class="btn btn-warning bi bi-pencil-fill" onclick="MakeitActive()"  type="button"> </button>
+                            <button  class="btn btn-primary bi bi-file-earmark-plus" onclick="Createnew()"  type="button"> </button>            
+                            <label id="floorIndex"  style="opacity: 0;" for=""></label> 
+                        </div>
+                    </div>
+                    
+                </form>
+                <table class="table-bordered" >
+                    <thead>
+                    <tr>
+                        <th class="col-2">TARIFFID</th>
+                        <th class="col-2">TARIFF</th>
+                        <th class="col-2">RENT</th>
+                        <th class="col-2">EXTRA PERSON</th>
+                        <th class="col-2">TAX</th>
+                        <th class="col-2">DEFAULT PLAN</th>
+                        <th class="col-2">USERNAME</th>
+                        <th class="col-2">ITEMNAME</th>
+                        <th class="col-2">HSNCODE</th>
+                        <th class="col-2">OPTIONS</th>
+                        
+                        </tr>
+                </thead>
+                <tbody>
+                    <% data.forEach((item) => {%>
+                    <tr>
+                        <td><%=item.tariffIndex%></td>
+                        <td><%=item.tariffName%></td>
+                        <td><%=item.roomRentSingle%></td>
+                        <td><%=item.extraPerson%></td>
+                        <td><%=item.tax%></td>
+                        <td><%=item.defaultCheckinplan%></td>
+                        <td><%=item.username%></td>   
+                        <td><%=item.itemname%></td>   
+                        <td><%=item.HSNCode%></td>
+                        <td><BUTTOn value="<%=JSON.stringify(item)%>"  class="btn btn-warning bi bi-search" onclick="loadToScreen(event.target.value)"></BUTTOn></td>
+                     </tr>
+                    <% }); %>
+                </tbody>
+                </table>
+            </div>
+        </div>
+
+        <%- include('footer') %>

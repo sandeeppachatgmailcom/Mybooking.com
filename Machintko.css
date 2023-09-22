@@ -1,0 +1,35 @@
+body{
+    font-family: poppins;
+}
+.container{
+    margin: 1%;
+    border: 1px solid grey;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%; 
+}
+.Machintko{
+    padding-top : 20%;
+    font-family: poppins;
+    font-size: 150px;
+    padding-left: 20%;
+}
+.container-fluid{
+    position: fixed;
+    border: 1px solid grey;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    margin-left: 40PX;
+}
+.loginbox{
+    margin-top: 30%;
+    height: 60%;
+}
+
+.textbox{
+    width: 90%;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-family: poppins;
+}

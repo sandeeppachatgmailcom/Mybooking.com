@@ -1,0 +1,229 @@
+<%- include('header') %>
+  <%- include('menubar') %>
+    <div>
+      <div class="d-flex">
+        <div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Guest Name *</span>
+            <input name="GuestName" id="idGuestName" type="text" class="form-control" placeholder="Guest Name"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Contact Number *</span>
+            <input name="Contact Number" id="idContactNumber" onkeyup="loadCustomer()" type="number"
+              class="form-control" placeholder="Contact Number" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Email</span>
+            <input name="Email" id="idEmail"  type="email" class="form-control" onkeyup="loadCustomer()"  placeholder="Email" aria-label="Username"
+              aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">IdType *</span>
+            <input name="ype " id="IdType" type="text" class="form-control" placeholder="Id Type"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Document ID</span>
+            <input name="DocumentId" id="idDocumentId"  type="text" class="form-control" placeholder="Doc Number"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Customer ID</span>
+            <input name="customerId" id="idcustomerId" readonly="true" type="text" class="form-control" placeholder="Doc Number"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+
+        </div>
+        <div class="col-3">
+          <div class="input-group mb-4 ">
+            <span class="input-group-text col-6" id="basic-addon1">Arrival Date*</span>
+            <input name="ArrivalDate" id="idArrivalDate" type="datetime-local" class="form-control col-6" placeholder="Guest Name"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Arrival Time *</span>
+            <input name="arrivalTime" id="idarrivalTime" type="time" class="form-control col-6"
+              placeholder="Contact Number" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Depart_Date</span>
+            <input name="DepartDate" id="idDepartDate" type="datetime-local" class="form-control col-6" placeholder="Email"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Departure Time</span>
+            <input name="departureTime" id="iddepartureTime" type="time" class="form-control col-6" placeholder="Id Type"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Total Pax</span>
+            <input name="totalPax" id="idtotalPax" type="number" class="form-control col-6" placeholder="Doc Number"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4 ">
+            <span class="input-group-text " id="basic-addon1">Male</span>
+            <input name="male" id="idMale" type="number" class="form-control " placeholder="Doc Number"
+              aria-label="Username" aria-describedby="basic-addon1">
+            <span class="input-group-text " id="basic-addon1">Female</span>
+            <input name="female" id="idFemale" type="number" class="form-control " placeholder="Doc Number"
+              aria-label="Username" aria-describedby="basic-addon1">
+            <span class="input-group-text " id="basic-addon1">Other</span>
+            <input name="Othersex" id="idOther" type="number" class="form-control " placeholder="Doc Number"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+
+        </div>
+
+        <div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Room Type</span>
+            <select name="roomType" id="idRoomtype" onchange="loadRoomType()"  type="list" class="form-control" placeholder="tariff"
+              aria-label="Username" aria-describedby="basic-addon1">
+              <% tariff.forEach(item=> { %>
+                <option data-tariff="<%=JSON.stringify(item)%>"  value="<%= item.tariffIndex %>">
+                
+                  <%= item.tariffName %>
+                </option>
+                <% }) %>
+            </select>
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Plan</span>
+            <select id="idCheckinPlan"  onchange="loadPlanDetails()" name="CheckinPlan" type="list" class="form-control"
+              placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+              <% plan.forEach(item=> { %>
+                <option data-Value="<%=JSON.stringify(item)%>" value="<%= item.planIndex %>">
+                  <%= item.planName %>
+                </option>
+                <% }) %>
+            </select>
+
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Room Status</span>
+            <input name="roomStatus" id="idroomStatus" type="text" class="form-control" placeholder="Email"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Room</span>
+            <select name="room" id="idRoom" onselect="loadRoomDetails(),calculateRoomRent()" class="form-control col-6">
+              <% rooms.forEach(item=> { %>
+                <option  data-Value="<%=JSON.stringify(item)%>" value="<%= item.roomIndex %>">
+                  <%= item.roomNumber %>
+                </option>
+                <% }) %>
+            </select>
+          </div>
+
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Estimate Amount</span>
+            <input name="Estimate" id="idEstimate" type="text" class="form-control" placeholder="Email"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+
+        </div>
+        <div>
+          <div class="d-flex">
+            <div class="input-group mb-4">
+              <span class="input-group-text col-5" id="basic-addon1">Disc% </span>
+                <input name="discpercentage" id="iddiscpercentage" type="number" class="form-control col-6" placeholder="Discount%"
+                aria-label="Username" aria-describedby="basic-addon1">
+            
+            
+              </div>
+            <div class="input-group mb-4">
+              <span class="input-group-text col-5" id="basic-addon1">Disc </span>
+              <input name="discAmount" id="iddiscAmount" type="number" class="form-control" placeholder="Email"
+                aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Special Rent </span>
+            <input name="spRent" id="idspRent" type="text" class="form-control" placeholder="Email"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+
+
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Plan Charge </span>
+            <input name="planAmount" id="idplanAmount" type="text" readonly="true" class="form-control"
+              placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Tariiff Rent</span>
+            <input name="tariffRent" id="idtariffRent" type="text" readonly="true" class="form-control"
+              placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Total </span>
+            <input name="totalAmount" id="idtotalAmount" type="number" readonly="true" class="form-control" placeholder="Email"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <div class="container-fluid ">
+            <button id="Bt_Save_Update" name="floorIndex" onclick="SaveCheckin()"
+              class="btn btn-success bi bi-send-plus-fill" type="submit"> </button>
+            <button id="Bt_Save_Update" name="frontIndex" onclick="deletEdHuman()" class="btn btn-dark bi bi-trash3"
+              type="submit"> </button>
+            <button class="btn btn-warning bi bi-pencil-fill" onclick="MakeCheckinReadonlyFalse()" type="button">
+            </button>
+            <button class="btn btn-primary bi bi-file-earmark-plus" onclick="CreatenewCheckin()" type="button"> </button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Image</span>
+            <input name="Image" id="idImage" type="text" class="form-control" placeholder="Email" aria-label="Username"
+              aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text col-6" id="basic-addon1">Plan Charge </span>
+            <input name="plan" id="idPlan" type="text" readonly="true" class="form-control" placeholder="Email"
+              aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+        </div>
+      </div>
+      <div>
+        <table class="table  table-hover table-bordered "> 
+          <thead>
+            <tr>
+              <th>ENTRYID</th>
+              <th>CHECKINID</th>
+              <th>RESERVATIONID</th>
+              <th>NAME</th>
+              <th>CONTACTNUMBER</th>
+              <th>EMAIL</th>
+              <th>ARRIVAL DATE</th>
+              <th>DEPARTURE DATE</th>
+              <th>TOTAL PAX</th>
+              <th>ADULT</th>
+              <th>OPTION </th>
+            </tr>
+          </thead>
+          <tbody id="idCheckinBody">
+            <% saveCheckIn.forEach(item=> { %>
+              <tr>
+                <td><%=  item.frontDeskTransid %> </td>
+                <td> <%= item.checkinReferance %> </td>
+                <td> <%= item.reservationNumber%> </td>
+                <td> <%= item.customerDetails[0].firstName %> </td>
+                <td> <%= item.customerDetails[0].contactNumber %></td>
+                <td> <%= item.customerDetails[0].email %></td>
+                <td> <%= item.arrivalDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) %> </td>
+                <td> <%= item.depart_Date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) %> </td>
+                <td> <%= item.TotalPax %> </td>
+                <td> <%= item.adult %> </td>
+                <td>  <button id="Focus_edit" value="<%= JSON.stringify(item) %>" onclick="loadCheckinData(event.target.value)"  class="btn btn-warning bi bi-search" type="button"> </button> 
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+       var ejsData =  JSON.stringify(tariff) ;
+    </script>
+    <script src="/Script/FrontOffice.js"></script>
+    <%- include('footer') %>

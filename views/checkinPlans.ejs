@@ -1,0 +1,94 @@
+
+<%- include('header') %>
+<%- include('menubar') %>
+<div>
+    <div class="d-flex">
+        <div class="container-fluid">
+            <div class="input-group mb-3">
+                <span class="input-group-text col-4" id="basic-addon1">Plan Index</span>
+                <input name="planIndex" id="idplanIndex" type="text" readonly="true" class="form-control" placeholder="IndexNumber" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text col-4" id="basic-addon1">Plan Name </span>
+                <input name="Planname" id="idPlanname" type="text" class="form-control" placeholder="planName" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text col-4" id="basic-addon1">Short Name</span>
+                <input name="ShortName" id="idShortName" type="text" class="form-control" placeholder="ShortName" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text col-4" id="basic-addon1">Allowed Pax</span>
+                <input name="AllowedPax" id="idAllowedPax" type="number" class="form-control" placeholder="AllowedPax" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text col-4" id="basic-addon1">Amount</span>
+                <input name="PlanAmount" id="idPlanAmount" type="number" class="form-control" placeholder="Plan Amount" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text col-4" id="basic-addon1">Extra Pax Charge</span>
+                <input name="ExtraCharge" id="idExtraCharge" type="number" class="form-control" placeholder="Plan Amount" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+        </div>
+        <div class="container-fluid">
+            <div class="input-group mb-3">
+                <span class="input-group-text col-4" id="basic-addon1">Discription</span>
+                <textarea class="form-control" id="iddiscription" name="discription" rows="11" cols="50"></textarea>
+        
+            </div>
+           
+        </div>
+        <div class="container-fluid">
+
+        </div>
+
+    </div>
+    <div class="container-fluid">
+        <div class=" container-fluid d-flex">
+            <form action="/searchRooms" method="POST"> 
+                <div class="input-group mb-3">
+                   <input name="searchvalue" id="idSearchname" type="text" class="form-control col-12" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+                   <button type="submit" class="input-group-text bi bi-search"   id="basic-addon1"></button>
+               </div>
+            </form> 
+        <div class="container-fluid ">
+            
+            <button id="Bt_Save_Update" name="floorIndex" onclick="SaveCheckinPlan()" class="btn btn-success bi bi-send-plus-fill" type="submit"> </button>
+            <button class="btn btn-dark bi bi-trash3" onclick="deletePlan()" type="button"> </button>
+            <button  class="btn btn-warning bi bi-pencil-fill" onclick="MakePlanReadonlyFalse()"  type="button"> </button>           
+            <button  class="btn btn-primary bi bi-file-earmark-plus" onclick="CreatenewHuman()"  type="submit"> </button>            
+        </div>
+        </div>
+        <table class="table  table-bordered table-hover">
+            
+                <thead>
+                    <tr>
+                        <th>PLAN INDEX</th>
+                        <th>PLAN NAME</th>
+                        <th>SHORT NAME</th>
+                        <th>ALLOWED PAX</th>
+                        <th>PLAN AMOUNT</th>
+                        <th>EXTRA PAX</th>
+                        <th>OPTIONS</th>
+
+                         
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <% plans.forEach(item => { %>
+                        <tr>
+                            <td> <%= item.planIndex %> </td>
+                            <td> <%= item.planName %> </td>
+                            <td> <%= item.shortName %> </td>
+                            <td> <%= item.maxPax %> </td>
+                            <td> <%= item.amount %> </td>
+                            <td> <%= item.extraCharge %> </td>
+                            <td><button id="Focus_edit" value="<%= JSON.stringify(item) %>" onclick="loadCheckinPlan(event.target.value)"  class="btn btn-warning bi bi-search" type="button"> </button></td>
+                        </tr> 
+                    <% }) %>
+                    
+                </tbody>
+        </table>
+    </div>
+</div>
+<%- include('footer') %>

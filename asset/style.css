@@ -1,0 +1,190 @@
+body{
+    font-family: 'Poppins', sans-serif;
+}
+.menubar{
+    height: 50px;
+    background-color: rgba(41, 49, 113, 0);
+    width: 100%;
+    position: fixed;
+    border-radius: 1px;
+    
+}
+ 
+.messageBox{
+    margin: 30% ;
+    height: 200px;
+    width :100px;
+    border: 1px rgb(151, 145, 145) solid; 
+    border-radius: 5px;
+    margin-left: 0px;
+    padding-top: 40px;
+    padding-left: 90px;
+    background-color:#4285F4;
+}
+.imageDivSize{
+    width: 35%;
+    height: 100%;
+    border: 1px solid green;
+}
+ 
+ 
+.myDynamicDivinFloorMap{
+     height : 200px; 
+}
+.transparentdiv{
+    background-color: transparent;
+
+}
+.btn-transparent50{
+    background-color: rgba(50, 35, 35, 0.753);
+
+}
+.alignment{
+    height: 100%;
+    margin: 0%;
+}
+
+.transparent-div {
+    background-color: transparent;
+    border: 0px solid #000; /* Add a border for visibility */
+}
+.login{
+    background-color: rgba(61, 104, 61, 0.87);
+    height: 500px;
+    width: 40%;
+    margin-left: .5%;
+    margin-right: 5%;
+    border-radius: 10px;
+    font-size: 15px;
+ }
+
+ .fixed{
+    position: relative;
+    bottom: 0px;
+    
+ }
+
+
+ .LoginPage{
+    position: fixed;
+    background-image:url("loginbackground.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+.round{
+    border: 1px rgba(252, 202, 85, 0.866) solid; 
+    border-radius: 50px;
+}
+.titleSize{
+    height: 150px;
+}
+.myDynamicDiv{
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Change this as needed */
+    gap: 8px; /* Adjust the gap between items */
+    
+}
+.noBorder{
+    border: none;
+}
+
+ 
+.SearchTextBox{
+    background-color: transparent;
+    height: 50px;
+    border: none;
+}
+ .Login_Test{
+    font-size: 13px;
+    color: rgb(255, 254, 254);
+    
+}
+.AlignCenter{
+    padding: 5%;
+    margin: 5%;
+    align-self: center;
+}
+ #emailHelp{
+    font-size: 10px;
+ }
+ .StaffPanel{
+    height: 250px;
+    width: 33.33%;
+    margin-left: .2%;
+    margin-top: .2%;
+    border-radius: 10px;
+    border: 1px grey solid;
+    padding: 2%;
+ }
+ .controlPanel{
+    margin: .2%;
+    width: 99.99%;
+    height: 40px;
+    border-radius: 10px;
+ }
+
+.division{
+     width: 0%;
+     height: 0px;
+     padding-top:30%;
+     
+     align-content: center;
+     }
+.invisible-element{
+    opacity: 0;
+}
+.Login_Test{
+    font-size: 13px;
+    color: rgba(255, 254, 254, 0.477);
+    
+}
+.AlignCenter{
+    padding: 5%;
+    margin: 5%;
+    align-self: center;
+}
+.LoginPage{
+    position: fixed;
+    /* background-image:url("loginbackground.jpg"); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+.loginMarketing{
+    background-color: rgba(128, 128, 128, 0.133);
+    margin: 1%;
+    width: 90%;
+    height: 600px;
+    
+}
+ 
+#id_div_Floor_left{
+    height: 700px;
+}
+.roomscontainer{
+    height: 400px;
+    width: 100%;
+
+}
+.imagebutton{
+    height: 260px;
+    width: 400px;
+    background-repeat: no-repeat;
+    background-size:contain  ;    
+}
+
+
+  

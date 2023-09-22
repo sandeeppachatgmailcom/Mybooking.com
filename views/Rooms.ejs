@@ -1,0 +1,178 @@
+<%- include('header') %>
+    <%- include('menubar') %>
+        <div class="container-fluid ">
+            <div class="container-fluid roomscontainer d-flex">
+                <div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Room Name </span>
+                        <input name="roomname" id="idroomname" type="text" class="form-control" placeholder="Room name"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Room Number</span>
+                        <input name="roomnumber" id="idroomnumber" type="number" class="form-control"
+                            placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Intercom</span>
+                        <input name="Intercom   " id="idIntercom" type="text" class="form-control"
+                            placeholder="intercom" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Category</span>
+                          <div class="dropdown col-8 ">
+                            <select id="idTariffIndex" name="TariffIndex" class="button  text-secondary col-12" ><% category.forEach(function(item) { %>
+                                <option value="<%= item.tariffIndex %>"</option> > <%= item.tariffName %></option>
+                                <% }); %>
+                            </select>
+                          </div>
+                    </div>
+                    
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Size(Sqf)</span>
+                        <input name="Room Size" id="idroomsize" type="number" class="form-control" placeholder="floor"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">Floor</span>
+                        <div class="dropdown">
+                            <select id="idFloorindex" name="Floorindex" class="button text-secondary col-12" ><% floors.forEach(function(item) { %>
+                                <option value="<%= item.floorindex %>"</option> > <%= item.floorname %></option>
+                            <% }); %>
+                        </select>
+                          </div>
+                    </div>
+                    
+                </div>
+                <div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="basic-addon1">Roomindex</span>
+                        <input name="Roomindex" id="IdRoomindexvalue" type="text" class="form-control"
+                            placeholder="New"  readonly="true" aria-label="Username"  aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="basic-addon1">Max Occupany</span>
+                        <input name="MaxOccupany" id="IdMaxOccupancy" type="number" class="form-control"
+                            placeholder="Max Occupany" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="basic-addon1">Normal Occupany</span>
+                        <input name="NormalOccupancy" id="idNormalOccupancy" type="number" class="form-control"
+                            placeholder="NOrmal Occupany" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="basic-addon1">Min Occupany</span>
+                        <input name="MinOccupany" id="IdMinOccupany" type="number" class="form-control"
+                            placeholder="Min Occupany" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="basic-addon1">GuestId</span>
+                        <input name="GuestId" id="IdGuestId" type="text" class="form-control" placeholder="GuestID"
+                            readonly="true" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="basic-addon1">Checkinref</span>
+                        <input name="CheckinRef" id="IdCheckinref" type="text" class="form-control" readonly="true"
+                            placeholder="CheckinRef" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="basic-addon1">Status</span>
+                        <input name="Status" id="IDStatus" type="text" class="form-control" readonly="true"
+                            placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+               </div>
+                <div >
+                    <div class=" d-flex">
+                        <label class="input-group-text" for="idBilling">Billing</label> <input    type="checkbox" name="Billing" id="idBilling">
+                        <label class="input-group-text" for="idRentout">Rented Out</label> <input   type="checkbox" name="Rentout" id="idRentout">
+                        <label class="input-group-text" for="IdBlocked1">Blocked</label> <input   type="checkbox" name="Blocked" id="IdBlocked1">
+                        
+                        
+                    </div>
+                    <h6 class="text-secondary" >Images</h6>  
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="basic-addon1">Room Images</span>
+                        <input name="roomiMages" id="IdImages" type="file" class="form-control btn" multiple 
+                        placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
+                    </div> 
+                    <div class="container-fluid d-flex">
+                        <button id="IdRoomgaeTile1" class="btn btn-outline-secondary imagebutton" type="button"></button>
+                        <button class="btn btn-outline-secondary imagebutton" type="button"></button>
+                        <button class="btn btn-outline-secondary imagebutton" type="button"></button>
+                    </div>
+                    
+                    
+              
+                </div>
+            </div>
+            <div class="container-fluid ">
+                <div class="d-flex">
+                <form action="/rooms/searchRooms" method="POST"> 
+                    
+                     <div class="input-group mb-3">
+                        <input name="searchvalue" id="idSearchname" type="text" class="form-control col-12" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+                        <button type="submit" class="input-group-text bi bi-search"   id="basic-addon1"></button>
+                    </div>
+                
+            </form>    
+                <div class="container-fluid ">
+                        <button id="Bt_Save_Update" name="floorIndex" onclick="SaveRooms()" class="btn btn-success bi bi-send-plus-fill" type="submit"> </button>
+                        <button class="btn btn-dark bi bi-trash3" onclick="deleteRoom()" type="button"> </button>
+                        <button  class="btn btn-warning bi bi-pencil-fill" onclick="MakeRoomreadOnlyFalse()"  type="button"> </button>           
+                        <button  class="btn btn-primary bi bi-file-earmark-plus" onclick="CreatenewHuman()"  type="submit"> </button>            
+                    </div>
+            </div>
+                <table class="table  table-bordered table-hover" >
+                    <thead>
+                    <tr>
+                        <th class="col-2">ROOM INDEX</th>
+                        <th class="col-2">ROOM NAME</th>
+                        <th class="col-2">ROOM NUMBER</th>
+                        <th class="col-2">FLOOR</th>
+                        <th class="col-2">INTERCOM</th>
+                        <th class="col-2">SIZE(Sqft)</th>
+                        <th class="col-2">BLOCKED</th>
+                        <th class="col-2">TARIFF</th>
+                        <th class="col-2">NOR.OCC</th>
+                        <th class="col-2">MAX.OCC</th>
+                        <th class="col-2">MIN.OCC</th>
+                        <th class="col-2">GUEST ID</th>
+                        <th class="col-2">CHECKIN ID</th>
+                        <th class="col-2">STATUS</th>
+                        <th class="col-2">BILLING</th>
+                        <th class="col-2">USERNAME</th>
+                        <th class="col-2">OPTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% data.forEach(item => { %>
+                    <tr>
+                       <td> <%= item. roomIndex %> </td>
+                       <td> <%= item.roomName %> </td>
+                       <td> <%= item.roomNumber %> </td>
+                       <td> <%= item.floor %> </td>
+                       <td> <%= item.interCom %> </td>
+                       <td> <%= item.size %> </td>
+                       <td> <%= item.blocked %> </td>
+                       <td> <%= item.roomType %> </td>
+                       <td> <%= item.NormalOccupancy %> </td>
+                       <td> <%= item.maxOccupancy %> </td>
+                       <td> <%= item.minimumPax %> </td>
+                       <td> <%= item.guestId %> </td>
+                       <td> <%= item.checkinId %> </td>
+                       <td> <%= item.status %> </td>
+                       <td> <%= item.billing %> </button> </td>
+                       <td> <%= item.userCreated %> </td>
+                       <td><button id="Focus_edit" value="<%= JSON.stringify(item) %>" onclick="loadRoomDatas(event.target.value)"  class="btn btn-warning bi bi-search" type="button"> </button></td>
+                       </tr>
+                    <% }) %> 
+                </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    <!-- image -->
+  
+
+<%- include('footer') %>

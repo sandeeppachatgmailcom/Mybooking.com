@@ -1,0 +1,134 @@
+<%- include('header') %>
+    <%- include('menubar') %>
+        <div class="container-fluid ">
+            <div class="container-fluid roomscontainer d-flex">
+                <div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-6" id="basic-addon1">Service  Index</span>
+                        <input name="Serviceindex" readonly="true" id="iDServiceindex" type="text" class="form-control" placeholder="Service ID"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                   
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-6" id="basic-addon1">Service Name</span>
+                        <input name="ServiceName" id="iDServiceName" type="text"  class="form-control" placeholder="Name"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-6" id="basic-addon1">HSNCODE</span>
+                        <input name="hsnCode" Room Size" id="iDhsnCode" type="text"  class="form-control" placeholder="HSN Code"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-6" id="basic-addon1">Amount</span>
+                        <input name="Amount" Room Size" id="iDAmount" type="number"  class="form-control" placeholder="Amount"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    
+                </div>
+                <div>
+                    
+                </div>
+                <div>
+                     
+ 
+                </div>
+                <div class="col-3" >
+                    <div class=" d-flex">
+                         <label class="input-group-text" for="iDblocked">Blocked</label> <input   type="checkbox" name ="iDblocked"  id="iDblocked">
+                        
+                        
+                    </div>
+                    <h6 class="text-secondary" >Images</h6>  
+                    <div class="input-group mb-3">
+                        <button   class="input-group-text col-5" id="iDServiceImages1btn1">Img 1</button >
+                        <input name="ServiceImages1" id="iDServiceImages1" onchange="imageDisplay('iDServiceImages1','iDServiceImages1btn1','idImage1Div11')" type="file" class="form-control btn" multiple 
+                        placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
+                    </div> <div class="input-group mb-3">
+                        <button   class="input-group-text col-5"  id="iDServiceImages1btn2">Img 2</button >
+                        <input name="ServiceImages2" id="iDServiceImages2"   type="file" class="form-control btn" multiple 
+                        placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
+                    </div> <div class="input-group mb-3">
+                        <button   class="input-group-text col-5" id="iDServiceImages1btn3">Img 3</button >
+                        <input name="ServiceImages3" id="iDServiceImages3"  type="file" class="form-control btn" multiple 
+                        placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
+                    </div> <div class="input-group mb-3">
+                        <button   class="input-group-text col-5" id="iDServiceImages1btn4">Img 4</button >
+                        <input name="ServiceImages4" id="iDServiceImages4"  type="file" class="form-control btn" multiple 
+                        placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>      
+              
+                </div>
+                <div class="col-6">
+                    <div class="d-flex" >
+                    
+                        <div>
+                            <button  id="idImage1Div11" class="hoverButton m-0" style="width: 450px; height: 200px;background-position: center ; background-color: transparent; border: none;   background-size:contain  ; background-repeat: no-repeat;" >
+                            </button>
+                            <button  id="idImage1Div22" class="hoverButton m-0" style="width: 450px; height: 200px;background-position: center ; background-color: transparent; border: none;   background-size:contain  ; background-repeat: no-repeat;">
+                                
+                            </button>
+                            
+                        </div>
+                        <div>
+                            <button  id="idImage1Div33" class="hoverButton m-0" style="width: 450px; height: 200px;background-position: center ; background-color: transparent; border: none;   background-size:contain  ; background-repeat: no-repeat;">
+                            
+                            </button>
+                            <button  id="idImage1Div44" class="hoverButton m-0" style="width: 450px; height: 200px;background-position: center ; background-color: transparent; border: none;   background-size:contain  ; background-repeat: no-repeat;">
+                                
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="container-fluid ">
+                <div class="d-flex">
+                <form action="/rooms/searchRooms" method="POST"> 
+                    
+                     <div class="input-group mb-3">
+                        <input name="Searchname" id="idSearchname" type="text" class="form-control col-12" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+                        <button type="submit" class="input-group-text bi bi-search"   id="basic-addon1"></button>
+                    </div>
+                
+            </form>    
+                <div class="container-fluid ">
+                        <button id="Bt_Save_Update" name="" onclick="saveService()"  class="btn btn-success bi bi-send-plus-fill" type="submit"> </button>
+                        <button class="btn btn-dark bi bi-trash3" onclick="deleteRoom()" type="button"> </button>
+                        <button  class="btn btn-warning bi bi-pencil-fill" onclick="MakeRoomreadOnlyFalse()"  type="button"> </button>           
+                        <button  class="btn btn-primary bi bi-file-earmark-plus" onclick="CreatenewHuman()"  type="submit"> </button>            
+                    </div>
+            </div>
+                <table class="table  table-bordered table-hover" >
+                    <thead>
+                    <tr>
+                        <th class="col-2">SL NO.</th>
+                        <th class="col-2">SERVICE NAME</th>
+                        <th class="col-2">HSN CODE </th>
+                        <th class="col-2">USERNAME</th>
+                        <th class="col-2">BLOCKED </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <% facility.forEach(item => { %>
+                    <tr>
+   
+                       <td> <%= item.Serviceindex %> </td>
+                       <td> <%= item.ServiceName %> </td>
+                       <td> <%= item.ServiceImages2 %> </td>
+                       <td> <%= item.ServiceImages %> </td>
+                       <td> <%= item.blocked %> </td> 
+                       <td><button id="Focus_edit" value="<%= JSON.stringify(item) %>" onclick="loadServiceDatas(event.target.value)"  class="btn btn-warning bi bi-search" type="button"> </button></td>
+                       </tr>
+                    <% }) %> 
+                </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    <!-- image -->
+  
+    <script src="/Script/ServicesScript.js"> </script>  
+<%- include('footer') %>

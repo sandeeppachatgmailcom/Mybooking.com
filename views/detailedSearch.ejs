@@ -1,0 +1,168 @@
+<%- include('header') %>
+    <%- include('MenuBarCustomer') %>
+
+        <div class="container-fluid">
+            <div>
+                <div
+                    style="  margin-top: 0%;border-radius: 10px; border: 5px solid rgba(255, 255, 255, 0.268);      background-color: rgba(65, 90, 69, 0.762) ; height: 100%;">
+
+                    <div class="input-group  position-absolute d-flex ">
+                        <!-- Main Search box Start here -->
+                        <div class=" d-flex mb-3">
+                            <div class="d-flex   "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button class="btn d-flex">
+                                    <h5 class="  text-light ">Location </h5>
+                                    <select name="ditrictName" type="text"
+                                        data-hotels="<%= JSON.stringify(generalData) %>" name="SearchText"
+                                        class="   SearchTextBox text-light fw-lighter" id="idSearchText"
+                                        onchange="loadHotel(event.target.value,'' ), loadSearchResult()">
+                                        <option style="background-color: rgba(36, 74, 36, 0.777); height: 100px;"
+                                            class="col-12 SearchTextBox text-light fw-LIGHTER" value="">All the Space we
+                                            have
+                                        </option>
+                                        <% district.forEach(element=> { %>
+                                            <option style="background-color: rgba(36, 74, 36, 0.86); height: 100px;"
+                                                class="col-12 SearchTextBox text-light fw-LIGHTER"
+                                                value="<%= element  %>">
+                                                <%= element %>
+                                            </option>
+                                            <% }) %>
+
+                                    </select>
+                                </button>
+                            </div>
+
+                            <div class="d-flex justify-content-center   "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button type="button" class="input-group-text text-light btn"
+                                    style="background-color: transparent;" id="iDServiceImages1btn2">Check-in</button>
+                                <input name="CheckinDate" id="idStartDate" type="datetime-local"
+                                    class="text-light SearchTextBox ">
+                            </div>
+
+                            <div class="d-flex  justify-content-between  "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button type="button" class="input-group-text text-light btn "
+                                    style="background-color: transparent;" id=" iDServiceImages1btn2">Check-out
+                                </button>
+                                <input id="idEndDate" type="datetime-local" name=" CheckoutDate"
+                                    class="text-light  SearchTextBox">
+                            </div>
+
+                            <div class="d-flex   "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button type="button" class="input-group-text text-light btn"
+                                    style="background-color: transparent;" id=" iDServiceImages1btn2">GUEST</button>
+                                <input id="idGuestCount" type="number" name="GuestCount"
+                                    class="text-light    SearchTextBox">
+                            </div>
+                            <div class="d-flex   "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button type="button" class="input-group-text text-light btn "
+                                    style="background-color: transparent;" id=" iDServiceImages1btn2">ROOMS </button>
+                                <input id="idRoomCount" type="number" name="roomCount"
+                                    class="text-light   SearchTextBox">
+                            </div>
+
+
+                        </div>
+                        <!-- Main Search box Ends here -->
+                    </div>
+
+
+                    <br>
+
+                    <br>
+                    <br>
+
+                    <div class=" d-flex input-group">
+                        <div class="d-flex m-1 "
+                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                            <button type="button" class="input-group-text text-light btn " name="budgetStart"
+                                id="iDServiceImages1btn2"> Minimum
+                                budget</button>
+                            <input id="idBudgetFrom" style="background-color:rgba(36, 74, 36, 0);" type="number"
+                                onchange="loadSearchResult()" name="budgetEnd" class="text-light SearchTextBox">
+                        </div>
+
+                        <div class="d-flex m-1 "
+                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                            <input id="idBudgetEnd" style="background-color:rgba(36, 74, 36, 0);" type="number"
+                                onchange="loadSearchResult()" name="" class="text-light  SearchTextBox">
+                            <button type="button" class="input-group-text text-light btn" id=" iDServiceImages1btn2">
+                                <Main> Maximum Limit </Main>
+                            </button>
+
+                        </div>
+
+
+                        <div class="d-flex m-1 col-3 "
+                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                            <button type="button" class="input-group-text text-light btn " id=" iDServiceImages1btn2">
+                                category</button>
+                            <select id="idSelectTariff" class="input-group-text text-light btn col-12"
+                                name="roomCategoryID">
+                                <option value="">All</option>
+                                <% tariff.forEach(item=> { %>
+                                    <option class="btn col-12 " style="background-color:rgba(36, 74, 36, 0.196); "
+                                        value=" <%=item.tariffIndex %>">
+                                        <%= item.tariffName %>
+                                    </option>
+                                    <% }) %>
+
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn text-light btn-secondary "> LOAD </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                <div>
+                <div class="container-fluid d-flex ">
+                    
+                    <div class=" container-fluid col-10">
+                        <div class="py-vh-4 bg-gray-100 w-100 overflow-hidden container d-flex"
+                            style="flex-wrap: wrap;display: flex;" id="idTariffDetails">
+                            
+                            <% generalData.forEach(element => { %>
+                                <div class="card col-3 p-1"   >
+                                    <img class="w-100" style="height: 30%;"  src="<%= element.image1 %>" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                      <h3 class="card-title" data-hotelTariffs="${result[i].tariffDetails}" > <%= element.lastName %></h3> <small class="card-text" style="height: fit-content;"  ><%= element.district %> </small> <br>
+                                      <small class="card-text bi bi-telephone-fill" style="height: fit-content;"  > <%= element.contactNumber %></small><br>
+                                      <small class="card-text bi bi-envelope-at"  style="height: fit-content;"  >  <%= element.email %> </small>
+                                      
+                                      <div class="d-flex justify-content-center">
+                                        <h6 class="bi bi-star-fill text-warning"></h6>
+                                        <h6 class="bi bi-star-fill text-warning"></h6>
+                                        <h6 class="bi bi-star-fill text-warning"></h6>
+                                        <h6 class="bi bi-star-fill"></h6>
+                                        <h6 class="bi bi-star-fill"></h6>
+                                      </div>
+                                      <small class="card-text" style="height: fit-content;"  ><%= element.Companydiscription %></small>
+                                      
+                                      
+                                    </div>
+                                    <div class="card-footer">
+                                        <form action="/custom/TariffSearch" method="post" >
+                                            <input type="submit" style="opacity: 0;" data-="<%= element.CompanyID %>" name="CompanySearchKey" value="">
+                                            <button class="btn btn-primary">Details</button>
+                                        </form>
+                                       
+                                      </div>
+                                  </div>
+                            <% }) %>
+
+                            <%- include('footer') %>
+
+                        </div>
+                    </div>
+                    <div class="container-fluid col-2 fixed" style="background-color: rgba(64, 85, 64, 0.184); ">
+                        <!-- Detaild Search Bar  -->
+                    </div>
+                </div>
+                </div>
+        </div>

@@ -1,0 +1,209 @@
+<%- include('header') %>
+    <%- include('MenuBarCustomer') %>
+        <div class="container-fluid">
+            <div>
+                <div
+                    style="  margin-top: 0%;border-radius: 10px; border: 5px solid rgba(255, 255, 255, 0.268);      background-color: rgba(65, 90, 69, 0.762) ; height: 100%;">
+
+                    <div class="input-group  position-absolute d-flex ">
+                        <!-- Main Search box Start here -->
+                        <div class=" d-flex mb-3">
+                            <div class="d-flex   "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button class="btn d-flex">
+                                    <h5 class="  text-light ">Location </h5>
+                                    <select name="ditrictName" type="text"
+                                        data-hotels="<%= JSON.stringify(generalData) %>" name="SearchText"
+                                        class="   SearchTextBox text-light fw-lighter" id="idSearchText"
+                                        onchange="loadHotel(event.target.value,'' ), loadSearchResult()">
+                                        <option style="background-color: rgba(36, 74, 36, 0.777); height: 100px;"
+                                            class="col-12 SearchTextBox text-light fw-LIGHTER" value="">All the Space we
+                                            have
+                                        </option>
+                                        <% district.forEach(element=> { %>
+                                            <option style="background-color: rgba(36, 74, 36, 0.86); height: 100px;"
+                                                class="col-12 SearchTextBox text-light fw-LIGHTER"
+                                                value="<%= element  %>">
+                                                <%= element %>
+                                            </option>
+                                            <% }) %>
+
+                                    </select>
+                                </button>
+                            </div>
+
+                            <div class="d-flex justify-content-center   "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button type="button" class="input-group-text text-light btn"
+                                    style="background-color: transparent;" id="iDServiceImages1btn2">Check-in</button>
+                                <input name="CheckinDate" id="idStartDate" type="datetime-local"
+                                    class="text-light SearchTextBox ">
+                            </div>
+
+                            <div class="d-flex  justify-content-between  "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button type="button" class="input-group-text text-light btn "
+                                    style="background-color: transparent;" id=" iDServiceImages1btn2">Check-out
+                                </button>
+                                <input id="idEndDate" type="datetime-local" name=" CheckoutDate"
+                                    class="text-light  SearchTextBox">
+                            </div>
+
+                            <div class="d-flex   "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button type="button" class="input-group-text text-light btn"
+                                    style="background-color: transparent;" id=" iDServiceImages1btn2">GUEST</button>
+                                <input id="idGuestCount" type="number" name="GuestCount"
+                                    class="text-light    SearchTextBox">
+                            </div>
+                            <div class="d-flex   "
+                                style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                <button type="button" class="input-group-text text-light btn "
+                                    style="background-color: transparent;" id=" iDServiceImages1btn2">ROOMS </button>
+                                <input id="idRoomCount" type="number" name="roomCount"
+                                    class="text-light   SearchTextBox">
+                            </div>
+
+
+                        </div>
+                        <!-- Main Search box Ends here -->
+                    </div>
+
+
+                    <br>
+
+                    <br>
+                    <br>
+
+                    <div class=" d-flex input-group">
+                        <div class="d-flex m-1 "
+                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                            <button type="button" class="input-group-text text-light btn " name="budgetStart"
+                                id="iDServiceImages1btn2"> Minimum
+                                budget</button>
+                            <input id="idBudgetFrom" style="background-color:rgba(36, 74, 36, 0);" type="number"
+                                onchange="loadSearchResult()" name="budgetEnd" class="text-light SearchTextBox">
+                        </div>
+
+                        <div class="d-flex m-1 "
+                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                            <input id="idBudgetEnd" style="background-color:rgba(36, 74, 36, 0);" type="number"
+                                onchange="loadSearchResult()" name="" class="text-light  SearchTextBox">
+                            <button type="button" class="input-group-text text-light btn" id=" iDServiceImages1btn2">
+                                <Main> Maximum Limit </Main>
+                            </button>
+
+                        </div>
+
+
+                        <div class="d-flex m-1 col-3 "
+                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                            <button type="button" class="input-group-text text-light btn " id=" iDServiceImages1btn2">
+                                category</button>
+                            <select id="idSelectTariff" class="input-group-text text-light btn col-12"
+                                name="roomCategoryID">
+                                <option value="">All</option>
+                                <% tariff.forEach(item=> { %>
+                                    <option class="btn col-12 " style="background-color:rgba(36, 74, 36, 0.196); "
+                                        value=" <%=item.tariffIndex %>">
+                                        <%= item.tariffName %>
+                                    </option>
+                                    <% }) %>
+
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn text-light btn-secondary "> LOAD </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="d-flex container-fluid">
+                <div class="col-4">
+                    <div id="carouselExampleCaptions" class="carousel slide" style="border: 1px solid grey ; height: 500px;">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
+                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                                aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                                aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="..." class="d-block w-100" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>First slide label</h5>
+                                    <p>Some representative placeholder content for the first slide.</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="..." class="d-block w-100" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Second slide label</h5>
+                                    <p>Some representative placeholder content for the second slide.</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="..." class="d-block w-100" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Third slide label</h5>
+                                    <p>Some representative placeholder content for the third slide.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-7">
+                    <div class=" py-vh-4 bg-gray-100 w-100 overflow-hidden container d-flex"
+                        style="flex-wrap: wrap;display: flex;" id="idTariffDetails++">
+                        <div class="card col-4 p-1" style="width: 18rem;">
+                            <img src="img/webp/person11.webp" class="card-img-top p-1" alt="...">
+                            <div class="card-body">
+                                <h4 class="card-title">Deluxe :7500/- <small>(2pax)</small> </h4>
+                                <small> Extra pax:850/-</small>
+                                <button class="btn btn-warning">
+                                    <h6 class="card-title ">American Plan :500/- <small>(2pax)</small> </h6>
+                                    <small> Extra Pax 350/-</small>
+                                </button>
+                                <div class="d-flex">
+
+
+                                    </button>
+
+                                    <div class="d-flex">
+                                        <button class="btn"> Guest <button
+                                                class="btn bi bi-plus-lg btn-primary"></button> <input
+                                                style="text-align: left; width: 30px ;" type="text" value="0"> <button
+                                                class="btn bi bi-dash btn-primary "> </button> </button>
+                                    </div>
+                                </div>
+                                <h4 class="card-title">Total Amount:<small>8000/- </small> </h4>
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the
+                                    card's content.</p>
+                                <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Add to
+                                    Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-1">
+                    additional Search
+                </div>
+
+            </div>
+        </div>
+        <%- include('footer') %>

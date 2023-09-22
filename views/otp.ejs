@@ -1,0 +1,35 @@
+    <%- include('header') %>
+    
+    <h1 class="text" id="idEmail" > <%= data.authorisationname  %> </h1>
+
+    <script>
+        async function showPrompt() {
+            var userInput = prompt("your otp Validation is pending ,Please enter your otp sent to your registered Email:");
+            console.log(userInput,'heloooooooooooooo');
+            if (userInput) {
+                const sendData = {
+                    email:document.getElementById('idEmail').textContent.trim(),
+                    otp:userInput
+                }
+                console.log(sendData,'data');
+                const validate =await fetch('/authenticate/OtpAuthentication',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(sendData) })
+                .then(res=>{
+                    return res.json();
+                }).catch() 
+                if(validate.Verified){
+                   window.location.assign('/floorMap/floorMap');
+                }
+
+                    } else {
+                window.location.href = '/'
+            }
+
+        }
+        showPrompt();
+    </script>
+
+
+
+
+
+    <%- include('footer') %>

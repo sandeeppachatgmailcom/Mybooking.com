@@ -1,6 +1,49 @@
 const { login } = require('../controller/adminController');
 const db = require('./mongoose')
 const mongoose = require('mongoose')
+const companies = require('../model/company')
+ 
+
+
+
+async function loadtariffWithAny(Obj) {
+  const loadtariff = await tariff.aggregate([
+    {
+        $lookup:{
+            from: 'companies',
+            localField: 'CompanyID',
+            foreignField: 'CompanyID',
+            as: 'companies',
+        }
+    },
+    
+    {
+        $match:{
+            "companies.district":new RegExp(Obj.ditrictName, "i") 
+        }
+    } 
+    ,
+    
+    {
+        $match:{
+            "tariffIndex":new RegExp(Obj.roomCategoryID, "i") 
+        }
+    },
+    {
+      $match:{
+          "deleted":false
+      }
+  }  ])
+        
+  return loadtariff;
+
+     
+}
+
+
+
+
+
 
 const newTariff = new mongoose.Schema({
 tariffName:{type:String,required:true,unique:true},
@@ -79,29 +122,4 @@ const postdeletetariff = async (req,res)=>{
     res.json(result)
 }
 
-async function loadtariffWithAny(Obj) {
-    try {
-        const loadtariff = await tariff.find({
-            $or: [
-              {
-                $and: [
-                  { tariffName: { $regex: `^${Obj.CompanySearchKey}`, $options: 'i' } },
-                  { deleted: false }
-                ]
-              },
-              {
-                $and: [
-                  { CompanyID: { $regex: `^${Obj.CompanySearchKey}`, $options: 'i' } },
-                  { deleted: false }
-                ]
-              }
-            ]
-          });
-          
-        return loadtariff;
-    } catch (error) {
-        console.error("Error loading tariff:", error);
-        throw error; // Rethrow the error to be handled by the caller
-    }
-}
 module.exports = {tariff,loadtariff,savecategory,postdeletetariff,loadtariffWithAny }

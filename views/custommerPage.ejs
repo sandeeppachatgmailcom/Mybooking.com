@@ -48,7 +48,7 @@
   
                         <button type="button"  class="input-group-text text-light btn " style="background-color: transparent;"
                           id=" iDServiceImages1btn2">Check-out </button>
-                        <input id="idEndDate" type="datetime-local" name=" CheckoutDate" class="text-light  SearchTextBox">
+                        <input id="idEndDate" type="datetime-local" name="CheckoutDate" class="text-light  SearchTextBox">
                         <button type="button" class="input-group-text text-light btn" style="background-color: transparent;"
                           id=" iDServiceImages1btn2">GUEST</button>
                         <input id="idGuestCount" type="number" name="GuestCount" class="text-light col-1  SearchTextBox">
@@ -58,11 +58,11 @@
                       
                       </div>
                       <div class="container justify-content-center d-flex input-group">
-                        <button type="button" class="input-group-text text-light btn " name="budgetStart" id="iDServiceImages1btn2"> Minimum
+                        <button type="button" class="input-group-text text-light btn "  id="iDServiceImages1btn2"> Minimum
                           budget</button>
-                        <input id="idBudgetFrom" style="background-color:rgba(36, 74, 36, 0.596);" type="number" onchange="loadSearchResult()"
+                        <input name="budgetStart"  id="idBudgetFrom" style="background-color:rgba(36, 74, 36, 0.596);" type="number" onchange="loadSearchResult()"
                           name="budgetEnd" class="text-light SearchTextBox">
-                        <input id="idBudgetEnd" style="background-color:rgba(36, 74, 36, 0.596);" type="number" onchange="loadSearchResult()"
+                        <input name="budgetEnd"  id="idBudgetEnd" style="background-color:rgba(36, 74, 36, 0.596);" type="number" onchange="loadSearchResult()"
                           name="" class="text-light  SearchTextBox">
                         <button type="button" class="input-group-text text-light btn" id=" iDServiceImages1btn2">
                           <Main> Maximum Limit </Main>
@@ -71,7 +71,7 @@
                         <select id="idSelectTariff" class="input-group-text text-light btn col-2" name="roomCategoryID">
                           <option value="">All</option>
                           <% tariff.forEach(item=> { %>
-                            <option class="btn col-3 " style="background-color:rgba(36, 74, 36, 0.196); " value=" <%=item.tariffIndex %>">
+                            <option class="btn col-3 " style="background-color:rgba(36, 74, 36, 0.196); " value="<%=item.tariffIndex %>">
                               <%= item.tariffName %>
                             </option>
                             <% }) %>

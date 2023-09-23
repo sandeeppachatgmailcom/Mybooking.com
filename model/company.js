@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const db = require('./mongoose'); // Ensure the correct path to your mongoose connection setup
-const admin = require('../controller/adminController')
+const admin = require('../controller/adminController');
+const  loadtariff  = require('./tariff');
 
 const NewCompany = new mongoose.Schema({
     CompanyID: { type: String },
@@ -25,7 +26,30 @@ const NewCompany = new mongoose.Schema({
     createduser: { type: String },
     image1:{type:String},
     image2:{type:String},
-    Companydiscription:{type:String}
+    Companydiscription:{type:String},
+    tariff:[{tariffIndex: {type:String},
+        HSNCode: {type:String},
+        defaultCheckinplan: {type:String},
+        extraPerson: {type:Number},
+        includeChild: {type:Boolean},
+        itemname: {type:String},
+        roomRentSingle: {type:Number},
+        tariffName: {type:String},
+        tax: {type:Number},
+        deleted: {type:Boolean},
+        SpecialRent: {type:Number},
+        Discription:{type:String},
+        checkinPlans:[{
+            planIndex: {type:String},
+            amount: {type:Number},
+            deleted: {type:Boolean},
+            discription: {type:String},
+            extraCharge: {type:Number},
+            maxPax: {type:Number},
+            planName: {type:String},
+            shortName:{type:String}
+            }]
+  }]
 });
 const  company = db.model('Company',NewCompany);
 
@@ -93,7 +117,7 @@ async function loadHuman(contactNumber) {
     return result
 }
 async function SearchbyCompanyByAny(SerchKey) {
-    const data = await company.find({$or:[{firstName: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' }},{CompanyID: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' } },]})
+    const data = await company.findOne({$or:[{firstName: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' }},{CompanyID: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' } },{contactNumber: { $regex: `^${SerchKey.Username}`, $options: 'i' } }]})
     
     return data
 }

@@ -18,6 +18,7 @@ const company = require('../controller/company')
 const companies = require('../model/company')
 const tariffs = require('../model/tariff')
 const customSearch = require('../controller/custommerSeach')
+const hotelshomePage = require('../controller/hotelHomePage')
 
 router.get('/' ,async (req, res) => {
     try {
@@ -46,7 +47,8 @@ router.use('/admincontroller',verifyAccess.VerifyAccess,userAuthentic)
 router.use('/DocumentUpload',verifyAccess.VerifyAccess,DocumentUpload)
 router.use('/Company',verifyAccess.VerifyAccess,company)
 router.use('/custom',customSearch)
+router.use('/vedurehomepage',hotelshomePage)
 
- 
+
 
 module.exports=router;

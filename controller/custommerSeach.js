@@ -55,10 +55,13 @@ router.use('/TariffSearch',async (req,res)=>{
         district.add(element.district )
     });
        
-    const result = await tariffs.loadtariffWithAny(req.body);
-    console.log(result);
+    let result = await tariffs.loadtariffWithAny(req.body);
+    result = result[0]
+    
+    const tariffDetails= result.tariff
+    console.log(result.tariff[0]);
     const inputData = req.body
-    res.render('companyWiseDetails',{inputData,generalData,tariff,result,district});
+    res.render('companyWiseDetails',{inputData,generalData,tariff,result,district,tariffDetails});
      
 })
 router.use('/loadPlans',async(req,res)=>{

@@ -66,6 +66,31 @@ function createJwt(payload, secretKey, options = {}) {
         throw new Error('Payload must be a plain object.');
     }
 }
+ 
+router.post('/vendurelogin' , async (req, res) => {
+    const userlogrecord = {
+        username: req.body.Username,
+        sessionId: req.sessionID,  
+        folder: req.path, 
+        method: req.method,
+        loggedOut: false,
+        ip: req.ip
+    }
+    const posted = await userlog.UserLog.updateOne({ sessionId: req.sessionID }, { $set: userlogrecord }, { upsert: true })
+    let  result = await HBank.HumanResource.findOne({$or:[{ email: req.body.Username, password: req.body.Password,deleted: false },{ contactNumber: req.body.Username, password: req.body.Password,deleted: false }]}, { username: 1, _id: 0,email:1})
+    if (result){ result = JSON.stringify(result);}
+    //else result=null;
+     reply = { Verified: false };
+    if (result) {
+        reply = { Verified: true }
+        const token = jwt.sign(JSON.parse(result), 'PassKey', { expiresIn: 10 })  
+        req.session.headers=token;
+    }
+    else { reply = { Verified: false } }
+    res.cookie('username', req.body.Username)
+    res.json(reply)
+     
+})
 
 router.post('/login' , async (req, res) => {
     

@@ -238,7 +238,6 @@ async function getCheckinWithAllDetails(FrontData) {
           }
         }
       }
-
     ]);
     console.log(results, 'ChatGpt Results'); // Aggregated data with complete room information and tariff details
     return results;

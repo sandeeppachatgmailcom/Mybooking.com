@@ -3,7 +3,7 @@ const router = express.Router();
 const companies = require('../model/company')
 const HBank = require('../model/humanbank');
 const tariff = require('../model/tariff');
-const { default: plans } = require('razorpay/dist/types/plans');
+ 
 
 router.post('/loadhomepage',async (req,res)=>{
     const inputs = req.body;
@@ -15,20 +15,19 @@ router.post('/loadhomepage',async (req,res)=>{
         loggedOut: false,
         ip: req.ip
     }
-    console.log(userlogrecord);
+    
     const result = await HBank.HumanResource.findOne({$or:[{ email: req.body.Username, password: req.body.Password,deleted: false },{ contactNumber: req.body.Username, password: req.body.Password,deleted: false }]}, { username: 1, _id: 0,email:1})
-    
-    const profile = await companies.company.find({contactNumber:req.body.Username}) 
-
-
-    
+   
+    const company = await companies.company.find({contactNumber:req.body.Username}) 
+    profile= company[0];
+    console.log(profile);
     const tariffpackages = await tariff.loadtariff('');
-    console.log(jsonObject,'body print');
+    console.log(tariffpackages,'asasaasasasasasasasasasasasas');
     if(result){
         res.render('companyhomePage',{inputs,profile,tariffpackages})
     }
     else{
-        console.log(inputs)
+         
         res.redirect('/')
     } 
    

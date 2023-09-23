@@ -28,17 +28,35 @@
     <div class="container-fluid">
         
         <div class="container-fluid col-8 " style="background-color: rgba(48, 41, 64, 0.701);" >
-          <div class="container-fluid " style="background-color: rgba(41, 64, 41, 0.701) ; flex-wrap: wrap ;">
+          <div class="container-fluid justify-content-start" style="background-color: rgba(41, 64, 41, 0.701) ; flex-wrap: wrap ;">
            
             <% tariffpackages.forEach(element => { %>
-
-              <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+               
+              <div class="card  text-white bg-secondary mb-3"  ">
                 <div class="card-header"><%= element.tariffName %></div>
-                <div class="card-body">
+                <div class="card-body justify-content-start">
+                <div class="d-flex  "> 
+                  <button class=" btn col-2 "   " >Rent:</button>  
+                  <input class="btn " type="number" readonly="true" name="Rent" id="idTariffName" value="<%= element.roomRentSingle %>" >
+                   
                 </div>
-                <button class="btn btn-light" value="<%= element.tariffIndex %>" ><%= element.tariffName %></button>
+                <div class="d-flex justify-content-start"> 
+                  <button class="btn col-2  ">SpecialRent:</button>  
+                  <input class="btn" type="number" readonly="true" name="SpecialRent" id="idSpecialRent" value="<%= element.SpecialRent  %>" >
+                </div>
+                <div class="d-flex justify-content-start"> 
+                  <button class="btn   ">Discription:</button>  
+                  <textarea class="form-control btn" id="idCompanydiscription" name="discription" rows="8" cols="50"  > <%= element.Discription %></textarea>
+                </div>
+                
+              </div class="col-2">
+              <div class="ml-auto">
+                <button class="btn btn-light" value="<%= element.tariffIndex %>" > EDIT</button>
+                <button class="btn btn-light" value="<%= element.tariffIndex %>" > SAVE</button>
+                <button class="btn btn-light" value="<%= element.tariffIndex %>" > DELETE</button>
+            </div>
               </div>
-             
+              
             <% }) %>
           
            

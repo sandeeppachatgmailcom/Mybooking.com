@@ -27,29 +27,7 @@ const NewCompany = new mongoose.Schema({
     image1:{type:String},
     image2:{type:String},
     Companydiscription:{type:String},
-    tariff:[{tariffIndex: {type:String},
-        HSNCode: {type:String},
-        defaultCheckinplan: {type:String},
-        extraPerson: {type:Number},
-        includeChild: {type:Boolean},
-        itemname: {type:String},
-        roomRentSingle: {type:Number},
-        tariffName: {type:String},
-        tax: {type:Number},
-        deleted: {type:Boolean},
-        SpecialRent: {type:Number},
-        Discription:{type:String},
-        checkinPlans:[{
-            planIndex: {type:String},
-            amount: {type:Number},
-            deleted: {type:Boolean},
-            discription: {type:String},
-            extraCharge: {type:Number},
-            maxPax: {type:Number},
-            planName: {type:String},
-            shortName:{type:String}
-            }]
-  }]
+    tariff:{}
 });
 const  company = db.model('Company',NewCompany);
 

@@ -66,6 +66,7 @@ defaultCheckinplan:{type:String,required:true},
 Discription:{type:String},
 timestamp: { type: Date, default: Date.now },
 username: { type: String, required: true },
+SpecialRent:{type:Number,required:true,default:0},
 itemname: { type: String },
 HSNCode: { type: String },
 deleted:{type:Boolean,default:false,required:true}

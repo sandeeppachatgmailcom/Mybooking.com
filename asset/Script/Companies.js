@@ -206,4 +206,18 @@ function convertToHTMLDatetimeFormat(inputDateTime) {
     return formattedDateTime;
 }
 
-
+async function saveTariffToCompanies(){
+    newTariff = {
+        tariffName: document.getElementById("idtariffname").value,
+        roomRentSingle: document.getElementById("idRent-Single").value,
+        extraPerson: document.getElementById("idExtraPerson").value,
+        tax: document.getElementById("IdTaxrate").value,
+        includeChild: document.getElementById("idincludeChild").value,
+        defaultCheckinplan: document.getElementById("IdDefaultPlan").value,
+        itemname: document.getElementById("IdItemname").value,
+        HSNCode: document.getElementById("IdHsncode").value,
+        username: document.getElementById("loggeduser").innerHTML,
+        tariffIndex: document.getElementById("IdTariffIndex").value
+    }
+    console.log(newTariff);
+}

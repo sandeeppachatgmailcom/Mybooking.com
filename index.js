@@ -9,6 +9,7 @@ const otpvalidate = require('./model/otpvalidation')
 const human = require('./model/humanbank')
 const testCheckinApi = require('./model/checkIn')
 const jwt = require('jsonwebtoken')
+const swal = require ('sweetalert');
 
 const morgan = require('morgan');
 

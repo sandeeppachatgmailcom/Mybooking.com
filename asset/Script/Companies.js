@@ -206,12 +206,12 @@ function convertToHTMLDatetimeFormat(inputDateTime) {
     return formattedDateTime;
 }
 
-async function saveTariffToCompanies( tariffIndex){
-   
-    const id = tariffIndex;
+async function saveTariffToCompanies(tariffIndex){
     
+    const id = tariffIndex;
+    alert(document.getElementById(`idCompTariffname+${id}`).value);
     newTariff = {
-        tariffName: document.getElementById( `idCompTariffname+${id}` ).value,
+        tariffName: document.getElementById(`idCompTariffname+${id}`).value ,
         roomRentSingle: document.getElementById(`idRent-Single+${id}`).value,
         specialRent:document.getElementById(`idSpecialRent+${id}`).value,
         extraPerson: document.getElementById(`idExtraPerson+${id}`).value,
@@ -223,7 +223,7 @@ async function saveTariffToCompanies( tariffIndex){
         Discription:document.getElementById(`iddiscription+${id}`).value,
         CompanyID:document.getElementById(`idCompanyId+${id}`).innerText 
     }
-    console.log(newTariff);
+    console.log(newTariff),'new tariff';
     const result = await fetch('/vedurehomepage/saveTariff',{method:'post',headers:{"Content-Type":"application/json"},body:JSON.stringify(newTariff)})
     .then(res=>{
         return res.json()
@@ -390,3 +390,51 @@ async function Activateplan(tariff){
 }
 
  
+
+async function deleteTariffPermanently(tariff){
+    const temp = tariff.split(',');
+    console.log(temp)
+    data = {tariffIndex:temp[0],
+        CompanyID:temp[1]}
+    const result = await fetch('/vedurehomepage/deletetariffPermanent',{method:'post',headers:{"Content-Type":"application/json"},body:JSON.stringify(data)})
+    .then(res=>{
+        return res.json()
+    })
+    .catch(err=>{
+        console.log(err)
+    }) 
+    console.log(result);
+    
+    if(result.update){
+        swal({
+            title: "success",
+            text: "Tariff freezed",
+            icon: "success",
+            button: "OK",
+          }).then((value) => {
+            window.location.reload()});
+         
+    }
+    else if(result.saved){
+        swal({
+            title: "success",
+            text: "Tariff added!",
+            icon: "success",
+            button: "OK",
+          }).then((value) => {
+            window.location.reload()});
+        
+           
+    }
+    else if(result.matched){
+        swal({
+            title: "success",
+            text: "No changes found!",
+            icon: "success",
+            button: "OK",
+          }).then((value) => {
+            window.location.reload()});
+         
+    }
+   
+}

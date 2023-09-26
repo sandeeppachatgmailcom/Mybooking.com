@@ -21,26 +21,56 @@
               <%= profile.pincode%>
           </h6>
           <div>
-            <div>
+            <div class="container-fluid " style="flex-wrap: nowrap; overflow-x:scroll ;">
 
-              <% tariffPackages.forEach(element=> { %>
-                <div class="btn p-1 col-1 bg-secondary" style="height: 100px;  opacity: 50%; ;">
-
+              <% Plans.forEach(element=> { %>
+                <div class="btn  " style="  opacity: 90%;  background-color: rgba(77, 103, 77, 0.923);  ">
+                   
+                           <button class="btn text-light" style="text-transform: uppercase;"><%= element.planName %> </button>
                 </div>
-
-
                 <% }) %>
-                  <div class="btn p-1 col-1 bg-primary " style="height: 100px;  opacity: 50%; ;">
+                  <div class="btn p-1 col-1 bg-primary "   >
                     <button class="w-100 h-100 btn btn-primary bi bi-window-plus"></button>
                   </div>
             </div>
             <div class="row  "
-              style=" overflow: scroll; background-color: rgba(77, 103, 77, 0.923);">
+              style=" flex-wrap: nowrap; overflow-x: scroll; background-color: rgba(77, 103, 77, 0.923);">
+              <div class="btn p-1 col-1 justify-content-center"  >
+                      
+                <div class="card text-white mb-2" style="max-width: 18rem; background-color: rgb(76, 102, 158);  ">
+                   
+                  
 
+                        <div class="card-header" style="text-transform:uppercase">
+                          <h6 class="card-title"> ADD NEW </h6>
+                        </div>
+                        <div class="card-body">
+
+                          
+                           
+                           
+                           
+                          <button class="btn btn-success m-1 me-4 bi bi-clipboard-plus"  data-bs-toggle="modal" data-bs-target="#idModalnewTariff"> </button>
+                          
+                           
+                           
+                          <small> </small>
+
+                        </div>
+                        <div class="container row">
+                            
+                             
+                            
+
+                               
+                        </div>
+                    </div>
+
+                </div>
               <% tariffPackages.forEach(element=> { %>
                 <div class="btn p-1 col-2" style="height: 100% ;">
                   <% if (element.deleted) { %>
-                    <div class="card text-white mb-2" style="max-width: 18rem; background-color: rgb(76, 102, 158);  ">
+                    <div class="card text-white mb-2" style="max-width: 18rem; background-color: rgba(143, 72, 71, 0.821);  ">
                       <% } else { %>
                         <div class="card text-white   mb-3"
                           style="max-width: 18rem; background-color: rgb(32, 45, 78);">
@@ -77,38 +107,7 @@
 
 
                     <% }) %>
-                    <div class="btn p-1 col-2" style="height: 100% ;">
-                      
-                        <div class="card text-white mb-2" style="max-width: 18rem; background-color: rgb(76, 102, 158);  ">
-                           
-                          
-    
-                                <div class="card-header" style="text-transform:uppercase">
-                                  
-                                </div>
-                                <div class="card-body">
-    
-                                  <h5 class="card-title">  </h5>
-                                  <small>  </small> <br><br>
-                                  <br>
-                                  <br>
-                                  <button class="btn btn-success m-1 me-4 bi bi-clipboard-plus" data-bs-toggle="modal" data-bs-target="#idModalnewTariff"> </button>
-                                  <br>
-                                  <br> <br>
-                                   
-                                  <small> </small>
-    
-                                </div>
-                                <div class="container row">
-                                    
-                                     
-                                    
-
-                                       
-                                </div>
-                            </div>
-    
-                        </div>
+                    
                 </div>
                 <div class="container-flex d-flex border border-primary ">
                   <div class="container-flex col-2   border border-primary">
@@ -234,8 +233,10 @@
               <button type="button" value="<%=element.tariffIndex%>" onclick="EnabletariiModal(event.target.value)"
                 class="btn btn-warning bi bi-pencil">EDIT </button>
               <button type="button" class="btn btn-secondary bi bi-x-octagon" data-bs-dismiss="modal">CANCEL</button>
-              <button name="modalSubmit" type="button" onclick="saveTariffToCompanies('NEW')"
+              <button name="modalSubmit" type="button" onclick="saveTariffToCompanies(event.target.value)"
                 value="<%=element.tariffIndex%>" class="btn btn-success bi bi-send">SAVE</button>
+                <button name="modalSubmit" type="button" onclick="deleteTariffPermanently(event.target.value)"
+                value="<%=element.tariffIndex%>" class="btn btn-success bi bi-send"> DELETE </button>
             </div>
             <!-- </form> -->
           </div>
@@ -255,7 +256,7 @@
               <h5 class="modal-title" id="exampleModalLabel">
                 
               </h5>
-              <h2 id="idCompanyId " style="opacity: 0;">
+              <h2 id="idCompanyId+" style="opacity: 0;">
                 <%= profile.CompanyID %>
               </h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -268,25 +269,25 @@
                   <div class="container-fluid col-lg-4">
                     <div class="input-group mb-2">
                       <span class="input-group-text col-4" id="basic-addon1">Name</span>
-                      <input name="tariffname" id="idCompTariffname" type="text"
+                      <input name="tariffname" id="idCompTariffname+" type="text"
                         class="form-control" placeholder="tariffname" aria-label="Username"
                         aria-describedby="basic-addon1"  >
                     </div>
                     <div class="input-group mb-2">
                       <span class="input-group-text col-4" id="basic-addon1">Rent </span>
-                      <input name="Rent-Single" id="idRent-Single" type="number"
+                      <input name="Rent-Single" id="idRent-Single+" type="number"
                         class="form-control" placeholder="Room number" aria-label="Username"
                         aria-describedby="basic-addon1" > 
                     </div>
                     <div class="input-group mb-2">
                       <span class="input-group-text col-4" id="basic-addon1">Offer Price </span>
-                      <input name="Rent-Single" id="idSpecialRent" type="number"
+                      <input name="Rent-Single" id="idSpecialRent+" type="number"
                         class="form-control" placeholder="Room number" aria-label="Username"
                         aria-describedby="basic-addon1" value=" ">
                     </div>
                     <div class="input-group mb-2">
                       <span class="input-group-text col-4" id="basic-addon1">Extra person</span>
-                      <input name="ExtraPerson" id="idExtraPerson" type="number"
+                      <input name="ExtraPerson" id="idExtraPerson+" type="number"
                         class="form-control" placeholder="ExtraPerson" aria-label="ExtraPerson"
                         aria-describedby="basic-addon1" >
                     </div>
@@ -295,7 +296,7 @@
 
                       <label class="input-group-text col-4" id="basic-addon1" for="#idincludeChild">includeChild</label>
                       <div class="form-control">
-                        <input name="includeChild" id="idincludeChild" type="checkbox"
+                        <input name="includeChild" id="idincludeChild+" type="checkbox"
                           class="form-check-input"  
                         aria-label="includeChild" aria-describedby="basic-addon1">
                       </div>
@@ -311,19 +312,19 @@
 
                     <div class="input-group mb-2">
                       <span class="input-group-text col-4" id="basic-addon1">Tax Rate </span>
-                      <input name="Taxrate" id="IdTaxrate" type="text" class="form-control"
+                      <input name="Taxrate" id="IdTaxrate+" type="number" class="form-control"
                         placeholder="Tax Rate" aria-label="Username" aria-describedby="basic-addon1">
                         
                     </div>
                     <div class="input-group mb-2">
                       <span class="input-group-text col-4" id="basic-addon1">Tariff Index </span>
-                      <input name="TariffIndex" id="IdTariffIndex " type="text" readonly="true"
+                      <input name="TariffIndex" id="IdTariffIndex+" type="text" readonly="true"
                         class="form-control" placeholder="tariffId" aria-label="Username"
                         aria-describedby="basic-addon1" value="">
                     </div>
                     <div class="input-group mb-2">
                       <span class="input-group-text col-4" id="basic-addon1">default Plan </span>
-                      <input name="DefaultPlan" id="IdDefaultPlan" type="text" readonly="true"
+                      <input name="DefaultPlan" id="IdDefaultPlan+" type="text" readonly="true"
                         class="form-control" placeholder="tariffId" aria-label="Username"
                         aria-describedby="basic-addon1"  >
                     </div>
@@ -332,7 +333,7 @@
                   <div class="container-fluid col-lg-8">
                     <div class="input-group mb-2">
                       <span class="input-group-text col-4" id="basic-addon1">Plan Discription</span>
-                      <textarea class="form-control" id="iddiscription" name="discription"
+                      <textarea class="form-control" id="iddiscription+" name="discription"
                         rows="15rem" cols="100">  </textarea>
 
                     </div>
@@ -347,7 +348,7 @@
               <button type="button" value=" " onclick="EnabletariiModal(event.target.value)"
                 class="btn btn-warning bi bi-pencil">EDIT </button>
               <button type="button" class="btn btn-secondary bi bi-x-octagon" data-bs-dismiss="modal">CANCEL</button>
-              <button name="modalSubmit" type="button" onclick="saveTariffToCompanies(event.target.value)"
+              <button name="modalSubmit" type="button" onclick="saveTariffToCompanies('')"
                 value="" class="btn btn-success bi bi-send">SAVE</button>
             </div>
             <!-- </form> -->
@@ -357,5 +358,10 @@
 
       </div>
 
+
+
+
+
+      
         <script src="/Script/Companies.js"> </script>
         <%- include('footer') %>

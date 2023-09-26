@@ -3,12 +3,13 @@ const router = express.Router();
 const companies = require('../model/company')
 const HBank = require('../model/humanbank');
 const tariff = require('../model/tariff');
-const { route } = require('./rooms');
- 
-router.post('/loadhomepage', async (req, res) => {
-   try {
-    const inputs = req.body;
+const controller = require('../controller/adminController')
+const tariffmaster = require('../model/tariff')
+const checkinPlans = require('../model/planMaster');
 
+router.post('/loadhomepage', async (req, res) => {
+  try {
+    const inputs = req.body;
     const userlogrecord = {
       username: req.body.Username,
       sessionId: req.sessionID,
@@ -18,7 +19,6 @@ router.post('/loadhomepage', async (req, res) => {
       ip: req.ip,
     };
 
-    // Find the user record
     const user = await HBank.HumanResource.findOne({
       $or: [
         { email: req.body.Username, password: req.body.Password, deleted: false },
@@ -27,72 +27,114 @@ router.post('/loadhomepage', async (req, res) => {
     }, { username: 1, _id: 0, email: 1 });
 
     // Find the company
-    const  profile = await companies.company.findOne({ contactNumber: req.body.Username });
-    let  tariffPackages = profile.roomtypes;
-    console.log(tariffPackages,'tariffpackages');
-    if( tariffPackages.length<1){
+    const profile = await companies.company.findOne({ contactNumber: req.body.Username });
+    const activtariff = await tariff.loadtariff('');
+    const activePlans = await checkinPlans.LoadPlan();
+      let existingTariff = profile.roomtypes;
+      let existingPlan = profile.checkinplan;
+      let Plans = existingPlan.filter(item1=>
+      activePlans.some(item2=>item2.planIndex ==item1.planIndex)); 
+      console.log(Plans);
+      let tariffPackages = existingTariff.filter(item1 =>
+      activtariff.some(item2 => item2.tariffIndex === item1.tariffIndex)
+      );
+
+      if(Plans.length<1){
+        plans = await checkinPlans.LoadPlan()
+        plans.map(async (element)=>{
+          element.activated = false;
+          await companies.company.updateOne(
+            {CompanyID:profile.CompanyID},
+            {$push:{"checkinplan":element}},
+            {upsert:true}
+            );
+        });
+      }
+
+     if (tariffPackages.length < 1) {
         tariffPackages = await tariff.loadtariff('')
-        console.log(tariffPackages,'tariffpackages2');
         const tariffPromises = tariffPackages.map(async (element) => {
         element.activated = false;
         const tempTariff = await companies.company.updateOne(
-        { CompanyID: profile.CompanyID },
-        { $push: { "roomtypes": element } },
-        { upsert: true, new: true }
-      );
-      
-    
-    });
+          { CompanyID: profile.CompanyID },
+          { $push: { "roomtypes": element } },
+          { upsert: true }
+        );
+       });
+      await Promise.all(tariffPromises);
+     }
+    else {
+     }
+    res.cookie('username', req.body.Username)
+    res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
 
-       await Promise.all(tariffPromises);
-
-   } 
-   else {
-
-   }
-   res.cookie('username', req.body.Username)
-   res.render('companyhomePage', { user, tariffPackages,profile,inputs });
-}catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'An error occurred' });
-    }
-  
 });
 
-router.post('/saveTariff',async (req,res)=>{
+router.post('/saveTariff', async (req, res) => {
   const newRoomType = {
-    tariffName:req.body.tariffName,
-    tariffIndex:req.body.tariffIndex,
-    roomRentSingle:parseInt(req.body.roomRentSingle),
-    extraPerson:parseInt(req.body.extraPerson),
-    tax:parseInt(req.body.tax),
-    includeChild:req.body.includeChild,
-    defaultCheckinplan:req.body.defaultCheckinplan,
-    Discription:req.body.Discription,
-    username:req.body.username,
-    SpecialRent:parseInt(req.body.roomRentSingle),
-    deleted:false
-  }; 	
-   console.log(newRoomType);
-   const result = await companies.company.updateOne(
-    {
-      CompanyID: req.body.CompanyID,
-      'roomtypes.tariffIndex': req.body.tariffIndex
-    },
-    {
-      $set: {
-        'roomtypes.$': newRoomType
-      }
-    }
-  );
- let responce ={}
- if(result.modifiedCount>0) responce={update:true} 
- else if(result.upsertedCount>0) responce={saved:true}
- else if(!result.upsertedCount && matchedCount && result.modifiedCount ) responce={matched:true} 
- res.json(responce)
-
+    tariffName: req.body.tariffName,
+    tariffIndex: req.body.tariffIndex,
+    roomRentSingle: parseInt(req.body.roomRentSingle),
+    extraPerson: parseInt(req.body.extraPerson),
+    tax: parseInt(req.body.tax),
+    includeChild: req.body.includeChild,
+    defaultCheckinplan: req.body.defaultCheckinplan,
+    Discription: req.body.Discription,
+    username: req.body.username,
+    SpecialRent: parseInt(req.body.specialRent),
+    deleted: false
+  };
+  let result
    
-})
+
+  // Check if tariffIndex is not provided or falsy
+  if (!newRoomType.tariffIndex) {
+    newRoomType.tariffIndex = await controller.getIndex('TARIFF');
+    result = await companies.company.updateOne(
+      {
+        CompanyID: req.body.CompanyID
+      },
+      {
+        $push: { roomtypes: newRoomType }
+      },
+      {
+        upsert:true
+      }
+    );   
+    await tariffmaster.tariff.updateOne(
+        { tariffIndex: newRoomType.tariffIndex },
+        newRoomType,
+        { upsert: true }
+      );
+  
+      } else {
+     result = await companies.company.updateOne(
+      {
+        CompanyID: req.body.CompanyID,
+        'roomtypes.tariffIndex': newRoomType.tariffIndex
+      },
+      {
+        $set: { 'roomtypes.$': newRoomType,
+      
+      } // Add to an array field
+      },
+       
+    );
+  }
+    let response = {};
+    if (result.modifiedCount > 0) {
+      response = { update: true };
+    } else if (result.upsertedCount > 0) {
+      response = { saved: true };
+    } else {
+      response = { matched: true };
+    }
+    res.json(response);
+});
 
 router.post('/disableTariff',async (req,res)=>{
   const result = await companies.company.updateOne(
@@ -133,6 +175,23 @@ router.post('/enableTariff',async (req,res)=>{
  res.json(responce)
 })
 
- 
 
+router.post('/deletetariffPermanent',async (req,res)=>{
+
+  const result = await tariff.tariff.updateOne(
+    {
+      tariffIndex:req.body.tariffIndex 
+    },
+    {
+      $set:{deleted:true
+      }
+    }
+  )
+ console.log(result); 
+ let responce ={}
+ if(result.modifiedCount>0) responce={update:true} 
+ else if(result.upsertedCount>0) responce={saved:true}
+ else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
+ res.json(responce)
+})
 module.exports = router;

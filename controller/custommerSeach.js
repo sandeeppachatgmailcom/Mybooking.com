@@ -16,31 +16,9 @@ router.post('/customSearch',async (req,res)=>{
         district.add(element.district )
     });
        
-    
-    const result = await companies.company.aggregate([
-        {
-            $lookup:{
-                from: 'tariffmasters',
-                localField: 'CompanyID',
-                foreignField: 'CompanyID',
-                as: 'tariffDetails',
-            }
-        },
-        {
-            $match:{
-                "district":new RegExp(req.body.SearchText, "i") 
-            }
-        } 
-        ,
-        
-        {
-            $match:{
-                "tariffDetails.tariffIndex":new RegExp(req.body.roomCategoryID, "i") 
-            }
-        } ])
-         
-    
-        res.render('detailedSearch',{result,generalData,tariff,district,inputData} )
+    const result = await companies.company.find({})
+
+        // res.render('detailedSearch',{result,generalData,tariff,district,inputData} )
     
    // res.json(result);
     
@@ -59,7 +37,7 @@ router.use('/TariffSearch',async (req,res)=>{
     result = result[0]
     
     const tariffDetails= result.tariff
-    console.log(result.tariff[0]);
+    console.log(result.tariff);
     const inputData = req.body
     res.render('companyWiseDetails',{inputData,generalData,tariff,result,district,tariffDetails});
      

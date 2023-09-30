@@ -4,9 +4,10 @@ adminController = require('../controller/adminController')
 
 
 const newRoom = new mongoose.Schema({
-        roomNumber:{type:Number,required:true,unique:true},
-        roomIndex:{type:String,required:true,unique:true},
-        roomName:{type:String,required:true,unique:true},
+        roomNumber:{type:Number,required:true},
+        roomIndex:{type:String,required:true},
+        roomName:{type:String,required:true},
+        companyIndex:{type:String,required:true},
         roomiMages:[String], 
         floor:{type:String,required:true},
         interCom:{type:String,required:true},
@@ -25,7 +26,8 @@ const newRoom = new mongoose.Schema({
         billing:{type:Boolean,default:false},
         rentOut:{type:Boolean,default:false},
         dirty:{type:Boolean,default:false}
-})
+},
+{index:[{roomIndex:'combined_index',fields:['roomNumber','companyIndex'],unique:true}]})
 
 const depart= db.model('ROOMS',newRoom);
 async function loadrooms(RoomNumber){
@@ -114,7 +116,10 @@ async function SaveRooms(Roomobj,fileObj) {
         }
       }
       
-      
+async function loadroomByCompanyId(companyId){
+  result = await depart.find({companyIndex:companyId,deleted:false})
+  return result;
+}  
      
     
     
@@ -126,4 +131,4 @@ async function SaveRooms(Roomobj,fileObj) {
 
 
 
-module.exports = {depart,loadrooms,SaveRooms,loadSaleRoom,loadAllroom,getRoomsWithTariffDetails,deleteRoom}
+module.exports = {depart,loadrooms,SaveRooms,loadSaleRoom,loadAllroom,getRoomsWithTariffDetails,deleteRoom,loadroomByCompanyId}

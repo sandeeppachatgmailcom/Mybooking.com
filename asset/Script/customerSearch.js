@@ -32,7 +32,7 @@ function loadHotel(SelectedValue,generalData ){
  if (!document.getElementById('idBudgetEnd').value) document.getElementById('idBudgetEnd').value=3000000
   const data = {
        SearchText:document.getElementById('idSearchText').value,
-       SearchWithHotel:document.getElementById('idSearchWithHotel').value,
+      
        StartDate:document.getElementById('idStartDate').value,
        EndDate:document.getElementById('idEndDate').value,
        GuestCount:document.getElementById('idGuestCount').value,
@@ -42,8 +42,8 @@ function loadHotel(SelectedValue,generalData ){
        SelectTariff:document.getElementById('idSelectTariff').value       
   } 
   console.log(data)
-  document.getElementById('idCustSearchFirstDiv').innerHTML='';
-  document.getElementById('idTariffDetails').innerHTML='';
+  // document.getElementById('idCustSearchFirstDiv').innerHTML='';
+  // document.getElementById('idTariffDetails').innerHTML='';
   const result = await fetch('/custom/customSearch',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
   .then(res=>{
     return res.json()
@@ -77,8 +77,8 @@ for(let i=0;i<result.length;i++){
     </div>
 </div>`
 }
-console.log(innerHtml );
-document.getElementById('idCustSearchFirstDiv').innerHTML=innerHtml;
+// console.log(innerHtml );
+// document.getElementById('idCustSearchFirstDiv').innerHTML=innerHtml;
 innerHtml = '';
 let tariffdetails = new Set();
 for (let i=0;i< result.length;i++){

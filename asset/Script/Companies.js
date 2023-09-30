@@ -211,7 +211,7 @@ async function saveTariffToCompanies(tariffIndex){
     const id = tariffIndex;
     alert(document.getElementById(`idCompTariffname+${id}`).value);
     newTariff = {
-        tariffName: document.getElementById(`idCompTariffname+${id}`).value ,
+        tariffName: document.getElementById(`idCompTariffname+${id}`).value,
         roomRentSingle: document.getElementById(`idRent-Single+${id}`).value,
         specialRent:document.getElementById(`idSpecialRent+${id}`).value,
         extraPerson: document.getElementById(`idExtraPerson+${id}`).value,
@@ -221,7 +221,7 @@ async function saveTariffToCompanies(tariffIndex){
         username: document.getElementById(`loggeduser`).innerHTML,
         tariffIndex: document.getElementById(`IdTariffIndex+${id}`).value,
         Discription:document.getElementById(`iddiscription+${id}`).value,
-        CompanyID:document.getElementById(`idCompanyId+${id}`).innerText 
+         
     }
     console.log(newTariff),'new tariff';
     const result = await fetch('/vedurehomepage/saveTariff',{method:'post',headers:{"Content-Type":"application/json"},body:JSON.stringify(newTariff)})
@@ -264,6 +264,62 @@ async function saveTariffToCompanies(tariffIndex){
     }
 }
 
+async function savePlanToCompanies(planid){
+    
+    const data = {
+    planIndex:document.getElementById(`idplanIndex${planid}`).value,
+    planName:document.getElementById(`idPlanname${planid}`).value,
+    shortName:document.getElementById(`idShortName${planid}`).value,
+    maxPax:document.getElementById(`idAllowedPax${planid}`).value,
+    amount:document.getElementById(`idPlanAmount${planid}`).value,
+    extraCharge:document.getElementById(`idExtraCharge${planid}`).value,
+    Creattime:Date.now(),
+    user:document.getElementById(`loggeduser`).innerText,
+    discription:document.getElementById(`iddiscription${planid}`).value,
+    CompanyID:document.getElementById(`idCompanyId${planid}`).innerText 
+}
+console.log(`idCompanyId${planid}`)
+console.log(data);
+const result = await fetch ('/vedurehomepage/savePlanToCompanies',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+.then(res=>{
+    return res.json()
+})
+.catch(err=>{
+    return (err)
+})
+console.log(result)
+if(result.update){
+    swal({
+        title: "success",
+        text: "Tariff updated!",
+        icon: "success",
+        button: "OK",
+      }).then(((value)=>window.location.reload()))
+    
+      
+}
+else if(result.saved){
+    swal({
+        title: "success",
+        text: "Tariff added!",
+        icon: "success",
+        button: "OK",
+      }).then(window.Location.reload());
+    
+       
+}
+else if(result.matched){
+    swal({
+        title: "success",
+        text: "No changes found!",
+        icon: "success",
+        button: "OK",
+      });
+    
+       
+}
+}
+
 function disabletariffModal(id){
     console.log(id);
     document.getElementById(`idCompTariffname+${id}`).readOnly =true,
@@ -276,7 +332,7 @@ function disabletariffModal(id){
     document.getElementById(`loggeduser`).readOnly =true,
     document.getElementById(`IdTariffIndex+${id}`).readOnly =true,
     document.getElementById(`iddiscription+${id}`).readOnly =true,
-    document.getElementById(`idCompanyId+${id}`).readOnly =true 
+    document.getElementById(`idCompanyId`).readOnly =true 
 }
 
 function EnabletariiModal(id){
@@ -291,7 +347,7 @@ function EnabletariiModal(id){
     document.getElementById(`loggeduser`).readOnly =false,
     document.getElementById(`IdTariffIndex+${id}`).readOnly =false,
     document.getElementById(`iddiscription+${id}`).readOnly =false,
-    document.getElementById(`idCompanyId+${id}`).readOnly =false
+    document.getElementById(`idCompanyId`).readOnly =false
     console.log(id)
 }
 
@@ -338,9 +394,57 @@ else if(result.matched){
       window.location.reload();
        
 }
-
-console.log(result);
 }
+async function enableplanModal(checkinplanindex){
+    console.log(checkinplanindex);
+const temp = checkinplanindex.split(',')
+    data = {planIndex:temp[0],
+            companyId:temp[1]
+
+}
+const result = await fetch('/vedurehomepage/activatePlan',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+.then(res=>{
+    return res.json()
+})
+.catch(err=>{
+    console.log(err);
+})
+console.log(result)
+ 
+if(result.update){
+    swal({
+        title: "success",
+        text: "Tariff freezed",
+        icon: "success",
+        button: "OK",
+      }).then((value) => {
+        window.location.reload()});
+    
+     
+}
+else if(result.saved){
+    swal({
+        title: "success",
+        text: "Tariff added!",
+        icon: "success",
+        button: "OK",
+      }).then((value) => {
+        window.location.reload()});
+    
+      window.location.reload();
+}
+else if(result.matched){
+    swal({
+        title: "success",
+        text: "No changes found!",
+        icon: "success",
+        button: "OK",
+      }).then((value) => {
+        window.location.reload()});
+
+}
+
+
 
 async function Activateplan(tariff){
     const temp = tariff.split(',');
@@ -388,8 +492,7 @@ async function Activateplan(tariff){
     }
    
 }
-
- 
+}
 
 async function deleteTariffPermanently(tariff){
     const temp = tariff.split(',');

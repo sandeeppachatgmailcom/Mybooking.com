@@ -6,7 +6,7 @@ const tariff = require('../model/tariff');
 const controller = require('../controller/adminController')
 const tariffmaster = require('../model/tariff')
 const checkinPlans = require('../model/planMaster');
-
+const rooms = require('../model/rooms')
 router.post('/loadhomepage', async (req, res) => {
   try {
     const inputs = req.body;
@@ -32,6 +32,7 @@ router.post('/loadhomepage', async (req, res) => {
     const activePlans = await checkinPlans.LoadPlan();
       let existingTariff = profile.roomtypes;
       let existingPlan = profile.checkinplan;
+      const availablerooms = rooms.loadroomByCompanyId(profile.CompanyID);
       let Plans = existingPlan.filter(item1=>
       activePlans.some(item2=>item2.planIndex ==item1.planIndex)); 
       console.log(Plans);
@@ -66,7 +67,7 @@ router.post('/loadhomepage', async (req, res) => {
     else {
      }
     res.cookie('username', req.body.Username)
-    res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans });
+    res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'An error occurred' });
@@ -193,5 +194,16 @@ router.post('/deletetariffPermanent',async (req,res)=>{
  else if(result.upsertedCount>0) responce={saved:true}
  else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
  res.json(responce)
+})
+
+router.post('/savePlanToCompanies',async(req,res)=>{
+  console.log(req.body);
+   
+    const addToComp = await companies.insertNewCheckinPlan(req.body)
+   res.json(addToComp)
+})
+router.post('/activatePlan',async (req,res)=>{
+  const result = await companies.activateCheckinplan(req.body);
+  res.json(result);
 })
 module.exports = router;

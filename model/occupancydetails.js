@@ -1,32 +1,32 @@
-/** 
-* Paste one or more documents here
-*/
-{
-    "date": "12/05/1988",
-    "roomIndex": "DT100023",
-    "NormalOccupancy": 2,
-    "__v": 0,
-    "billing": true,
-    "blocked": false,
-    "checkinId": "Vacant",
-    "ReservationId": "Vacant",
-    "TransactionId": "Vacant",
-    "dRDID": "DD1000001",
-    "deleted": false,
-    "floor": "fl100062",
-    "guestId": "undefined",
-    "interCom": "109",
-    "maxOccupancy": 3,
-    "minimumPax": 1,
-    "rentOut": true,
-    "roomName": "101",
-    "roomNumber": 101,
-    "roomType": "TF100030",
-    "size": 100,
-    "status": "V",
-    "timeStamp": "1693579107049",
-    "userCreated": "Test ",
-    "roomiMages": [
-      "http://localhost:5200/Images/1694680589320-image (2).jpg"
-    ]
-  }
+const mongoose = require('mongoose');
+const db = require('./mongoose');
+adminController = require('../controller/adminController')
+
+
+const newRoom = new mongoose.Schema({
+        roomNumber:{type:Number},
+        roomIndex:{type:String},
+        roomName:{type:String},
+        companyIndex:{type:String},
+        roomType:{type:String },
+        blocked:{type:Boolean,default:true},
+        deleted:{type:Boolean,default:false},
+        userCreated:{type:String},
+        timeStamp:{type:String,default:Date.now()},
+        totalOccupancy:{type:Number,default:0},
+        adult:{type:Number,default:0},
+        male:{type:Number,default:0},
+        feMale:{type:Number,default:0},
+        guestId:{type:String},
+        rent:{type:Number,default:0},
+        specialRent:{type:Number,default:0},
+        checkinId:{type:String},
+        reservationId:{type:String},
+        arrivalTime :{type:timeStamp},
+        departureTime:{type:timeStamp},
+        dirty:{type:Boolean,default:false},
+        maintainance:{type:Boolean,default:false},
+        blocked:{type:Boolean,default:false},
+        occupied:{type:Boolean,default:false},
+        transDate:{type:Date,default:Date.now()},
+        })

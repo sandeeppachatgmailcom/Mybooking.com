@@ -24,8 +24,6 @@ function loadHotel(SelectedValue,generalData ){
          
     }
   } 
-  
-  
  }
  
  async function loadSearchResult(){

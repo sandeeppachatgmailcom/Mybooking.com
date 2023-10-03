@@ -1,5 +1,4 @@
  
-   
 function loadHotel(SelectedValue,generalData ){
   let innerHTML = '';
   const hotelSelect = document.getElementById("idSearchWithHotel"); 
@@ -230,3 +229,39 @@ function readmore() {
     moreText.style.display = "inline";
   }
 }
+
+
+ 
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get the current date and time in the format "YYYY-MM-DDTHH:MM"
+    const currentDate = new Date().toISOString().slice(0, 16);
+
+    // Set the value of the input with id "idStartDate" to the current date and time
+    document.getElementById("idStartDate").value = currentDate;
+    document.getElementById("idStartDate").min = currentDate;
+    
+    document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
+    document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;
+
+  });
+ 
+
+  document.getElementById("idStartDate").addEventListener("change",function (){
+    document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;
+    document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
+  })
+
+  async function loadHotelBasedResult(companyID){
+    data = {
+      fromDate:document.getElementById("idStartDate").value,
+      toDate:document.getElementById("idEndDate").value,
+      hotelId:companyID,
+      district:document.getElementById("idDitrictName").value,
+      totalGuest:document.getElementById("idGuestCount").value,
+      totalRoom:document.getElementById("idRoomCount").value,
+      rangeFrom:document.getElementById("idBudgetFrom").value,
+      rangeEnd:document.getElementById("idBudgetEnd").value,
+      Tariff:document.getElementById("idSelectTariff").value
+    }
+    console.log(data)
+  }

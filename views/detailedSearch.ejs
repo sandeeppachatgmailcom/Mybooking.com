@@ -1,6 +1,6 @@
 <%- include('header') %>
     <%- include('MenuBarCustomer') %>
-    <form action="/custom/TariffSearch" method="post" >
+    <form action="/custom/customSearch" method="post"> 
         <div class="container-fluid">
             <div>
                 <div style="margin-top: 0%;border-radius: 10px; border: 5px solid rgba(255, 255, 255, 0.268);      background-color: rgba(65, 90, 69, 0.762) ; height: 100%;">
@@ -11,7 +11,7 @@
                                 style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
                                 <button type="button" class="input-group-text text-light btn"
                                 style="background-color: transparent;" id="iDServiceImages1btn2">Location</button>
-                                <select name="ditrictName" type="text" value="<%= inputData.ditrictName %>" 
+                                <select name="ditrictName" type="text" value="<%= inputData.ditrictName %>"  id="idDitrictName"
                                     data-hotels="<%= JSON.stringify(generalData) %>" name="SearchText"
                                     class="   SearchTextBox text-light fw-lighter" id="idSearchText"
                                     onchange="loadHotel(event.target.value,'' ), loadSearchResult()">
@@ -83,29 +83,30 @@
                     <div class=" d-flex input-group">
                         <div class="d-flex m-1 "
                             style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                            <button type="button" class="input-group-text text-light btn " name="budgetStart"
-                                id="iDServiceImages1btn2"> Minimum
-                                budget</button>
-                            <input id="idBudgetFrom" style="background-color:rgba(36, 74, 36, 0);" type="number"
-                                onchange="loadSearchResult()" value="<%= inputData.budgetStart %>" name="budgetEnd" class="text-light SearchTextBox">
-                        </div>
-
-                        <div class="d-flex m-1 "
-                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                            <input id="idBudgetEnd" style="background-color:rgba(36, 74, 36, 0);" type="number"
-                            value="<%= inputData.budgetEnd %>"  onchange="loadSearchResult()" name="budgetStart" class="text-light  SearchTextBox">
+                            <input id="idBudgetFrom"  style="background-color:rgba(36, 74, 36, 0);" type="number"
+                            value="<%=inputData.budgetStart %>"  onchange="loadSearchResult()" name="budgetStart" class="text-light  SearchTextBox">
                             <button type="button" class="input-group-text text-light btn" id=" iDServiceImages1btn2">
-                                <Main> Maximum Limit </Main>
+                                <Main> Minimum Limit </Main>
                             </button>
 
                         </div>
+                        <div class="d-flex m-1 "
+                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                            <button type="button" class="input-group-text text-light btn " name="budgetend"
+                                id="iDServiceImages1btn2">Maximum 
+                                budget</button>
+                            <input id="idBudgetEnd" style="background-color:rgba(36, 74, 36, 0);" type="number"
+                                onchange="loadSearchResult()" value="<%= inputData.budgetEnd  %>" name="budgetEnd" class="text-light SearchTextBox">
+                        </div>
+
+                        
 
 
-                        <div class="d-flex m-1 col-3 "
+                        <div class="d-flex m-1 "
                             style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
                             <button type="button" class="input-group-text text-light btn " id=" iDServiceImages1btn2">
                                 category</button>
-                            <select id="idSelectTariff" class="input-group-text text-light btn col-12"
+                            <select id="idSelectTariff" class="input-group-text text-light btn"
                                 name="roomCategoryID">
                                
                                 <option value="">All</option>
@@ -114,7 +115,7 @@
                                         <% if (item.tariffIndex==inputData.roomCategoryID) { %>
                                             <option value="<%= item.tariffIndex %>" selected > <%= item.tariffName %> </option>
                                         <% } else { %>
-                                            <option class="btn col-12 " style="background-color:rgba(36, 74, 36, 0.196); "
+                                            <option class="btn" style="background-color:rgba(36, 74, 36, 0.196); "
                                                 value=" <%=item.tariffIndex%>">
                                                 <%= item.tariffName %>
                                             </option>
@@ -125,7 +126,7 @@
                         </div>
                         <div class="d-flex m-1 "
                         style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                            <button   type="button" class="btn text-light btn-secondary bi bi-search "> LOAD </button>
+                            <button  onclick=""  type="submit" class="btn text-light btn-secondary bi bi-search "> LOAD </button>
                         </div>
                     </div>
 
@@ -145,7 +146,6 @@
                                       <h3 class="card-title" data-hotelTariffs="${result[i].tariffDetails}" > <%= element.lastName %></h3> <small class="card-text" style="height: fit-content;"  ><%= element.district %> </small> <br>
                                       <small class="card-text bi bi-telephone-fill" style="height: fit-content;"  > <%= element.contactNumber %></small><br>
                                       <small class="card-text bi bi-envelope-at"  style="height: fit-content;"  >  <%= element.email %> </small>
-                                      
                                       <div class="d-flex justify-content-center">
                                         <h6 class="bi bi-star-fill text-warning"></h6>
                                         <h6 class="bi bi-star-fill text-warning"></h6>
@@ -158,9 +158,9 @@
                                       
                                     </div>
                                     <div class="card-footer">
-                                            
+                                            <% console.log(element) %>
                                             <input type="submit" style="opacity: 0;" name="CompanyID" data-="" name="CompanySearchKey" value="">
-                                            <button name="submitCompanyDetails"  value="<%=  element.CompanyID  %>" class="btn btn-primary">Details</button>
+                                            <button name="submitCompanyDetails" value="<%=element.compayID%>"  onclick="loadHotelBasedResult(event.target.value)" type="button" value="<%=  element.CompanyID  %>" class="btn btn-primary">Details</button>
                                         
                                        
                                       </div>

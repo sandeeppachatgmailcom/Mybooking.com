@@ -16,12 +16,15 @@ router.post('/customSearch',async (req,res)=>{
         district.add(element.district )
     });
        
-     const result = await companies.company.find({district:req.body.ditrictName,deleted:false,"roomtypes.tariffIndex":req.body.roomCategoryID})
+     const result = await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false,
+     "roomtypes.tariffIndex": { $regex: `^${req.body.roomCategoryID}`, $options: 'i' },
+     "roomtypes.SpecialRent":{$gte:req.body.budgetStart},
+     "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
 
         res.render('detailedSearch',{result,generalData,tariff,district,inputData} )
     
    // res.json(result);
-    
+   
 })
 router.use('/TariffSearch',async (req,res)=>{
     console.log(req.body,'lastpage designed ')

@@ -18,31 +18,31 @@ router.post('/loadhomepage', async (req, res) => {
       loggedOut: false,
       ip: req.ip,
     };
-
+    const password = controller.encryptPassword(req.body.password) 
     const user = await HBank.HumanResource.findOne({
       $or: [
         { email: req.body.Username, password: req.body.Password, deleted: false },
-        { contactNumber: req.body.Username, password: req.body.Password, deleted: false },
+        { contactNumber: req.body.Username, password: password, deleted: false },
       ]
-    }, { username: 1, _id: 0, email: 1 });
-
-    // Find the company
-    const profile = await companies.company.findOne({ contactNumber: req.body.Username });
-    const activtariff = await tariff.loadtariff('');
-    const activePlans = await checkinPlans.LoadPlan();
+    }, { firstName:1,username: 1, _id: 0, email: 1 });
+    console.log(user,'Active user')
+    if(user){
+      const profile = await companies.company.findOne({ contactNumber: req.body.Username });
+      const activtariff = await tariff.loadtariff('');
+      const activePlans = await checkinPlans.LoadPlan();
       let existingTariff = profile.roomtypes;
       let existingPlan = profile.checkinplan;
       const availablerooms = rooms.loadroomByCompanyId(profile.CompanyID);
       let Plans = existingPlan.filter(item1=>
       activePlans.some(item2=>item2.planIndex ==item1.planIndex)); 
-      console.log(Plans);
+     
       let tariffPackages = existingTariff.filter(item1 =>
       activtariff.some(item2 => item2.tariffIndex === item1.tariffIndex)
       );
 
       if(Plans.length<1){
-        plans = await checkinPlans.LoadPlan()
-        plans.map(async (element)=>{
+        Plans = await checkinPlans.LoadPlan()
+        Plans.map(async (element)=>{
           element.activated = false;
           await companies.company.updateOne(
             {CompanyID:profile.CompanyID},
@@ -68,6 +68,12 @@ router.post('/loadhomepage', async (req, res) => {
      }
     res.cookie('username', req.body.Username)
     res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms });
+    
+  }
+    else{
+      res.redirect('/')
+    }
+    
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'An error occurred' });
@@ -188,7 +194,7 @@ router.post('/deletetariffPermanent',async (req,res)=>{
       }
     }
   )
- console.log(result); 
+  
  let responce ={}
  if(result.modifiedCount>0) responce={update:true} 
  else if(result.upsertedCount>0) responce={saved:true}
@@ -197,7 +203,7 @@ router.post('/deletetariffPermanent',async (req,res)=>{
 })
 
 router.post('/savePlanToCompanies',async(req,res)=>{
-  console.log(req.body);
+   
    
     const addToComp = await companies.insertNewCheckinPlan(req.body)
    res.json(addToComp)

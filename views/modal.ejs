@@ -15,22 +15,22 @@
             <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>..
-            <div class="modal-body"  >
+            </div> 
+            <div class="modal-body">
             <div>
-                <small>Email or Mobile</small>
+                <small>Email</small>
             </div>
             <div class="input-group flex-nowrap mb-1">
                 <button class="btn btn-light bi bi-telephone-fill col-2"></button> <button class="btn-light btn bi bi-envelope-at-fill col-2" ></button>
                 <input type="text" name="Username" id="idUserNameVendure " class="btn btn-light" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
             </div>
             <div class="input-group flex-nowrap  ">
-                <span class="btn btn-light col-4" >Password</span>
+            <span class="btn btn-light col-4" >Password</span>
             <input type="password" name="Password" id="idUserPasswordVendure" class="btn btn-light" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
             </div>
             </div>..
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OTP Login</button>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#resetPassword">ChangePassword</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-success">Sign in </button>
             </div>
@@ -38,12 +38,52 @@
         </div>
     </div>
     </form>
- 
+    <div class="modal fade modal-lg" id="resetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- Add modal-lg class to the modal-dialog -->
+            <div class="modal-content" style="background-color: rgba(255, 250, 245, 0.738); height: 100%; width: 600px;"> <!-- Adjust height and width as needed -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   <div class="container-fluid border border-light align-item-centre ">
+                    <label for="">Change Password</label>
+                    
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">email/Mobile</span>
+                        <input type="text" id="idVerifyEmail-Phone" class="form-control" onchange="verifyEmail('idVerifyEmail-Phone','Signup_Email_Bt')" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <button id="Signup_Email_Bt" class="btn"></button>
+                    </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-4" id="basic-addon1">old Password</span>
+                            <input id="idCurrentPassword" type="password" onchange="verifyPasswordBackend('idVerifyEmail-Phone' ,'idCurrentPassword','idVerifieOldPassword')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <button id="idVerifieOldPassword" class="btn"></button>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-4" id="basic-addon1">New Password</span>
+                            <input id="idNewPasswordtext"  type="password" onchange="verifyPassword('idNewPasswordtext','idNewPasswordbtn') " class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <button id="idNewPasswordbtn" class="btn"></button>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-4" id="basic-addon1">retype Password</span>
+                            <input id="idRetypePasswordtext" type="password" onchange="matchPassword('idNewPasswordtext','idRetypePasswordtext','idRetypePasswordbtn')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <button id="idRetypePasswordbtn" class="btn"></button>
+                        </div>                          
+                   </div>
 
-   
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  onclick="changeaPassword()"  class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#"> Submit </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
        
 </body>
 </html>
 <!-- vendurelogin -->
-  <script src=" /Script/modal.js"> </script>
+<script src=" /Script/modal.js"> </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- vendure login ends here  -->

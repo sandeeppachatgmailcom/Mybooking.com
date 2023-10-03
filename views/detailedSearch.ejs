@@ -115,7 +115,7 @@
                                             <option value="<%= item.tariffIndex %>" selected > <%= item.tariffName %> </option>
                                         <% } else { %>
                                             <option class="btn col-12 " style="background-color:rgba(36, 74, 36, 0.196); "
-                                                value=" <%=item.tariffIndex %>">
+                                                value=" <%=item.tariffIndex%>">
                                                 <%= item.tariffName %>
                                             </option>
                                         <% } %>
@@ -138,7 +138,7 @@
                         <div class="py-vh-4 bg-gray-100 w-100 overflow-hidden container d-flex"
                             style="flex-wrap: wrap;display: flex;" id="idTariffDetails">
                             
-                            <% generalData.forEach(element => { %>
+                            <% result.forEach(element => { %>
                                 <div class="card col-3 p-1"   >
                                     <img class="w-100" style="height: 30%;" name="companyImage" value="<%= element.image1 %>" src="<%= element.image1 %>" class="card-img-top" alt="...">
                                     <div class="card-body">

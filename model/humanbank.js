@@ -81,6 +81,25 @@ async function SearchHumanbyUsername(humanObj) {
     console.log(data);
     return data;
 }
+async function verifyUser(userObject){
+    let verified = false;
+    const password = await HumanResource.findOne({email:userObject.userName},{password:1,_id:0})
+    console.log(password,'stored password ',userObject.password);
+    const result =await Controller.comparePassword(userObject.password,password.password )
+    console.log(result,'result passeword');
+    if(result){
+        verified={
+            verified:true
+        }
+    }
+    else {
+        verified={
+            verified:false
+        }
+    }
+    return verified;
+}
+
 
 async function combiSearchHuman(searchValues) {
     const data = await HumanResource.find({
@@ -99,4 +118,11 @@ async function loadHuman(contactNumber) {
     const result = await HumanResource.find({ contactNumber: contactNumber, deleted: true })
     return result
 }
-module.exports = { HumanResource, SearchHuman, saveHuman, deleteHuman, combiSearchHuman,SearchHumanbyUsername };
+async function changePassword(humanObj){
+    const password = await Controller.encryptPassword(humanObj.password);
+    console.log(password,'new password');
+    const result = await HumanResource.updateOne({email:humanObj.username},{$set:{password:password}})
+    console.log(result);
+    return result 
+}
+module.exports = { HumanResource, SearchHuman, saveHuman, deleteHuman, combiSearchHuman,SearchHumanbyUsername,verifyUser,changePassword };

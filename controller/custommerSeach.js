@@ -16,9 +16,9 @@ router.post('/customSearch',async (req,res)=>{
         district.add(element.district )
     });
        
-    const result = await companies.company.find({})
+     const result = await companies.company.find({district:req.body.ditrictName,deleted:false,"roomtypes.tariffIndex":req.body.roomCategoryID})
 
-        // res.render('detailedSearch',{result,generalData,tariff,district,inputData} )
+        res.render('detailedSearch',{result,generalData,tariff,district,inputData} )
     
    // res.json(result);
     

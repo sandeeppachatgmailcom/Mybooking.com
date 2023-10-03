@@ -5,7 +5,6 @@ const rooms = require('../controller/rooms')
 const multer = require('multer') 
 const roomcat = require('../controller/tariff')
 const verifyAccess = require('../middleware/userAccess')
- 
 const CheckinPlan = require('../controller/checkinPlan')
 const frontDesk = require('../controller/frontDesk')
 const hbank = require('../controller/human') 
@@ -22,14 +21,19 @@ const hotelshomePage = require('../controller/hotelHomePage')
 
 router.get('/' ,async (req, res) => {
     try {
+        user = {
+                email:'',
+                firstName:'',
+                username:''
+              }
+         
         const generalData = await companies.SearchCompany('')
         const tariff = await tariffs.loadtariff('')
         let district = new Set();
         const pincode = generalData.forEach(element => {
             district.add(element.district )
         });
-        
-        res.render('custommerPage',{district,tariff,generalData})
+            res.render('custommerPage',{user,district,tariff,generalData})
     }
     catch (err) { console.log(err.message) }
 })
@@ -46,9 +50,7 @@ router.use('/facilty',verifyAccess.VerifyAccess,userfacilty)
 router.use('/admincontroller',verifyAccess.VerifyAccess,userAuthentic)
 router.use('/DocumentUpload',verifyAccess.VerifyAccess,DocumentUpload)
 router.use('/Company',verifyAccess.VerifyAccess,company)
-router.use('/custom',customSearch)
-router.use('/vedurehomepage',hotelshomePage)
-
-
+router.use('/custom',verifyAccess.VerifyAccess,customSearch)
+router.use('/vedurehomepage',verifyAccess.VerifyAccess,hotelshomePage)
 
 module.exports=router;

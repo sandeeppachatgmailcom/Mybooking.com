@@ -21,7 +21,7 @@ const CheckinPlan = db.model('CheckinPlan',newPlan);
 
 async function  LoadPlan(){
        result = await CheckinPlan.find({deleted:false})
-console.log(result);
+  
 return result;} 
 
 

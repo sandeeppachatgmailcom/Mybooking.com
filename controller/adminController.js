@@ -1,4 +1,26 @@
 const DBcollections = require('../model/DBcollections');
+const bcrypt = require('bcrypt')
+
+
+async function encryptPassword(password) {
+    try {
+        const hashedpass = await bcrypt.hash(password, 10); // Adjust the salt rounds as needed
+        return hashedpass;
+    } catch (err) {
+        console.error('Error:', err);
+        throw err; // You can choose to handle or rethrow the error here
+    }
+}
+async function comparePassword(newPassword,hashedPassword) {
+    try {
+        const isMatch  = await bcrypt.compare(newPassword,hashedPassword); // Adjust the salt rounds as needed
+        return isMatch ;
+    } catch (err) {
+        console.error('Error:', err);
+        throw err; // You can choose to handle or rethrow the error here
+    }
+}
+
      
     
     async function getIndex(CollName) {
@@ -29,4 +51,4 @@ const DBcollections = require('../model/DBcollections');
         return formattedDateTime;
     }
  
-    module.exports = {getIndex,convertToCustomFormat}
+    module.exports = {getIndex,convertToCustomFormat,encryptPassword,comparePassword}

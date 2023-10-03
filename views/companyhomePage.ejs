@@ -58,15 +58,15 @@
                   <% if (element.deleted) { %>
                   <div class="card text-white mb-1" style="max-width: 18rem; background-color: rgba(143, 72, 71, 0.821); ">
                     <% } else { %>
-                    <div class="card text-white mb-1" style="max-width: 18rem; background-color: rgb(32, 45, 78); ">
+                    <div class="card text-white mb-1"   style="max-width: 18rem; background-color: rgb(32, 45, 78); ">
                       <% } %>
-                      <div class="card-header btn d-flex" style="text-transform: uppercase" data-bs-toggle="modal" data-bs-target="#<%= element.tariffName%>" value="<%= element.tariffIndex %>" onclick="disabletariffModal(event.target.value)">
-                        <div class="btn text-light">
+                      <div class="card-header btn d-flex" style="text-transform: uppercase" type="button" value="<%= element.tariffIndex %>">
+                        <div data-bs-toggle="modal" data-bs-target="#<%= element.tariffName%>" value="<%= element.tariffIndex %>" class="btn text-light">
                           <%= element.tariffName %>
                         </div>
                         <div>
                           <% if (element.deleted) { %>
-                          <button id="'btn'+<%= element.tariffname %>" value="<%= element.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-outline-light m-1 bi bi-bell" onclick="Activateplan(event.target.value)">
+                          <button id="'btn'+<%= element.tariffname %>" value="<%= element.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-outline-light m-1 bi bi-bell" type="button" onclick="enableTariff(event.target.value)">
                           </button>
                           <% } else { %>
                           <button value="<%= element.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-outline-warning m-1 bi bi-power" onclick="freezeTariff(event.target.value)"> </button>
@@ -124,7 +124,7 @@
 <% tariffPackages.forEach(element=> { %>
 <!-- Scrollable modal -->
 
-<div class="modal fade  mr-2 " onload="disabletariffModal(element.tariffIndex)" id="<%=element.tariffName%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade  mr-2 "  id="<%=element.tariffName%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content" style="background-color: rgb(255, 255, 255) ;">
       <div class="modal-header">

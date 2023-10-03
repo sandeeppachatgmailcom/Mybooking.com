@@ -11,8 +11,9 @@ const OTPValidate = require('../controller/OtpValidation')
 const jwt = require("jsonwebtoken")
 const pincode = require('../model/pincode')
 const companies = require('../model/company')
- 
+const controller = require('../controller/adminController')
 
+ 
 async function findUser(sessionID) {
     const activeUser = await ActiveID.UserLog.findOne({ sessionId: sessionID, loggedOut: false }, { username: 1, _id: 0 })
     
@@ -58,15 +59,6 @@ router.post('/findUser', async (req, res) => {
 })
 
 
-
-
-function createJwt(payload, secretKey, options = {}) {
-    // Ensure that payload is a plain object
-    if (typeof payload !== 'object' || Array.isArray(payload)) {
-        throw new Error('Payload must be a plain object.');
-    }
-}
- 
 router.post('/vendurelogin' , async (req, res) => {
     const userlogrecord = {
         username: req.body.Username,
@@ -102,10 +94,10 @@ router.post('/login' , async (req, res) => {
         loggedOut: false,
         ip: req.ip
     }
-    
+    const password = controller.encryptPassword(req.body.password)
     const posted = await userlog.UserLog.updateOne({ sessionId: req.sessionID }, { $set: userlogrecord }, { upsert: true })
     
-    let  result = await HBank.HumanResource.findOne({$or:[{ email: req.body.Username, password: req.body.Password,deleted: false },{ contactNumber: req.body.Username, password: req.body.Password,deleted: false }]}, { username: 1, _id: 0,email:1})
+    let  result = await HBank.HumanResource.findOne({$or:[{ email: req.body.Username, password: password,deleted: false },{ contactNumber: req.body.Username, password: req.body.Password,deleted: false }]}, { username: 1, _id: 0,email:1})
      
     
     if (result){ result = JSON.stringify(result);}
@@ -122,12 +114,27 @@ router.post('/login' , async (req, res) => {
     res.json(reply)
      
 })
+router.post('/verifyUsenameWithPassword',async (req,res)=>{
+    const result =await HBank.verifyUser(req.body)
+    res.json(result)
+})
 
-
-
+router.post('/changePassword',async (req,res)=>{
+    const result =await HBank.changePassword(req.body);
+    console.log(result,'update reesult');
+    let responseData = false;
+     if(result){
+         responseData= {updated:true} 
+     }
+     else {
+         responseData= {updated:false} 
+     }
+     res.json(responseData);
+    
+})
 router.post('/VerifyEmail',async(req,res)=>{
      
-     const result = await hBank.HumanResource.findOne({email:req.body.email})
+     const result = await HBank.HumanResource.findOne({email:req.body.email})
      let responseData = false;
      if(result){
          responseData= {verified:true} 
@@ -136,12 +143,11 @@ router.post('/VerifyEmail',async(req,res)=>{
          responseData= {verified:false} 
      }
      res.json(responseData);
- })
- 
+})
  
  router.post('/verifyPhone', async (req,res)=>{
        
-      const result = await hBank.HumanResource.findOne({contactNumber:req.body.phone})
+      const result = await HBank.HumanResource.findOne({contactNumber:req.body.phone})
       let responseData = false;
       if(result){
          responseData={verified:true}
@@ -154,7 +160,7 @@ router.post('/VerifyEmail',async(req,res)=>{
  })
  
  router.post('/verifyUser', async (req,res)=>{
-     const result = await hBank.HumanResource.findOne({username:req.body.username})
+     const result = await HBank.HumanResource.findOne({username:req.body.username})
       
      let responseData = false;
       if(result){
@@ -168,9 +174,9 @@ router.post('/VerifyEmail',async(req,res)=>{
  
  })
  
- 
  router.post('/authenticatelogin',  async(req,res)=>{
-   const result = await hBank.HumanResource.findOne({username:req.body.username , password:req.body.password})
+    
+   const result = await HBank.HumanResource.findOne({username:req.body.username , password:req.body.password})
      
     if(result){
        res.json({Verified:true})
@@ -179,93 +185,88 @@ router.post('/VerifyEmail',async(req,res)=>{
        res.json({verified:false})
     }
  })
- 
- 
      
- router.post('/signup',async (req, res) => {
-     
-        try {
-            let transporter = nodeMailer.createTransport({
-                service: "gmail",
-                auth: {
-                    user: 'sandeeppachat@gmail.com',
-                    pass: 'gitd fmxg ssed djmu'
-                }
-            })
-            const otp = randomString.generate({
-                length: 6,
-                charset: 'numeric',
-            });
-            let randomOtp = otp
-            const mailOptions = {
-                from: process.env.nodeMailerEmail, // Sender email
-                to: req.body.email, // Recipient email
-                subject: 'OTP Verification Code',
-                text: `Your OTP is: ${otp}`,
-            };
-            const resultotp = await validation.Otp.updateOne({authorisationname:req.body.email},{$set:{sessionId:req.sessionID,authorisationname:req.body.email,otp:otp,verified:false}},{upsert:true} )
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                     
-                } else {
-                    res.json({otp:true})
-                }
-            });
- 
- 
-            const hrid = await getIndex('humanBank');
-            
-            const newUser = {  
-                hrId: hrid,
-                firstName: req.body.firstName,
-                lastName: req.body.secondName,
-                contactNumber: req.body.contactNumber,
-                email: req.body.email,
-                username: req.body.username,
-                password: req.body.password,
-                isAdmin: req.body.isAdmin,
-                isActive: req.body.Active,
-                isloggedIn: req.body.isLoggedIn,
-                deleted:false
-            } 
-             
-            let saved = await HBank.HumanResource.updateOne({hrId: hrid},{$set:newUser},{upsert:true}) 
-             
-            let result ;
-            if((saved.upsertedCount+saved.modifiedCount)>0){
-                result={saved: true};
+router.post('/signup',async (req, res) => {
+    
+    try {
+        let transporter = nodeMailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: 'sandeeppachat@gmail.com',
+                pass: 'gitd fmxg ssed djmu'
             }
-            else {
-                result = {saved:false};
+        })
+        const otp = randomString.generate({
+            length: 6,
+            charset: 'numeric',
+        });
+        let randomOtp = otp
+        const mailOptions = {
+            from: process.env.nodeMailerEmail, // Sender email
+            to: req.body.email, // Recipient email
+            subject: 'OTP Verification Code',
+            text: `Your OTP is: ${otp}`,
+        };
+        const resultotp = await validation.Otp.updateOne({authorisationname:req.body.email},{$set:{sessionId:req.sessionID,authorisationname:req.body.email,otp:otp,verified:false}},{upsert:true} )
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                    
+            } else {
+                res.json({otp:true})
             }
+        });
+
+
+        const hrid = await getIndex('humanBank');
+        const hashedPassword = await encryptPassword( req.body.password) 
+        const newUser = {  
+            hrId: hrid,
+            firstName: req.body.firstName,
+            lastName: req.body.secondName,
+            contactNumber: req.body.contactNumber,
+            email: req.body.email,
+            username: req.body.username,
+            password:hashedPassword,
+            isAdmin: req.body.isAdmin,
+            isActive: req.body.Active,
+            isloggedIn: req.body.isLoggedIn,
+            deleted:false
+        } 
             
-            res.json(result);
-        } catch (error) {
-            res.status(500).json({ error: 'An error occurred' });
+        let saved = await HBank.HumanResource.updateOne({hrId: hrid},{$set:newUser},{upsert:true}) 
+            
+        let result ;
+        if((saved.upsertedCount+saved.modifiedCount)>0){
+            result={saved: true};
         }
-    })
+        else {
+            result = {saved:false};
+        }
+        
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred' });
+    }
+})
  
-    router.get('/signup', (req, res) => {
-        res.render('signup');
-    })
- 
-    
-    router.post('/loadPincode',async (req,res)=>{
-    const result =await pincode.loadPincode(req.body);
-    res.json(result)
-    })
-
-    router.post('/loadUserCompany',async (req,res)=>{
-         
-        const result =await HBank.SearchHumanbyUsername(req.body)
-       
-        const mobile = result[0].contactNumber;
-         
-        const companyList =await companies.loadHuman(mobile);
-        res.json(companyList);
-    })
+router.get('/signup', (req, res) => {
+    res.render('signup');
+})
  
     
+router.post('/loadPincode',async (req,res)=>{
+const result =await pincode.loadPincode(req.body);
+res.json(result)
+})
 
-
+router.post('/loadUserCompany',async (req,res)=>{
+        
+    const result =await HBank.SearchHumanbyUsername(req.body)
+    
+    const mobile = result[0].contactNumber;
+        
+    const companyList =await companies.loadHuman(mobile);
+    res.json(companyList);
+})
+ 
 module.exports = router;

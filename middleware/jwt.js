@@ -9,14 +9,8 @@ function verifyToken (req,res,next){
     jwt.verify(token,'PassKey',(err,decoded)=>{
         if(err){
             res.clearCookie('Username');
-            res.clearCookie('Password');
-            res.clearCookie('IsAdmin');
-            res.clearCookie('connect.sid');
             req.session.destroy();
         res.render('login')
-        
-        
-        
         }
         else{
             next();
@@ -24,5 +18,11 @@ function verifyToken (req,res,next){
     })
     
 }
-
-module.exports = {verifyToken}
+function createJwt(payload, secretKey, options = {}) {
+     
+    if (typeof payload !== 'object' || Array.isArray(payload)) {
+        throw new Error('Payload must be a plain object.');
+    }
+}
+ 
+module.exports = {verifyToken,createJwt}

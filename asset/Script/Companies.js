@@ -1,5 +1,7 @@
 
 
+ 
+
 async function SaveCompany() {
 
     let companyform = new FormData();
@@ -240,7 +242,7 @@ async function saveTariffToCompanies(tariffIndex){
             button: "OK",
           });
         
-          disabletariffModal(id)
+        //   disabletariffModal(id)
     }
     else if(result.saved){
         swal({
@@ -250,7 +252,7 @@ async function saveTariffToCompanies(tariffIndex){
             button: "OK",
           });
         
-          disabletariffModal(id)
+        //   disabletariffModal(id)
     }
     else if(result.matched){
         swal({
@@ -260,7 +262,7 @@ async function saveTariffToCompanies(tariffIndex){
             button: "OK",
           });
         
-          disabletariffModal(id)
+        //   disabletariffModal(id)
     }
 }
 
@@ -322,8 +324,8 @@ else if(result.matched){
 
 function disabletariffModal(id){
     console.log(id);
-    document.getElementById(`idCompTariffname+${id}`).readOnly =true,
-    document.getElementById(`idRent-Single+${id}`).readOnly =true,
+    // document.getElementById(`idCompTariffname+${id}`).readOnly =true,
+    //document.getElementById(`idRent-Single+${id}`).readOnly =true,
     document.getElementById(`idSpecialRent+${id}`).readOnly =true,
     document.getElementById(`idExtraPerson+${id}`).readOnly =true,
     document.getElementById(`IdTaxrate+${id}`).readOnly =true,
@@ -443,11 +445,11 @@ else if(result.matched){
         window.location.reload()});
 
 }
+}
 
-
-
-async function Activateplan(tariff){
-    const temp = tariff.split(',');
+async function enableTariff(tariff){
+  
+    const temp = tariff.split(','); 
     console.log(temp)
     data = {tariffIndex:temp[0],
         CompanyID:temp[1]}
@@ -463,22 +465,23 @@ async function Activateplan(tariff){
     if(result.update){
         swal({
             title: "success",
-            text: "Tariff freezed",
+            text: "Tariff Active",
             icon: "success",
             button: "OK",
-          });
-          window.location.reload();
+          }).then((value)=>{
+            window.location.reload();
+          })
          
     }
     else if(result.saved){
         swal({
             title: "success",
-            text: "Tariff added!",
+            text: "Tariff Active!",
             icon: "success",
             button: "OK",
-          });
-        
-          window.location.reload();  
+          }).then((value)=>{
+            window.location.reload();
+          }) 
     }
     else if(result.matched){
         swal({
@@ -486,14 +489,13 @@ async function Activateplan(tariff){
             text: "No changes found!",
             icon: "success",
             button: "OK",
-          });
-          window.location.reload();
+          }).then((value)=>{
+            window.location.reload();
+          })
+         
          
     }
-   
-}
-}
-
+}  
 async function deleteTariffPermanently(tariff){
     const temp = tariff.split(',');
     console.log(temp)

@@ -1,5 +1,7 @@
 
 
+ 
+
 async function SaveCheckinPlan(){
     const data = {
     planIndex:document.getElementById('idplanIndex').value,
@@ -75,8 +77,53 @@ async function login(){
     window.location.assign("/floorMap/floorMap");
     
   }
-  
-async function verifyEmail(Email_Field) {
+async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
+    const username = document.getElementById(inputusername).value;
+    const password = document.getElementById(input_Field).value;
+    if(password.length<1 || username.length<1 ){
+        document.getElementById(input_Field).focus();
+    return
+    }
+    else {
+        const data = {
+            userName:username,
+            password:password
+        }
+        const result = await fetch('/authenticate/verifyUsenameWithPassword',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+        .then(res =>{
+            return res.json();
+        })
+        .catch(err=>{
+            console.log(err)
+        }) 
+        if (result.verified) {
+        
+            while (document.getElementById(outputfield).classList.length > 0) {
+                document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
+            }
+            document.getElementById(outputfield).classList.add('btn')
+            document.getElementById(outputfield).classList.add('btn-primary')
+            document.getElementById(outputfield).classList.add('bi')
+            document.getElementById(outputfield).classList.add('bi-patch-check')
+        }
+        else {
+            
+            while (document.getElementById(outputfield).classList.length > 0) {
+                document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
+            }
+            document.getElementById(outputfield).classList.add('btn')
+            document.getElementById(outputfield).classList.add('btn-danger')
+            document.getElementById(outputfield).classList.add('bi')
+            document.getElementById(outputfield).classList.add('bi-patch-check')
+             
+        }
+        console.log(result);
+        return result.verified; 
+    }
+   
+
+}  
+async function verifyEmail(Email_Field,outputfield) {
     const email = document.getElementById(Email_Field).value;
     if (email.length == 0) {
         document.getElementById(Email_Field).focus();
@@ -102,23 +149,23 @@ async function verifyEmail(Email_Field) {
 
     if (result.verified) {
         
-        while (document.getElementById('Signup_Email_Bt').classList.length > 0) {
-            document.getElementById('Signup_Email_Bt').classList.remove(document.getElementById('Signup_Email_Bt').classList.item(0));
+        while (document.getElementById(outputfield).classList.length > 0) {
+            document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
         }
-        document.getElementById('Signup_Email_Bt').classList.add('btn')
-        document.getElementById('Signup_Email_Bt').classList.add('btn-danger')
-        document.getElementById('Signup_Email_Bt').classList.add('bi')
-        document.getElementById('Signup_Email_Bt').classList.add('bi-search')
+        document.getElementById(outputfield).classList.add('btn')
+        document.getElementById(outputfield).classList.add('btn-primary')
+        document.getElementById(outputfield).classList.add('bi')
+        document.getElementById(outputfield).classList.add('bi-patch-check')
     }
     else {
         
-        while (document.getElementById('Signup_Email_Bt').classList.length > 0) {
-            document.getElementById('Signup_Email_Bt').classList.remove(document.getElementById('Signup_Email_Bt').classList.item(0));
+        while (document.getElementById(outputfield).classList.length > 0) {
+            document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
         }
-        document.getElementById('Signup_Email_Bt').classList.add('btn')
-        document.getElementById('Signup_Email_Bt').classList.add('btn-success')
-        document.getElementById('Signup_Email_Bt').classList.add('bi')
-        document.getElementById('Signup_Email_Bt').classList.add('bi-search')
+        document.getElementById(outputfield).classList.add('btn')
+        document.getElementById(outputfield).classList.add('btn-success')
+        document.getElementById(outputfield).classList.add('bi')
+        document.getElementById(outputfield).classList.add('bi-search')
         signuptxt.setAttribute("readonly", "true");
     }
     return result.verified
@@ -172,8 +219,71 @@ async function verifyphone(phone) {
     return result.verified
 }
 
-function verifyPassword() {
-    let password = User_Login_password.value;
+function matchPassword( firstText,retypeText,resultbtn){
+if(document.getElementById(firstText).value==document.getElementById(retypeText).value){
+    while (document.getElementById(resultbtn).classList.length > 0) {
+        document.getElementById(resultbtn).classList.remove(document.getElementById(resultbtn).classList.item(0));
+    }
+    document.getElementById(resultbtn).classList.add('btn')
+    document.getElementById(resultbtn).classList.add('btn-primary')
+    document.getElementById(resultbtn).classList.add('bi')
+    document.getElementById(resultbtn).classList.add('bi-patch-check')
+    return true;
+}
+
+else{
+        alert('hello')
+        return false;
+}
+}
+
+async function changeaPassword(){
+    const userName = document.getElementById('idVerifyEmail-Phone').value;
+    const oldPassword = document.getElementById('idCurrentPassword').value;
+    const NewPassword = document.getElementById('idNewPasswordtext').value;
+const confirmuserName =await verifyEmail('idVerifyEmail-Phone','Signup_Email_Bt');
+const confirmoldPassword =await verifyPasswordBackend('idVerifyEmail-Phone' ,'idCurrentPassword','idVerifieOldPassword');
+const confirmNewPassword = await verifyPassword('idNewPasswordtext','idNewPasswordbtn');
+const confirmmatchPassword = await matchPassword('idNewPasswordtext','idRetypePasswordtext','idRetypePasswordbtn')
+data = {
+    username :userName,
+    password:NewPassword 
+}
+console.log(userName,oldPassword,NewPassword,confirmuserName,confirmoldPassword,confirmNewPassword,confirmmatchPassword);
+if(confirmuserName&&confirmoldPassword&&confirmNewPassword&&confirmmatchPassword ){
+    const result =await fetch('/authenticate/changePassword',{method:'post',headers:{"Content-type":"Application/json"},body:JSON.stringify(data)})
+    .then(res=>{
+        return res.json()
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    console.log(result);
+    if(result.updated){
+        swal({
+            title: "success",
+            text: "Password changed successfully!",
+            icon: "success",
+            button: "OK",
+          }).then((value)=>{
+            window.location.reload();
+          }) 
+    }
+}
+else {
+    swal({
+        title: "failed",
+        text: "Wrong or incvalid credentials !",
+        icon: "error",
+        button: "OK",
+      })  
+}
+
+
+
+}
+function verifyPassword(inputElement,outputElement) {
+    let password = document.getElementById(inputElement) .value;
     let uppercase = false;
     let lowercase = false;
     let specialcase = false;
@@ -191,15 +301,24 @@ function verifyPassword() {
     }
     if ((uppercase) && (lowercase) && (specialcase) && (numerics) && password.length >= 8) {
         
+        
+        while (document.getElementById(outputElement).classList.length > 0) {
+            document.getElementById(outputElement).classList.remove(document.getElementById(outputElement).classList.item(0));
+        }
+        document.getElementById(outputElement).classList.add('btn')
+        document.getElementById(outputElement).classList.add('btn-primary')
+        document.getElementById(outputElement).classList.add('bi')
+        document.getElementById(outputElement).classList.add('bi-patch-check')
         return verified = true;
     }
     else {
 
         
         alert("Password Should be alphanumeric and minimum length of 8 ");
-        document.getElementById('User_Login_password').value = "";
+        document.getElementById('outputElement').value = "";
         document.getElementById('User_Login_password').focus();
-        
+        document.getElementById(outputElement).style.color = 'red';  
+       
         return verified = false;
     }
 
@@ -493,8 +612,6 @@ async function CheckUser() {
         
     }
 }
-
-
 
 
 

@@ -268,5 +268,7 @@ router.post('/loadUserCompany',async (req,res)=>{
     const companyList =await companies.loadHuman(mobile);
     res.json(companyList);
 })
+
+
  
 module.exports = router;

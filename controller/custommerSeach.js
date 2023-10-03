@@ -9,6 +9,7 @@ const checkinplans = require('../model/planMaster')
 router.post('/customSearch',async (req,res)=>{
     console.log(req.body);
     const generalData = await companies.SearchCompany('')
+    const user = {}
     const tariff = await tariffs.loadtariff('')
     let district = new Set();
     const inputData = req.body;
@@ -21,9 +22,10 @@ router.post('/customSearch',async (req,res)=>{
      "roomtypes.SpecialRent":{$gte:req.body.budgetStart},
      "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
 
-        res.render('detailedSearch',{result,generalData,tariff,district,inputData} )
+        res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
+        res.json()
     
-   // res.json(result);
+    
    
 })
 router.use('/TariffSearch',async (req,res)=>{
@@ -51,7 +53,12 @@ router.use('/loadPlans',async(req,res)=>{
     console.log(plans);
     res.json(plans);
 })
-
+router.post('/loadHotelDetails',async (req,res)=>{
+    console.log(req.body)
+    req.body.CompanySearchKey = req.body.hotelId
+    result = await companies.SearchbyCompanyByAny(req.body)
+    res.json(result)
+})
  
 
 module.exports = router;

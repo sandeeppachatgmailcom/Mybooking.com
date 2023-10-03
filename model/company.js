@@ -126,8 +126,8 @@ async function loadHuman(contactNumber) {
 }
 async function SearchbyCompanyByAny(SerchKey) {
     const data = await company.findOne({$or:[{firstName: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' }},{CompanyID: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' } },{contactNumber: { $regex: `^${SerchKey.Username}`, $options: 'i' } }]})
-    
     return data
+
 }
 async function insertNewCheckinPlan(planobj){
     

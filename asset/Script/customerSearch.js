@@ -245,23 +245,82 @@ function readmore() {
 
   });
  
-
   document.getElementById("idStartDate").addEventListener("change",function (){
-    document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;
-    document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
+  document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;
+  document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
   })
 
   async function loadHotelBasedResult(companyID){
-    data = {
-      fromDate:document.getElementById("idStartDate").value,
-      toDate:document.getElementById("idEndDate").value,
+    const data = {
+      StartDate:document.getElementById("idStartDate").value,
+      EndDate:document.getElementById("idEndDate").value,
       hotelId:companyID,
       district:document.getElementById("idDitrictName").value,
-      totalGuest:document.getElementById("idGuestCount").value,
-      totalRoom:document.getElementById("idRoomCount").value,
-      rangeFrom:document.getElementById("idBudgetFrom").value,
-      rangeEnd:document.getElementById("idBudgetEnd").value,
-      Tariff:document.getElementById("idSelectTariff").value
+      GuestCount:document.getElementById("idGuestCount").value,
+      RoomCount:document.getElementById("idRoomCount").value,
+      BudgetFrom:document.getElementById("idBudgetFrom").value,
+      BudgetEnd:document.getElementById("idBudgetEnd").value,
+      SelectTariff:document.getElementById("idSelectTariff").value
     }
-    console.log(data)
+  console.log(data)
+  const result = await fetch('/custom/loadHotelDetails',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+  .then(res=>{
+    return res.json()
+  }).catch(err=>{
+    console.log(err);
+  })
+  console.log(result);
+  let innerhtml ='';
+  let tariffDetails = result.roomtypes; 
+  console.log(tariffDetails);
+  console.log(result)
+  for (let i of tariffDetails){
+  let masterhtml = `<div class="container-fluid  " >
+    <div class="container-fluid d-flex  border btn" style="height :20%; background-size:cover ; background-position:center ">
+        <img src="${result.image1}" class="card-img-top" alt="...">
+    </div>
+    <div class="container-fluid d-flex justify-content-evenly border btn" >
+         <div>
+         <h6 class="card-title" style="text-transform: uppercase;">${result.firstName}</h6> 
+
+         </div>
+         <div class="form-check form-check-inline">
+         <input class="form-check-input" type="checkbox" id="idshowallpricecheckbox" value="option1">
+         <label class="form-check-label" for="idshowallpricecheckbox">SHOW ALL PRICE RANGE</label>
+       </div>
+         </div>     
+    
+    <div class="container-fluid d-flex" id="idprinttariffcard" style="flex-wrap:wrap" >
+    </div>
+  </div>`
+
+  let bodycolorclass = 'btn-secondary'
+if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.SpecialRent<= Number(document.getElementById("idBudgetEnd").value)))bodycolorclass = 'btn-light'
+else {
+   bodycolorclass = 'btn-secondary'
+}
+ 
+  
+  innerhtml+=` <div class="card" p-2 style="width: 18rem; ">
+  
+    <div class="card-body ${bodycolorclass}">
+    
+      <h6 class="card-title">${i.tariffName} : ${i.SpecialRent}/- <small>(2pax)</small> </h6>
+      <small> Extra pax:${i.extraPerson}/-</small>
+      <div  class="d-flex">
+      </button>
+      </div>
+      <h4 class="card-title text-secondary" >Total Amount:<small>${i.SpecialRent}/- </small> </h4>
+      <div style="height: 80px; wrap:nowrap ; overflow-y: scroll">
+      <p class="card-text">${i.Discription}</p>
+      </div>
+      <a   data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success  ">Book Now </a>
+      
+    </div>
+    </div>`
+    
+  document.getElementById("idTariffDetails").innerHTML =  masterhtml;
+  document.getElementById("idprinttariffcard").innerHTML =  innerhtml;
+  
+  }
   }

@@ -51,8 +51,8 @@ async function saveService(){
     const serviceObject = {
         Serviceindex : document.getElementById("iDServiceindex").value ,
         ServiceName : document.getElementById("iDServiceName").value ,
-        ServiceImages1 : await UploadImage('iDServiceImages1','idImage1Div11','iDServiceImages1') ,
-        ServiceImages2 : await  UploadImage('iDServiceImages2','idImage1Div22','iDServiceImages2') ,
+        ServiceImages1 :await  UploadImage('iDServiceImages1','idImage1Div11','iDServiceImages1') ,
+        ServiceImages2 :await  UploadImage('iDServiceImages2','idImage1Div22','iDServiceImages2') ,
         ServiceImages3 :await  UploadImage('iDServiceImages3','idImage1Div33','iDServiceImages3') ,
         ServiceImages4 :await  UploadImage('iDServiceImages4','idImage1Div44','iDServiceImages4')  ,
         hsnCode : document.getElementById("iDhsnCode").value ,

@@ -6,7 +6,7 @@ function loadHotel(SelectedValue,generalData ){
     hotelSelect.remove(0); // Remove the first option until none remain
   }
   const customValue = JSON.parse(document.getElementById("idSearchText").getAttribute("data-hotels"));
-  console.log(customValue);
+   
   for (let i =0;i<customValue.length;i++){
     if (!i){
         let newOption = document.createElement('option');
@@ -15,7 +15,7 @@ function loadHotel(SelectedValue,generalData ){
         hotelSelect.appendChild(newOption);
     }
     if (customValue[i].district==SelectedValue){
-        console.log(customValue[i]);
+         
         let newOption = document.createElement('option');
         newOption.value = customValue[i].CompanyID; // Set the value attribute
         newOption.textContent = customValue[i].lastName; // Set the visible text
@@ -38,8 +38,7 @@ function loadHotel(SelectedValue,generalData ){
        BudgetEnd:Number(document.getElementById('idBudgetEnd').value),
        SelectTariff:document.getElementById('idSelectTariff').value       
   } 
-  console.log(data)
-  // document.getElementById('idCustSearchFirstDiv').innerHTML='';
+    // document.getElementById('idCustSearchFirstDiv').innerHTML='';
   // document.getElementById('idTariffDetails').innerHTML='';
   const result = await fetch('/custom/customSearch',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
   .then(res=>{
@@ -47,12 +46,12 @@ function loadHotel(SelectedValue,generalData ){
   }).catch(err=>{
     console.log(err);
   })
-  console.log(result);
+  
 let  innerHtml = '';
 let hotels = new Set();
 hotels = result.add 
 for(let i=0;i<result.length;i++){
-  console.log( result[i],'hello');
+   
   innerHtml+= `<div class="card btn col-3">
   <img class="w-100"  src="${result[i].image1}" class="card-img-top" alt="...">
   <div class="card-body">
@@ -74,13 +73,13 @@ for(let i=0;i<result.length;i++){
     </div>
 </div>`
 }
-// console.log(innerHtml );
+//  
 // document.getElementById('idCustSearchFirstDiv').innerHTML=innerHtml;
 innerHtml = '';
 let tariffdetails = new Set();
 for (let i=0;i< result.length;i++){
   for(let j=0;j<result[i].tariffDetails.length;j++){
-    console.log(result[i].tariffDetails);
+    
     tariffdetails.add({companyID:result[i].CompanyID,
                 CompanyName:result[i].lastName,
                 CompanyID:result[i].companyID,
@@ -93,7 +92,7 @@ for (let i=0;i< result.length;i++){
               })
   }
 }
-console.log(Object.keys(tariffdetails),'resched end of tariff');
+ 
 for (const i of  tariffdetails){     
   innerHtml+= `
   <div class="card p-3 col-3" >
@@ -110,8 +109,7 @@ for (const i of  tariffdetails){
  
 }
 
- 
-console.log(innerHtml);
+  
 
 // document.getElementById('idTariffDetails').innerHTML=innerHtml;
 
@@ -125,7 +123,7 @@ async function loadRoomTariffs(companyID,companyName,image) {
     priceFrom: Number(document.getElementById('idBudgetFrom').value),
     PriceEnd: Number(document.getElementById('idBudgetEnd').value),
   }
-  console.log(data);
+  
   const tariffdetails = await fetch('/custom/TariffSearch',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
   
   .then(res=>{
@@ -134,7 +132,7 @@ async function loadRoomTariffs(companyID,companyName,image) {
   .catch(err=>{
     console.log(err)
   })
-  console.log(tariffdetails);
+   
   let innerHtml = '';
   for (const i of  tariffdetails){     
     innerHtml+= `
@@ -151,15 +149,13 @@ async function loadRoomTariffs(companyID,companyName,image) {
       </div>`
    
   }
-   
-console.log(innerHtml);
+    
 
 document.getElementById('idTariffDetails').innerHTML=innerHtml;
 }
 
 async function loadtariffBasedPlans(Companyid,companyName,image,SpecialRent, tariffName  , tariffIndex  ){
-  console.log(Companyid,companyName,image,SpecialRent );
-  document.getElementById('idTariffDetails++').innerHTML='';
+   document.getElementById('idTariffDetails++').innerHTML='';
   const data = {
     Companyid:Companyid,
     companyName:companyName,
@@ -167,15 +163,14 @@ async function loadtariffBasedPlans(Companyid,companyName,image,SpecialRent, tar
     SpecialRent:SpecialRent 
      
   }
-  console.log(data);
+  
 const plans = await fetch('/custom/loadPlans',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
 .then(res=>{
   return res.json();
 })
 .catch(err=>{
   console.log(err);
-})
-console.log(plans);
+}) 
 let innerhtml = '';
 for (let i of plans){
   const total =Number( i.amount) +Number( SpecialRent) ; 
@@ -209,7 +204,7 @@ innerhtml+=` <div class="card" style="width: 18rem;">
  
 
 }
-console.log(innerhtml);
+ 
 document.getElementById('idTariffDetails++').innerHTML=innerhtml;
  
 }
@@ -251,6 +246,7 @@ function readmore() {
   })
 
   async function loadHotelBasedResult(companyID){
+    
     const data = {
       StartDate:document.getElementById("idStartDate").value,
       EndDate:document.getElementById("idEndDate").value,
@@ -262,21 +258,21 @@ function readmore() {
       BudgetEnd:document.getElementById("idBudgetEnd").value,
       SelectTariff:document.getElementById("idSelectTariff").value
     }
-  console.log(data)
-  const result = await fetch('/custom/loadHotelDetails',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+    const result = await fetch('/custom/loadHotelDetails',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
   .then(res=>{
     return res.json()
   }).catch(err=>{
     console.log(err);
-  })
-  console.log(result);
+  }) 
   let innerhtml ='';
-  let tariffDetails = result.roomtypes; 
-  console.log(tariffDetails);
-  console.log(result)
+
+  let tariffDetails = result.roomtypes;  
+  let checkinplans = result.checkinplan;
+  console.log(checkinplans);
+
   for (let i of tariffDetails){
   let masterhtml = `<div class="container-fluid  " >
-    <div class="container-fluid d-flex  border btn" style="height :20%; background-size:cover ; background-position:center ">
+    <div class="container-fluid d-flex  border btn" style="height :40%;background-size: cover;background-position: center;">
         <img src="${result.image1}" class="card-img-top" alt="...">
     </div>
     <div class="container-fluid d-flex justify-content-evenly border btn" >
@@ -299,28 +295,99 @@ if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.
 else {
    bodycolorclass = 'btn-secondary'
 }
- 
+
   
-  innerhtml+=` <div class="card" p-2 style="width: 18rem; ">
+  innerhtml+=` <div class="card" p-2 style="width: 19rem; ">
   
     <div class="card-body ${bodycolorclass}">
     
-      <h6 class="card-title">${i.tariffName} : ${i.SpecialRent}/- <small>(2pax)</small> </h6>
-      <small> Extra pax:${i.extraPerson}/-</small>
+      <h6 class="card-title">${i.tariffName} : ${i.SpecialRent}/- <small>(2pax)</small> <small> Extra pax:${i.extraPerson}/-</small> </h6>
+          <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="roomCategoryID">
+          <option value="0">none</option>
+          
+        </select>
       <div  class="d-flex">
       </button>
       </div>
-      <h4 class="card-title text-secondary" >Total Amount:<small>${i.SpecialRent}/- </small> </h4>
+      <h4 class="card-title " >Total Amount:<small id="idTotalamount${i.tariffIndex}" > </small> </h4>
       <div style="height: 80px; wrap:nowrap ; overflow-y: scroll">
       <p class="card-text">${i.Discription}</p>
-      </div>
-      <a   data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success  ">Book Now </a>
+      </div> 
+       <div class="continer-flex">
+       <div class="input-group d-flex ">
+        <div class="input-group-prepend col-6">
+          <span class="input-group-text col-12" id="basic-addon1">Total Room</span>
+        </div>
+       <input type="Number" value="${parseInt(data.RoomCount)}" onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"  id="idTotalRoomReq${i.tariffIndex}" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+     </div>
+     <div class="input-group d-flex ">
+        <div class="input-group-prepend col-6">
+          <span class="input-group-text col-12" id="basic-addon1">Total Guest</span>
+        </div>
+       <input type="Number" value="${parseInt(data.GuestCount)}" onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')" class="form-control" id="idTotalGuestOccs${i.tariffIndex}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+     </div>
+     <div class="input-group d-flex ">
+        <div class="input-group-prepend col-6">
+          <span class="input-group-text col-12" id="basic-addon1">coupon </span>
+        </div>
+       <input type="Number" class="form-control" id="idcoupncode${i.tariffIndex}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+     </div>
+     <div class="input-group d-flex ">
+        <div class="input-group-prepend col-6">
+          <span class="input-group-text col-12" id="basic-addon1">Total amount</span>
+        </div>
+       <input type="Number" class="form-control" id="idTotalamount${i.tariffIndex}" value="${parseInt(data.GuestCount)}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+     </div>
+       </div>
+      <button class="btn btn-success" name="bookingDetails"  value="${result.CompanyID},${i.tariffIndex}"  type="button" onclick="loadDateWiseBooking(event.target.value)">Book Now </button>
       
     </div>
     </div>`
     
   document.getElementById("idTariffDetails").innerHTML =  masterhtml;
   document.getElementById("idprinttariffcard").innerHTML =  innerhtml;
+  document.getElementById("idSelectTariff").textContent = i.tariffName
+  }
   
+   
   }
-  }
+
+ function calculateTotal(SpecialRent,extraPax,tariffcode){
+  const totalPax =parseInt(document.getElementById("idTotalGuestOccs"+tariffcode).value);
+  const totalRoom =parseInt(document.getElementById("idTotalRoomReq"+tariffcode).value);
+  const totalRoomCapacity = 5*totalRoom  
+  const allowedPax = totalRoom * 2;
+  let  additionalPax = totalPax -allowedPax;
+  if (additionalPax<0) additionalPax =0;
+  const totalAmpunt = (totalRoom*SpecialRent)+(additionalPax*extraPax)
+  if(totalPax>totalRoomCapacity) {document.getElementById("idTotalGuestOccs"+tariffcode).style.color = 'red';
+  document.getElementById("idTotalGuestOccs"+tariffcode).max=totalRoomCapacity
+}
+  else  document.getElementById("idTotalGuestOccs"+tariffcode).style.color = 'black'
+  document.getElementById("idTotalamount"+tariffcode).innerText =totalAmpunt 
+  console.log(totalPax,'totalPax',totalRoom,'totalRoom', SpecialRent,'SpecialRent',extraPax,'extraPax',allowedPax,'allowedPax',additionalPax,'additionalPax',totalAmpunt,'totalAmpunt'); 
+ }
+
+
+  async function loadDateWiseBooking(credential){
+     
+    let  temp = credential.split(',') ; 
+    const data = {
+      StartDate:document.getElementById("idStartDate").value,
+      EndDate:document.getElementById("idEndDate").value,
+      hotelId:temp[0],
+      district:document.getElementById("idDitrictName").value,
+      GuestCount:document.getElementById("idGuestCount").value,
+      RoomCount:document.getElementById("idRoomCount").value,
+      BudgetFrom:document.getElementById("idBudgetFrom").value,
+      BudgetEnd:document.getElementById("idBudgetEnd").value,
+      SelectTariff:temp[1],
+      loggeduser:document.getElementById("idloggedusermenubar").textContent
+    }
+    const result = await fetch('/custom/confirmBooking',{method:'post',headers:{"Content-Type":"application/json"},body:JSON.stringify(data)})
+    .then((res)=>{
+      return res.json()
+    })
+    .catch((err)=>{
+      console.log(err)
+    })}

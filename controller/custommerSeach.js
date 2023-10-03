@@ -4,10 +4,21 @@ const midware = require('../middleware/multer')
 const companies = require('../model/company')
 const tariffs = require('../model/tariff')
 const checkinplans = require('../model/planMaster')
+const ejs = require('ejs')
   
 
+
+router.post('/confirmBooking',(req,res)=>{
+
+     
+    console.log(req.body,'sadffffffffffffffffffff')
+
+     
+    res.json(req.body);
+})
+
 router.post('/customSearch',async (req,res)=>{
-    console.log(req.body);
+ 
     const generalData = await companies.SearchCompany('')
     const user = {}
     const tariff = await tariffs.loadtariff('')
@@ -29,7 +40,7 @@ router.post('/customSearch',async (req,res)=>{
    
 })
 router.use('/TariffSearch',async (req,res)=>{
-    console.log(req.body,'lastpage designed ')
+    
     const generalData = await companies.SearchCompany('')
     const tariff = await tariffs.loadtariff('')
     let district = new Set();
@@ -42,7 +53,7 @@ router.use('/TariffSearch',async (req,res)=>{
     result = result[0]
     
     const tariffDetails= result.tariff
-    console.log(result.tariff);
+     
     const inputData = req.body
     res.render('companyWiseDetails',{inputData,generalData,tariff,result,district,tariffDetails});
      
@@ -50,11 +61,11 @@ router.use('/TariffSearch',async (req,res)=>{
 router.use('/loadPlans',async(req,res)=>{
     
     plans = await checkinplans.LoadPlan();
-    console.log(plans);
+    
     res.json(plans);
 })
 router.post('/loadHotelDetails',async (req,res)=>{
-    console.log(req.body)
+     
     req.body.CompanySearchKey = req.body.hotelId
     result = await companies.SearchbyCompanyByAny(req.body)
     res.json(result)

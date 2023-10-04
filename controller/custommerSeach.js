@@ -10,15 +10,11 @@ const ejs = require('ejs')
 
 router.post('/confirmBooking',(req,res)=>{
 
-     
-    console.log(req.body,'sadffffffffffffffffffff')
-
-     
     res.json(req.body);
 })
 
 router.post('/customSearch',async (req,res)=>{
- 
+    console.log(req.body);
     const generalData = await companies.SearchCompany('')
     const user = {}
     const tariff = await tariffs.loadtariff('')
@@ -32,7 +28,6 @@ router.post('/customSearch',async (req,res)=>{
      "roomtypes.tariffIndex": { $regex: `^${req.body.roomCategoryID}`, $options: 'i' },
      "roomtypes.SpecialRent":{$gte:req.body.budgetStart},
      "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
-
         res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
         res.json()
     

@@ -62,8 +62,8 @@ function MakePlanReadonly(){
     
 }
 async function login(){
-    const data = {Username : document.getElementById('idUserName').value ,
-    Password : document.getElementById('idUserPassword').value }
+    const data = {userName : document.getElementById('idUserName').value ,
+    password : document.getElementById('idUserPassword').value }
     
     
     const  result = await fetch ('/authenticate/login',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})

@@ -82,11 +82,10 @@ async function SearchHumanbyUsername(humanObj) {
     return data;
 }
 async function verifyUser(userObject){
+    
     let verified = false;
-    const password = await HumanResource.findOne({email:userObject.userName},{password:1,_id:0})
-    console.log(password,'stored password ',userObject.password);
+    const password = await HumanResource.findOne({email:userObject.userName},{password:1,firstName:1,_id:0})
     const result =await Controller.comparePassword(userObject.password,password.password )
-    console.log(result,'result passeword');
     if(result){
         verified={
             verified:true
@@ -97,6 +96,7 @@ async function verifyUser(userObject){
             verified:false
         }
     }
+    verified.user=password.firstName;
     return verified;
 }
 

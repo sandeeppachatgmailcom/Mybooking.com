@@ -18,7 +18,8 @@ const companies = require('../model/company')
 const tariffs = require('../model/tariff')
 const customSearch = require('../controller/custommerSeach')
 const hotelshomePage = require('../controller/hotelHomePage')
-
+const clearCache = require('../middleware/userAccess')
+router.use(clearCache.clearCache);
 router.get('/' ,async (req, res) => {
     try {
         user = {
@@ -33,10 +34,16 @@ router.get('/' ,async (req, res) => {
         const pincode = generalData.forEach(element => {
             district.add(element.district )
         });
-            res.render('custommerPage',{user,district,tariff,generalData})
+        const pagename ='custommerPage'; 
+        res.cookie('page',pagename)
+            res.render(pagename,{user,district,tariff,generalData })
     }
     catch (err) { console.log(err.message) }
 })
+
+
+
+
 router.use('/checkin',verifyAccess.VerifyAccess,frontDesk)
 router.use('/frontOffice',verifyAccess.VerifyAccess,frontDesk)
 router.use('/rooms',verifyAccess.VerifyAccess,rooms)

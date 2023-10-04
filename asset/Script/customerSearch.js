@@ -67,13 +67,13 @@ for(let i=0;i<result.length;i++){
   </div>
   <div class="card-footer">
     <small class="text-body-secondary">Last updated 3 mins ago</small>
-    <a href="#idTariffDetails" onclick="loadRoomTariffs('${result[i].CompanyID}','${result[i].lastName}','${result[i].image1}') " class="link-fancy">
-    <button class="btn btn-primary">Details</button>
+    <a href="#idTariffDetails"  class="link-fancy">
+    <button type="button" onclick="loadRoomTariffs('${result[i].CompanyID}','${result[i].lastName}','${result[i].image1}')" class="btn btn-primary"> Details </button>
     </a>
     </div>
 </div>`
 }
-//  
+  
 // document.getElementById('idCustSearchFirstDiv').innerHTML=innerHtml;
 innerHtml = '';
 let tariffdetails = new Set();
@@ -234,9 +234,11 @@ function readmore() {
     // Set the value of the input with id "idStartDate" to the current date and time
     document.getElementById("idStartDate").value = currentDate;
     document.getElementById("idStartDate").min = currentDate;
-    
+    console.log(document.getElementById("idStartDate").value)
+    console.log(document.getElementById("idEndDate").value);
     document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
-    document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;
+    if(document.getElementById("idEndDate").value< document.getElementById("idStartDate").value){
+    document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;}
 
   });
  
@@ -272,7 +274,7 @@ function readmore() {
 
   for (let i of tariffDetails){
   let masterhtml = `<div class="container-fluid  " >
-    <div class="container-fluid d-flex  border btn" style="height :40%;background-size: cover;background-position: center;">
+    <div class="container-fluid d-flex  border btn" style="height :400px ;background-size: cover;background-position: center;">
         <img src="${result.image1}" class="card-img-top" alt="...">
     </div>
     <div class="container-fluid d-flex justify-content-evenly border btn" >
@@ -290,19 +292,36 @@ function readmore() {
     </div>
   </div>`
 
-  let bodycolorclass = 'btn-secondary'
+const graceHours = .5;
+let temp = data.StartDate.split('T');
+const fromdate =new Date(temp[0]);
+let  arrivalTime = temp[1].split(':')
+temp = data.EndDate.split('T');
+const todate = new Date(temp[0]);
+let  deptTime = temp[1].split(':')
+const days =todate-fromdate;
+let diffDays = calculateDays(data.StartDate,data.EndDate) 
+ 
+deptTime = ((parseInt(deptTime[0])*60)+(parseInt(deptTime[1])))/60 
+arrivalTime = ((parseInt(arrivalTime[0])*60)+(parseInt(arrivalTime[1])))/60
+const timeDiff = deptTime - arrivalTime ;
+if(timeDiff>graceHours) diffDays++; 
+console.log(arrivalTime ,deptTime,timeDiff.toFixed(2), diffDays.toFixed(2),'total days')
+document.getElementById("")
+let bodycolorclass = 'btn-cyan-700'
 if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.SpecialRent<= Number(document.getElementById("idBudgetEnd").value)))bodycolorclass = 'btn-light'
 else {
    bodycolorclass = 'btn-secondary'
+
 }
 
   
-  innerhtml+=` <div class="card" p-2 style="width: 19rem; ">
+  innerhtml+=` <div class="card" p-2 style="width: 21rem; ">
   
-    <div class="card-body ${bodycolorclass}">
+    <div onClick="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}', ${diffDays})" class="card-body ${bodycolorclass}">
     
-      <h6 class="card-title">${i.tariffName} : ${i.SpecialRent}/- <small>(2pax)</small> <small> Extra pax:${i.extraPerson}/-</small> </h6>
-          <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="roomCategoryID">
+      <h6 style="text-transform: uppercase;" class="card-title">${i.tariffName} : ${i.SpecialRent}/- <small>(2pax)</small> <small> Extra pax:${i.extraPerson}/-</small> </h6>
+          <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="nmroomCategoryID">
           <option value="0">none</option>
           
         </select>
@@ -315,38 +334,44 @@ else {
       </div> 
        <div class="continer-flex">
        <div class="input-group d-flex ">
-        <div class="input-group-prepend col-6">
-          <span class="input-group-text col-12" id="basic-addon1">Total Room</span>
+        <div class="input-group-prepend col-4  ">
+          <span class="input-group-text col-12" id="basic-addon1">  Room</span>
         </div>
        <input type="Number" value="${parseInt(data.RoomCount)}" onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"  id="idTotalRoomReq${i.tariffIndex}" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
      </div>
      <div class="input-group d-flex ">
-        <div class="input-group-prepend col-6">
-          <span class="input-group-text col-12" id="basic-addon1">Total Guest</span>
+        <div class="input-group-prepend col-4  ">
+          <span class="input-group-text col-12" id="basic-addon1"> Guest</span>
         </div>
-       <input type="Number" value="${parseInt(data.GuestCount)}" onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')" class="form-control" id="idTotalGuestOccs${i.tariffIndex}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+       <input type="Number" value="${parseInt(data.GuestCount)}" onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')" class="form-control" id="idTotalGuestOccs${i.tariffIndex}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
      </div>
      <div class="input-group d-flex ">
-        <div class="input-group-prepend col-6">
-          <span class="input-group-text col-12" id="basic-addon1">coupon </span>
+        <div class="input-group-prepend col-4 ">
+          <span class="input-group-text col-12" id="basic-addon1">Days </span>
         </div>
-       <input type="Number" class="form-control" id="idcoupncode${i.tariffIndex}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+       <input type="Number" class="form-control"   onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')" value="${diffDays}" id="iddaycount${i.tariffIndex}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
      </div>
      <div class="input-group d-flex ">
-        <div class="input-group-prepend col-6">
-          <span class="input-group-text col-12" id="basic-addon1">Total amount</span>
+        <div class="input-group-prepend col-4  ">
+          <span class="input-group-text col-12" id="basic-addon1">arrival </span>
         </div>
-       <input type="Number" class="form-control" id="idTotalamount${i.tariffIndex}" value="${parseInt(data.GuestCount)}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+       <input type="datetime-local" onChange="updateCustommerDays('${i.tariffIndex}')" class="form-control" readOnly="true" id="idarrivaldate${i.tariffIndex}" value="${data.StartDate}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+     </div>
+     <div class="input-group d-flex ">
+        <div class="input-group-prepend col-4  ">
+          <span class="input-group-text col-12" id="basic-addon1">Depart  </span>
+        </div>
+       <input type="datetime-local" class="form-control" onChange="updateCustommerDays('${i.tariffIndex}')" readOnly="true"  id="idDepartureDate${i.tariffIndex}" value="${data.EndDate}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
      </div>
        </div>
-      <button class="btn btn-success" name="bookingDetails"  value="${result.CompanyID},${i.tariffIndex}"  type="button" onclick="loadDateWiseBooking(event.target.value)">Book Now </button>
+      <button class="btn btn-success" name="bookingDetails"  value="${result.CompanyID},${i.tariffIndex}"  type="button" onclick="saveBooking(event.target.value)">Book Now </button>
       
     </div>
     </div>`
     
   document.getElementById("idTariffDetails").innerHTML =  masterhtml;
   document.getElementById("idprinttariffcard").innerHTML =  innerhtml;
-  document.getElementById("idSelectTariff").textContent = i.tariffName
+  
   }
   
    
@@ -355,11 +380,12 @@ else {
  function calculateTotal(SpecialRent,extraPax,tariffcode){
   const totalPax =parseInt(document.getElementById("idTotalGuestOccs"+tariffcode).value);
   const totalRoom =parseInt(document.getElementById("idTotalRoomReq"+tariffcode).value);
+  const days = parseInt(document.getElementById("iddaycount"+tariffcode).value);
   const totalRoomCapacity = 5*totalRoom  
   const allowedPax = totalRoom * 2;
   let  additionalPax = totalPax -allowedPax;
   if (additionalPax<0) additionalPax =0;
-  const totalAmpunt = (totalRoom*SpecialRent)+(additionalPax*extraPax)
+  const totalAmpunt = ((totalRoom*SpecialRent)+(additionalPax*extraPax))*days;
   if(totalPax>totalRoomCapacity) {document.getElementById("idTotalGuestOccs"+tariffcode).style.color = 'red';
   document.getElementById("idTotalGuestOccs"+tariffcode).max=totalRoomCapacity
 }
@@ -367,6 +393,31 @@ else {
   document.getElementById("idTotalamount"+tariffcode).innerText =totalAmpunt 
   console.log(totalPax,'totalPax',totalRoom,'totalRoom', SpecialRent,'SpecialRent',extraPax,'extraPax',allowedPax,'allowedPax',additionalPax,'additionalPax',totalAmpunt,'totalAmpunt'); 
  }
+
+function calculateDays(startDate,endDate){
+    const graceHours = .5;
+    let temp = startDate.split('T');
+    const fromdate =new Date(temp[0]);
+    let  arrivalTime = temp[1].split(':')
+    temp = endDate.split('T');
+    const todate = new Date(temp[0]);
+    let  deptTime = temp[1].split(':')
+    const days =todate-fromdate;
+    let diffDays = Math.ceil(days / (1000 * 60 * 60 * 24)); 
+    deptTime = ((parseInt(deptTime[0])*60)+(parseInt(deptTime[1])))/60 
+    arrivalTime = ((parseInt(arrivalTime[0])*60)+(parseInt(arrivalTime[1])))/60
+    const timeDiff = deptTime - arrivalTime ;
+    if(timeDiff>graceHours) diffDays++; 
+    console.log(arrivalTime ,deptTime,timeDiff.toFixed(2), diffDays.toFixed(2),'total days')
+    return diffDays;
+}
+function updateCustommerDays (tariffCode){
+  const startDate = document.getElementById("idarrivaldate"+tariffCode).value; 
+  const endDate = document.getElementById("idDepartureDate"+tariffCode).value;
+  const dayfield = document.getElementById("iddaycount"+tariffCode);
+  dayfield.value = parseInt(calculateDays(startDate,endDate))
+
+}
 
 
   async function loadDateWiseBooking(credential){
@@ -391,3 +442,8 @@ else {
     .catch((err)=>{
       console.log(err)
     })}
+
+     async function saveBooking(this){
+      const result = document.cookie.split(';')
+      console.log(result);
+    }

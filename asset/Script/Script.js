@@ -327,12 +327,13 @@ async function logout() {
         .catch(err => {
             console.log(err)
         })
-    console.log(logoutuser.logout)
+    console.log(logoutuser.logout,'result')
     if (logoutuser.logout) {
 
         window.location.assign("/");
+       
     }
-    //window.location.reload();
+     
 }
 
 

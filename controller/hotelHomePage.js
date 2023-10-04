@@ -18,16 +18,14 @@ router.post('/loadhomepage', async (req, res) => {
       loggedOut: false,
       ip: req.ip,
     };
-    const password = controller.encryptPassword(req.body.password) 
-    const user = await HBank.HumanResource.findOne({
-      $or: [
-        { email: req.body.Username, password: req.body.Password, deleted: false },
-        { contactNumber: req.body.Username, password: password, deleted: false },
-      ]
-    }, { firstName:1,username: 1, _id: 0, email: 1 });
-    console.log(user,'Active user')
+     
+
+    const result =await HBank.verifyUser(req.body)   
+
+    const user = await HBank.HumanResource.findOne({  email: req.body.userName, deleted: false });
+    console.log(req.body,result,user,'Active user')
     if(user){
-      const profile = await companies.company.findOne({ contactNumber: req.body.Username });
+      const profile = await companies.company.findOne({email:req.body.userName});
       const activtariff = await tariff.loadtariff('');
       const activePlans = await checkinPlans.LoadPlan();
       let existingTariff = profile.roomtypes;
@@ -66,7 +64,7 @@ router.post('/loadhomepage', async (req, res) => {
      }
     else {
      }
-    res.cookie('username', req.body.Username)
+    res.cookie('userName',req.body.userName)
     res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms });
     
   }

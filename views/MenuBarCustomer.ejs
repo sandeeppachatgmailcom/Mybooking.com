@@ -18,12 +18,15 @@
         <li class="nav-item"><a class="nav-link" href="/authenticate/signup">Signup</a></li>
         <button id="idloggedusermenubar" value="" class="btn"  ></button>
             <% if (user.firstName) { %>
-         <button id="idloggedusermenubar" value="<%=user.firstName%>" class="btn btn-success bi bi-power" >66<%=user.firstName%></button>
+         <button id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="btn btn-success bi bi-power" ><%=user.firstName%></button>
+        
         <% } else { %>
           <li class="nav-item"><button type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#exampleModal"
-            style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link"> LOGIN </button> </li>
+            style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link"> STAFF LOGIN </button> </li>
           <li class="nav-item"><button type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#VendureLogin"
-            style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link"> PARTNER LOGIN </button> </li>    
+            style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link"> PARTNER LOGIN </button> </li> 
+          <li class="nav-item"><button type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#customerLogin"
+              style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link">CUSTOMER LOGIN </button> </li>        
           <% } %>
 
                     

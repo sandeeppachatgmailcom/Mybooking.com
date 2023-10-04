@@ -34,6 +34,26 @@ async function userSessionAuthentication(sessionID, username, password) {
     else {
     }
 }
+router.post('/custLogin',async (req,res)=>{
+    const userlogrecord = {
+        username: req.body.Username,
+        sessionId: req.sessionID,  
+        folder: req.path, 
+        method: req.method,
+        loggedOut: false,
+        ip: req.ip
+    }
+    const result =await HBank.verifyUser(req.body)
+    const user={
+        firstName:result.firstName,
+        Username:req.body.Username
+    }
+    if (result.verified){
+        res.cookie('username',req.body.Username)
+    }
+    res.json(result)
+})
+
 router.post('/OtpAuthentication', async (req, res) => {
     
     let result = await OTPValidate.validateOtp(req.body.email, req.body.otp);
@@ -45,11 +65,16 @@ router.post('/OtpAuthentication', async (req, res) => {
 })
 
 router.post('/logout', async (req, res) => {
-    const logout = await userlog.logout(req.body.username)
-    res.clearCookie('username');
+    const logout = await userlog.logout(req.cookies.userName)
+    res.clearCookie('userName');
     res.clearCookie('connect.sid');
     req.session.destroy();
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.json(logout)
+
+
 })
 
 router.post('/findUser', async (req, res) => {
@@ -79,7 +104,7 @@ router.post('/vendurelogin' , async (req, res) => {
         req.session.headers=token;
     }
     else { reply = { Verified: false } }
-    res.cookie('username', req.body.Username)
+    res.cookie('username', req.body.userName)
     res.json(reply)
      
 })
@@ -94,24 +119,16 @@ router.post('/login' , async (req, res) => {
         loggedOut: false,
         ip: req.ip
     }
-    const password = controller.encryptPassword(req.body.password)
-    const posted = await userlog.UserLog.updateOne({ sessionId: req.sessionID }, { $set: userlogrecord }, { upsert: true })
-    
-    let  result = await HBank.HumanResource.findOne({$or:[{ email: req.body.Username, password: password,deleted: false },{ contactNumber: req.body.Username, password: req.body.Password,deleted: false }]}, { username: 1, _id: 0,email:1})
      
-    
-    if (result){ result = JSON.stringify(result);}
-    //else result=null;
-     reply = { Verified: false };
-    if (result) {
-        reply = { Verified: true }
-        const token = jwt.sign(JSON.parse(result), 'PassKey', { expiresIn: 10 })  
-        req.session.headers=token;
-          
+    const result =await HBank.verifyUser(req.body);
+     
+    console.log(result) 
+    if (result.verified) {
+        //const token = jwt.sign(JSON.parse(result), 'PassKey', { expiresIn: 30 }) //jwt tocken implemented here 
+        //req.session.headers=token;
     }
-    else { reply = { Verified: false } }
-    res.cookie('username', req.body.Username)
-    res.json(reply)
+    res.cookie('userName', req.body.userName)
+    res.json(result)
      
 })
 router.post('/verifyUsenameWithPassword',async (req,res)=>{

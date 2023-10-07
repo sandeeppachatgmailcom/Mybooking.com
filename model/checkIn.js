@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const db = require('./mongoose');
-const adminController = require('../controller/adminController')
+const controller = require('../controller/adminController')
 const humanBank = require('../model/humanbank')
 
 const Newcheckin = new mongoose.Schema({
@@ -40,7 +40,7 @@ const checkIn = db.model('checkin', Newcheckin);
 
 async function saveCheckin(checkinobj) {
   if (!checkinobj.hrId) {
-    checkinobj.hrId = await adminController.getIndex('humanBank');
+    checkinobj.hrId = await controller.getIndex('humanBank');
     const newCustomer = {
       firstName: checkinobj.firstName,
       contactNumber: checkinobj.contactNumber,
@@ -56,8 +56,8 @@ async function saveCheckin(checkinobj) {
 
 
   }
-  if (!checkinobj.checkinReferance) { checkinobj.checkinReferance = await adminController.getIndex('CHECKIN') }
-  if (!await checkIn.findOne({ checkinReferance: checkinobj.checkinReferance })) { checkinobj.frontDeskTransid = await adminController.getIndex('FRONTID') }
+  if (!checkinobj.checkinReferance) { checkinobj.checkinReferance = await controller.getIndex('CHECKIN') }
+  if (!await checkIn.findOne({ checkinReferance: checkinobj.checkinReferance })) { checkinobj.frontDeskTransid = await controller.getIndex('FRONTID') }
 
   data = {
     frontDeskTransid: checkinobj.frontDeskTransid,
@@ -100,78 +100,34 @@ async function saveCheckin(checkinobj) {
   console.log(result)
   return result;
 }
-async function saveReservation(
-  frontDeskTransid,
-  checkinReferance,
-  reservationNumber,
-  grcNumber,
-  custId,
-  arrivalDate,
-  arrivalTime,
-  depart_Date,
-  departureTime,
-  arrivalFrom,
-  goingTo,
-  Foreigner,
-  FormCNumber,
-  roomId,
-  category,
-  tariff,
-  specialRate,
-  TotalPax,
-  Male,
-  feMale,
-  otherSex,
-  child,
-  adult,
-  specialrequierments,
-  CompanyName,
-  AgentId,
-  CheckinPlan,
-  update,
-  createUser
-) {
-  if (!reservationNumber) { reservationNumber = await adminController.getIndex('RESERVATION') }
-  if (!await checkIn.findOne({ reservationNumber: reservationNumber })) { frontDeskTransid = await adminController.getIndex('FRONTID') }
-
+async function saveReservation(reservationObj) {
+  if (reservationObj.reservationNumber) { reservationObj.reservationNumber = await controller.getIndex('RESERVATION') }
+  if (!await checkIn.findOne({ reservationNumber: reservationObj.reservationNumber })) { reservationObj.frontDeskTransid = await controller.getIndex('FRONTID') }
   data = {
-    frontDeskTransid: frontDeskTransid,
-    checkinReferance: checkinReferance,
-
-    reservationNumber: reservationNumber,
-    grcNumber: grcNumber,
-    custId: custId,
-    arrivalDate: arrivalDate,
-    arrivalTime: arrivalTime,
-    depart_Date: depart_Date,
-    departureTime: departureTime,
-    arrivalFrom: arrivalFrom,
-    goingTo: goingTo,
-    Foreigner: Foreigner,
-    FormCNumber: FormCNumber,
-    roomId: roomId,
-    category: category,
-    tariff: tariff,
-    specialRate: specialRate,
-    TotalPax: TotalPax,
-    Male: Male,
-    feMale: feMale,
-    otherSex: otherSex,
-    child: child,
-    adult: adult,
-    specialrequierments: specialrequierments,
-    CompanyName: CompanyName,
-    AgentId: AgentId,
-    CheckinPlan: CheckinPlan,
+    frontDeskTransid: reservationObj.frontDeskTransid,
+    reservationNumber: reservationObj.reservationNumber,
+    custId: reservationObj.custId,
+    arrivalDate: reservationObj.arrivalDate,
+    arrivalTime: reservationObj.arrivalTime,
+    depart_Date: reservationObj.departureDate,
+    departureTime: reservationObj.departureTime,
+    Foreigner: reservationObj.Foreigner,
+    tariff: reservationObj.rent,
+    specialRate: reservationObj.specialRate,
+    TotalPax: reservationObj.totalGuest,
+    specialrequierments: reservationObj.specialRequest,
+    CompanyName: reservationObj.companyID,
+    CheckinPlan: reservationObj.checkinplan,
     delete: false,
-    update: update,
-    createUser: createUser
+    update: false,
+    createUser: reservationObj.custId
   }
-  let result = await checkIn.updateOne({ checkinReferance: checkinReferance, reservationNumber: reservationNumber }, { $set: data }, { upsert: true })
-  data = result.modifiedCount + result.acknowledged
+
+  let result = await checkIn.updateOne({ reservationNumber: reservationObj.reservationNumber }, { $set: data }, { upsert: true })
+  data = result.modifiedCount + result.acknowledged;
   if (data > 0) { result: { saved: true } }
   else { result: { saved: false } }
-  console.log(result)
+  console.log(data,result)
   return result;
 }
 
@@ -239,19 +195,12 @@ async function getCheckinWithAllDetails(FrontData) {
         }
       }
     ]);
-    console.log(results, 'ChatGpt Results'); // Aggregated data with complete room information and tariff details
+    console.log(results); // Aggregated data with complete room information and tariff details
     return results;
   } catch (error) {
     console.error(error);
   }
 }
-
-
-
-
-
-
-
 
 
 async function loadCheckin(checkinReferance) {

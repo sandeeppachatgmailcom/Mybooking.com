@@ -20,8 +20,5 @@ const clearCache = (req, res, next) => {
     res.setHeader('Expires', '0');
     next();
   };
-  
-
-
-
+ 
 module.exports = {VerifyAccess,clearCache};

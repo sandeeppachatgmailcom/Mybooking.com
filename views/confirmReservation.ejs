@@ -1,0 +1,153 @@
+<%- include('header') %>
+<%- include('MenuBarCustomer') %>
+<div class="container-fluid">
+
+    <div class="container-fluid d-flex">
+        <div class="container-fluid col-2  border border-warning">
+            <div class="container-fluid border m-1 rounded">
+                <small> <%= user.firstName %></small>  <br>
+                <small> <%= user.contactNumber %></small> <br>
+                <small> <%= user.email %></small><br>
+                <small> <%= user.HouseNumber %> <%= user.HouseName %> </small><br>
+                <small> <%= user.StreetName %> <%= user.city %> </small> 
+                <small> <%= user.district %>   </small>
+                <a class="btn  " > Edit-> </a>
+            </div>
+        </div>
+        <div class="container-fluid col-8 d-flex border border-warning">
+         <div class="container-fluid">
+                <div class="container-fluid">
+                    <h3 style="text-transform: uppercase;" ><%= tariffplans[0].tariffName %></h3>
+                <div>
+                    <small ><%= tariffplans[0].Discription %></small>
+                </div>
+                </div>
+                <div class="container-fluid d-flex">
+                    <div class="container-fluid border col-4 rounded justify-content-start">
+                        <br>
+                        <h5 class="text text-primary" style=" text-transform: uppercase;">Booking Details</h5>
+                        <small>Arrival  :<%=BookingSummary.arrivalDate  %>,<%=BookingSummary.arrivalTime  %></small> <br>
+                        <small>Departure: <%=BookingSummary.departureDate  %> , <%=BookingSummary.departureTime  %></small> <br>
+                        <small>Days     :<%=BookingSummary.totalDays  %></small><br>
+                        <small>Guest : <%=BookingSummary.totalGuest  %></small><br>
+                        <small>Rooms :<%=BookingSummary.totalRoom  %></small><br>
+                        
+                </div>
+                <div class="container-fluid border col-4 rounded justify-content-start">
+                        <br>
+                        <h5 class="text text-primary" style=" text-transform: uppercase;">payment break up</h5>
+                        <small>Rent/(2Person) :<%=tariffplans[0].SpecialRent  %>,Extra/person :<%=tariffplans[0].extraPerson  %>/-</small> <br>
+                        <small>Total Rent <%= ((parseInt(BookingSummary.totalDays))* (parseInt(tariffplans[0].SpecialRent))*(parseInt(BookingSummary.totalRoom))) %>/- </small> <br>
+                        <small>Total Extra Person <%= ((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))) %>/- </small> <br>
+                        <small>plan Charge/Extra person </small> <small id="idplanAmountReservation"></small><br>
+                       
+                </div>
+                <div class="container-fluid border col-4 rounded justify-content-start">
+                    <textarea class="bornder rounded w-100" name="specialRequest" placeholder="Special requierment" id="idSpecialRequest" cols="30" rows="5"></textarea>
+                    <small>Estimated Rent (<%=BookingSummary.totalDays %> days :)   
+                        <%=((parseInt(BookingSummary.totalDays))* (parseInt(tariffplans[0].SpecialRent))*(parseInt(BookingSummary.totalRoom)))
+                        +((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))) %>/-
+                        </small>  
+                        <br> 
+                    <h6 style="opacity: 0;" id="idCheckinPlan">Checkin Plan </h6> <br>
+                     <h6>Net Amount Payable </h6> <h6 id="idfinalAmount"></h6><br>
+                     <button class="btn btn-outline-success w-100  " type="button"  onclick="saveReservation(event.target.value )"  value="<%= JSON.stringify(BookingSummary) %> " > PAY & CONFIRM
+                    </button>
+                    
+                </div>
+                
+            </div>
+         
+         </div>
+        </div>
+        
+        <div class="container-fluid col-2 d-flex border border-warning">
+            <div class="container-fluid col-12   border border-warning" id="">
+                <% checkinplan.forEach(element => { %>
+                   
+                        <div class="btn container-fluid border rounded m-1" style="overflow: hidden; ">
+                            <h6 style="text-transform: uppercase;"> <%= element.planName %></h6 > <br>
+                            <div class="container-fluid" id="iddetailedDiscription<%= element.planIndex %>" style="height: 50px; overflow: hidden;">
+                                <a class="text text-primary" onclick="readmoreplan('iddetailedDiscription<%= element.planIndex %>','idtoggleddetailedDiscription<%= element.planIndex %>')" >Plan detail </a> <br> 
+                                   
+                                <small> <%= element.discription %> </small>
+                            </div> 
+                            <div class="container-fluid" id="idtoggleddetailedDiscription<%= element.planIndex %>"   style=" display: none;">
+                                <small> <%= element.discription %> </small>
+                                <a class="text text-primary" onclick="readlesspaln('iddetailedDiscription<%= element.planIndex %>','idtoggleddetailedDiscription<%= element.planIndex %>')">Hide detail</a> <br> 
+                            </div> 
+                            <small> amount <%= element.amount %>/-(for <%= element.maxPax %> person) </small> <br>
+                            <small> additional person <%= element.extraCharge%>/- </small> <br>
+                            <button onclick="CalculateRentWithPlan(event.target.value)" value="<%=element.maxPax%>,<%=element.amount%>,<%=element.extraCharge%>,<%=tariffplans[0].extraPerson%>,<%=BookingSummary.extraPax%>,<%=tariffplans[0].SpecialRent%>,<%=BookingSummary.totalDays%>,<%=BookingSummary.totalRoom%>,<%=BookingSummary.totalGuest  %>,<%= element.planIndex %>" class="btn btn-success">ADD</button>
+                        </div>
+                         
+                <% }) %>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+<%- include('footer') %>
+<script>
+   function readmoreplan(Element,toggleElement){
+    console.log(Element,toggleElement);
+    document.getElementById(Element).style.display='none'
+    document.getElementById(toggleElement).style.display='contents' 
+   } 
+   function readlesspaln(Element,toggleElement){  
+    console.log(Element,toggleElement);
+    document.getElementById(toggleElement).style=null
+    document.getElementById(toggleElement).style.display='none'
+    document.getElementById(Element).style.display=''
+    document.getElementById(Element).style.height='20px'
+    document.getElementById(Element).style.overflow='hidden'
+    console.log(document.getElementById(Element).style);
+   }  
+
+   function CalculateRentWithPlan(input){
+    console.log(input,'input')
+    let temp = input.split(',')
+    
+    const SalesDetails ={
+            planCapacity:parseInt( temp[0]),
+            planAmount:parseInt( temp[1]),
+            planExtraCharge:parseInt( temp[2]),
+            rentExtraCharge:parseInt( temp[3]),
+            rentExtraPersonCount:parseInt( temp[4]),
+            rentSpecialAmount:parseInt( temp[5]),
+            rentTotalDays:parseInt( temp[6]),
+            rentTotalRooms:parseInt( temp[7]),
+            totalOccupancy:parseInt( temp[8]),
+            planIndex:temp[9]
+    }
+    const rent = SalesDetails.rentTotalRooms*SalesDetails.rentTotalDays*SalesDetails.rentSpecialAmount;
+    const rentExtraPax = SalesDetails.rentExtraPersonCount*SalesDetails.rentExtraCharge*SalesDetails.rentTotalDays;
+    const planExtraPax= SalesDetails.totalOccupancy- (SalesDetails.planCapacity*SalesDetails.rentTotalRooms)
+    const planCharge = SalesDetails.planAmount*SalesDetails.rentTotalRooms;
+    let planExtraCharge = planExtraPax* SalesDetails.planExtraCharge;
+    if(planExtraCharge<0) planExtraCharge=0;
+    const TotalAmount = rent+rentExtraPax+planCharge+planExtraCharge;
+    console.log(SalesDetails)
+    console.log('rent',rent,'rentExtraPax', rentExtraPax ,'planCharge',planCharge,'planExtraCharge', planExtraCharge ,'total',TotalAmount)
+    document.getElementById('idplanAmountReservation').innerText = planCharge+planExtraCharge+'/-';
+    document.getElementById('idfinalAmount').innerText = TotalAmount +'/-';
+    document.getElementById("idCheckinPlan").innerText =  SalesDetails.planIndex;
+    
+}
+async function saveReservation(bookingDetails){
+    let data = JSON.parse(bookingDetails)
+    data.checkinplan= document.getElementById("idCheckinPlan").innerText
+    data.totalAmount = document.getElementById('idfinalAmount').innerText
+    data.specialRequest = document.getElementById("idSpecialRequest").value;
+     console.log(data)
+     const result =await fetch('/reservation/savereservation',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+     .then(res=>{
+        return res.json()
+     })
+     .catch(err=>{
+        console.log(err)
+     })
+     console.log(result);
+}   
+</script>

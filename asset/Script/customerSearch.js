@@ -260,7 +260,7 @@ function readmore() {
       BudgetEnd:document.getElementById("idBudgetEnd").value,
       SelectTariff:document.getElementById("idSelectTariff").value
     }
-    const result = await fetch('/custom/loadHotelDetails',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+  const result = await fetch('/custom/loadHotelDetails',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
   .then(res=>{
     return res.json()
   }).catch(err=>{
@@ -316,66 +316,107 @@ else {
 }
 
   
-  innerhtml+=` <div class="card" p-2 style="width: 21rem; ">
+  innerhtml+=`<div class="card" p-2 style="width: 21rem; ">
+  <form action="/custom/viewReservation" method="post">
+      <div onClick="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}', ${diffDays})"
+          class="card-body ${bodycolorclass}">
   
-    <div onClick="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}', ${diffDays})" class="card-body ${bodycolorclass}">
+          <h6 style="text-transform: uppercase;" class="card-title">${i.tariffName} : ${i.SpecialRent}/-
+              <small>(2pax)</small> <small > Extra pax:${i.extraPerson}/-</small> </h6>
+          <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="roomCategoryID">
+              <option value="0">none</option>
+  
+          </select>
+          <div class="d-flex">
+              </button>
+          </div>
+          <h4   class="card-title ">Total Amount:<small id="idTotalamount${i.tariffIndex}"> </small> </h4>
+          <div style="height: 80px; wrap:nowrap ; overflow-y: scroll">
+              <p class="card-text">${i.Discription}</p>
+          </div>
+          <div class="continer-flex">
+              <div class="input-group d-flex ">
+                  <div class="input-group-prepend col-4  ">
+                      <span class="input-group-text col-12" id="basic-addon1"> Room</span>
+                  </div>
+                  <input type="Number" name="roomCount" value="${parseInt(data.RoomCount)}"
+                      onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
+                      id="idTotalRoomReq${i.tariffIndex}" class="form-control" placeholder="Username"
+                      aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group d-flex ">
+                  <div class="input-group-prepend col-4  ">
+                      <span  class="input-group-text col-12" id="basic-addon1"> Guest</span>
+                  </div>
+                  <input name="guestCount" type="Number" value="${parseInt(data.GuestCount)}"
+                      onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
+                      class="form-control" id="idTotalGuestOccs${i.tariffIndex}" placeholder="Username"
+                      aria-label="Username" aria-describedby="basic-addon1">
+              </div>
     
-      <h6 style="text-transform: uppercase;" class="card-title">${i.tariffName} : ${i.SpecialRent}/- <small>(2pax)</small> <small> Extra pax:${i.extraPerson}/-</small> </h6>
-          <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="nmroomCategoryID">
-          <option value="0">none</option>
-          
-        </select>
-      <div  class="d-flex">
-      </button>
+              <div class="input-group d-flex ">
+                  <div class="input-group-prepend col-4 ">
+                      <span class="input-group-text col-12" id="basic-addon1">Days </span>
+                  </div>
+                  <input type="Number" class="form-control" readOnly="true"
+                      onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
+                      value="${diffDays}" id="iddaycount${i.tariffIndex}" placeholder="Username" aria-label="Username"
+                      aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group d-flex ">
+                  <div class="input-group-prepend col-4  ">
+                      <span class="input-group-text col-12" id="basic-addon1">arrival </span>
+                  </div>
+                  <input type="datetime-local" onChange="updateCustommerDays('${i.tariffIndex}')" class="form-control"
+                      readOnly="true" id="idarrivaldate${i.tariffIndex}" value="${data.StartDate}" placeholder="Username"
+                      aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group d-flex ">
+                  <div class="input-group-prepend col-4  ">
+                      <span class="input-group-text col-12" id="basic-addon1">Depart </span>
+                  </div>
+                  <input type="datetime-local" class="form-control" onChange="updateCustommerDays('${i.tariffIndex}')"
+                      readOnly="true" id="idDepartureDate${i.tariffIndex}" value="${data.EndDate}" placeholder="Username"
+                      aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+          </div>
+          <button class="btn btn-success" name="bookingDetails" onClick="saveReservation(event.target.value)"
+              value="${result.CompanyID},${i.tariffIndex},${data.StartDate},${data.EndDate},${diffDays}"
+              type="submit">Book Now </button>
       </div>
-      <h4 class="card-title " >Total Amount:<small id="idTotalamount${i.tariffIndex}" > </small> </h4>
-      <div style="height: 80px; wrap:nowrap ; overflow-y: scroll">
-      <p class="card-text">${i.Discription}</p>
-      </div> 
-       <div class="continer-flex">
-       <div class="input-group d-flex ">
-        <div class="input-group-prepend col-4  ">
-          <span class="input-group-text col-12" id="basic-addon1">  Room</span>
-        </div>
-       <input type="Number" value="${parseInt(data.RoomCount)}" onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"  id="idTotalRoomReq${i.tariffIndex}" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-     </div>
-     <div class="input-group d-flex ">
-        <div class="input-group-prepend col-4  ">
-          <span class="input-group-text col-12" id="basic-addon1"> Guest</span>
-        </div>
-       <input type="Number" value="${parseInt(data.GuestCount)}" onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')" class="form-control" id="idTotalGuestOccs${i.tariffIndex}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-     </div>
-     <div class="input-group d-flex ">
-        <div class="input-group-prepend col-4 ">
-          <span class="input-group-text col-12" id="basic-addon1">Days </span>
-        </div>
-       <input type="Number" class="form-control"   onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')" value="${diffDays}" id="iddaycount${i.tariffIndex}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-     </div>
-     <div class="input-group d-flex ">
-        <div class="input-group-prepend col-4  ">
-          <span class="input-group-text col-12" id="basic-addon1">arrival </span>
-        </div>
-       <input type="datetime-local" onChange="updateCustommerDays('${i.tariffIndex}')" class="form-control" readOnly="true" id="idarrivaldate${i.tariffIndex}" value="${data.StartDate}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-     </div>
-     <div class="input-group d-flex ">
-        <div class="input-group-prepend col-4  ">
-          <span class="input-group-text col-12" id="basic-addon1">Depart  </span>
-        </div>
-       <input type="datetime-local" class="form-control" onChange="updateCustommerDays('${i.tariffIndex}')" readOnly="true"  id="idDepartureDate${i.tariffIndex}" value="${data.EndDate}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-     </div>
-       </div>
-      <button class="btn btn-success" name="bookingDetails"  value="${result.CompanyID},${i.tariffIndex}"  type="button" onclick="saveBooking(event.target.value)">Book Now </button>
-      
-    </div>
-    </div>`
+  </form>
+  </div>`
     
   document.getElementById("idTariffDetails").innerHTML =  masterhtml;
   document.getElementById("idprinttariffcard").innerHTML =  innerhtml;
   
+  document.getElementById("idCheckinPlan").innerHTML =''
   }
   
    
   }
+function checkinPlan(){
+
+}
+async function confirmReservation(inputString){
+
+    let temp = inputString.split(",")
+    console.log(temp);
+    const data ={
+    reservationNumber:'',
+    hrId: '',
+    companID: temp[0],
+    arrivalDate:temp[2],
+    depart_Date:temp[3],
+    tariff:temp[1],
+    specialRate:document.getElementById(),value,
+    TotalPax:document.getElementById(),value,
+    specialrequierments:document.getElementById(),value,
+    CheckinPlan:document.getElementById(),value,
+}
+  console.log(data); 
+  }
+
 
  function calculateTotal(SpecialRent,extraPax,tariffcode){
   const totalPax =parseInt(document.getElementById("idTotalGuestOccs"+tariffcode).value);
@@ -420,30 +461,3 @@ function updateCustommerDays (tariffCode){
 }
 
 
-  async function loadDateWiseBooking(credential){
-     
-    let  temp = credential.split(',') ; 
-    const data = {
-      StartDate:document.getElementById("idStartDate").value,
-      EndDate:document.getElementById("idEndDate").value,
-      hotelId:temp[0],
-      district:document.getElementById("idDitrictName").value,
-      GuestCount:document.getElementById("idGuestCount").value,
-      RoomCount:document.getElementById("idRoomCount").value,
-      BudgetFrom:document.getElementById("idBudgetFrom").value,
-      BudgetEnd:document.getElementById("idBudgetEnd").value,
-      SelectTariff:temp[1],
-      loggeduser:document.getElementById("idloggedusermenubar").textContent
-    }
-    const result = await fetch('/custom/confirmBooking',{method:'post',headers:{"Content-Type":"application/json"},body:JSON.stringify(data)})
-    .then((res)=>{
-      return res.json()
-    })
-    .catch((err)=>{
-      console.log(err)
-    })}
-
-     async function saveBooking(this){
-      const result = document.cookie.split(';')
-      console.log(result);
-    }

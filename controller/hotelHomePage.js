@@ -19,11 +19,10 @@ router.post('/loadhomepage', async (req, res) => {
       ip: req.ip,
     };
      
-
+    req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)   
 
-    const user = await HBank.HumanResource.findOne({  email: req.body.userName, deleted: false });
-    console.log(req.body,result,user,'Active user')
+    const user = await HBank.HumanResource.findOne({  activeSession: req.sessionID, deleted: false });
     if(user){
       const profile = await companies.company.findOne({email:req.body.userName});
       const activtariff = await tariff.loadtariff('');

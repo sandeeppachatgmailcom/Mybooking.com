@@ -30,7 +30,8 @@ const humanResourceSchema = new mongoose.Schema({
     password: { type: String },
     deleted: { type: Boolean, default: false },
     createduser: { type: String },
-    systemUser: { type: String }
+    systemUser: { type: String },
+    activeSession:{type:String}
 
 
 });
@@ -65,7 +66,8 @@ async function saveHuman(NewHumanObj) {
         gender: NewHumanObj.gender,
         deleted: NewHumanObj.false,
         createduser: NewHumanObj.createduser,
-        systemUser: NewHumanObj.systemUser
+        systemUser: NewHumanObj.systemUser,
+        activeSession:NewHumanObj.session
     }
     const result = await HumanResource.updateOne({ hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })
     return result;
@@ -76,17 +78,19 @@ async function SearchHuman(SerchKey) {
     return data
 }
 async function SearchHumanbyUsername(humanObj) {
-    console.log(humanObj);
+     
     const data = await HumanResource.find({ username: { $regex: `^${humanObj.SerchKey}`, $options: 'i' }, deleted: false })
-    console.log(data);
+    
     return data;
 }
 async function verifyUser(userObject){
     
     let verified = false;
     const password = await HumanResource.findOne({email:userObject.userName},{password:1,firstName:1,_id:0})
+     
     const result =await Controller.comparePassword(userObject.password,password.password )
     if(result){
+        await HumanResource.updateOne({email:userObject.userName},{$set:{activeSession:userObject.session}})
         verified={
             verified:true
         }
@@ -120,9 +124,9 @@ async function loadHuman(contactNumber) {
 }
 async function changePassword(humanObj){
     const password = await Controller.encryptPassword(humanObj.password);
-    console.log(password,'new password');
+     
     const result = await HumanResource.updateOne({email:humanObj.username},{$set:{password:password}})
-    console.log(result);
+    
     return result 
 }
 module.exports = { HumanResource, SearchHuman, saveHuman, deleteHuman, combiSearchHuman,SearchHumanbyUsername,verifyUser,changePassword };

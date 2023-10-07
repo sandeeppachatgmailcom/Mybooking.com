@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const db = require('./mongoose'); // Ensure the correct path to your mongoose connection setup
-const admin = require('../controller/adminController');
 const  loadtariff  = require('./tariff');
 const controller = require('../controller/adminController')
 const checkinPlans =require('../model/planMaster')
@@ -62,7 +61,7 @@ const NewCompany = new mongoose.Schema({
 const  company = db.model('Company',NewCompany);
 
 async function saveCompany(objcompany) {
-    if (!objcompany.CompanyID) { objcompany.CompanyID = await admin.getIndex('COMPANY') }
+    if (!objcompany.CompanyID) { objcompany.CompanyID = await controller.getIndex('COMPANY') }
 
     
     if(objcompany.imagearray[0]=="http://localhost:5200/Images/"){objcompany.imagearray[0] =await company.findOne({ CompanyID: objcompany.CompanyID }, { image1: 1, _id: 0 })}

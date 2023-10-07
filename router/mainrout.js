@@ -19,6 +19,7 @@ const tariffs = require('../model/tariff')
 const customSearch = require('../controller/custommerSeach')
 const hotelshomePage = require('../controller/hotelHomePage')
 const clearCache = require('../middleware/userAccess')
+const reservation = require('../controller/reservation')
 router.use(clearCache.clearCache);
 router.get('/' ,async (req, res) => {
     try {
@@ -59,5 +60,6 @@ router.use('/DocumentUpload',verifyAccess.VerifyAccess,DocumentUpload)
 router.use('/Company',verifyAccess.VerifyAccess,company)
 router.use('/custom',verifyAccess.VerifyAccess,customSearch)
 router.use('/vedurehomepage',verifyAccess.VerifyAccess,hotelshomePage)
+router.use('/reservation',verifyAccess.VerifyAccess,reservation)
 
 module.exports=router;

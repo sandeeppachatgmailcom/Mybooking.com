@@ -27,6 +27,7 @@ router.get('/human',async(req,res)=>{
     res.render('human',{data});
 })
 router.post('/SaveHuman',async (req,res)=>{
+    req.body.session=req.sessionID;
     let result =await HBank.saveHuman(req.body) ;
     if((result.modifiedCount + result.upsertedCount)>0){result = {saved:true}}
     else {result={saved:false}}

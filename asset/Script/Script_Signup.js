@@ -377,7 +377,7 @@ async function verifyandupdate() {
     let user=true;
     let password=true;;
 
-     setTimeout(async () => { email =  await verifyEmail('Signup_Email_text') }, 50);
+     setTimeout(async () => { email =  await verifyEmail('Signup_Email_text','Signup_Email_Bt') }, 50);
      setTimeout(async () => { phone =await verifyphone('Signup_Email_Phone') }, 150);
      setTimeout(async() => { user = await verifyUser('Signup_User_Name') }, 250);
      setTimeout(async() => {

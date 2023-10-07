@@ -1,4 +1,4 @@
-const DBcollections = require('../model/DBcollections');
+const DBcollections = require('../model/dbcollections');
 const bcrypt = require('bcrypt')
 
 
@@ -20,18 +20,18 @@ async function comparePassword(newPassword,hashedPassword) {
         throw err; // You can choose to handle or rethrow the error here
     }
 }
-
+    
+async function getIndex(CollName) {
+    console.log('reached get index');
+    let result = await DBcollections.ReferenceIndex.findOne({ tableName: CollName });
+    await DBcollections.ReferenceIndex.updateOne({ tableName: CollName }, { $inc: { nextIndex: 1 } })
+    const serialnumber = result.prefix + result.nextIndex;
+    return serialnumber;
+}
      
+
     
-    async function getIndex(CollName) {
-        let result = await DBcollections.ReferenceIndex.findOne({ tableName: CollName });
-        await DBcollections.ReferenceIndex.updateOne({ tableName: CollName }, { $inc: { nextIndex: 1 } })
-        const serialnumber = result.prefix + result.nextIndex;
-        
-        return serialnumber;
-    }
-    
-    function convertToCustomFormat(inputDateTime) {
+function convertToCustomFormat(inputDateTime) {
         // Create a Date object from the input date-time string
         const dateObject = new Date(inputDateTime);
     
@@ -49,6 +49,44 @@ async function comparePassword(newPassword,hashedPassword) {
         const formattedDateTime = `${day}-${month}-${year},${hours}-${minutes}-${seconds}`;
     
         return formattedDateTime;
-    }
+}
  
-    module.exports = {getIndex,convertToCustomFormat,encryptPassword,comparePassword}
+    
+function formatDate(inputDate) {
+        const parts = inputDate.split('-'); // Split the input string by '-'
+        
+        if (parts.length === 3) {
+            const yyyy = parts[0];
+            const mm = parts[1];
+            const dd = parts[2];
+            
+            // Rearrange the parts into 'dd-mm-yyyy' format
+            const formattedDate = `${dd}-${mm}-${yyyy}`;
+            
+            return formattedDate;
+        } else {
+            // Handle invalid input gracefully
+            return 'Invalid Date';
+        }
+}
+
+ 
+function calculateDays(startDate,endDate){
+    const graceHours = .5;
+    let temp = startDate.split('T');
+    const fromdate =new Date(temp[0]);
+    let  arrivalTime = temp[1].split(':')
+    temp = endDate.split('T');
+    const todate = new Date(temp[0]);
+    let  deptTime = temp[1].split(':')
+    const days =todate-fromdate;
+    let diffDays = Math.ceil(days / (1000 * 60 * 60 * 24)); 
+    deptTime = ((parseInt(deptTime[0])*60)+(parseInt(deptTime[1])))/60 
+    arrivalTime = ((parseInt(arrivalTime[0])*60)+(parseInt(arrivalTime[1])))/60
+    const timeDiff = deptTime - arrivalTime ;
+    if(timeDiff>graceHours) diffDays++; 
+    console.log(arrivalTime ,deptTime,timeDiff.toFixed(2), diffDays.toFixed(2),'total days')
+    return diffDays;
+}
+
+module.exports = { convertToCustomFormat,encryptPassword,comparePassword,formatDate,calculateDays}

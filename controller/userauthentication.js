@@ -12,8 +12,10 @@ const jwt = require("jsonwebtoken")
 const pincode = require('../model/pincode')
 const companies = require('../model/company')
 const controller = require('../controller/adminController')
-
- 
+const tariffs = require('../model/tariff')
+const nodeMailer = require('nodemailer')
+const randomString = require('randomstring') 
+const validation = require('../model/otpvalidation')
 async function findUser(sessionID) {
     const activeUser = await ActiveID.UserLog.findOne({ sessionId: sessionID, loggedOut: false }, { username: 1, _id: 0 })
     
@@ -35,23 +37,31 @@ async function userSessionAuthentication(sessionID, username, password) {
     }
 }
 router.post('/custLogin',async (req,res)=>{
-    const userlogrecord = {
-        username: req.body.Username,
-        sessionId: req.sessionID,  
-        folder: req.path, 
-        method: req.method,
-        loggedOut: false,
-        ip: req.ip
-    }
-    const result =await HBank.verifyUser(req.body)
+    req.body.session = req.sessionID;
+    const verified =await HBank.verifyUser(req.body)
     const user={
-        firstName:result.firstName,
-        Username:req.body.Username
+        firstName:verified.user,
+        
     }
-    if (result.verified){
-        res.cookie('username',req.body.Username)
+    if (verified.verified){
+        res.cookie('username',verified.user)
     }
-    res.json(result)
+    req.body.ditrictName='';
+    req.body.roomCategoryID='';
+    req.body.budgetStart=0;
+    req.body.budgetEnd=30000;
+    const generalData = await companies.SearchCompany('')
+    const tariff = await tariffs.loadtariff('')
+    let district = new Set();
+    const inputData = req.body;
+    const pincode = generalData.forEach(element => {
+        district.add(element.district )
+    });
+     const result =await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false,
+     "roomtypes.tariffIndex": { $regex: `^${req.body.roomCategoryID}`, $options: 'i' },
+     "roomtypes.SpecialRent":{$gte:req.body.budgetStart},
+     "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
+    res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
 })
 
 router.post('/OtpAuthentication', async (req, res) => {
@@ -66,6 +76,8 @@ router.post('/OtpAuthentication', async (req, res) => {
 
 router.post('/logout', async (req, res) => {
     const logout = await userlog.logout(req.cookies.userName)
+    await HBank.HumanResource.updateOne({activeSession:req.sessionID},{$set:{activeSession:null}})
+    res.clearCookie('username');
     res.clearCookie('userName');
     res.clearCookie('connect.sid');
     req.session.destroy();
@@ -119,10 +131,10 @@ router.post('/login' , async (req, res) => {
         loggedOut: false,
         ip: req.ip
     }
-     
+    req.body.session = req.sessionID; 
     const result =await HBank.verifyUser(req.body);
      
-    console.log(result) 
+     
     if (result.verified) {
         //const token = jwt.sign(JSON.parse(result), 'PassKey', { expiresIn: 30 }) //jwt tocken implemented here 
         //req.session.headers=token;
@@ -132,13 +144,14 @@ router.post('/login' , async (req, res) => {
      
 })
 router.post('/verifyUsenameWithPassword',async (req,res)=>{
+    req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)
     res.json(result)
 })
 
 router.post('/changePassword',async (req,res)=>{
     const result =await HBank.changePassword(req.body);
-    console.log(result,'update reesult');
+     
     let responseData = false;
      if(result){
          responseData= {updated:true} 
@@ -204,16 +217,16 @@ router.post('/VerifyEmail',async(req,res)=>{
  })
      
 router.post('/signup',async (req, res) => {
-    
+   
     try {
-        let transporter = nodeMailer.createTransport({
+        let transporter =await nodeMailer.createTransport({
             service: "gmail",
             auth: {
                 user: 'sandeeppachat@gmail.com',
                 pass: 'gitd fmxg ssed djmu'
             }
         })
-        const otp = randomString.generate({
+        const otp =await randomString.generate({
             length: 6,
             charset: 'numeric',
         });
@@ -224,6 +237,7 @@ router.post('/signup',async (req, res) => {
             subject: 'OTP Verification Code',
             text: `Your OTP is: ${otp}`,
         };
+   
         const resultotp = await validation.Otp.updateOne({authorisationname:req.body.email},{$set:{sessionId:req.sessionID,authorisationname:req.body.email,otp:otp,verified:false}},{upsert:true} )
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -233,9 +247,9 @@ router.post('/signup',async (req, res) => {
             }
         });
 
-
-        const hrid = await getIndex('humanBank');
-        const hashedPassword = await encryptPassword( req.body.password) 
+        
+        const hrid = await controller.getIndex('humanBank');
+        const hashedPassword = await controller.encryptPassword(req.body.password) 
         const newUser = {  
             hrId: hrid,
             firstName: req.body.firstName,
@@ -249,9 +263,9 @@ router.post('/signup',async (req, res) => {
             isloggedIn: req.body.isLoggedIn,
             deleted:false
         } 
-            
+        console.log('reachd backend');    
         let saved = await HBank.HumanResource.updateOne({hrId: hrid},{$set:newUser},{upsert:true}) 
-            
+        console.log(newUser)    
         let result ;
         if((saved.upsertedCount+saved.modifiedCount)>0){
             result={saved: true};

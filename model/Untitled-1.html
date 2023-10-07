@@ -1,116 +1,78 @@
- 
-                <div
-                style="  margin-top: 0%;border-radius: 10px; border: 5px solid rgba(255, 255, 255, 0.268);      background-color: rgba(65, 90, 69, 0.762) ; height: 100%;">
-                <div class="input-group  position-absolute d-flex ">
-                    <!-- Main Search box Start here -->
-                    <div class=" d-flex mb-3">
-                        <div class="d-flex   "
-                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                            <button class="btn d-flex">
-                                <h5 class="  text-light ">Location </h5>
-                                <select name="ditrictName" type="text"
-                                    data-hotels="<%= JSON.stringify(generalData) %>" name="SearchText"
-                                    class="   SearchTextBox text-light fw-lighter" id="idSearchText"
-                                    onchange="loadHotel(event.target.value,'' ), loadSearchResult()">
-                                    <option style="background-color: rgba(36, 74, 36, 0.777); height: 100px;"
-                                        class="col-12 SearchTextBox text-light fw-LIGHTER" value="">All the Space we
-                                        have
-                                    </option>
-                                    <% district.forEach(element=> { %>
-                                        <option style="background-color: rgba(36, 74, 36, 0.86); height: 100px;"
-                                            class="col-12 SearchTextBox text-light fw-LIGHTER"
-                                            value="<%= element  %>">
-                                            <%= element %>
-                                        </option>
-                                        <% }) %>
-
-                                </select>
-                            </button>
-                        </div>
-
-                        <div class="d-flex justify-content-center   "
-                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                            <button type="button" class="input-group-text text-light btn"
-                                style="background-color: transparent;" id="iDServiceImages1btn2">Check-in</button>
-                            <input name="CheckinDate" id="idStartDate" type="datetime-local"
-                                class="text-light SearchTextBox ">
-                        </div>
-
-                        <div class="d-flex  justify-content-between  "
-                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                            <button type="button" class="input-group-text text-light btn "
-                                style="background-color: transparent;" id=" iDServiceImages1btn2">Check-out
-                            </button>
-                            <input id="idEndDate" type="datetime-local" name=" CheckoutDate"
-                                class="text-light  SearchTextBox">
-                        </div>
-
-                        <div class="d-flex   "
-                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                            <button type="button" class="input-group-text text-light btn"
-                                style="background-color: transparent;" id=" iDServiceImages1btn2">GUEST</button>
-                            <input id="idGuestCount" type="number" name="GuestCount"
-                                class="text-light    SearchTextBox">
-                        </div>
-                        <div class="d-flex   "
-                            style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                            <button type="button" class="input-group-text text-light btn "
-                                style="background-color: transparent;" id=" iDServiceImages1btn2">ROOMS </button>
-                            <input id="idRoomCount" type="number" name="roomCount"
-                                class="text-light   SearchTextBox">
-                        </div>
-
-
-                    </div>
-                    <!-- Main Search box Ends here -->
-                </div>
-
-
-                <br>
-
-                <br>
-                <br>
-
-                <div class=" d-flex input-group">
-                    <div class="d-flex m-1 "
-                        style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                        <button type="button" class="input-group-text text-light btn " name="budgetStart"
-                            id="iDServiceImages1btn2"> Minimum
-                            budget</button>
-                        <input id="idBudgetFrom" style="background-color:rgba(36, 74, 36, 0);" type="number"
-                            onchange="loadSearchResult()" name="budgetEnd" class="text-light SearchTextBox">
-                    </div>
-
-                    <div class="d-flex m-1 "
-                        style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                        <input id="idBudgetEnd" style="background-color:rgba(36, 74, 36, 0);" type="number"
-                            onchange="loadSearchResult()" name="" class="text-light  SearchTextBox">
-                        <button type="button" class="input-group-text text-light btn" id=" iDServiceImages1btn2">
-                            <Main> Maximum Limit </Main>
-                        </button>
-
-                    </div>
-
-
-                    <div class="d-flex m-1 col-3 "
-                        style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
-                        <button type="button" class="input-group-text text-light btn " id=" iDServiceImages1btn2">
-                            category</button>
-                        <select id="idSelectTariff" class="input-group-text text-light btn col-12"
-                            name="roomCategoryID">
-                            <option value="">All</option>
-                            <% tariff.forEach(item=> { %>
-                                <option class="btn col-12 " style="background-color:rgba(36, 74, 36, 0.196); "
-                                    value=" <%=item.tariffIndex %>">
-                                    <%= item.tariffName %>
-                                </option>
-                                <% }) %>
-
-                        </select>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn text-light btn-secondary "> LOAD </button>
-                    </div>
-                </div>
-
+<div class="card" p-2 style="width: 21rem; ">
+    <form action="/custom/viewReservation" method="post">
+        <div onClick="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}', ${diffDays})"
+            class="card-body ${bodycolorclass}">
+    
+            <h6 style="text-transform: uppercase;" class="card-title">${i.tariffName} : ${i.SpecialRent}/-
+                <small>(2pax)</small> <small > Extra pax:${i.extraPerson}/-</small> </h6>
+            <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="nmroomCategoryID">
+                <option value="0">none</option>
+    
+            </select>
+            <div class="d-flex">
+                </button>
             </div>
+            <h4   class="card-title ">Total Amount:<small id="idTotalamount${i.tariffIndex}"> </small> </h4>
+            <div style="height: 80px; wrap:nowrap ; overflow-y: scroll">
+                <p class="card-text">${i.Discription}</p>
+            </div>
+            <div class="continer-flex">
+                <div class="input-group d-flex ">
+                    <div class="input-group-prepend col-4  ">
+                        <span class="input-group-text col-12" id="basic-addon1"> Room</span>
+                    </div>
+                    <input type="Number" name="roomCount" value="${parseInt(data.RoomCount)}"
+                        onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
+                        id="idTotalRoomReq${i.tariffIndex}" class="form-control" placeholder="Username"
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group d-flex ">
+                    <div class="input-group-prepend col-4  ">
+                        <span  class="input-group-text col-12" id="basic-addon1"> Guest</span>
+                    </div>
+                    <input name="guestCount" type="Number" value="${parseInt(data.GuestCount)}"
+                        onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
+                        class="form-control" id="idTotalGuestOccs${i.tariffIndex}" placeholder="Username"
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+    
+                <div class="input-group d-flex ">
+                    <div class="input-group-prepend col-4  ">
+                        <span class="input-group-text col-12" id="basic-addon1"> PLAN</span>
+                    </div>
+                    <select id="idCheckinPlan">
+                    </select>
+                </div>
+    
+                <div class="input-group d-flex ">
+                    <div class="input-group-prepend col-4 ">
+                        <span class="input-group-text col-12" id="basic-addon1">Days </span>
+                    </div>
+                    <input type="Number" class="form-control" readOnly="true"
+                        onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
+                        value="${diffDays}" id="iddaycount${i.tariffIndex}" placeholder="Username" aria-label="Username"
+                        aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group d-flex ">
+                    <div class="input-group-prepend col-4  ">
+                        <span class="input-group-text col-12" id="basic-addon1">arrival </span>
+                    </div>
+                    <input type="datetime-local" onChange="updateCustommerDays('${i.tariffIndex}')" class="form-control"
+                        readOnly="true" id="idarrivaldate${i.tariffIndex}" value="${data.StartDate}" placeholder="Username"
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group d-flex ">
+                    <div class="input-group-prepend col-4  ">
+                        <span class="input-group-text col-12" id="basic-addon1">Depart </span>
+                    </div>
+                    <input type="datetime-local" class="form-control" onChange="updateCustommerDays('${i.tariffIndex}')"
+                        readOnly="true" id="idDepartureDate${i.tariffIndex}" value="${data.EndDate}" placeholder="Username"
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <button class="btn btn-success" name="bookingDetails" onClick="saveReservation(event.target.value)"
+                value="${result.CompanyID},${i.tariffIndex},${data.StartDate},${data.EndDate},${diffDays}"
+                type="submit">Book Now </button>
+        </div>
+    </form>
+    </div>

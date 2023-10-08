@@ -63,25 +63,46 @@ return [debitEntry,creditEntry];
 }
 
 
-async function receivePayment(reqobj){
+async function MakeCreditEntry(reqobj){
+    reqobj.bookName =reqobj.accountHead
+if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherNumber(reqobj)
     if(!reqobj.paymentIndex) reqobj.paymentIndex = await controller.getIndex('PAYMENT') 
-    const data = { 
+    const crediData = { 
         transDate : reqobj.transDate ,
         paymentDate : reqobj.paymentDate ,
         paymentIndex : reqobj.paymentIndex ,
-        paymentReferance : reqobj.paymentReferance ,
+        paymentReferance : reqobj.paymentReferance,
+        voucherNumber:reqobj.voucherNumber,
         accountHead : reqobj.accountHead ,
-        debit : reqobj.debit ,
-        credit : reqobj.credit ,
+        debit : reqobj.amount ,
+        entryType:'Cr',
+        credit : 0,
         custommerId : reqobj.custommerId ,
         companyID : reqobj.companyID ,
         cancelled : reqobj.cancelled ,
         createdUser : reqobj.createdUser 
     }
+    const  debitData= { 
+        transDate : reqobj.transDate ,
+        paymentDate : reqobj.paymentDate ,
+        paymentIndex : reqobj.paymentIndex ,
+        paymentReferance : reqobj.paymentReferance,
+        accountHead :reqobj.custommerId  ,
+        voucherNumber:reqobj.voucherNumber,
+        debit :0 ,
+        entryType:'Dr',
+        credit : reqobj.amount ,
+        custommerId :  reqobj.accountHead ,
+        companyID : reqobj.companyID ,
+        cancelled : reqobj.cancelled ,
+        createdUser : reqobj.createdUser 
+    }
     
-    const result = await payment.updateOne({paymentIndex:reqobj.paymentIndex},{$set:data},{upsert:true})
-    return result;
+    const debitEntry = await payment.updateOne({voucherNumber:reqobj.voucherNumber,companyID : reqobj.companyID,entryType:'Dr' },{$set:debitData},{upsert:true})
+    const creditEntry = await payment.updateOne({voucherNumber:reqobj.voucherNumber,companyID : reqobj.companyID,entryType:'Cr'},{$set:crediData},{upsert:true})
+    return [debitEntry,creditEntry];
+     
     
     
     }
-module.exports = {payment,MakeEntry,receivePayment}  	
+module.exports = {payment,MakeEntry,MakeCreditEntry}  	

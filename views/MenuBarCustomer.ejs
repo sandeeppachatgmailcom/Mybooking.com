@@ -21,7 +21,20 @@
         <li class="nav-item"><a class="nav-link" href="/authenticate/signup">Signup</a></li>
         <button id="idloggedusermenubar" value="" class="btn"  ></button>
             <% if (user.firstName) { %>
-         <button id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="btn btn-success bi bi-power" ><%=user.firstName%></button>
+              <!-- Example single danger button -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%=user.firstName%>
+                          </button>
+                          <div class="dropdown-menu btn  border-0 ">
+                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-house-up-fill w-100 h-100" href="#">profile </a>
+                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-house-up-fill w-100 h-100" href="#">Home </a>
+                            <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-power w-100 h-100" href="#">logout</a>
+                            
+                             
+                          </div>
+                        </div>
+     
         
         <% } else { %>
           <li class="nav-item"><button type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#exampleModal"

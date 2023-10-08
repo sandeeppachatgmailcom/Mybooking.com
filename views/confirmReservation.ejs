@@ -54,7 +54,8 @@
                         </small>  
                         <br> 
                     <h6 style="opacity: 0;" id="idCheckinPlan">Checkin Plan </h6> <br>
-                     <h6>Net Amount Payable </h6> <h6 id="idfinalAmount"></h6><br>
+                     <h6>Net Amount Payable </h6> <h6 id="idfinalAmount"> <%=((parseInt(BookingSummary.totalDays))* (parseInt(tariffplans[0].SpecialRent))*(parseInt(BookingSummary.totalRoom)))
+                      +((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))) %></h6><br>
                      <button class="btn btn-outline-success w-100  " type="button"  onclick="saveReservation(event.target.value )"  value="<%= JSON.stringify(BookingSummary) %> " > PAY & CONFIRM
                     </button>
                     
@@ -97,22 +98,22 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
    function readmoreplan(Element,toggleElement){
-    console.log(Element,toggleElement);
+     
     document.getElementById(Element).style.display='none'
     document.getElementById(toggleElement).style.display='contents' 
    } 
    function readlesspaln(Element,toggleElement){  
-    console.log(Element,toggleElement);
+     
     document.getElementById(toggleElement).style=null
     document.getElementById(toggleElement).style.display='none'
     document.getElementById(Element).style.display=''
     document.getElementById(Element).style.height='20px'
     document.getElementById(Element).style.overflow='hidden'
-    console.log(document.getElementById(Element).style);
+     
    }  
 
    function CalculateRentWithPlan(input){
-    console.log(input,'input')
+     
     let temp = input.split(',')
     
     const SalesDetails ={
@@ -134,8 +135,8 @@
     let planExtraCharge = planExtraPax* SalesDetails.planExtraCharge;
     if(planExtraCharge<0) planExtraCharge=0;
     const TotalAmount = rent+rentExtraPax+planCharge+planExtraCharge;
-    console.log(SalesDetails)
-    console.log('rent',rent,'rentExtraPax', rentExtraPax ,'planCharge',planCharge,'planExtraCharge', planExtraCharge ,'total',TotalAmount)
+     
+     
     document.getElementById('idplanAmountReservation').innerText = planCharge+planExtraCharge+'/-';
     document.getElementById('idfinalAmount').innerText = TotalAmount ;
     document.getElementById("idCheckinPlan").innerText =  SalesDetails.planIndex;
@@ -147,7 +148,7 @@ async function saveReservation(bookingDetails) {
   data.checkinplan = document.getElementById("idCheckinPlan").innerText;
   data.totalAmount = document.getElementById("idfinalAmount").innerText;
   data.specialRequest = document.getElementById("idSpecialRequest").value;
-  console.log(data);
+  
   const result = await fetch("/reservation/savereservation", {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -157,17 +158,17 @@ async function saveReservation(bookingDetails) {
     .catch((err) => {
       console.log(err);
     });
-  console.log(result);
-
+   
+console.log(result,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
   var options = {
     key: "rzp_test_6damh00ndxLBqq",
     amount: result.totalAmount * 100,
     currency: "INR",
     name: "Machintko",
-    order_id: result.reference,
+    order_id: result.order.id,
     handler:async function (response) {
-      console.log(response);
-
+      response.bookingDetails = bookingDetails;
+      response.reservationNumber = result.result.reference
       // After successful payment, send confirmation to the server
       await fetch("/reservation/confirmPayment", {
         method: "post",
@@ -176,7 +177,7 @@ async function saveReservation(bookingDetails) {
       })
         .then((res) => res.json())
         .then((confirmPayment) => {
-          console.log(confirmPayment);
+         
         })
         .catch((err) => {
           console.log(err);

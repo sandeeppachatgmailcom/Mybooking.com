@@ -124,13 +124,13 @@ async function saveReservation(reservationObj) {
     update: false,
     createUser: reservationObj.custId
   }
-  console.log(data)
+   
   let result = await checkIn.updateOne({ reservationNumber: reservationObj.reservationNumber }, { $set: data }, { upsert: true })
   result.reference = reservationObj.reservationNumber;
   data = result.modifiedCount + result.acknowledged;
   if (data > 0) { result: { saved: true } }
   else { result: { saved: false } }
-  console.log(data,result)
+   
   return result;
 }
 
@@ -140,7 +140,7 @@ async function deleteCheckin(checkinReferance) {
   let data = result.modifiedCount + result.acknowledged
   if (data > 0) { result: { deleted: true } }
   else { result: { deleted: false } }
-  console.log(result)
+  
   return result;
 }
 async function deleteReservation(reservationNumber) {

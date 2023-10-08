@@ -19,10 +19,19 @@ $inc: { nextIndex: 1 }
 
 
 async function getVoucherNumber (reqObj){
-   
-  
-    const result =await voucherSerial.findOneAndUpdate({bookName:reqObj.bookName,companyID:reqObj.companyID,activeYear:true,deleted:false },{$inc:{nextIndex:1}})
-console.log(reqObj,result,'my data');
+  const NewCompany= {
+    activeYear: true,
+    bookName: reqObj.bookName,
+    companyID: reqObj.companyID,
+    deleted: false,
+    __v: 0,
+    financialYear: "2324",
+    nextIndex: 100001,
+    prefix: "JV"
+  }
+    let insertUpdate =await voucherSerial.updateOne({bookName:reqObj.bookName,companyID:reqObj.companyID,activeYear:true,deleted:false },{$set:NewCompany},{upsert:true})
+    let result= await voucherSerial.findOneAndUpdate({bookName:reqObj.bookName,companyID:reqObj.companyID,activeYear:true,deleted:false },{$inc:{nextIndex:1}})
+    console.log(reqObj,result,'my data');
 const serialNumber = result.prefix+result.financialYear+result.nextIndex;
 return serialNumber; 
 }

@@ -13,6 +13,10 @@
                 <small> <%= user.district %>   </small>
                 <a class="btn  " > Edit-> </a>
             </div>
+
+            <div class="container-fluid border m-1 rounded">
+
+            </div>
         </div>
         <div class="container-fluid col-8 d-flex border border-warning">
          <div class="container-fluid">
@@ -60,6 +64,7 @@
          
          </div>
         </div>
+
         
         <div class="container-fluid col-2 d-flex border border-warning">
             <div class="container-fluid col-12   border border-warning" id="">
@@ -89,6 +94,7 @@
 
 </div>
 <%- include('footer') %>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
    function readmoreplan(Element,toggleElement){
     console.log(Element,toggleElement);
@@ -131,23 +137,65 @@
     console.log(SalesDetails)
     console.log('rent',rent,'rentExtraPax', rentExtraPax ,'planCharge',planCharge,'planExtraCharge', planExtraCharge ,'total',TotalAmount)
     document.getElementById('idplanAmountReservation').innerText = planCharge+planExtraCharge+'/-';
-    document.getElementById('idfinalAmount').innerText = TotalAmount +'/-';
+    document.getElementById('idfinalAmount').innerText = TotalAmount ;
     document.getElementById("idCheckinPlan").innerText =  SalesDetails.planIndex;
     
 }
-async function saveReservation(bookingDetails){
-    let data = JSON.parse(bookingDetails)
-    data.checkinplan= document.getElementById("idCheckinPlan").innerText
-    data.totalAmount = document.getElementById('idfinalAmount').innerText
-    data.specialRequest = document.getElementById("idSpecialRequest").value;
-     console.log(data)
-     const result =await fetch('/reservation/savereservation',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
-     .then(res=>{
-        return res.json()
-     })
-     .catch(err=>{
-        console.log(err)
-     })
-     console.log(result);
-}   
+
+async function saveReservation(bookingDetails) {
+  let data = JSON.parse(bookingDetails);
+  data.checkinplan = document.getElementById("idCheckinPlan").innerText;
+  data.totalAmount = document.getElementById("idfinalAmount").innerText;
+  data.specialRequest = document.getElementById("idSpecialRequest").value;
+  console.log(data);
+  const result = await fetch("/reservation/savereservation", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.log(err);
+    });
+  console.log(result);
+
+  var options = {
+    key: "rzp_test_6damh00ndxLBqq",
+    amount: result.totalAmount * 100,
+    currency: "INR",
+    name: "Machintko",
+    order_id: result.reference,
+    handler:async function (response) {
+      console.log(response);
+
+      // After successful payment, send confirmation to the server
+      await fetch("/reservation/confirmPayment", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(response),
+      })
+        .then((res) => res.json())
+        .then((confirmPayment) => {
+          console.log(confirmPayment);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  };
+
+  var rzp1 = new Razorpay(options);
+  rzp1.on("payment.failed", function (response) {
+    // Handle payment failure if needed
+  });
+  rzp1.open();
+}
+
+
+
+async function MatchPayment(response,orderid){
+
+   
+}
+
 </script>

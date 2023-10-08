@@ -34,7 +34,8 @@ const Newcheckin = new mongoose.Schema({
   CheckinPlan: { type: String },
   delete: { type: Boolean, default: false },
   update: { type: Boolean, default: false },
-  createUser: { type: String }
+  createUser: { type: String },
+  totalAmount:{type:Number}
 })
 const checkIn = db.model('checkin', Newcheckin);
 
@@ -101,7 +102,7 @@ async function saveCheckin(checkinobj) {
   return result;
 }
 async function saveReservation(reservationObj) {
-  if (reservationObj.reservationNumber) { reservationObj.reservationNumber = await controller.getIndex('RESERVATION') }
+  if (!reservationObj.reservationNumber) { reservationObj.reservationNumber = await controller.getIndex('RESERVATION') }
   if (!await checkIn.findOne({ reservationNumber: reservationObj.reservationNumber })) { reservationObj.frontDeskTransid = await controller.getIndex('FRONTID') }
   data = {
     frontDeskTransid: reservationObj.frontDeskTransid,
@@ -118,12 +119,14 @@ async function saveReservation(reservationObj) {
     specialrequierments: reservationObj.specialRequest,
     CompanyName: reservationObj.companyID,
     CheckinPlan: reservationObj.checkinplan,
+    totalAmount:reservationObj.totalAmount,
     delete: false,
     update: false,
     createUser: reservationObj.custId
   }
-
+  console.log(data)
   let result = await checkIn.updateOne({ reservationNumber: reservationObj.reservationNumber }, { $set: data }, { upsert: true })
+  result.reference = reservationObj.reservationNumber;
   data = result.modifiedCount + result.acknowledged;
   if (data > 0) { result: { saved: true } }
   else { result: { saved: false } }

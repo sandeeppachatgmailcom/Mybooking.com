@@ -1,5 +1,6 @@
 const DBcollections = require('../model/dbcollections');
 const bcrypt = require('bcrypt')
+const serialNumbers = require('../model/serialNumbers')
 
 
 async function encryptPassword(password) {
@@ -22,9 +23,9 @@ async function comparePassword(newPassword,hashedPassword) {
 }
     
 async function getIndex(CollName) {
-    console.log('reached get index');
-    let result = await DBcollections.ReferenceIndex.findOne({ tableName: CollName });
-    await DBcollections.ReferenceIndex.updateOne({ tableName: CollName }, { $inc: { nextIndex: 1 } })
+    let result = await serialNumbers.serialNumbers.findOne({ tableName: CollName });
+    console.log(result,'reached get index');
+    await serialNumbers.serialNumbers.updateOne({ tableName: CollName }, { $inc: {nextIndex:1} })
     const serialnumber = result.prefix + result.nextIndex;
     return serialnumber;
 }
@@ -89,4 +90,4 @@ function calculateDays(startDate,endDate){
     return diffDays;
 }
 
-module.exports = { convertToCustomFormat,encryptPassword,comparePassword,formatDate,calculateDays}
+module.exports = {getIndex, convertToCustomFormat,encryptPassword,comparePassword,formatDate,calculateDays}

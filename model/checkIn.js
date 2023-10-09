@@ -50,10 +50,10 @@ async function saveCheckin(checkinobj) {
       category: checkinobj.category,
       hrId: checkinobj.hrId
     }
-    console.log(newCustomer);
+     
 
     const saveHuman = await humanBank.saveHuman(newCustomer)
-    console.log(saveHuman, 'save human');
+     
 
 
   }
@@ -93,12 +93,12 @@ async function saveCheckin(checkinobj) {
     update: checkinobj.update,
     createUser: checkinobj.createUser
   }
-  console.log(data, 'Checkin Data');
+   
   let result = await checkIn.updateOne({ checkinReferance: checkinobj.checkinReferance, reservationNumber: checkinobj.reservationNumber }, { $set: data }, { upsert: true })
   data = result.modifiedCount + result.acknowledged
   if (data > 0) { result: { saved: true } }
   else { result: { saved: false } }
-  console.log(result)
+   
   return result;
 }
 async function saveReservation(reservationObj) {
@@ -108,12 +108,12 @@ async function saveReservation(reservationObj) {
     frontDeskTransid: reservationObj.frontDeskTransid,
     reservationNumber: reservationObj.reservationNumber,
     custId: reservationObj.custId,
-    arrivalDate: reservationObj.arrivalDate,
+    arrivalDate: new Date(reservationObj.arrivalDate),
     arrivalTime: reservationObj.arrivalTime,
-    depart_Date: reservationObj.departureDate,
+    depart_Date: new Date(reservationObj.departureDate),
     departureTime: reservationObj.departureTime,
     Foreigner: reservationObj.Foreigner,
-    tariff: reservationObj.rent,
+    tariff:parseInt(reservationObj.rent),
     specialRate: reservationObj.specialRate,
     TotalPax: reservationObj.totalGuest,
     specialrequierments: reservationObj.specialRequest,
@@ -198,7 +198,7 @@ async function getCheckinWithAllDetails(FrontData) {
         }
       }
     ]);
-    console.log(results); // Aggregated data with complete room information and tariff details
+     
     return results;
   } catch (error) {
     console.error(error);

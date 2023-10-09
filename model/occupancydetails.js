@@ -37,43 +37,53 @@ const newRoom = new mongoose.Schema({
 
  const occupancy = db.model('occupancy',newRoom )  
 
-
-async function saveReservationDetails(bookingDetails) {
-        console.log(bookingDetails, 'reservation')
-        let tempDate = bookingDetails.arrivalDate.split('-')
-        const startDate = tempDate[2] + '-' + tempDate[1] + '-' + tempDate[0] 
-        tempDate = bookingDetails.departureDate.split('-')
-        const startTime = bookingDetails.arrivalTime; 
-        const endTime = '00:00:00'
-        const endDate = tempDate[2] + '-' + tempDate[1] + '-' + tempDate[0] 
-        const reservationDetails = await checkinDetails.checkIn.findOne({reservationNumber:bookingDetails.reservationNumber})
-        console.log(reservationDetails,bookingDetails.reservationNumber,'reservationDetails');
-        while ((startDate <= endDate)){
-                let dailyEntry={
-                        occupancyIndex: await adminController.getIndex('OCCUPANCY'),
-                        companyIndex:bookingDetails.companyID,
-                        roomType:bookingDetails.tariffIndex,
-                        userCreated:bookingDetails.custId,
-                        totalOccupancy:bookingDetails.totalGuest,
-                        guestId:bookingDetails.custId,
-                        rent:parseInt(reservationDetails.tariff),
-                        specialRent:parseInt(reservationDetails.specialRate),
-                        reservationId:bookingDetails.reservationNumber,
-                        transDate:startDate,
-                        startTime:startTime,
-                        endTime:endTime,
-                        }
-                        console.log(dailyEntry);
-                        startDate.setDate(startDate.getDate() +1);
-                        startTime='00:00:00'
-                        if(startDate==endDate){endTime=bookingDetails.departureTime}
+ async function saveReservationDetails(bookingDetails) {
+        console.log(bookingDetails, 'saveReservationDetails');
+        let tempDate = bookingDetails.arrivalDate.split('-');
+        const startDate = new Date(tempDate[2], tempDate[1] - 1, tempDate[0]);
+        tempDate = bookingDetails.departureDate.split('-');
+        let startTime = bookingDetails.arrivalTime;
+        let endTime = '00:00:00';
+        const endDate = new Date(tempDate[2], tempDate[1] - 1, tempDate[0]);
+        const reservationDetails = await checkinDetails.checkIn.findOne({ reservationNumber: bookingDetails.reservationNumber })
+    
+        while (startDate <= endDate) {
+            let dailyEntry = {
+                occupancyIndex: await adminController.getIndex('OCCUPANCY'),
+                companyIndex: bookingDetails.companyID,
+                roomType: bookingDetails.tariffIndex,
+                userCreated: bookingDetails.custId,
+                totalOccupancy: bookingDetails.totalGuest,
+                guestId: bookingDetails.custId,
+                rent: parseInt(reservationDetails.tariff),
+                specialRent: parseInt(reservationDetails.specialRate),
+                reservationId: bookingDetails.reservationNumber,
+                checkinPlan: reservationDetails.CheckinPlan,
+                transDate: formatDate(startDate), // You need to format the date here
+                startTime: startTime,
+                endTime: endTime,
+            }
+            await occupancy.updateOne({reservationId:bookingDetails.reservationNumber,transDate:formatDate(startDate)},{$set:dailyEntry},{upsert:true}) 
+            startDate.setDate(startDate.getDate() + 1);
+            startTime = '00:00:00';
+            if (startDate.getTime() === endDate.getTime()) {
+                endTime = bookingDetails.departureTime;
+            }
         }
+    }
+    
+  
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
 
+         
 
-        console.log(startDate, 'startDate')
-
-        return bookingDetails;
-
-}
+        
+ 
  
  module.exports = {occupancy,saveReservationDetails}

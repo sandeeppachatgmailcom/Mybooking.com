@@ -31,8 +31,7 @@ async function getVoucherNumber (reqObj){
   }
     let insertUpdate =await voucherSerial.updateOne({bookName:reqObj.bookName,companyID:reqObj.companyID,activeYear:true,deleted:false },{$set:NewCompany},{upsert:true})
     let result= await voucherSerial.findOneAndUpdate({bookName:reqObj.bookName,companyID:reqObj.companyID,activeYear:true,deleted:false },{$inc:{nextIndex:1}})
-    console.log(reqObj,result,'my data');
-const serialNumber = result.prefix+result.financialYear+result.nextIndex;
+    const serialNumber = result.prefix+result.financialYear+result.nextIndex;
 return serialNumber; 
 }
 // Export the model

@@ -24,7 +24,7 @@ async function comparePassword(newPassword,hashedPassword) {
     
 async function getIndex(CollName) {
     let result = await serialNumbers.serialNumbers.findOne({ tableName: CollName });
-    console.log(result,'reached get index');
+     
     await serialNumbers.serialNumbers.updateOne({ tableName: CollName }, { $inc: {nextIndex:1} })
     const serialnumber = result.prefix + result.nextIndex;
     return serialnumber;
@@ -86,7 +86,7 @@ function calculateDays(startDate,endDate){
     arrivalTime = ((parseInt(arrivalTime[0])*60)+(parseInt(arrivalTime[1])))/60
     const timeDiff = deptTime - arrivalTime ;
     if(timeDiff>graceHours) diffDays++; 
-    console.log(arrivalTime ,deptTime,timeDiff.toFixed(2), diffDays.toFixed(2),'total days')
+     
     return diffDays;
 }
 

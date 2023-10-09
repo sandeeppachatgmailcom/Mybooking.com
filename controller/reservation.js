@@ -18,7 +18,6 @@ router.post('/savereservation', async (req, res) => {
   req.body.specialRate = tarifffilter[0].SpecialRent
   const totalAmount = parseInt(req.body.totalAmount);
   const result = await checkin.saveReservation(req.body)
-   console.log(result,' agdgffgsuyf');
   const paymentEntry = {
     transDate: Date.now(),
     paymentDate: Date.now(),
@@ -33,8 +32,7 @@ router.post('/savereservation', async (req, res) => {
     systemEntry: true
   }
   const savedebit = await paymentModel.MakeEntry(paymentEntry)
-  
-  var instance = new Razorpay({
+ var instance = new Razorpay({
     key_id: 'rzp_test_6damh00ndxLBqq',
     key_secret: 'd7Y4vbTqZb7fOwcYIjWRpt6U',
   });
@@ -66,7 +64,8 @@ router.post('/confirmPayment', async (req, res) => {
   bookingDetails.custId = userDetails.hrId;
   bookingDetails.reservationNumber = req.body.reservationNumber;
   const payment = await instance.payments.fetch(payment_id);
-  if (payment.status === 'authorized') {
+  console.log(payment,'confirm pyament ');
+  if (payment.status === 'captured') {
     const ReceipttEntry = {
       transDate: Date.now(),
       paymentDate: Date.now(),

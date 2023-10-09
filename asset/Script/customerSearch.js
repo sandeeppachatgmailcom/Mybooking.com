@@ -122,6 +122,8 @@ async function loadRoomTariffs(companyID,companyName,image) {
     CompanySearchKey: companyID,
     priceFrom: Number(document.getElementById('idBudgetFrom').value),
     PriceEnd: Number(document.getElementById('idBudgetEnd').value),
+    startDate:document.getElementById("idStartDate").value,
+    endDate:document.getElementById("idEndDate").value
   }
   
   const tariffdetails = await fetch('/custom/TariffSearch',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
@@ -142,7 +144,7 @@ async function loadRoomTariffs(companyID,companyName,image) {
         <h6 class="bi text-warning">${companyName}</h6>
             <h3 class="card-title">${i.tariffName},${i.SpecialRent}/-</h3>
             <h5 class="bi text-secondary">Extra Pax:${i.extraPerson}</h5>
-          <p class="card-text">${i.Discription} </p>
+          <p class="card-text">${i.Discription}</p>
           <a href="#idTariffDetails++" > <button type="button" onclick="loadtariffBasedPlans('${companyID}','${companyName}','${image}','${i.SpecialRent}','${i.tariffName}','${i.tariffIndex}'  )" class="btn btn-primary"> Next!!</button>
          </a>
           </div>
@@ -270,7 +272,7 @@ function readmore() {
 
   let tariffDetails = result.roomtypes;  
   let checkinplans = result.checkinplan;
-  console.log(checkinplans);
+  console.log(tariffDetails);
 
   for (let i of tariffDetails){
   let masterhtml = `<div class="container-fluid  " >
@@ -280,6 +282,7 @@ function readmore() {
     <div class="container-fluid d-flex justify-content-evenly border btn" >
          <div>
          <h6 class="card-title" style="text-transform: uppercase;">${result.firstName}</h6> 
+         
 
          </div>
          <div class="form-check form-check-inline">
@@ -306,7 +309,7 @@ deptTime = ((parseInt(deptTime[0])*60)+(parseInt(deptTime[1])))/60
 arrivalTime = ((parseInt(arrivalTime[0])*60)+(parseInt(arrivalTime[1])))/60
 const timeDiff = deptTime - arrivalTime ;
 if(timeDiff>graceHours) diffDays++; 
-console.log(arrivalTime ,deptTime,timeDiff.toFixed(2), diffDays.toFixed(2),'total days')
+ 
 document.getElementById("")
 let bodycolorclass = 'btn-cyan-700'
 if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.SpecialRent<= Number(document.getElementById("idBudgetEnd").value)))bodycolorclass = 'btn-light'
@@ -314,7 +317,7 @@ else {
    bodycolorclass = 'btn-secondary'
 
 }
-
+if(! i.totalRoom) i.totalRoom=1;
   
   innerhtml+=`<div class="card" p-2 style="width: 21rem; ">
   <form action="/custom/viewReservation" method="post">
@@ -322,6 +325,8 @@ else {
           class="card-body ${bodycolorclass}">
   
           <h6 style="text-transform: uppercase;" class="card-title">${i.tariffName} : ${i.SpecialRent}/-
+          <h6 class="card-title" style="text-transform: uppercase;">${i.reservationCount/i.totalRoom *100} % reserved </h6> 
+         
               <small>(2pax)</small> <small > Extra pax:${i.extraPerson}/-</small> </h6>
           <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="roomCategoryID">
               <option value="0">none</option>

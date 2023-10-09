@@ -283,7 +283,6 @@ router.post('/signup',async (req, res) => {
 router.get('/signup', (req, res) => {
     res.render('signup');
 })
- 
     
 router.post('/loadPincode',async (req,res)=>{
 const result =await pincode.loadPincode(req.body);

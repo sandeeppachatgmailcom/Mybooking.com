@@ -1,0 +1,57 @@
+<%- include('header') %>
+<%- include('MenuBarCustomer') %>
+
+<div class="container-fluid ">
+    <div class="container-fluid row" style="height: 300px;">
+        <!-- Image Bar -->
+    </div>
+    <div class="container-fluid d-flex ">
+        <div class="container-fluid border-primary col-2">
+            <button class="w-100 btn btn-primary"> My Bookings</button>
+        </div>
+        <div class="container-fluid border-primary col-8">
+            <% bookingDetails.forEach(element => { %>
+                <div class="card ">
+                    <div class="card-header d-flex">
+                        <h6 class="card-title">BOOKING  ID : </h6> <h6><%= element.reservationNumber  %></h6> 
+                    </div>
+                    <div class="card-body">
+                        <div class="container-fluid d-flex">
+                            <div class="container-fluid col-8">
+                                <div class="container-fluid d-flex">
+                                    <h6 class="card-title">CHECKIN  PLAN : </h6> <h6><%= element.checkinPlanName  %></h6>
+                                </div>
+                                
+                                <div class="container-fluid d-flex">
+                                    <h6 style="text-transform: capitalize;" class="card-title">ROOM CATEGORY : </h6> <h6 style="text-transform: capitalize;"><%= element.tariffName  %></h6></div> 
+                                <div class="container-fluid d-flex">
+                                    <h6 style="text-transform: capitalize;" class="card-title">RENT  : </h6> <h6 style="text-transform: capitalize;"><%= element.roomRentSingle  %></h6> </div>
+                                <div class="container-fluid d-flex">
+                                    <h6 style="text-transform: capitalize;" CLASS="card-title">EXTRA PERSON  : </h6> <h6 style="text-transform: capitalize;"><%= element.extraPerson  %></h6></div>
+                                <div class="container-fluid d-flex">
+                                    <h6 style="text-transform: capitalize;" class="card-title">SpecialRent  : </h6> <h6 style="text-transform: capitalize;"><%= element.SpecialRent  %></h6></div>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                            <div class="container-fluid col-4">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                      2 days ago
+                    </div>
+                  </div>
+            <% }) %>
+            <div class="container-fluid d-flex ">
+    
+            </div>
+        </div>
+        <div class="container-fluid border-primary col-2">
+    
+        </div>
+    </div>
+</div>
+<%- include('footer') %>
+<script src="/Script/confirmReservation.js" ></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+ 

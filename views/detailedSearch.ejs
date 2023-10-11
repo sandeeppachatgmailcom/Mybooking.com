@@ -2,7 +2,7 @@
 <%- include('MenuBarCustomer') %>
     <form action="/custom/customSearch" method="post"> 
         <div class="container-fluid">
-             
+             <%  console.log(inputData) %>
                 <div class="container-fluid border rounded" style="background-color: rgba(65, 90, 69, 0.762) ; ">
                     <div class="col">
                         <!-- Main Search box Start here -->
@@ -12,7 +12,7 @@
                                 <select name="ditrictName" type="text" value="<%= inputData.ditrictName %>"  id="idDitrictName"
                                     data-hotels="<%= JSON.stringify(generalData) %>" name="SearchText"
                                     class="   w-100 btn border-none h-100  text-light fw-lighter" id="idSearchText"
-                                    onchange="loadHotel(event.target.value,'' ), loadSearchResult()">
+                                    onchange="loadHotel(event.target.value,'' ) ">
                                     <option style="background-color: rgba(65, 90, 69, 0.762) ; height: 100px;"
                                         class="col-12 SearchTextBox text-light fw-LIGHTER" value="<%= inputData.ditrictName %>" > <%= inputData.ditrictName %>
                                     </option>
@@ -46,15 +46,17 @@
                                 style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
                                 <button type="button" class="input-group-text text-light btn"
                                     style="background-color: transparent;" id=" iDServiceImages1btn2">GUEST</button>
+                                   
                                 <input id="idGuestCount" type="number" name="GuestCount" value="<%= inputData.GuestCount %>"
                                     class="text-light    SearchTextBox">
                             </div>
                             <div class="col d-flex"
                                 style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
+                                 
                                 <button type="button" class="input-group-text text-light btn "
                                     style="background-color: transparent;" id=" iDServiceImages1btn2">ROOMS </button>
-                                <input id="idRoomCount" type="number" name="roomCount" value="<%= inputData.roomCount %>"
-                                    class="text-light   SearchTextBox">
+                                    <input id="idRoomCount" type="number" name="nameRoomCount" value="<%= inputData.nameRoomCount %>"
+                                    class="text-light    SearchTextBox">
                             </div>
                         </div>
                         <div class="row" >
@@ -62,7 +64,7 @@
                             <div class="col "
                                 style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
                                 <input id="idBudgetFrom"  style="background-color:rgba(36, 74, 36, 0);" type="number"
-                                value="<%=inputData.budgetStart %>"  onchange="loadSearchResult()" name="budgetStart" class="text-light  SearchTextBox">
+                                value="<%=inputData.budgetStart %>"  onchange="" name="budgetStart" class="text-light  SearchTextBox">
                                 <button type="button" class="input-group-text text-light btn" id=" iDServiceImages1btn2">
                                     <Main> Minimum Limit </Main>
                                 </button>
@@ -74,7 +76,7 @@
                                     id="iDServiceImages1btn2">Maximum 
                                     budget</button>
                                 <input id="idBudgetEnd" style="background-color:rgba(36, 74, 36, 0);" type="number"
-                                    onchange="loadSearchResult()" value="<%= inputData.budgetEnd  %>" name="budgetEnd" class="text-light SearchTextBox">
+                                    onchange="" value="<%= inputData.budgetEnd  %>" name="budgetEnd" class="text-light SearchTextBox">
                             </div>
                             <div class="col"
                                 style="border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.33);">
@@ -119,10 +121,9 @@
                                         <h6 class="bi bi-star-fill"></h6>
                                         <h6 class="bi bi-star-fill"></h6>
                                       </div>
-                                      <small class="card-text"    ><%= element.Companydiscription %></small>
+                                      <small class="card-text" ><%= element.Companydiscription %></small>
                                       </div>
                                     <div class="card-footer">
-                                            
                                             <button name="submitCompanyDetails" value="<%=element.CompanyID%>"  onclick="loadHotelBasedResult(event.target.value)" type="button" value="<%=  element.CompanyID  %>" class="btn btn-primary">Details</button>
                                        </div>
                                   </div>
@@ -142,5 +143,7 @@
     </form>
 
     
-<script src="/Script/customerSearch.js"> </script>
+    <script src="/Script/customerSearch.js"> </script>
+    <script src="/Script/Companies.js"> </script>
+
 <%- include('footer') %>

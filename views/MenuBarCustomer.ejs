@@ -15,11 +15,13 @@
     </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+       <form action="/authenticate/custLogin" method="post">
+        <button class="nav-item btn " type="submit" > Home </button>
+       </form>
         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
         <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-        <li class="nav-item"><a class="nav-link" href="/authenticate/signup">Signup</a></li>
-        <button id="idloggedusermenubar" value="" class="btn"  ></button>
+        
+        <button id="idloggedusermenubar" value="" class="btn"> </button>
             <% if (user.firstName) { %>
               <!-- Example single danger button -->
                         <div class="btn-group">
@@ -27,8 +29,8 @@
                             <%=user.firstName%>
                           </button>
                           <div class="dropdown-menu btn  border-0 ">
-                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-house-up-fill w-100 h-100" href="#">profile </a>
-                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-house-up-fill w-100 h-100" href="#">Home </a>
+                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-house-up-fill w-100 h-100" href="/custom/loadHomepage">profile </a>
+                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-house-up-fill w-100 h-100" href="/authenticate/custLogin">Home </a>
                             <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-power w-100 h-100" href="#">logout</a>
                             
                              

@@ -6,7 +6,8 @@ const tariff = require('../model/tariff');
 const controller = require('../controller/adminController')
 const tariffmaster = require('../model/tariff')
 const checkinPlans = require('../model/planMaster');
-const rooms = require('../model/rooms')
+const rooms = require('../model/rooms');
+const  floorMaster   = require('../model/floor');
 router.post('/loadhomepage', async (req, res) => {
   try {
     const inputs = req.body;
@@ -29,7 +30,9 @@ router.post('/loadhomepage', async (req, res) => {
       const activePlans = await checkinPlans.LoadPlan();
       let existingTariff = profile.roomtypes;
       let existingPlan = profile.checkinplan;
-      const availablerooms = rooms.loadroomByCompanyId(profile.CompanyID);
+      const availablerooms =await rooms.loadroomByCompanyId(profile.CompanyID);
+      const floors = await floorMaster.loadAllFloor()
+      const category = await tariffmaster.loadtariff('')
       let Plans = existingPlan.filter(item1=>
       activePlans.some(item2=>item2.planIndex ==item1.planIndex)); 
      
@@ -64,7 +67,8 @@ router.post('/loadhomepage', async (req, res) => {
     else {
      }
     res.cookie('userName',req.body.userName)
-    res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms });
+    if (!availablerooms )availablerooms={};
+    res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category });
     
   }
     else{

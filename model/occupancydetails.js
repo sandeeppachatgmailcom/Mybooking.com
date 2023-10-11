@@ -32,21 +32,25 @@ const checkinDetails = require('../model/checkIn')
             maintainance:{type:Boolean,default:false},
             blocked:{type:Boolean,default:false},
             occupied:{type:Boolean,default:false},
-            transDate:{type:Date,default:Date.now()},
+            transDate:{type:Date,default:Date.now()}
             })
 
- const occupancy = db.model('occupancy',newRoom )  
+ const occupancy = db.model('dailyroomStatus',newRoom )  
 
- async function saveReservationDetails(bookingDetails) {
-        console.log(bookingDetails, 'saveReservationDetails');
-        let tempDate = bookingDetails.arrivalDate.split('-');
-        const startDate = new Date(tempDate[2], tempDate[1] - 1, tempDate[0]);
-        tempDate = bookingDetails.departureDate.split('-');
-        let startTime = bookingDetails.arrivalTime;
-        let endTime = '00:00:00';
-        const endDate = new Date(tempDate[2], tempDate[1] - 1, tempDate[0]);
-        const reservationDetails = await checkinDetails.checkIn.findOne({ reservationNumber: bookingDetails.reservationNumber })
-    
+ async function saveReservationDetails(bookingDetai) {
+    console.log(bookingDetai,'booking details')
+    let bookingDetails =  bookingDetai 
+    console.log(bookingDetails)     
+        let tempDate = bookingDetails.arrivalDate.split('T');
+        let startDate =  tempDate[0]
+        tempDate = bookingDetails.departureDate.split('T');
+        let startTime = tempDate[1];
+        
+        let endDate = tempDate[0];
+        let endTime = tempDate[1];
+        console.log(startDate,startTime,endDate,endTime);
+        const reservationDetails = await checkinDetails.checkIn.findOne({ reservationNumber: bookingDetails.reservedDetails.reference })
+         
         while (startDate <= endDate) {
             let dailyEntry = {
                 occupancyIndex: await adminController.getIndex('OCCUPANCY'),
@@ -55,21 +59,23 @@ const checkinDetails = require('../model/checkIn')
                 userCreated: bookingDetails.custId,
                 totalOccupancy: bookingDetails.totalGuest,
                 guestId: bookingDetails.custId,
-                rent: parseInt(reservationDetails.tariff),
-                specialRent: parseInt(reservationDetails.specialRate),
-                reservationId: bookingDetails.reservationNumber,
+                specialRent:  reservationDetails.specialRate ,
+                reservationId: bookingDetails.reservedDetails.reference,
                 checkinPlan: reservationDetails.CheckinPlan,
-                transDate: formatDate(startDate), // You need to format the date here
+                transDate: startDate, // You need to format the date here
                 startTime: startTime,
                 endTime: endTime,
             }
-            await occupancy.updateOne({reservationId:bookingDetails.reservationNumber,transDate:formatDate(startDate)},{$set:dailyEntry},{upsert:true}) 
-            startDate.setDate(startDate.getDate() + 1);
+            const save = await occupancy.updateOne({reservationId:bookingDetails.reservationNumber,transDate:startDate},{$set:dailyEntry},{upsert:true}) 
+            console.log(save,'dailyroomStatus');
+            startDate++;
             startTime = '00:00:00';
-            if (startDate.getDate() === endDate.getDate()) {
+            if (startDate=== endDate) {
                 endTime = bookingDetails.departureTime;
             }
         }
+
+        return {saved:true}
     }
     
   

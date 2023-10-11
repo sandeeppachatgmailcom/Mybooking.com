@@ -272,7 +272,7 @@ function readmore() {
 
   let tariffDetails = result.roomtypes;  
   let checkinplans = result.checkinplan;
-  console.log(tariffDetails);
+  console.log(tariffDetails,'tariffDetails');
 
   for (let i of tariffDetails){
   let masterhtml = `<div class="container-fluid  " >
@@ -325,7 +325,7 @@ if(! i.totalRoom) i.totalRoom=1;
           class="card-body ${bodycolorclass}">
   
           <h6 style="text-transform: uppercase;" class="card-title">${i.tariffName} : ${i.SpecialRent}/-
-          <h6 class="card-title" style="text-transform: uppercase;">${i.reservationCount/i.totalRoom *100} % reserved </h6> 
+          <h6 class="card-title" style="text-transform: uppercase;">${i.totalRoom-i.reservationCount} rooms available  </h6> 
          
               <small>(2pax)</small> <small > Extra pax:${i.extraPerson}/-</small> </h6>
           <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="roomCategoryID">
@@ -336,8 +336,8 @@ if(! i.totalRoom) i.totalRoom=1;
               </button>
           </div>
           <h4   class="card-title ">Total Amount:<small id="idTotalamount${i.tariffIndex}"> </small> </h4>
-          <div style="height: 80px; wrap:nowrap ; overflow-y: scroll">
-              <p class="card-text">${i.Discription}</p>
+          <div style="height: 80px; wrap:nowrap ; overflow:hidden" onClick"drilldown('iDtariffDiscription'+'${i.tariffIndex}','80')" id="iDtariffDiscription${i.tariffIndex}">
+              <p class="card-text btn"  onClick="drilldown('iDtariffDiscription'+'${i.tariffIndex}','80')">${i.Discription}</p>
           </div>
           <div class="continer-flex">
               <div class="input-group d-flex ">

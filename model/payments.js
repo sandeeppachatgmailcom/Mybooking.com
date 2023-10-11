@@ -14,6 +14,7 @@ const NewPayment = new mongoose.Schema({
     debit:{type:Number},
     credit:{type:Number},
     custommerId:{type:String,required:true},
+    receiptNumber:{type:String},
     companyID:{type:String},
     cancelled:{type:Boolean},
     createdUser:{type:String}
@@ -78,6 +79,7 @@ if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherN
         entryType:'Cr',
         credit : 0,
         custommerId : reqobj.custommerId ,
+        receiptNumber:reqobj.receiptNumber,
         companyID : reqobj.companyID ,
         cancelled : reqobj.cancelled ,
         createdUser : reqobj.createdUser 
@@ -92,6 +94,7 @@ if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherN
         debit :0 ,
         entryType:'Dr',
         credit : reqobj.amount ,
+        receiptNumber:reqobj.receiptNumber,
         custommerId :  reqobj.accountHead ,
         companyID : reqobj.companyID ,
         cancelled : reqobj.cancelled ,
@@ -100,7 +103,8 @@ if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherN
     
     const debitEntry = await payment.updateOne({voucherNumber:reqobj.voucherNumber,companyID : reqobj.companyID,entryType:'Dr' },{$set:debitData},{upsert:true})
     const creditEntry = await payment.updateOne({voucherNumber:reqobj.voucherNumber,companyID : reqobj.companyID,entryType:'Cr'},{$set:crediData},{upsert:true})
-    return [debitEntry,creditEntry];
+    if((debitEntry.upsertedCount>0||debitEntry.modifiedCount>0)&&(creditEntry.upsertedCount>0||creditEntry.modifiedCount>0))
+    return {saved:true};
      
     
     

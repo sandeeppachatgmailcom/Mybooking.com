@@ -55,7 +55,9 @@ const NewCompany = new mongoose.Schema({
         SpecialRent:{type:Number,required:true,default:0},
         itemname: { type: String },
         HSNCode: { type: String },
-        deleted:{type:Boolean,default:false,required:true}
+        deleted:{type:Boolean,default:false,required:true},
+        reservationCount:{type:Number,required:true,default:0},
+        totalRoom:{type:Number,required:true,default:0}
     }]
 });
 const  company = db.model('Company',NewCompany);

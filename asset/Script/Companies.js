@@ -543,3 +543,37 @@ async function deleteTariffPermanently(tariff){
     }
    
 }
+
+function drilldown(iddiv,originsize){
+const divclass = document.getElementById(iddiv);
+let height = originsize+'px';
+if(divclass.style.overflow=="hidden"){
+    divclass.style=""
+    divclass.style.overflow='';  
+    divclass.style.flexWrap="wrap"  
+    divclass.classList.add('flex-wrap')
+    divclass.classList.remove('flex-nowrap')
+    console.log(divclass.style,divclass.classList)
+}
+else if (divclass.style.overflow ==""){
+    divclass.style=""
+    divclass.style.overflow='hidden';
+    divclass.style.height = height;
+    divclass.style.flexWrap="nowrap"
+    divclass.classList.remove('flex-wrap')
+    divclass.classList.add('flex-nowrap')
+    console.log(divclass.style,divclass.classList)
+
+}
+ 
+}
+
+function readlesspaln(Element,toggleElement){  
+     
+    document.getElementById(toggleElement).style=null
+    document.getElementById(toggleElement).style.display='none'
+    document.getElementById(Element).style.display=''
+    document.getElementById(Element).style.height='20px'
+    document.getElementById(Element).style.overflow='hidden'
+     
+   } 

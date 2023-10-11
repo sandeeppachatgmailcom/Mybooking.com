@@ -124,6 +124,7 @@ async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
 
 }  
 async function verifyEmail(Email_Field,outputfield) {
+    console.log(Email_Field,outputfield) ;
     const email = document.getElementById(Email_Field).value;
     if (email.length == 0) {
         document.getElementById(Email_Field).focus();
@@ -146,19 +147,22 @@ async function verifyEmail(Email_Field,outputfield) {
         .catch()
     
     let signuptxt = document.getElementById('Signup_Email_text');
-
+    
     if (result.verified) {
-        
+        console.log(result.verified,document.getElementById(outputfield).classList.length);
         while (document.getElementById(outputfield).classList.length > 0) {
             document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
+           
         }
+        
         document.getElementById(outputfield).classList.add('btn')
-        document.getElementById(outputfield).classList.add('btn-primary')
+        document.getElementById(outputfield).classList.add('btn-danger')
         document.getElementById(outputfield).classList.add('bi')
         document.getElementById(outputfield).classList.add('bi-patch-check')
+        console.log(result.verified,document.getElementById(outputfield).classList.length);
     }
     else {
-        
+        console.log(result.verified);
         while (document.getElementById(outputfield).classList.length > 0) {
             document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
         }

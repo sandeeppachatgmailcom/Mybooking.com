@@ -45,51 +45,79 @@ function readmoreplan(Element,toggleElement){
     
 }
 
-async function saveReservation(bookingDetails) {
-  let data = JSON.parse(bookingDetails);
+async function saveReservation(bookings) {
+  let data = JSON.parse(bookings);
   data.checkinplan = document.getElementById("idCheckinPlan").innerText;
   data.totalAmount = document.getElementById("idfinalAmount").innerText;
   data.specialRequest = document.getElementById("idSpecialRequest").value;
-  
-  const result = await fetch("/reservation/savereservation", {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  })
-    .then((res) => res.json())
-    .catch((err) => {
+
+  try {
+    const result = await fetch("/reservation/savereservation", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    .then((res)=>{
+      return res.json()
+    })
+    .catch(err=>{
       console.log(err);
-    });
-    var options = {
+    })
+
+     
+    let bookingDetails = JSON.parse(bookings)
+    const reservationResult = result
+    bookingDetails.reservationNumber = result.result.reference; 
+    bookingDetails.reservedDetails = result.result;
+    // Handle Razorpay payment
+    handleRazorpayPayment(reservationResult, bookingDetails);
+  } catch (error) {
+    console.error("Error saving reservation:", error);
+    // Handle the error as needed, e.g., display an error message to the user
+  }
+}
+
+function handleRazorpayPayment(result, bookingDetails) {
+  var options = {
     key: "rzp_test_6damh00ndxLBqq",
-    amount: result.totalAmount * 100,
+    amount: result.totalAmount*100 ,
     currency: "INR",
     name: "Machintko",
     order_id: result.order.id,
-    handler:async function (response) {
+    handler: async function (response) {
       response.bookingDetails = bookingDetails;
-      response.reservationNumber = result.result.reference
-      // After successful payment, send confirmation to the server
-      await fetch("/reservation/confirmPayment", {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(response),
-      })
-        .then((res) => res.json())
-        .then((confirmPayment) => {
-         
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+       
+      // Handle successful payment
+      const confirmed = await confirmPayment(response);
+      console.log(confirmed);
     },
   };
 
   var rzp1 = new Razorpay(options);
   rzp1.on("payment.failed", function (response) {
-    // Handle payment failure if needed
+    // Handle payment failure
   });
   rzp1.open();
+
+}
+
+async function confirmPayment(paymentDetails) {
+  
+    const confirmPaymentResponse = await fetch("/reservation/confirmPayment", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(paymentDetails),
+    }).then(confirmPaymentResult=>{
+      return confirmPaymentResult.json()
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+ 
+  if(confirmPaymentResponse.status){
+     
+    window.location.assign('/custom/loadHomepage');
+  }
 }
 
 

@@ -102,6 +102,7 @@ async function saveCheckin(checkinobj) {
   return result;
 }
 async function saveReservation(reservationObj) {
+  console.log(reservationObj,'reservationObj')
   if (!reservationObj.reservationNumber) { reservationObj.reservationNumber = await controller.getIndex('RESERVATION') }
   if (!await checkIn.findOne({ reservationNumber: reservationObj.reservationNumber })) { reservationObj.frontDeskTransid = await controller.getIndex('FRONTID') }
   data = {
@@ -113,7 +114,7 @@ async function saveReservation(reservationObj) {
     depart_Date: new Date(reservationObj.departureDate),
     departureTime: reservationObj.departureTime,
     Foreigner: reservationObj.Foreigner,
-    tariff:parseInt(reservationObj.rent),
+    tariff:reservationObj.tariffIndex,
     specialRate: reservationObj.specialRate,
     TotalPax: reservationObj.totalGuest,
     specialrequierments: reservationObj.specialRequest,
@@ -213,5 +214,5 @@ async function loadCheckin(checkinReferance) {
 async function loadReservation(reservationNumber) {
   const reservationDetails = await checkIn.find({ reservationNumber: reservationNumber, delete: false })
   return reservationDetails;
-}
+} 
 module.exports = { checkIn, saveCheckin, saveReservation, deleteCheckin, loadCheckin, SearchCheckin, getCheckinWithAllDetails }

@@ -84,24 +84,35 @@ async function SearchHumanbyUsername(humanObj) {
     return data;
 }
 async function verifyUser(userObject){
-    
-    let verified = false;
-    const password = await HumanResource.findOne({email:userObject.userName},{password:1,firstName:1,_id:0})
+    const user = await  HumanResource.findOne({activeSession:userObject.session})
+
+    if(user){
+        
+        return {verified:true,user:user.firstName};
+    }
+    else if(!userObject.password){
+        return {verified:false};
+    }
+    else{
+        
+        let verified = false;
+        const password = await HumanResource.findOne({email:userObject.userName},{password:1,firstName:1,_id:0})
      
-    const result =await Controller.comparePassword(userObject.password,password.password )
-    if(result){
-        await HumanResource.updateOne({email:userObject.userName},{$set:{activeSession:userObject.session}})
-        verified={
-            verified:true
+        const result =await Controller.comparePassword(userObject.password,password.password )
+        if(result){
+             await HumanResource.updateOne({email:userObject.userName},{$set:{activeSession:userObject.session}})
+            verified={
+                verified:true
+            }
         }
-    }
-    else {
-        verified={
-            verified:false
+         else {
+            verified={
+                verified:false
+            }
         }
-    }
     verified.user=password.firstName;
     return verified;
+    }
 }
 
 

@@ -23,6 +23,9 @@ async function  LoadPlan(){
        result = await CheckinPlan.find({deleted:false})
   
 return result;} 
+async function  LoadPlanByID(planId){
+    result = await CheckinPlan.findOne({ planIndex:planId,deleted:false})
+return result;} 
 
 
 async function  saveCheckinPlan (data){
@@ -40,4 +43,4 @@ async function  deleteCheckinPlan (data){
     else { result = { deleted: false } }
     return result;
 } 
-module.exports={CheckinPlan,LoadPlan,saveCheckinPlan,deleteCheckinPlan}
+module.exports={CheckinPlan,LoadPlan,saveCheckinPlan,deleteCheckinPlan,LoadPlanByID}

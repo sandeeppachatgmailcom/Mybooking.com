@@ -38,6 +38,7 @@ async function userSessionAuthentication(sessionID, username, password) {
 }
 router.post('/custLogin',async (req,res)=>{
     req.body.session = req.sessionID;
+
     const verified =await HBank.verifyUser(req.body)
     const user={
         firstName:verified.user,
@@ -63,6 +64,37 @@ router.post('/custLogin',async (req,res)=>{
      "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
     res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
 })
+
+router.get('/custLogin',async (req,res)=>{
+    req.body.session = req.sessionID;
+
+    const verified =await HBank.verifyUser(req.body)
+    const user={
+        firstName:verified.user,
+        
+    }
+    if (verified.verified){
+        res.cookie('username',verified.user)
+    }
+    req.body.ditrictName='';
+    req.body.roomCategoryID='';
+    req.body.budgetStart=0;
+    req.body.budgetEnd=30000;
+    const generalData = await companies.SearchCompany('')
+    const tariff = await tariffs.loadtariff('')
+    let district = new Set();
+    const inputData = req.body;
+    const pincode = generalData.forEach(element => {
+        district.add(element.district )
+    });
+     const result =await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false,
+     "roomtypes.tariffIndex": { $regex: `^${req.body.roomCategoryID}`, $options: 'i' },
+     "roomtypes.SpecialRent":{$gte:req.body.budgetStart},
+     "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
+    res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
+})
+
+
 
 router.post('/OtpAuthentication', async (req, res) => {
     
@@ -172,6 +204,7 @@ router.post('/VerifyEmail',async(req,res)=>{
      else {
          responseData= {verified:false} 
      }
+     console.log(responseData);
      res.json(responseData);
 })
  

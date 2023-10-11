@@ -11,13 +11,14 @@ router.post('/savereservation', async (req, res) => {
   req.body.custId = userDetails.hrId
   if (userDetails.country != 'India') req.body.Foreigner = true
   else req.body.Foreigner = false
-  let tariff = await company.company.findOne({ "roomtypes.tariffIndex": req.body.tariffIndex }, { roomtypes: 1, _id: 0 })
+  let tariff = await company.company.findOne({ "roomtypes.tariffIndex": req.body.tariffIndex}, { roomtypes: 1, _id: 0 })
   tariff = tariff.roomtypes;
   let tarifffilter = tariff.filter(element => element.tariffIndex === req.body.tariffIndex);
   req.body.rent = tarifffilter[0].roomRentSingle
   req.body.specialRate = tarifffilter[0].SpecialRent
   const totalAmount = parseInt(req.body.totalAmount);
   const result = await checkin.saveReservation(req.body)
+
   const paymentEntry = {
     transDate: Date.now(),
     paymentDate: Date.now(),
@@ -32,6 +33,7 @@ router.post('/savereservation', async (req, res) => {
     systemEntry: true
   }
   const savedebit = await paymentModel.MakeEntry(paymentEntry)
+   
  var instance = new Razorpay({
     key_id: 'rzp_test_6damh00ndxLBqq',
     key_secret: 'd7Y4vbTqZb7fOwcYIjWRpt6U',
@@ -50,21 +52,28 @@ router.post('/savereservation', async (req, res) => {
 
 
 router.post('/confirmPayment', async (req, res) => {
+   
   var instance = new Razorpay({
     key_id: 'rzp_test_6damh00ndxLBqq',
     key_secret: 'd7Y4vbTqZb7fOwcYIjWRpt6U',
   });
 
    
-  let bookingDetails = JSON.parse(req.body.bookingDetails)
+  let bookingDetails = req.body.bookingDetails
+   
 
   const payment_id = req.body.razorpay_payment_id;
+   
   const userDetails = await hbank.HumanResource.findOne({ activeSession: req.sessionID })
   req.body.custId = userDetails.hrId
   bookingDetails.custId = userDetails.hrId;
   bookingDetails.reservationNumber = req.body.reservationNumber;
-  const payment = await instance.payments.fetch(payment_id);
-  console.log(payment,'confirm pyament ');
+ 
+    const payment = await instance.payments.fetch(payment_id);
+     
+  
+      
+   
   if (payment.status === 'captured') {
     const ReceipttEntry = {
       transDate: Date.now(),
@@ -72,8 +81,9 @@ router.post('/confirmPayment', async (req, res) => {
       paymentIndex: req.body.paymentIndex,
       paymentReferance: req.body.reservationNumber,
       accountHead: 'RAZORPAYACCOUNT',
-      amount: payment.amount / 100,
+      amount: parseInt(payment.amount) / 100,
       custommerId: req.body.custId,
+      receiptNumber:payment_id,
       companyID: bookingDetails.companyID,
       cancelled: false,
       createdUser: req.body.custId,
@@ -92,11 +102,6 @@ router.post('/confirmPayment', async (req, res) => {
 
 
 )
-
-
-
-
-
 
 module.exports = router;
  

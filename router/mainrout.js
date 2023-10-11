@@ -40,10 +40,8 @@ router.get('/' ,async (req, res) => {
             res.render(pagename,{user,district,tariff,generalData })
     }
     catch (err) { console.log(err.message) }
+
 })
-
-
-
 
 router.use('/checkin',verifyAccess.VerifyAccess,frontDesk)
 router.use('/frontOffice',verifyAccess.VerifyAccess,frontDesk)

@@ -4,6 +4,7 @@ const express = require('express')
 const mongoose = require('mongoose');
 const adminController = require('../controller/adminController')
 const checkinDetails = require('../model/checkIn')
+const frontOffice = require('../model/checkIn') 
 
 async function getReservationDateWise(fromTime, endTime, companyID) {
     try {
@@ -78,9 +79,18 @@ const result =await rooms.depart.aggregate([{
         roomCount:1
     }
 }])
+ 
 console.log(result,'room aggregation')
 return result
 }
-module.exports = {getReservationDateWise,getRoomAvailalability}
+
+async function loadreservationByCustID(custID){
+    const result = await frontOffice.checkIn.find({hrId:custID})
+    return result;
+}
+
+
+
+module.exports = {getReservationDateWise,getRoomAvailalability,loadreservationByCustID}
 
 

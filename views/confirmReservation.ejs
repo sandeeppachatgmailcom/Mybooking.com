@@ -19,19 +19,19 @@
             </div>
         </div>
         <div class="container-fluid col-8 d-flex border border-warning">
-         <div class="container-fluid">
+         <div class="container-fluid   ">
                 <div class="container-fluid">
                     <h3 style="text-transform: uppercase;" ><%= tariffplans[0].tariffName %></h3>
                 <div>
                     <small ><%= tariffplans[0].Discription %></small>
                 </div>
                 </div>
-                <div class="container-fluid d-flex">
+                <div class="container-fluid d-flex flex-wrap">
                     <div class="container-fluid border col-4 rounded justify-content-start">
                         <br>
                         <h5 class="text text-primary" style=" text-transform: uppercase;">Booking Details</h5>
                         <small>Arrival  :<%=BookingSummary.arrivalDate  %>,<%=BookingSummary.arrivalTime  %></small> <br>
-                        <small>Departure: <%=BookingSummary.departureDate  %> , <%=BookingSummary.departureTime  %></small> <br>
+                        <small>Departure:<%=BookingSummary.departureDate  %>,<%=BookingSummary.departureTime  %></small> <br>
                         <small>Days     :<%=BookingSummary.totalDays  %></small><br>
                         <small>Guest : <%=BookingSummary.totalGuest  %></small><br>
                         <small>Rooms :<%=BookingSummary.totalRoom  %></small><br>
@@ -60,6 +60,8 @@
                     </button>
                     
                 </div>
+                 
+
                 
             </div>
          

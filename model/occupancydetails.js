@@ -32,7 +32,8 @@ const checkinDetails = require('../model/checkIn')
             maintainance:{type:Boolean,default:false},
             blocked:{type:Boolean,default:false},
             occupied:{type:Boolean,default:false},
-            transDate:{type:Date,default:Date.now()}
+            transDate:{type:Date,default:Date.now()},
+            dateString:{type:String}
             })
 
  const occupancy = db.model('dailyroomStatus',newRoom )  
@@ -65,6 +66,7 @@ const checkinDetails = require('../model/checkIn')
                 transDate: startDate, // You need to format the date here
                 startTime: startTime,
                 endTime: endTime,
+                dateString:startDate,
             }
             const save = await occupancy.updateOne({reservationId:bookingDetails.reservationNumber,transDate:startDate},{$set:dailyEntry},{upsert:true}) 
             console.log(save,'dailyroomStatus');

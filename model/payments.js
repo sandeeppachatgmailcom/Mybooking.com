@@ -17,7 +17,9 @@ const NewPayment = new mongoose.Schema({
     receiptNumber:{type:String},
     companyID:{type:String},
     cancelled:{type:Boolean},
-    createdUser:{type:String}
+    createdUser:{type:String},
+    transactionReferanceNumber:{type:String},
+    TransferMode:{type:String}
 })
 
 const payment = db.model('payment',NewPayment)
@@ -82,7 +84,9 @@ if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherN
         receiptNumber:reqobj.receiptNumber,
         companyID : reqobj.companyID ,
         cancelled : reqobj.cancelled ,
-        createdUser : reqobj.createdUser 
+        createdUser : reqobj.createdUser ,
+        transactionReferanceNumber:reqobj.transactionReferanceNumber,
+        TransferMode:reqobj.TransferMode
     }
     const  debitData= { 
         transDate : reqobj.transDate ,

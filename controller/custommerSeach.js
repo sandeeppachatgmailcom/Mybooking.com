@@ -109,7 +109,7 @@ router.use('/loadPlans',async(req,res)=>{
 router.post('/loadHotelDetails', async (req, res) => {
     const reservationSummary = await ftnReservation.getReservationDateWise(req.body.StartDate, req.body.EndDate, req.body.hotelId);
     const totalRoomSummary = await ftnReservation.getRoomAvailalability(req.body.hotelId);
-    
+    console.log(reservationSummary);
     let maximumReservation = {};
     for (const item of reservationSummary) {
         const tariffIndex = item.tariffIndex;
@@ -145,15 +145,15 @@ router.post('/loadHotelDetails', async (req, res) => {
             }
 
           }
-        console.log(result.roomtypes[i]  ) 
+         
     }
  
     res.json(result);
 });
 
 router.get('/loadHomepage',async (req,res)=>{
-    const user = await human.HumanResource.findOne({activeSession:'BbQWImoGaEmTk0DyYpBWuxkDDvjTSX3C'})
-     
+    let user = await human.HumanResource.findOne({activeSession:"BbQWImoGaEmTk0DyYpBWuxkDDvjTSX3C"})
+    if(!user) user={};
     const reservationDetails = await ftnReservation.loadreservationByCustID(user.createUser)
     let bookingDetails = JSON.stringify(reservationDetails)
     bookingDetails = JSON.parse(bookingDetails )

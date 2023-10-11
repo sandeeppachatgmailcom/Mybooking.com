@@ -1,54 +1,98 @@
 <%- include('header') %>
 <%- include('MenuBarCustomer') %>
-
+<style>
+    body{
+        font-family: Poppins;
+    }
+</style>
 <div class="container-fluid ">
-    <div class="container-fluid row" style="height: 300px;">
-        <!-- Image Bar -->
-    </div>
-    <div class="container-fluid d-flex ">
-        <div class="container-fluid border-primary col-2">
-            <button class="w-100 btn btn-primary"> My Bookings</button>
+    <div class="container-fluid row " style="height: 400px;background-image: url('<%=user.wallPappper %>');background-position: center ;background-size: cover ">
+        
+        <div class="col-9 mt-2">  
+            <button class="rounded container  col-3" style="margin-top: 15%; background-image: url('<%=user.profilePicture %>'); height: 200px;background-position: center ;background-size: cover; "></button>
+        
         </div>
-        <div class="container-fluid border-primary col-8">
+        <div class="col-9 mt-2">  </div><!-- Image Bar -->
+        
+    </div>
+    <div class="container-fluid d-flex  ">
+        <div class="container-fluid border-primary col-2">
+            <button class="w-100 m-1 btn btn-primary"> My Bookings</button>
+            <button class="w-100 m-1 btn btn-primary"> Payment History</button>
+        </div>
+        <div class="container-fluid border-primary col-10">
             <% bookingDetails.forEach(element => { %>
                 <div class="card ">
-                    <div class="card-header d-flex">
-                        <h6 class="card-title">BOOKING  ID : </h6> <h6><%= element.reservationNumber  %></h6> 
+                    <div class="card-header d-flex ">
+                        <small class="card-title">BOOKING  ID : </small> <small><%= element.reservationNumber  %></small> 
                     </div>
                     <div class="card-body">
-                        <div class="container-fluid d-flex">
-                            <div class="container-fluid col-8">
-                                <div class="container-fluid d-flex">
-                                    <h6 class="card-title">CHECKIN  PLAN : </h6> <h6><%= element.checkinPlanName  %></h6>
+                        <div class="container-fluid d-flex ">
+                            <div class="container-fluid col-3 border rounded">
+                                <div class="container-fluid d-flex ">
+                                    <small class="card-title col-5">CHECKIN  PLAN : </small> <small><%= element.checkinPlanName  %></small>
                                 </div>
                                 
-                                <div class="container-fluid d-flex">
-                                    <h6 style="text-transform: capitalize;" class="card-title">ROOM CATEGORY : </h6> <h6 style="text-transform: capitalize;"><%= element.tariffName  %></h6></div> 
-                                <div class="container-fluid d-flex">
-                                    <h6 style="text-transform: capitalize;" class="card-title">RENT  : </h6> <h6 style="text-transform: capitalize;"><%= element.roomRentSingle  %></h6> </div>
-                                <div class="container-fluid d-flex">
-                                    <h6 style="text-transform: capitalize;" CLASS="card-title">EXTRA PERSON  : </h6> <h6 style="text-transform: capitalize;"><%= element.extraPerson  %></h6></div>
-                                <div class="container-fluid d-flex">
-                                    <h6 style="text-transform: capitalize;" class="card-title">SpecialRent  : </h6> <h6 style="text-transform: capitalize;"><%= element.SpecialRent  %></h6></div>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" class="card-title col-5">HOTEL : </small> <small style="text-transform: capitalize;"><%= element.companyName  %></small></div> 
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize; ;" class="card-title col-5">EMAIL  : </small> <small style="text-transform: capitalize; overflow:hidden ; flex-wrap: nowrap"><%= element.email  %></small> </div>
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" CLASS="card-title col-5">TELE:  : </small> <small style="text-transform: capitalize;"><%= element.contactNumber  %></small></div>
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" class="card-title col-5">ADDRESS  : </small> <small style="text-transform: capitalize;"><%= element.BuildingName,element.StreetName,element.district  %> <br><%= element.StreetName  %> <br> <%= element.district  %>  </small></div>
+                                
                             </div>
-                            <div class="container-fluid col-4">
-
+                            <div class="container-fluid col-2 border rounded">
+                                
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" class="card-title">ROOM CATEGORY : </small> <small style="text-transform: capitalize;"><%= element.tariffName  %></small></div> 
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" class="card-title">RENT  : </small> <small style="text-transform: capitalize;"><%= element.roomRentSingle  %>/-</small> </div>
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" CLASS="card-title">EXTRA PERSON  : </small> <small style="text-transform: capitalize;"><%= element.extraPerson  %>/-</small></div>
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" class="card-title">SpecialRent  : </small> <small style="text-transform: capitalize;"><%= element.SpecialRent  %>/-</small></div>
+                                
                             </div>
+                            
+                            <div class="container-fluid col-3 border rounded">
+                                <div class="container-fluid d-flex ">
+                                    <small class="card-title">PAYMENT  : </small> <small><%= element.checkinPlanName  %></small>
+                                </div>
+                                
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" class="card-title">PAYMENT ID : </small> <small style="text-transform: capitalize;"><%= element.TransferMode  %></small></div> 
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" class="card-title">TRANSACTION NUMBER  : </small> <small style="text-transform: capitalize;"><%= element.transactionReferanceNumber  %></small> </div>
+                                <div class="container-fluid d-flex ">
+                                    <small style="text-transform: capitalize;" CLASS="card-title">DATE  : </small> <small style="text-transform: capitalize;"><%= element.transDate  %></small></div>
+                                 
+                                
+                            </div>
+                            
+                            <div class="container-fluid col-4 d-flex"  >
+                                    <div class="container-fluid col-10">
+                                        <button class="btn w-100 h-100  " style="background-image: url('<%=element.image1  %>'); background-position: center ; background-size: cover;"></button>
+                                    </div>
+                                    <div class="container-fluid col-2 "  >
+                                        <button class="btn btn-danger" >DELETE </button>
+                                        <button class="btn btn-primary" >ADD GUEST </button>
+                                    </div>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="card-footer text-muted">
-                      2 days ago
+                      
                     </div>
                   </div>
             <% }) %>
-            <div class="container-fluid d-flex ">
+            <div class="container-fluid d-flex  ">
     
             </div>
         </div>
-        <div class="container-fluid border-primary col-2">
-    
-        </div>
+         
     </div>
 </div>
 <%- include('footer') %>

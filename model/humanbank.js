@@ -31,7 +31,9 @@ const humanResourceSchema = new mongoose.Schema({
     deleted: { type: Boolean, default: false },
     createduser: { type: String },
     systemUser: { type: String },
-    activeSession:{type:String}
+    activeSession:{type:String},
+    profilePicture:{type:String,default:'http://localhost:5200/Images/person_6-min.jpg'},
+    wallPappper:{type:String,default:"http://localhost:5200/Images/personalImage1.jpg"}
 
 
 });

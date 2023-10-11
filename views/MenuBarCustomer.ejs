@@ -11,38 +11,33 @@
   <div class="container px-5">
     <div class="container-fluid d-flex">
       
-      <small class="text text-light" > <span class="navbar-brand" style="font-size: 50px;" href="#!">Google</span> Navigate Luxury, Book with Ease.</small>
+      <small class="text text-light" > <span class="navbar-brand" style="font-size: 50px;" href="#!">Book My Trip </span> Navigate Luxury, Book with Ease.</small>
     </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-       <form action="/authenticate/custLogin" method="post">
-        <button class="nav-item btn " type="submit" > Home </button>
-       </form>
-        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-        
+       
+         
         <button id="idloggedusermenubar" value="" class="btn"> </button>
             <% if (user.firstName) { %>
               <!-- Example single danger button -->
+                       
+                        <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn text-light  bi bi-house-up-fill w-100 h-100" href="/authenticate/custLogin">HOME </a>
+                        <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-1 btn text-light   bi bi-power w-100 h-100" href="#">LOGOUT</a>
+                        <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn text-light bi bi-person-square w-100 h-100" href="/custom/loadHomepage">PROFILE </a>
                         <div class="btn-group">
-                          <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <button type="button" class="btn btn-warning dropdown-toggle col-12" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <%=user.firstName%>
                           </button>
-                          <div class="dropdown-menu btn  border-0 ">
-                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-house-up-fill w-100 h-100" href="/custom/loadHomepage">profile </a>
-                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-house-up-fill w-100 h-100" href="/authenticate/custLogin">Home </a>
-                            <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-power w-100 h-100" href="#">logout</a>
-                            
-                             
+                          <div class="dropdown-menu btn  border-0 col-12">
+                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn-warning btn bi bi-person-square w-100 h-100" data-bs-toggle="modal" data-bs-target="#VendureLogin"  > PARTNER LOGIN  </a>
+                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning  bi bi-person-square w-100 h-100" data-bs-toggle="modal" data-bs-target="#exampleModal" >STAFF LOGIN  </a>
+                        
                           </div>
-                        </div>
-     
+                        </div>   
         
         <% } else { %>
-          <li class="nav-item"><button type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#exampleModal"
-            style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link"> STAFF LOGIN </button> </li>
-          <li class="nav-item"><button type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#VendureLogin"
-            style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link"> PARTNER LOGIN </button> </li> 
+          
+          
           <li class="nav-item"><button type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#customerLogin"
               style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link">CUSTOMER LOGIN </button> </li>        
           <% } %>

@@ -7,7 +7,7 @@ const checkinDetails = require('../model/checkIn')
 const frontOffice = require('../model/checkIn') 
 
 async function getReservationDateWise(fromTime, endTime, companyID) {
-    try {
+   
         const result = await occupancies.occupancy.aggregate([
             {
                 $match: {
@@ -22,19 +22,13 @@ async function getReservationDateWise(fromTime, endTime, companyID) {
                 $group: {
                     _id: {
                         roomType: "$roomType",
-                        transDate: {
-                            $dateToString: {
-                                format: "%Y-%m-%d",
-                                date: "$transDate"
-                            }
-                        },
-                        
+                        transDate: "$dateString" 
                     },
                     blockedCount: { $sum: { $cond: [{ $eq: ["$blocked", true] }, 1, 0] } },
                     dirtyCount: { $sum: { $cond: [{ $eq: ["$dirty", true] }, 1, 0] } },
-                    maintenanceCount: { $sum: { $cond: [{ $eq: ["$maintenance", true] }, 1, 0] } },
-                    reservationCount: { $sum: { $cond: [{ $ne: ["$reservationId", null] }, 1, 0] } },
-                    checkinCount: { $sum: { $cond: [{ $ne: ["$checkinId", null] }, 1, 0] } }
+                    maintenanceCount: { $sum: { $cond: [{ $eq: ["$maintainance", true] }, 1, 0] } },
+                    reservationCount: { $sum: { $cond: [{ $ne: ["$reservationId", !null] }, 1, 0] } },
+                    checkinCount: { $sum: { $cond: [{ $ne: ["$checkinId", !null] }, 1, 0] } }
                 }
             },
             {
@@ -50,12 +44,9 @@ async function getReservationDateWise(fromTime, endTime, companyID) {
                 }
             }
         ]);
-       return result;
-    } catch (error) {
-        // Handle any errors here
-        console.error(error);
-        throw error;
-    }
+       console.log(result)
+        return result;
+
 }
 async function getRoomAvailalability(companyID){
 const result =await rooms.depart.aggregate([{

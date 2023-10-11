@@ -35,7 +35,8 @@ const Newcheckin = new mongoose.Schema({
   delete: { type: Boolean, default: false },
   update: { type: Boolean, default: false },
   createUser: { type: String },
-  totalAmount:{type:Number}
+  totalAmount:{type:Number},
+  transDate:{type:Date,default:Date.now()}
 })
 const checkIn = db.model('checkin', Newcheckin);
 

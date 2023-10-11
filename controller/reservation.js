@@ -71,7 +71,7 @@ router.post('/confirmPayment', async (req, res) => {
  
     const payment = await instance.payments.fetch(payment_id);
      
-  
+  console.log(payment,'paymentpaymentpaymentpayment');
       
    
   if (payment.status === 'captured') {
@@ -87,7 +87,9 @@ router.post('/confirmPayment', async (req, res) => {
       companyID: bookingDetails.companyID,
       cancelled: false,
       createdUser: req.body.custId,
-      systemEntry: true
+      systemEntry: true,
+      transactionReferanceNumber:payment.acquirer_data.upi_transaction_id,
+      TransferMode:payment.vpa
     }
     const saveCreditEntry = await paymentModel.MakeCreditEntry(ReceipttEntry)
     const saveReservationDetails = await occupancy.saveReservationDetails(bookingDetails)

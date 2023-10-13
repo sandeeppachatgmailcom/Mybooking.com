@@ -89,9 +89,4 @@ const checkinDetails = require('../model/checkIn')
     }
     
 
-         
-
-        
- 
- 
  module.exports = {occupancy,saveReservationDetails}

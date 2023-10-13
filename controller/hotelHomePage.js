@@ -24,8 +24,13 @@ router.post('/loadhomepage', async (req, res) => {
     const result =await HBank.verifyUser(req.body)   
 
     const user = await HBank.HumanResource.findOne({  activeSession: req.sessionID, deleted: false });
+    bookingDetails={};
     if(user){
       const profile = await companies.company.findOne({email:req.body.userName});
+      if(!profile){
+        res.redirect('/custom/customSearch')
+        return
+      }
       const activtariff = await tariff.loadtariff('');
       const activePlans = await checkinPlans.LoadPlan();
       let existingTariff = profile.roomtypes;
@@ -98,8 +103,6 @@ router.post('/saveTariff', async (req, res) => {
   };
   let result
    
-
-  // Check if tariffIndex is not provided or falsy
   if (!newRoomType.tariffIndex) {
     newRoomType.tariffIndex = await controller.getIndex('TARIFF');
     result = await companies.company.updateOne(
@@ -128,11 +131,12 @@ router.post('/saveTariff', async (req, res) => {
       {
         $set: { 'roomtypes.$': newRoomType,
       
-      } // Add to an array field
+      }  
       },
        
     );
   }
+  console.log(result);
     let response = {};
     if (result.modifiedCount > 0) {
       response = { update: true };

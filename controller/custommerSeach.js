@@ -9,6 +9,7 @@ const human = require('../model/humanbank')
 const controller = require('../controller/adminController')
 const ftnReservation = require('../controller/ftnReservation');
 const { JSONCookie } = require('cookie-parser');
+const payments = require('../model/payments')
    
 router.post('/viewReservation',async (req,res)=>{
     let temp = req.body.bookingDetails.split(',');
@@ -79,6 +80,38 @@ router.post('/customSearch',async (req,res)=>{
     
    
 })
+
+router.get('/customSearch',async (req,res)=>{
+      
+    let user = await human.HumanResource.findOne({activeSession:req.sessionID})
+    if (!user)
+    user = {};
+    const generalData = await companies.SearchCompany('')
+    const tariff = await tariffs.loadtariff('')
+    let district = new Set();
+     
+    let  inputData = req.body;
+    inputData.GuestCount = parseInt(inputData.GuestCount)
+    inputData.nameRoomCount = parseInt(inputData.nameRoomCount)
+   if(!inputData.GuestCount&&!inputData.nameRoomCount){
+    inputData.GuestCount=2
+    inputData.nameRoomCount=1
+    inputData.budgetStart=0;
+    inputData.budgetEnd=30000;
+    inputData.roomCategoryID='';
+    inputData.districtName=''
+    inputData.CheckinDate = Date.now()
+    inputData.CheckoutDate=Date.now()+1;
+    }
+
+    const pincode = generalData.forEach(element => {
+        district.add(element.district )
+    });
+        
+     let result = await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false})
+        res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
+ })
+
 router.use('/TariffSearch',async (req,res)=>{
     
     const generalData = await companies.SearchCompany('')
@@ -109,7 +142,7 @@ router.use('/loadPlans',async(req,res)=>{
 router.post('/loadHotelDetails', async (req, res) => {
     const reservationSummary = await ftnReservation.getReservationDateWise(req.body.StartDate, req.body.EndDate, req.body.hotelId);
     const totalRoomSummary = await ftnReservation.getRoomAvailalability(req.body.hotelId);
-    console.log(reservationSummary);
+     
     let maximumReservation = {};
     for (const item of reservationSummary) {
         const tariffIndex = item.tariffIndex;
@@ -123,7 +156,6 @@ router.post('/loadHotelDetails', async (req, res) => {
     } 
     req.body.CompanySearchKey = req.body.hotelId;
     let result  = await companies.SearchbyCompanyByAny(req.body);
-    console.log(maximumReservation ,'maximum reservation' ) 
      
      
     // Update room types with maximum reservation counts
@@ -137,7 +169,6 @@ router.post('/loadHotelDetails', async (req, res) => {
             
         }  
         for (let k = 0; k < totalRoomSummary.length; k++) {
-           console.log(totalRoomSummary[k].roomType , result.roomtypes[i].tariffIndex,(totalRoomSummary[k].roomType == result.roomtypes[i].tariffIndex))
             if (totalRoomSummary[k].roomType == result.roomtypes[i].tariffIndex) {
               result.roomtypes[i].totalRoom = totalRoomSummary[k].roomCount;
               
@@ -151,12 +182,17 @@ router.post('/loadHotelDetails', async (req, res) => {
     res.json(result);
 });
 
-router.get('/loadHomepage',async (req,res)=>{
-    let user = await human.HumanResource.findOne({activeSession:"BbQWImoGaEmTk0DyYpBWuxkDDvjTSX3C"})
-    if(!user) user={};
-    const reservationDetails = await ftnReservation.loadreservationByCustID(user.createUser)
+router.get('/Home',async (req,res)=>{
+    let user = await human.HumanResource.findOne({activeSession:req.sessionID})
+     
+    if(!user) {
+        res.redirect('/')
+        return;
+    }
+    const reservationDetails = await ftnReservation.loadreservationByCustID(user.hrId)
     let bookingDetails = JSON.stringify(reservationDetails)
     bookingDetails = JSON.parse(bookingDetails )
+    console.log(bookingDetails,'bookingDetailsbookingDetailsbookingDetailsbookingDetailsbookingDetails');
     for(let i=0;i<bookingDetails.length;i++){
         const hotel = await companies.SearchbyCompanyByAny({CompanySearchKey:bookingDetails[i].CompanyName})
         bookingDetails[i].companyName = hotel.firstName;
@@ -169,6 +205,13 @@ router.get('/loadHomepage',async (req,res)=>{
         bookingDetails[i].companyName = hotel.firstName;
         const checkinPlan = await checkinplans.LoadPlanByID(bookingDetails[i].CheckinPlan)
         const tariffDetails = hotel.roomtypes;
+        const payment = await payments.payment.findOne({paymentReferance:bookingDetails[i].reservationNumber,custommerId:user.hrId,entryType:"Cr"})
+        
+        if(payment){ 
+            bookingDetails[i].transactionReferanceNumber = payment.transactionReferanceNumber
+            bookingDetails[i].receiptNumber=payment.receiptNumber
+            bookingDetails[i].accountHead=payment.accountHead
+            }
         
          
          
@@ -187,7 +230,10 @@ router.get('/loadHomepage',async (req,res)=>{
                     bookingDetails[i].Discription = tariffDetails[k].Discription;
                     bookingDetails[i].SpecialRent = tariffDetails[k].SpecialRent;
                 }
-             } 
+             }
+            
+ 
+             
         }
         
     }

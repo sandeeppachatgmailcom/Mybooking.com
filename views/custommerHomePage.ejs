@@ -22,65 +22,202 @@
         </div>
         <div class="container-fluid border-primary col-10">
             <% bookingDetails.forEach(element => { %>
-                <div class="card ">
+                <div class="card d-flex ">
                     <div class="card-header d-flex ">
                         <small class="card-title">BOOKING  ID : </small> <small><%= element.reservationNumber  %></small> 
+                        <small style="text-transform: capitalize;" class="card-title">Arrival  : </small> <small style="text-transform: capitalize;"><%= (element.arrivalDate.split('T'))[0]    %> TIME : <%= ((element.arrivalDate.split('T'))[1].split(':'))[0]  %> : <%=  ((element.arrivalDate.split('T'))[1].split(':'))[1] %></small> 
+                        <small style="text-transform: capitalize;" class="card-title">Departure  : </small> <small style="text-transform: capitalize;"> <%= (element.depart_Date.split('T'))[0]    %> TIME : <%= ((element.depart_Date.split('T'))[1].split(':'))[0]  %> : <%=  ((element.depart_Date.split('T'))[1].split(':'))[1] %></small> 
+                             
+                       
                     </div>
+                    <div class="container-fluid d-flex ">
+                        
+                    </div>
+                    <div class="container-fluid d-flex ">
+                        </div>
+                    
                     <div class="card-body">
                         <div class="container-fluid d-flex ">
-                            <div class="container-fluid col-3 border rounded">
+                            <div class="container-fluid col-4 border rounded">
+                                <div class="container-fluid row w-100 border rounded ">
+                                    <div class="container-fluid ">
+                                        <small style="text-transform: capitalize;" class="card-title ">HOTEL : </small> <small style="text-transform: capitalize;"><%= element.companyName  %></small></div> 
+                                    <div class="container-fluid">
+                                        <small style="text-transform: capitalize; ;" class="card-title ">EMAIL  : </small> <small style="text-transform: capitalize; "><%= element.email  %></small> </div>
+                                    <div class="container-fluid   ">
+                                        <small style="text-transform: capitalize;" CLASS="card-title ">TELE:  : </small> <small style="text-transform: capitalize;"><%= element.contactNumber  %></small></div>
+                                    <div class="container-fluid   ">
+                                        <small style="text-transform: capitalize;" class="card-title ">ADDRESS  : </small> <small style="text-transform: capitalize;"><%= element.BuildingName,element.StreetName,element.district  %> <br><%= element.StreetName  %> <br> <%= element.district  %>  </small></div>
+                                </div>       
+                                <div class="container-fluid row w-100 border rounded ">
+                                    
+                                    <div class="container-fluid d-flex ">
+                                        <small style="text-transform: capitalize;" class="card-title">ROOM CATEGORY : </small> <small style="text-transform: capitalize;"><%= element.tariffName  %></small>
+                                    </div> 
+                                    <div class="container-fluid  ">
+                                        <small class="card-title">Rent/extra person :  </small> <small><%= element.specialRate  %>/<%= element.ExtraChargeRent  %></small>
+                                        
+                                    </div>
+                                    
+                                    <div class="container-fluid  ">
+                                        <small class="card-title">Total occupancy: </small> <small> <%= element.TotalPax  %></small>
+                                    </div>
+                                    <div class="container-fluid  ">
+                                        <small class="card-title">Extra occupant Room: </small> <small> <%= element.TotalPax-2  %></small>
+                                    </div>
+                                    <div class="container-fluid  ">
+                                        <small class="card-title">CHECKIN  PLAN : </small> <small><%= element.checkinPlanName  %>( <%= element.planCapacity%>)</small>
+                                    </div>
+                                    <div class="container-fluid  ">
+                                        <small class="card-title">Plan amount/Extra Person : </small> <small><%= element.PlanAmount  %>/<%= element.ExtraChargePlan  %></small>
+                                    </div>
+                                    <div class="container-fluid  ">
+                                        <small class="card-title">Plan /Extra Person : </small> <small><%= element.TotalPax-element.planCapacity  %></small>
+                                    </div>
+                                </div>     
+                            </div>
+                            
+                            
+                            <div class="container-fluid col-4 border rounded">
+                                <table class="border align-content-center rounded">
+                                    <tr class="border col-12 w-100">
+                                         
+                                            SUMMARY
+                                         
+                                    </tr>
+                                    <tr class="border">
+                                        <th class="col-3 border">
+                                            
+                                        </th>
+                                        
+                                        <th class="col-3 border">
+                                            AMOUNT
+                                        </th>
+                                        
+                                        <th class="col-3 border">
+                                            DAYS
+                                        </th>
+                                        
+                                        <th class="col-3 border">
+                                            TOTAL
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-3 border">
+                                         RENT
+                                        </th>
+                                        
+                                        <td class="col-3 border">
+                                            <%= element.specialRate  %> 
+                                        </td>
+                                        
+                                        <td class="col-2 border">
+                                            <%= element.totalDays  %>
+                                        </td>
+                                        
+                                        <td class="col-3 border">
+                                            <%= element.specialRate*element.totalDays* element.totalRoom  %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-4 border">
+                                         extraPax
+                                        </th>
+                                        
+                                        <td class="col-4 border">
+                                            <%= element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0)   %>                                        </td>
+                                        
+                                        <td class="col-2 border">
+                                            <%= element.totalDays  %>
+                                        </td>
+                                        
+                                        <td class="col-3 border">
+                                            <%= (element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0))*element.totalDays  %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-4 border">
+                                         Plan
+                                        </th>
+                                        
+                                        <td class="col-3 border">
+                                            <%= element.PlanAmount     %>
+                                        </td>
+                                        
+                                        <td class="col-2 border">
+                                            <%= element.totalDays  %>
+                                        </td>
+                                        
+                                        <td class="col-3 border">
+                                            <%= (element.PlanAmount * element.totalDays * element.totalRoom)%>
+                                        </td>
+                                    </tr> 
+                                    
+                                    <tr>
+                                        <th class="col-4 border">
+                                        Plan(Extra)   
+                                        </th>
+                                        
+                                        <td class="col-3 border">
+                                            <%= element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom >0? element.TotalPax-element.planCapacity:0 )     %>                                        </td>
+                                        
+                                        <td class="col-2 border">
+                                            <%= element.totalDays  %>
+                                        </td>
+                                        
+                                        <td class="col-3 border">
+                                            <%= element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom>0? element.TotalPax-element.planCapacity:0 ) * element.totalDays %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-4 border">
+                                        Total
+                                        </th>
+                                        
+                                        <td class="col-3 border">
+                                            <%=      %>                                        </td>
+                                        
+                                        <td class="col-2 border">
+                                            <%= element.totalDays  %>
+                                        </td>
+                                        
+                                        <td class="col-3 border">
+                                            <%= 
+                                            (element.specialRate*element.totalDays* element.totalRoom )+
+                                            ((element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0))*element.totalDays)+
+                                            (element.PlanAmount * element.totalDays * element.totalRoom) +
+                                            (element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom>0? element.TotalPax-element.planCapacity:0 ) * element.totalDays)
+                                            %>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                
                                 <div class="container-fluid d-flex ">
-                                    <small class="card-title col-5">CHECKIN  PLAN : </small> <small><%= element.checkinPlanName  %></small>
+                                    <small style="text-transform: capitalize;" class="card-title">Total amount  : </small> <small style="text-transform: capitalize;"><%= element.totalAmount  %>/-</small>
                                 </div>
                                 
                                 <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" class="card-title col-5">HOTEL : </small> <small style="text-transform: capitalize;"><%= element.companyName  %></small></div> 
-                                <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize; ;" class="card-title col-5">EMAIL  : </small> <small style="text-transform: capitalize; overflow:hidden ; flex-wrap: nowrap"><%= element.email  %></small> </div>
-                                <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" CLASS="card-title col-5">TELE:  : </small> <small style="text-transform: capitalize;"><%= element.contactNumber  %></small></div>
-                                <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" class="card-title col-5">ADDRESS  : </small> <small style="text-transform: capitalize;"><%= element.BuildingName,element.StreetName,element.district  %> <br><%= element.StreetName  %> <br> <%= element.district  %>  </small></div>
-                                
-                            </div>
-                            <div class="container-fluid col-2 border rounded">
-                                
-                                <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" class="card-title">ROOM CATEGORY : </small> <small style="text-transform: capitalize;"><%= element.tariffName  %></small></div> 
-                                <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" class="card-title">RENT  : </small> <small style="text-transform: capitalize;"><%= element.roomRentSingle  %>/-</small> </div>
-                                <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" CLASS="card-title">EXTRA PERSON  : </small> <small style="text-transform: capitalize;"><%= element.extraPerson  %>/-</small></div>
-                                <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" class="card-title">SpecialRent  : </small> <small style="text-transform: capitalize;"><%= element.SpecialRent  %>/-</small></div>
-                                
-                            </div>
-                            
-                            <div class="container-fluid col-3 border rounded">
-                                <div class="container-fluid d-flex ">
-                                    <small class="card-title">PAYMENT  : </small> <small><%= element.checkinPlanName  %></small>
+                                    <small class="card-title">PAYMENT MODE  : </small> <small><%= element.accountHead  %></small>
                                 </div>
-                                
                                 <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" class="card-title">PAYMENT ID : </small> <small style="text-transform: capitalize;"><%= element.TransferMode  %></small></div> 
+                                    <small class="card-title">RECEIPT NUMBER  : </small> <small><%= element.receiptNumber  %></small>
+                                </div>
                                 <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" class="card-title">TRANSACTION NUMBER  : </small> <small style="text-transform: capitalize;"><%= element.transactionReferanceNumber  %></small> </div>
-                                <div class="container-fluid d-flex ">
-                                    <small style="text-transform: capitalize;" CLASS="card-title">DATE  : </small> <small style="text-transform: capitalize;"><%= element.transDate  %></small></div>
-                                 
-                                
+                                    <small class="card-title">TRANSACTION NUMBER  : </small> <small><%= element.transactionReferanceNumber  %></small>
+                                </div>
                             </div>
-                            
-                            <div class="container-fluid col-4 d-flex"  >
+                            <div class="container-fluid col-5 d-flex"  >
                                     <div class="container-fluid col-10">
                                         <button class="btn w-100 h-100  " style="background-image: url('<%=element.image1  %>'); background-position: center ; background-size: cover;"></button>
                                     </div>
                                     <div class="container-fluid col-2 "  >
-                                        <button class="btn btn-danger" >DELETE </button>
-                                        <button class="btn btn-primary" >ADD GUEST </button>
                                     </div>
                             </div>
-                            
+                        </div>
+                        <div class="container-fluid d-flex justify-content-end  rounded ">
+                            <button onclick="cancelBooking(event.target.value)" value="<%= element.reservationNumber %>" class="btn btn-danger col-1" >DELETE </button>
+                            <button class="btn btn-primary  ">ADD GUEST </button>
                         </div>
                     </div>
                     <div class="card-footer text-muted">
@@ -97,5 +234,6 @@
 </div>
 <%- include('footer') %>
 <script src="/Script/confirmReservation.js" ></script>
+<script src="/Script/profileCustomer.js" ></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
  

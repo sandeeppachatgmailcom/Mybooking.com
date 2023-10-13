@@ -11,13 +11,28 @@ router.post('/savereservation', async (req, res) => {
   req.body.custId = userDetails.hrId
   if (userDetails.country != 'India') req.body.Foreigner = true
   else req.body.Foreigner = false
-  let tariff = await company.company.findOne({ "roomtypes.tariffIndex": req.body.tariffIndex}, { roomtypes: 1, _id: 0 })
+  let tariff = await company.company.findOne({ CompanyID:req.body.companyID ,"roomtypes.tariffIndex": req.body.tariffIndex}, { roomtypes: 1,checkinplan:1, _id: 0 })
+ 
+  
+  let plans = tariff.checkinplan 
+  console.log(  plans  ,'company tariff & length');
+ 
   tariff = tariff.roomtypes;
-  let tarifffilter = tariff.filter(element => element.tariffIndex === req.body.tariffIndex);
+  if(!req.body.checkinplan)req.body.checkinplan = '';
+   let plansfilter = plans.filter(element=>element.planIndex==req.body.checkinplan   );
+   console.log(plansfilter,'plansplansplansplansplansplansplansplansplansplansplansplansplansplansplans'); 
+   let tarifffilter = tariff.filter(element => element.tariffIndex === req.body.tariffIndex);
   req.body.rent = tarifffilter[0].roomRentSingle
   req.body.specialRate = tarifffilter[0].SpecialRent
+  req.body.extraCharge  = tarifffilter[0].extraPerson
+  req.body.planAmount = plansfilter[0].amount;
+  req.body.planExtraAmount = plansfilter[0].extraCharge;
+  req.body.planCapacity = plansfilter[0].maxPax   
+  req.body.totalRoom  = parseInt(req.body.totalRoom)
   const totalAmount = parseInt(req.body.totalAmount);
+  console.log(req.body)
   const result = await checkin.saveReservation(req.body)
+  
 
   const paymentEntry = {
     transDate: Date.now(),
@@ -44,6 +59,7 @@ router.post('/savereservation', async (req, res) => {
     receipt: result.reference
   };
   let order = await instance.orders.create(options);
+  
   res.json({ success: true, order, totalAmount,result })
 })
 
@@ -57,21 +73,16 @@ router.post('/confirmPayment', async (req, res) => {
     key_id: 'rzp_test_6damh00ndxLBqq',
     key_secret: 'd7Y4vbTqZb7fOwcYIjWRpt6U',
   });
-
+  console.log(req.body,'input')
    
   let bookingDetails = req.body.bookingDetails
-   
-
   const payment_id = req.body.razorpay_payment_id;
-   
   const userDetails = await hbank.HumanResource.findOne({ activeSession: req.sessionID })
   req.body.custId = userDetails.hrId
   bookingDetails.custId = userDetails.hrId;
   bookingDetails.reservationNumber = req.body.reservationNumber;
  
-    const payment = await instance.payments.fetch(payment_id);
-     
-  console.log(payment,'paymentpaymentpaymentpayment');
+  const payment = await instance.payments.fetch(req.body.razorpay_payment_id);
       
    
   if (payment.status === 'captured') {
@@ -79,17 +90,18 @@ router.post('/confirmPayment', async (req, res) => {
       transDate: Date.now(),
       paymentDate: Date.now(),
       paymentIndex: req.body.paymentIndex,
-      paymentReferance: req.body.reservationNumber,
+      paymentReferance: req.body.paymentReferance,
       accountHead: 'RAZORPAYACCOUNT',
-      amount: parseInt(payment.amount) / 100,
+      amount: parseInt(payment.amount)/100,
       custommerId: req.body.custId,
-      receiptNumber:payment_id,
+      receiptNumber:req.body.razorpay_payment_id,
       companyID: bookingDetails.companyID,
       cancelled: false,
       createdUser: req.body.custId,
       systemEntry: true,
       transactionReferanceNumber:payment.acquirer_data.upi_transaction_id,
-      TransferMode:payment.vpa
+      TransferMode:payment.vpa,
+      orderID:req.body.order_id 
     }
     const saveCreditEntry = await paymentModel.MakeCreditEntry(ReceipttEntry)
     const saveReservationDetails = await occupancy.saveReservationDetails(bookingDetails)

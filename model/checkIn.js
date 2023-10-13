@@ -22,7 +22,12 @@ const Newcheckin = new mongoose.Schema({
   category: { type: String },
   tariff: { type: String },
   specialRate: { type: Number },
+  ExtraChargeRent:{type: Number,default:0},
+  PlanAmount:{type: Number,default:0},
+  ExtraChargePlan:{type: Number,default:0},
   TotalPax: { type: Number, required: true },
+  planCapacity:{ type: Number, default:0},
+  totalDays:{ type: Number,default:0},
   Male: { type: Number },
   feMale: { type: Number },
   otherSex: { type: Number },
@@ -36,7 +41,8 @@ const Newcheckin = new mongoose.Schema({
   update: { type: Boolean, default: false },
   createUser: { type: String },
   totalAmount:{type:Number},
-  transDate:{type:Date,default:Date.now()}
+  transDate:{type:Date,default:Date.now()},
+  totalRoom:{type:Number,default:0}
 })
 const checkIn = db.model('checkin', Newcheckin);
 
@@ -118,15 +124,20 @@ async function saveReservation(reservationObj) {
     tariff:reservationObj.tariffIndex,
     specialRate: reservationObj.specialRate,
     TotalPax: reservationObj.totalGuest,
+    totalDays:reservationObj.totalDays,
     specialrequierments: reservationObj.specialRequest,
     CompanyName: reservationObj.companyID,
     CheckinPlan: reservationObj.checkinplan,
     totalAmount:reservationObj.totalAmount,
     delete: false,
     update: false,
-    createUser: reservationObj.custId
+    createUser: reservationObj.custId,
+    ExtraChargeRent:reservationObj.extraCharge,
+    PlanAmount:reservationObj.planAmount,
+    ExtraChargePlan:reservationObj.planExtraAmount,
+    planCapacity:reservationObj.planCapacity,
+    totalRoom:reservationObj.totalRoom
   }
-   
   let result = await checkIn.updateOne({ reservationNumber: reservationObj.reservationNumber }, { $set: data }, { upsert: true })
   result.reference = reservationObj.reservationNumber;
   data = result.modifiedCount + result.acknowledged;

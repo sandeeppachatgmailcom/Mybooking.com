@@ -52,7 +52,7 @@ let hotels = new Set();
 hotels = result.add 
 for(let i=0;i<result.length;i++){
    
-  innerHtml+= `<div class="card btn col-3">
+  innerHtml+= `<div class="card btn col-2">
   <img class="w-100"  src="${result[i].image1}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title" data-hotelTariffs="${result[i].tariffDetails}" >${result[i].lastName}</h5>
@@ -275,6 +275,7 @@ function readmore() {
   console.log(tariffDetails,'tariffDetails');
 
   for (let i of tariffDetails){
+    if(!i.deleted){    
   let masterhtml = `<div class="container-fluid  " >
     <div class="container-fluid d-flex  border btn" style="height :400px ;background-size: cover;background-position: center;">
         <img src="${result.image1}" class="card-img-top" alt="...">
@@ -396,10 +397,11 @@ if(! i.totalRoom) i.totalRoom=1;
   document.getElementById("idprinttariffcard").innerHTML =  innerhtml;
   
   document.getElementById("idCheckinPlan").innerHTML =''
-  }
-  
    
-  }
+  }}  
+   
+  
+}
 function checkinPlan(){
 
 }

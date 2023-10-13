@@ -123,14 +123,15 @@ async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
    
 
 }  
-async function verifyEmail(Email_Field,outputfield) {
+async function verifyEmail(Email_Field,outputfield,path) {
     console.log(Email_Field,outputfield) ;
     const email = document.getElementById(Email_Field).value;
     if (email.length == 0) {
         document.getElementById(Email_Field).focus();
         return
     }
-    const data = { email: email }
+    const data = { email: email,
+                    path:path }
     
     let result = await fetch('/authenticate/VerifyEmail', {
         method: 'post',
@@ -167,9 +168,9 @@ async function verifyEmail(Email_Field,outputfield) {
             document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
         }
         document.getElementById(outputfield).classList.add('btn')
-        document.getElementById(outputfield).classList.add('btn-success')
+        document.getElementById(outputfield).classList.add('btn-primary')
         document.getElementById(outputfield).classList.add('bi')
-        document.getElementById(outputfield).classList.add('bi-search')
+        document.getElementById(outputfield).classList.add('bi-patch-check')
         signuptxt.setAttribute("readonly", "true");
     }
     return result.verified
@@ -236,7 +237,13 @@ if(document.getElementById(firstText).value==document.getElementById(retypeText)
 }
 
 else{
-        alert('hello')
+    while (document.getElementById(resultbtn).classList.length > 0) {
+        document.getElementById(resultbtn).classList.remove(document.getElementById(resultbtn).classList.item(0));
+    }
+    document.getElementById(resultbtn).classList.add('btn')
+    document.getElementById(resultbtn).classList.add('btn-danger')
+    document.getElementById(resultbtn).classList.add('bi')
+    document.getElementById(resultbtn).classList.add('bi-patch-check')
         return false;
 }
 }
@@ -254,7 +261,7 @@ data = {
     password:NewPassword 
 }
 console.log(userName,oldPassword,NewPassword,confirmuserName,confirmoldPassword,confirmNewPassword,confirmmatchPassword);
-if(confirmuserName&&confirmoldPassword&&confirmNewPassword&&confirmmatchPassword ){
+if(!confirmuserName&&confirmoldPassword&&confirmNewPassword&&confirmmatchPassword ){
     const result =await fetch('/authenticate/changePassword',{method:'post',headers:{"Content-type":"Application/json"},body:JSON.stringify(data)})
     .then(res=>{
         return res.json()

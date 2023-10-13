@@ -53,7 +53,7 @@
                     
                     <div class="input-group mb-3">
                         <span class="input-group-text col-4" id="basic-addon1">email/Mobile</span>
-                        <input type="text" id="idVerifyEmail-Phone" class="form-control" onchange="verifyEmail('idVerifyEmail-Phone','Signup_Email_Btn')" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="text" id="idVerifyEmail-Phone" class="form-control" onchange="verifyEmail('idVerifyEmail-Phone','Signup_Email_Btn','/VerifyEmail')" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                         <button id="Signup_Email_Btn" class="btn"></button>
                     </div>
                         <div class="input-group mb-3">
@@ -83,7 +83,7 @@
     </div>
 <form action="/authenticate/custLogin" method="post">
     <div class="modal fade mr-2" id="customerLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl"> <!-- Change modal-lg to modal-xl for an extra-large modal -->
+        <div class="modal-dialog "> <!-- Change modal-lg to modal-xl for an extra-large modal -->
             <div class="modal-content" style="background-color: rgba(72, 93, 74, 0.84); width:400px;">
                  <div class="modal-header">
             <h5 class="modal-title txt text-light" id="exampleModalLabel">Sign in</h5>
@@ -107,7 +107,7 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#resetPassword">ChangePassword</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            
             <button type="submit" onclick="signinCustomer()" class="btn btn-success">Sign in </button>
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#customerRegister">Signup </button>
             
@@ -140,15 +140,15 @@
                     <div class="container-fluid border-light d-flex rounded mb-3">
                          
                         <button class="border-0 rounded-start col-4" id="Signup_input_group_text">Email</button>
-                        <input id="Signup_Email_text" type="email" class="form-control" name="email" placeholder="Email" required>
+                        <input id="Signup_Email_text" type="email" onchange="verifyEmail('Signup_Email_text','Signup_Email_Bt','/new');" class="form-control" name="email" placeholder="Email" required>
                         <button id="Signup_Email_Bt" type="button" class="btn btn-outline-success bi bi-search"
-                            onclick="verifyEmail('Signup_Email_text','Signup_Email_Bt');"></button>
+                            onclick="verifyEmail('Signup_Email_text','Signup_Email_Bt','/new');"></button>
             
                     </div>
                     <!-- ************ -->
                     <div class="container-fluid border-light d-flex rounded mb-3">
                         <button class="border-0 rounded-start col-4">Phone</button>
-                        <input id="Signup_Email_Phone" type="number" class="form-control" name="phone" placeholder="Phone" required>
+                        <input id="Signup_Email_Phone" onchange="verifyphone('Signup_Email_Phone')" type="number" class="form-control" name="phone" placeholder="Phone" required>
                         <button id="Signup_phone_Bt" type="button" onclick="verifyphone('Signup_Email_Phone')"
                             class="btn btn-outline-success bi bi-search"></button>
                     </div>
@@ -157,7 +157,7 @@
                       
                             <button class="border-0 rounded-start col-4 ">Username</button>
                        
-                        <input type="text " id="Signup_User_Name" class="form-control " name="username" placeholder="Username"
+                        <input type="text " id="Signup_User_Name" onchange="verifyUser('Signup_User_Name')" class="form-control " name="username" placeholder="Username"
                             required>
                         <button id="Signup_username_Bt" type="button" onclick="verifyUser('Signup_User_Name')"
                             class="btn btn-outline-success bi bi-search "></button>

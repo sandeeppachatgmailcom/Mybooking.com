@@ -40,13 +40,16 @@ router.post('/custLogin',async (req,res)=>{
     req.body.session = req.sessionID;
 
     const verified =await HBank.verifyUser(req.body)
+    if(verified.otp){
+        res.render('otp',{verified})
+        return
+    }
     const user={
         firstName:verified.user,
-        
     }
     if (verified.verified){
         res.cookie('username',verified.user)
-    }
+    
     req.body.ditrictName='';
     req.body.roomCategoryID='';
     req.body.budgetStart=0;
@@ -63,6 +66,8 @@ router.post('/custLogin',async (req,res)=>{
      "roomtypes.SpecialRent":{$gte:req.body.budgetStart},
      "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
     res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
+}
+else res.redirect('/')
 })
 
 router.get('/custLogin',async (req,res)=>{
@@ -177,6 +182,8 @@ router.post('/login' , async (req, res) => {
 })
 router.post('/verifyUsenameWithPassword',async (req,res)=>{
     req.body.session = req.sessionID;
+    req.body.path= req.path
+    console.log(req.path)
     const result =await HBank.verifyUser(req.body)
     res.json(result)
 })
@@ -186,6 +193,7 @@ router.post('/changePassword',async (req,res)=>{
      
     let responseData = false;
      if(result){
+
          responseData= {updated:true} 
      }
      else {
@@ -195,14 +203,20 @@ router.post('/changePassword',async (req,res)=>{
     
 })
 router.post('/VerifyEmail',async(req,res)=>{
-     
+     console.log(req.path);
      const result = await HBank.HumanResource.findOne({email:req.body.email})
      let responseData = false;
      if(result){
-         responseData= {verified:true} 
+         if(req.body.path=='/VerifyEmail'){
+            responseData= {verified:false}
+         }
+         else responseData= {verified:true} 
      }
      else {
-         responseData= {verified:false} 
+        if(req.body.path=='/VerifyEmail'){
+            responseData= {verified:true}
+         }
+         else responseData= {verified:false} 
      }
      console.log(responseData);
      res.json(responseData);

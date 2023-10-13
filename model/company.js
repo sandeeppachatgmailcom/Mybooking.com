@@ -126,7 +126,7 @@ async function loadHuman(contactNumber) {
     return result
 }
 async function SearchbyCompanyByAny(SerchKey) {
-    const data = await company.findOne({$or:[{firstName: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' }},{CompanyID: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' } },{contactNumber: { $regex: `^${SerchKey.Username}`, $options: 'i' } }]})
+    const data = await company.findOne({$or:[{firstName: {$regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' }},{CompanyID: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' } },{contactNumber: { $regex: `^${SerchKey.Username}`, $options: 'i' } }]})
     return data
 
 }

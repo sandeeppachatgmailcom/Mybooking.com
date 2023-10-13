@@ -159,9 +159,7 @@ async function deletEdHuman() {
         window.location.reload();
     }
 }
-function d() {
-    prompt("Sandeep", defaultInput);
-}
+
 function formAction() {
     let t = document.getElementById("Txt_search").value = 'Save';
     console.log(t)

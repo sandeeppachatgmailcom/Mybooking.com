@@ -39,15 +39,7 @@ const loadtariff =await  companies.company.find({ CompanyID:Obj.submitCompanyDet
 
     
   return loadtariff ;
-
-
-
-
-  
    
-  
-
-     
 }
 
 
@@ -69,7 +61,8 @@ username: { type: String, required: true },
 SpecialRent:{type:Number,required:true,default:0},
 itemname: { type: String },
 HSNCode: { type: String },
-deleted:{type:Boolean,default:false,required:true}
+deleted:{type:Boolean,default:false,required:true},
+cancelPeriod :{type:Number,default:48}
 }) 
 
 const tariff = db.model('TARIFFMASTER',newTariff);

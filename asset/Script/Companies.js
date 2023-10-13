@@ -211,7 +211,7 @@ function convertToHTMLDatetimeFormat(inputDateTime) {
 async function saveTariffToCompanies(tariffIndex){
     
     const id = tariffIndex;
-    alert(document.getElementById(`idCompTariffname+${id}`).value);
+    
     newTariff = {
         tariffName: document.getElementById(`idCompTariffname+${id}`).value,
         roomRentSingle: document.getElementById(`idRent-Single+${id}`).value,

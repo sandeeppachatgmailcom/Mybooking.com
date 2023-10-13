@@ -27,7 +27,7 @@
                 </div>
                 </div>
                 <div class="container-fluid d-flex flex-wrap">
-                    <div class="container-fluid border col-4 rounded justify-content-start">
+                    <div class="container-fluid border col-3 rounded justify-content-start">
                         <br>
                         <h5 class="text text-primary" style=" text-transform: uppercase;">Booking Details</h5>
                         <small>Arrival  :<%=BookingSummary.arrivalDate  %>,<%=BookingSummary.arrivalTime  %></small> <br>
@@ -37,12 +37,127 @@
                         <small>Rooms :<%=BookingSummary.totalRoom  %></small><br>
                         
                 </div>
-                <div class="container-fluid border col-4 rounded justify-content-start">
-                        <br>
+                <div class="container-fluid border col-5 rounded justify-content-start">
+                    <table class="border align-content-center rounded">
+                        <tr class="border col-12 w-100">
+                             
+                                SUMMARY
+                             
+                        </tr>
+                        <tr class="border">
+                            <th class="col-3 border">
+                                
+                            </th>
+                            
+                            <th class="col-3 border">
+                                AMOUNT
+                            </th>
+                            
+                            <th class="col-3 border">
+                                DAYS
+                            </th>
+                            
+                            <th class="col-3 border">
+                                TOTAL
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="col-3 border">
+                             RENT
+                            </th>
+                            
+                            <td class="col-3 border">
+                                <%= tariffplans[0].SpecialRent  %> 
+                            </td>
+                            
+                            <td class="col-2 border">
+                                <%= BookingSummary.totalDays  %>
+                            </td>
+                            
+                            <td class="col-3 border">
+                                <%= tariffplans[0].SpecialRent*BookingSummary.totalDays* BookingSummary.totalRoom  %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="col-4 border">
+                             extraPax
+                            </th>
+
+                            <td class="col-4 border">
+                               <%= ((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))   ) %>
+                            <td class="col-2 border">
+                                <%= BookingSummary.totalDays  %>
+                            </td>
+                            
+                            <td class="col-3 border">
+                                <%= ((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax) )*(parseInt(BookingSummary.totalDays))) %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th   class="col-4 border">
+                             Plan
+                            </th>
+                            
+                            <td class="col-3 border">
+                                <h6 id="idTablePlan"></h6>
+                            </td>
+                            
+                            <td class="col-2 border">
+                                <%= BookingSummary.totalDays  %>
+                            </td>
+                            
+                            <td id="idTablePlanTotal" class="col-3 border">
+                                
+                            </td>
+                        </tr> 
+                        
+                        <tr>
+                            <th class="col-4 border">
+                            Plan(Extra)   
+                            </th>
+                            
+                            <td id="idTablePlanExtra" class="col-3 border">
+                                                                        </td>
+                            
+                            <td class="col-2 border">
+                                <%= BookingSummary.totalDays  %>
+                            </td>
+                            
+                            <td id="idTablePlanExtraTotal" class="col-3 border">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="col-4 border">
+                            Total
+                            </th>
+                            
+                            <td  class="col-3 border">
+                                <%=      %>                                        </td>
+                            
+                            <td class="col-2 border">
+                                <%= BookingSummary.totalDays  %>
+                            </td>
+                            
+                            <td id="idTabletotal" class="col-3 border">
+                                <%=  ((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))*(parseInt(BookingSummary.totalDays))+( tariffplans[0].SpecialRent*BookingSummary.totalDays* BookingSummary.totalRoom )) 
+                                 %>
+                            </td>
+                        </tr>
+                    </table>
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                    <br>
                         <h5 class="text text-primary" style=" text-transform: uppercase;">payment break up</h5>
                         <small>Rent/(2Person) :<%=tariffplans[0].SpecialRent  %>,Extra/person :<%=tariffplans[0].extraPerson  %>/-</small> <br>
                         <small>Total Rent <%= ((parseInt(BookingSummary.totalDays))* (parseInt(tariffplans[0].SpecialRent))*(parseInt(BookingSummary.totalRoom))) %>/- </small> <br>
-                        <small>Total Extra Person <%= ((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))) %>/- </small> <br>
+                        <small>Total Extra Person <%= ((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))*(parseInt(BookingSummary.totalDays))) %>/- </small> <br>
                         <small>plan Charge/Extra person </small> <small id="idplanAmountReservation"></small><br>
                        
                 </div>
@@ -54,8 +169,9 @@
                         </small>  
                         <br> 
                     <h6 style="opacity: 0;" id="idCheckinPlan">Checkin Plan </h6> <br>
-                     <h6>Net Amount Payable </h6> <h6 id="idfinalAmount"> <%=((parseInt(BookingSummary.totalDays))* (parseInt(tariffplans[0].SpecialRent))*(parseInt(BookingSummary.totalRoom)))
-                      +((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))) %></h6><br>
+                     <h6>Net Amount Payable </h6> <h6 id="idfinalAmount">
+                         
+                      </h6><br>
                      <button class="btn btn-outline-success w-100  " type="button"  onclick="saveReservation(event.target.value )"  value="<%= JSON.stringify(BookingSummary) %> " > PAY & CONFIRM
                     </button>
                     
@@ -72,6 +188,8 @@
         <div class="container-fluid col-2 d-flex border border-warning">
             <div class="container-fluid col-12   border border-warning" id="">
                 <% checkinplan.forEach(element => { %>
+                   <% if (!element.deleted) { %>
+                    
                    
                         <div class="btn container-fluid border rounded m-1" style="overflow: hidden; ">
                             <h6 style="text-transform: uppercase;"> <%= element.planName %></h6 > <br>
@@ -88,7 +206,7 @@
                             <small> additional person <%= element.extraCharge%>/- </small> <br>
                             <button onclick="CalculateRentWithPlan(event.target.value)" value="<%=element.maxPax%>,<%=element.amount%>,<%=element.extraCharge%>,<%=tariffplans[0].extraPerson%>,<%=BookingSummary.extraPax%>,<%=tariffplans[0].SpecialRent%>,<%=BookingSummary.totalDays%>,<%=BookingSummary.totalRoom%>,<%=BookingSummary.totalGuest  %>,<%= element.planIndex %>" class="btn btn-success">ADD</button>
                         </div>
-                         
+                        <% } %>
                 <% }) %>
             </div>
         </div>

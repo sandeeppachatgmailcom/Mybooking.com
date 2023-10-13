@@ -24,7 +24,8 @@ async function  LoadPlan(){
   
 return result;} 
 async function  LoadPlanByID(planId){
-    result = await CheckinPlan.findOne({ planIndex:planId,deleted:false})
+    result = await CheckinPlan.findOne({ planIndex:planId})
+    console.log(result);
 return result;} 
 
 

@@ -1,6 +1,6 @@
     <%- include('header') %>
     
-    <h1 class="text" id="idEmail" > <%= data.authorisationname  %> </h1>
+    <h1 class="text" id="idEmail" > <%= verified.email  %> </h1>
 
     <script>
         async function showPrompt() {
@@ -17,7 +17,7 @@
                     return res.json();
                 }).catch() 
                 if(validate.Verified){
-                   window.location.assign('/floorMap/floorMap');
+                   window.location.assign('/');
                 }
 
                     } else {

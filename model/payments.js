@@ -67,6 +67,7 @@ return [debitEntry,creditEntry];
 
 
 async function MakeCreditEntry(reqobj){
+    console.log(reqobj,'ReceipttEntryReceipttEntryReceipttEntry');
     reqobj.bookName =reqobj.accountHead
 if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherNumber(reqobj)
     if(!reqobj.paymentIndex) reqobj.paymentIndex = await controller.getIndex('PAYMENT') 
@@ -102,9 +103,10 @@ if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherN
         custommerId :  reqobj.accountHead ,
         companyID : reqobj.companyID ,
         cancelled : reqobj.cancelled ,
+        transactionReferanceNumber:reqobj.transactionReferanceNumber,
         createdUser : reqobj.createdUser 
     }
-    
+    console.log(crediData,'crediData',debitData,'debitData');
     const debitEntry = await payment.updateOne({voucherNumber:reqobj.voucherNumber,companyID : reqobj.companyID,entryType:'Dr' },{$set:debitData},{upsert:true})
     const creditEntry = await payment.updateOne({voucherNumber:reqobj.voucherNumber,companyID : reqobj.companyID,entryType:'Cr'},{$set:crediData},{upsert:true})
     if((debitEntry.upsertedCount>0||debitEntry.modifiedCount>0)&&(creditEntry.upsertedCount>0||creditEntry.modifiedCount>0))

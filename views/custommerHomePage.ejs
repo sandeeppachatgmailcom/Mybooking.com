@@ -1,5 +1,6 @@
 <%- include('header') %>
 <%- include('MenuBarCustomer') %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <style>
     body{
         font-family: Poppins;
@@ -18,25 +19,27 @@
     <div class="container-fluid d-flex  ">
         <div class="container-fluid border-primary col-2">
             <button class="w-100 m-1 btn btn-primary"> My Bookings</button>
-            <button class="w-100 m-1 btn btn-primary"> Payment History</button>
+            <%= console.log(user.hrId) %>
+            <button onclick="paymentHistory(event.target.value)" value="<%=user.hrId%>" class="w-100 m-1 btn btn-primary"> Payment History</button>
         </div>
         <div class="container-fluid border-primary col-10">
             <% bookingDetails.forEach(element => { %>
                 <div class="card d-flex ">
                     <div class="card-header d-flex ">
+                        
                         <small class="card-title">BOOKING  ID : </small> <small><%= element.reservationNumber  %></small> 
                         <small style="text-transform: capitalize;" class="card-title">Arrival  : </small> <small style="text-transform: capitalize;"><%= (element.arrivalDate.split('T'))[0]    %> TIME : <%= ((element.arrivalDate.split('T'))[1].split(':'))[0]  %> : <%=  ((element.arrivalDate.split('T'))[1].split(':'))[1] %></small> 
                         <small style="text-transform: capitalize;" class="card-title">Departure  : </small> <small style="text-transform: capitalize;"> <%= (element.depart_Date.split('T'))[0]    %> TIME : <%= ((element.depart_Date.split('T'))[1].split(':'))[0]  %> : <%=  ((element.depart_Date.split('T'))[1].split(':'))[1] %></small> 
-                             
+                        
                        
                     </div>
+                    
                     <div class="container-fluid d-flex ">
                         
                     </div>
                     <div class="container-fluid d-flex ">
                         </div>
-                    
-                    <div class="card-body">
+                    <div class="card-body" id="IdbookidDetailsDiv" style="display:contents;">
                         <div class="container-fluid d-flex ">
                             <div class="container-fluid col-4 border rounded">
                                 <div class="container-fluid row w-100 border rounded ">
@@ -215,13 +218,13 @@
                                     </div>
                             </div>
                         </div>
-                        <div class="container-fluid d-flex justify-content-end  rounded ">
-                            <button onclick="cancelBooking(event.target.value)" value="<%= element.reservationNumber %>" class="btn btn-danger col-1" >DELETE </button>
-                            <button class="btn btn-primary  ">ADD GUEST </button>
+                        <div class="container-fluid  ">
+                           
                         </div>
                     </div>
-                    <div class="card-footer text-muted">
-                      
+                    <div class="card-footer text-muted d-flex justify-content-end  rounded">
+                        <button onclick="cancelBooking(event.target.value)" value="<%= element.reservationNumber %>" class="btn btn-danger col-1" >DELETE </button>
+                        <button class="btn btn-primary  ">ADD GUEST </button>
                     </div>
                   </div>
             <% }) %>
@@ -233,7 +236,10 @@
     </div>
 </div>
 <%- include('footer') %>
+
+
 <script src="/Script/confirmReservation.js" ></script>
 <script src="/Script/profileCustomer.js" ></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
  

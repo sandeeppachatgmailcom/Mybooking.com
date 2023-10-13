@@ -20,7 +20,41 @@ const customSearch = require('../controller/custommerSeach')
 const hotelshomePage = require('../controller/hotelHomePage')
 const clearCache = require('../middleware/userAccess')
 const reservation = require('../controller/reservation')
+const personalProfile = require('../controller/userprofile')
 router.use(clearCache.clearCache);
+
+
+
+
+
+router.use('/checkin',verifyAccess.VerifyAccess,frontDesk)
+router.use('/frontOffice',verifyAccess.VerifyAccess,frontDesk)
+router.use('/rooms',verifyAccess.VerifyAccess,rooms)
+router.use('/Human',verifyAccess.VerifyAccess,hbank)
+router.use('/floorMaster',verifyAccess.VerifyAccess,floorMaster)
+router.use('/roomType',verifyAccess.VerifyAccess,roomcat)
+router.use('/checkinplan',verifyAccess.VerifyAccess,CheckinPlan)
+router.use('/floorMap',verifyAccess.VerifyAccess,floorMap)
+router.use('/authenticate',userAuthentic)
+router.use('/facilty',verifyAccess.VerifyAccess,userfacilty)
+router.use('/admincontroller',verifyAccess.VerifyAccess,userAuthentic)
+router.use('/DocumentUpload',verifyAccess.VerifyAccess,DocumentUpload)
+router.use('/Company',verifyAccess.VerifyAccess,company)
+router.use('/custom',verifyAccess.VerifyAccess,customSearch)
+router.use('/vedurehomepage',verifyAccess.VerifyAccess,hotelshomePage)
+router.use('/reservation',verifyAccess.VerifyAccess,reservation)
+router.use('/user',personalProfile)
+
+
+
+
+
+
+
+
+
+
+
 router.get('/' ,async (req, res) => {
     try {
         user = {
@@ -42,22 +76,5 @@ router.get('/' ,async (req, res) => {
     catch (err) { console.log(err.message) }
 
 })
-
-router.use('/checkin',verifyAccess.VerifyAccess,frontDesk)
-router.use('/frontOffice',verifyAccess.VerifyAccess,frontDesk)
-router.use('/rooms',verifyAccess.VerifyAccess,rooms)
-router.use('/Human',verifyAccess.VerifyAccess,hbank)
-router.use('/floorMaster',verifyAccess.VerifyAccess,floorMaster)
-router.use('/roomType',verifyAccess.VerifyAccess,roomcat)
-router.use('/checkinplan',verifyAccess.VerifyAccess,CheckinPlan)
-router.use('/floorMap',verifyAccess.VerifyAccess,floorMap)
-router.use('/authenticate',userAuthentic)
-router.use('/facilty',verifyAccess.VerifyAccess,userfacilty)
-router.use('/admincontroller',verifyAccess.VerifyAccess,userAuthentic)
-router.use('/DocumentUpload',verifyAccess.VerifyAccess,DocumentUpload)
-router.use('/Company',verifyAccess.VerifyAccess,company)
-router.use('/custom',verifyAccess.VerifyAccess,customSearch)
-router.use('/vedurehomepage',verifyAccess.VerifyAccess,hotelshomePage)
-router.use('/reservation',verifyAccess.VerifyAccess,reservation)
 
 module.exports=router;

@@ -57,7 +57,8 @@ const NewCompany = new mongoose.Schema({
         HSNCode: { type: String },
         deleted:{type:Boolean,default:false,required:true},
         reservationCount:{type:Number,required:true,default:0},
-        totalRoom:{type:Number,required:true,default:0}
+        totalRoom:{type:Number,required:true,default:0},
+        bufferTime:{type:Number,default:48}  
     }]
 });
 const  company = db.model('Company',NewCompany);

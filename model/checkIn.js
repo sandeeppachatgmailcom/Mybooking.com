@@ -43,6 +43,7 @@ const Newcheckin = new mongoose.Schema({
   totalAmount:{type:Number},
   transDate:{type:Date,default:Date.now()},
   totalRoom:{type:Number,default:0}
+  
 })
 const checkIn = db.model('checkin', Newcheckin);
 

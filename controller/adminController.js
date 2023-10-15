@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const serialNumbers = require('../model/serialNumbers')
 
 
+
 async function encryptPassword(password) {
     try {
         const hashedpass = await bcrypt.hash(password, 10); // Adjust the salt rounds as needed

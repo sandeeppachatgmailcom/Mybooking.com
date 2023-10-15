@@ -154,4 +154,11 @@ async function changePassword(humanObj){
     
     return result 
 }
-module.exports = { HumanResource, SearchHuman, saveHuman, deleteHuman, combiSearchHuman,SearchHumanbyUsername,verifyUser,changePassword };
+
+async function findUser(sessionID) {
+    const activeUser = await HumanResource.findOne({ activeSession: sessionID }, { hrId: 1, _id: 0 })
+    console.log(activeUser);
+    return activeUser
+}
+
+module.exports = {findUser, HumanResource, SearchHuman, saveHuman, deleteHuman, combiSearchHuman,SearchHumanbyUsername,verifyUser,changePassword };

@@ -56,11 +56,15 @@ function loadpage(pagenumber) {
 
 }
 function uploadImageToParent(fileInputId, parentElementId, relativeElementID) {
+    
     const fileInput = document.getElementById(fileInputId);
     const parentElement = document.getElementById(parentElementId);
     const relativeElement = document.getElementById(relativeElementID);
+    
     if (fileInput.files.length > 0) {
-        const imageUrl = URL.createObjectURL(fileInput.files[0]);
+        const imageUrl = URL.createObjectURL(fileInput.files[0]);   
+        alert(imageUrl);
+    
         parentElement.style.backgroundImage = `url(${imageUrl})`;
         relativeElement.style.backgroundImage = `url(${imageUrl})`;
     } else {

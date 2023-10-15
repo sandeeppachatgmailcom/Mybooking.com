@@ -6,22 +6,27 @@
         font-family: Poppins;
     }
 </style>
-<div class="container-fluid ">
-    <div class="container-fluid row " style="height: 400px;background-image: url('<%=user.wallPappper %>');background-position: center ;background-size: cover ">
-        
-        <div class="col-9 mt-2">  
-            <button class="rounded container  col-3" style="margin-top: 15%; background-image: url('<%=user.profilePicture %>'); height: 200px;background-position: center ;background-size: cover; "></button>
-        
+<div class="container-fluid col-12">
+    <div class="container-fluid d-flex row" id="iduserWallpapper"style="height: 400px;background-image: url('<%=user.wallPappper %>');background-position: center ;background-size: cover ">
+        <div class="col-10">
+            <div class="container-fluid mb-1" >
+                <button type="button" id="openFileDialogButton" onclick="changeProfilePik(event.target.value)"  class="btn btn-secondary bi bi-camera-fill position-absolute bottom-0 end-0 mb-3 me-2">
+                <input type="file" name="userProfilepik" hidden  id="iduserProfilepik">
+                </button >
+            </div>
         </div>
-        <div class="col-9 mt-2">  </div><!-- Image Bar -->
+        <div class="container-fluid col-2 mt-3">
+            <div class="rounded container-fluid col-10 position-relative" style="margin-top: 50%; background-image: url('<%=user.profilePicture %>'); height: 250px; background-position: center; background-size: cover;">
+                <div class="container-fluid mb-1">
+                    <button class="btn btn-secondary bi bi-camera-fill position-absolute bottom-0 end-0 mb-2 me-2"></button>
+                </div>
+            </div>
+        </div>
+        
         
     </div>
-    <div class="container-fluid d-flex  ">
-        <div class="container-fluid border-primary col-2">
-            <button class="w-100 m-1 btn btn-primary"> My Bookings</button>
-            <%= console.log(user.hrId) %>
-            <button onclick="paymentHistory(event.target.value)" value="<%=user.hrId%>" class="w-100 m-1 btn btn-primary"> Payment History</button>
-        </div>
+    <div class="container-fluid row ">
+        
         <div class="container-fluid border-primary col-10">
             <% bookingDetails.forEach(element => { %>
                 <div class="card d-flex ">
@@ -232,14 +237,34 @@
     
             </div>
         </div>
+        <div class="container-fluid border-primary col-2 mt-2">
+            <button class="w-100 btn btn-primary"> My Bookings</button>
+            <%= console.log(user.hrId) %>
+            <button onclick="paymentHistory(event.target.value)" value="<%=user.hrId%>" class="w-100 btn btn-primary"> Payment History</button>
+        </div>
          
     </div>
 </div>
 <%- include('footer') %>
 
+<script>
+function changeProfilePik() {
+    const inputElement = document.getElementById('iduserProfilepik');
+    const openFileDialogButton = document.getElementById('openFileDialogButton');
+    
+    openFileDialogButton.addEventListener('click', () => {
+        inputElement.click();
+    });
 
+    inputElement.addEventListener('change', () => {
+        uploadImageToParent('iduserProfilepik', 'iduserWallpapper', 'iduserWallpapper');
+    });
+}
+
+</script>
 <script src="/Script/confirmReservation.js" ></script>
 <script src="/Script/profileCustomer.js" ></script>
+<script src="/Script/Companies.js"> </script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
  

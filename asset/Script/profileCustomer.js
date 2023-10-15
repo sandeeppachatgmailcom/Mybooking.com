@@ -1,7 +1,7 @@
 
 
 async function cancelBooking(bookingID){
-const result = await fetch ('/user/cancelBooking',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify({bokingID:bookingID})})
+const result = await fetch ('/user/cancelBooking',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify({bookingID:bookingID})})
 .then(res=>{
     
     return res.json()

@@ -3,9 +3,9 @@ const router = express.Router();
 const hbank = require('../model/humanbank')
 const company = require('../model/company')
 const checkin = require('../model/checkIn')
-const paymentModel = require('../model/payments')
-const Razorpay = require('razorpay')
+const paymentModel = require('../model/payments') 
 const occupancy = require('../model/occupancydetails')
+const Razorpaytrans = require('../controller/razorPay')
 router.post('/savereservation', async (req, res) => {
   const userDetails = await hbank.HumanResource.findOne({ activeSession: req.sessionID })
   req.body.custId = userDetails.hrId
@@ -48,17 +48,7 @@ router.post('/savereservation', async (req, res) => {
     systemEntry: true
   }
   const savedebit = await paymentModel.MakeEntry(paymentEntry)
-   
- var instance = new Razorpay({
-    key_id: 'rzp_test_6damh00ndxLBqq',
-    key_secret: 'd7Y4vbTqZb7fOwcYIjWRpt6U',
-  });
-  let options = {
-    amount: totalAmount * 100,  // amount in the smallest currency unit
-    currency: "INR",
-    receipt: result.reference
-  };
-  let order = await instance.orders.create(options);
+  const order = await Razorpaytrans.RazorCreateOrder(totalAmount,result.reference)
   
   res.json({ success: true, order, totalAmount,result })
 })
@@ -69,10 +59,7 @@ router.post('/savereservation', async (req, res) => {
 
 router.post('/confirmPayment', async (req, res) => {
    
-  var instance = new Razorpay({
-    key_id: 'rzp_test_6damh00ndxLBqq',
-    key_secret: 'd7Y4vbTqZb7fOwcYIjWRpt6U',
-  });
+   
   console.log(req.body,'input')
    
   let bookingDetails = req.body.bookingDetails
@@ -82,7 +69,7 @@ router.post('/confirmPayment', async (req, res) => {
   bookingDetails.custId = userDetails.hrId;
   bookingDetails.reservationNumber = req.body.reservationNumber;
  
-  const payment = await instance.payments.fetch(req.body.razorpay_payment_id);
+  const payment = await Razorpaytrans.razorMatchPayment(req.body.razorpay_payment_id);
       
    
   if (payment.status === 'captured') {

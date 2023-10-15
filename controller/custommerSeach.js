@@ -158,7 +158,6 @@ router.post('/loadHotelDetails', async (req, res) => {
     let result  = await companies.SearchbyCompanyByAny(req.body);
      
      
-    // Update room types with maximum reservation counts
     
     for (let i=0;i<result.roomtypes.length;i++) {
         
@@ -238,10 +237,10 @@ router.get('/Home',async (req,res)=>{
         
     }
     
-
+    const paymentHistory=null;
      
 
-    res.render('custommerHomePage',{user,bookingDetails})
+    res.render('custommerHomePage',{user,bookingDetails,paymentHistory})
 })
 
 

@@ -1,6 +1,8 @@
 <%- include('header') %>
 <%- include('MenuBarCustomer') %>
-<div class="container-fluid  ">
+  
+
+
     <div class="container-fluid">
       <div class="container-fluid justify-content-evenly m-1"
           style="background-image: url(' <%= profile.image1 %>' )  ;background-position: center;background-size: cover;  height: 400px ; color: rgba(248, 247, 211, 0.916);border-radius: 5px ; border: 5px solid rgba(255, 255, 255, 0.268);  ">
@@ -16,23 +18,19 @@
                       <%= profile.contactNumber %>
                         <%= profile.email %>
           </h6>
-        </div>
-      <div class="container-fluid d-flex m-1 p-1 border ">
-        <!-- name bar -->
-        <div class="container-fluid col-lg-2 col-md-3 col-sm-4 col-2 border rounded">
-          <!-- left Menu bar -->
-          <button class="btn w-100 container-fluid col-12"> Occupancy Details</button>
-         
       </div>
-         
+      <div class="container-fluid d-flex m-1 p-1 border ">
+        
+        
+        <div class="container-fluid  col-10 border rounded">
           <div class="btn  container-fluid col-10" style="  opacity: 90%; border: 5px rgba(245, 222, 179, 0.689) solid; ">
-    
+        
             <div class="container-fluid col-12 justify-content-end d-flex">
               
               <button class="btn " onclick="drilldown('idDivPlans')"> ALL PLANS  </button>
               <button type="button " data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan"
                             class="btn btn-success h-100 btn bi bi-clipboard-plus  text-light "> CREATE  </button>
-                         
+                        
             
             </div>
             <div class="container-fluid  justify-content-start  d-flex "
@@ -70,7 +68,7 @@
                       <% }) %>
                         
                   </div>
-                 
+                
                   
                   <div class="container-fluid">
                   <div class="container-fluid d-flex justify-content-end" >
@@ -83,55 +81,45 @@
                       style="flex-wrap:nowrap; overflow: hidden;   border: 5px solid rgba(255, 255, 255, 0.268); border-radius: 5px; ">
                       
                       <% tariffPackages.forEach(element=> { %>
+                         <% if (!element.deleted) { %>
                         <div class="btn p-1 col-lg-2 col-md-3 col-sm-4 col-6 border border-light m-1 row">
-                          <% if (element.deleted) { %>
-                            <div class="card text-white mb-1"
-                              style="max-width: 18rem; background-color: rgba(32, 45, 78, 0.251); ">
-                              <% } else { %>
-                                <div class="card text-white mb-1"
-                                  style="max-width: 18rem; background-color: rgb(32, 45, 78); ">
-                                  <% } %>
-                                    <div class="card-header btn d-flex" style="text-transform: uppercase" type="button"
-                                      value="<%= element.tariffIndex %>">
-                                      <div data-bs-toggle="modal" data-bs-target="#<%= element.tariffName%>"
-                                        value="<%= element.tariffIndex %>" class="btn text-light">
-                                        <%= element.tariffName %>
+                          <% if (!element.isActive  ) { %>
+                            <div class="card text-white mb-1 container-fluid " style="max-width: 18rem; background-color: rgba(32, 45, 78, 0.251); ">
+                          <% } else   { %>
+                              <div class="card text-white mb-1 container-fluid "  style="max-width: 18rem; background-color: rgb(32, 45, 78); ">
+                          <% } %>
+                                    <div class="card-header btn d-flex" style="text-transform: uppercase" type="button"value="<%= element.tariffIndex %>">
+                                      <div data-bs-toggle="modal" data-bs-target="#<%= element.tariffName%>"value="<%= element.tariffIndex %>" class="container-fluid btn text-light col-8">
+                                          <%= element.tariffName %>
                                       </div>
-                                      <div>
-                                        <% if (element.deleted) { %>
-                                          <button id="'btn'+<%= element.tariffname %>"
-                                            value="<%= element.tariffIndex%>,<%= profile.CompanyID%>"
-                                            class="btn btn-outline-light m-1 bi bi-bell" type="button"
-                                            onclick="enableTariff(event.target.value)">
-                                          </button>
-                                          <% } else { %>
-                                            <button value="<%= element.tariffIndex%>,<%= profile.CompanyID%>"
-                                              class="btn btn-outline-warning m-1 bi bi-power"
-                                              onclick="freezeTariff(event.target.value)"> </button>
-                                            <% } %>
+                                      <div class="container-fluid btn text-light col-4 ">
+                                        <% if (!element.isActive) { %>
+                                            <button id="'btn'+<%= element.tariffname %>"value="<%= element.tariffIndex%>,<%= profile.CompanyID%>"class="btn btn-outline-light m-1 bi bi-bell" type="button" onclick="enableTariff(event.target.value)"> </button>
+                                        <% } else { %>
+                                            <button id="'btn'+<%= element.tariffname %>" value="<%= element.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-outline-warning m-1 bi bi-power" type="button" onclick="freezeTariff(event.target.value)"> </button>
+                                        <% } %>
                                       </div>
-                                  </div>
-                                    <div class="card-body">
-                                      <h6 class="card-title">Offer Rate :<%= element.SpecialRent %>/-</h6>
-                                      <small> (Room rent : <%= element.roomRentSingle %>)</small> <br>
-                                      <small> Extra Person : <%= element.extraPerson %></small>
                                     </div>
-                                    <div class="container d-flex">
-                                    </div>
+                                      <div class="card-body">
+                                        <h6 class="card-title">Offer Rate :<%= element.SpecialRent %>/-</h6>
+                                        <small> (Room rent : <%= element.roomRentSingle %>)</small> <br>
+                                        <small> Extra Person : <%= element.extraPerson %></small>
+                                      </div>
+                                     
                                 </div>
                             </div>
-                            <% }) %>
+                        
+                        <% } else { %>
+                        <% } %>   
+                        <% }) %>
                           
-                    </div>
+                        </div>
                     
                       <div class="container-fluid d-flex justify-content-end" >
-                        
                         <button class="btn" onclick="drilldown('idDivRooms')"> ALL ROOMS  </button>
                       </div>
-                      <div id="idDivRooms" class="container-fluid justify-content-start m-1 col-12 d-flex flex-nowrap"
-                        style="overflow: hidden ; border: 5px solid rgba(255, 255, 255, 0.268); border-radius: 5px;  ">
-        
-                        <% availablerooms.forEach(rooms=> { %>
+                      <div id="idDivRooms" class="container-fluid justify-content-start m-1 col-12 d-flex flex-nowrap"style="overflow: hidden ; border: 5px solid rgba(255, 255, 255, 0.268); border-radius: 5px;  ">
+                            <% availablerooms.forEach(rooms=> { %>
                           <div class="btn p-1 col-lg-2 col-md-3 col-sm-4 col-6 border border-light m-1 row">
                             <div class="card text-white m-2 bg-danger">
                               <div class="card-header d-flex justify-content-end" style="text-transform: uppercase">
@@ -146,12 +134,13 @@
                                 <small>TARIFF: <%= rooms.roomType %> </small><br>
                                 <small>FLOOR: <%= rooms.floor %>  </small><br>
         
-                               
+                              
                               </div>
                               <div class="container row">
                               </div>
                             </div>
                           </div>
+                         
                           <% }) %>
                         
                             <div class="btn p-1 col-lg-2 col-md-3 col-sm-4 col-6 border border-light m-1 row">
@@ -172,11 +161,26 @@
                       </div>
                   </div>
             </div>
-      
+        
           </div> 
           
+        </div>
+        </div>
+      
+        <div class="container-fluid col-lg-2 col-md-3 col-sm-4 col-2 border rounded">
+          <form action="/Company/gettariff">
+            <button class="btn border btn-success col-12 "> Company Details</button>
+          </form>
+          <button class="btn border btn-success col-12 "> Tariff </button>
+          <button class="btn border btn-success col-12 "> Checkin Plan </button>
+          <button class="btn border btn-success col-12 "> Rooms </button>
+          <button class="btn border btn-success col-12 "> Reservation Details </button>
+          <button class="btn border btn-success col-12 "> Collection Details </button>
+          <button class="btn border btn-success col-12 "> Gallery </button>
+        </div>
+         
+          
       </div>
-    </div>
 </div>
   
 
@@ -259,7 +263,7 @@
         <button type="button" value="<%=element.tariffIndex%>" onclick="EnabletariiModal(event.target.value)" class="btn btn-warning bi bi-pencil">EDIT </button>
         <button type="button" class="btn btn-secondary bi bi-x-octagon" data-bs-dismiss="modal">CANCEL</button>
         <button name="modalSubmit" type="button" onclick="saveTariffToCompanies(event.target.value)" value="<%=element.tariffIndex%>" class="btn btn-success bi bi-send">SAVE</button>
-        <button name="modalSubmit" type="button" onclick="deleteTariffPermanently(event.target.value)" value="<%=element.tariffIndex%>" class="btn btn-success bi bi-send"> DELETE </button>
+        <button name="modalSubmit" type="button" onclick="deleteTariffPermanently(event.target.value)" value="<%=element.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-success bi bi-send"> DELETE </button>
       </div>
       <!-- </form> -->
     </div>

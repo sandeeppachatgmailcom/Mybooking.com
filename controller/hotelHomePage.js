@@ -22,10 +22,250 @@ router.post('/loadhomepage', async (req, res) => {
      
     req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)   
-
-    const user = await HBank.HumanResource.findOne({  activeSession: req.sessionID, deleted: false });
+    console.log(result,'load home page');
+    const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false });
     bookingDetails={};
-    if(user){
+    if(result.verified){
+      const profile = await companies.company.findOne({email:req.body.userName});
+      if(!profile){
+        res.redirect('/custom/customSearch')
+        return
+      }
+      const activtariff = await tariff.loadtariff('');
+      const activePlans = await checkinPlans.LoadPlan();
+      let existingTariff = profile.roomtypes;
+      let existingPlan = profile.checkinplan;
+      const availablerooms =await rooms.loadroomByCompanyId(profile.CompanyID);
+      const floors = await floorMaster.loadAllFloor()
+      const category = await tariffmaster.loadtariff('')
+      
+let Plans = [];
+      for (let i=0;i<activePlans.length;i++){
+        let flag=0;
+        for(let j=0;j<existingPlan.length;j++){
+          if( existingPlan[j].planIndex==activePlans[i].planIndex   ){
+               Plans.push(existingPlan[j])
+               flag++; 
+               break;
+          }
+          console.log(activePlans[i].planIndex ,existingPlan[j].planIndex,flag);
+        }
+        if(!flag) {Plans.push(activePlans[i])
+          await companies.company.updateOne(
+                    {CompanyID:profile.CompanyID},
+                    {$push:{"checkinplan":activePlans[i]}},
+                    {upsert:true}
+                    );}
+      }
+
+
+let tariffPackages=[];
+      for (let i=0;i<activtariff.length;i++){
+        let flag=0;
+        for (let j=0;j<existingTariff.length;j++){
+            console.log(existingTariff[j].tariffIndex==activtariff[i].tariffIndex);
+            if(existingTariff[j].tariffIndex==activtariff[i].tariffIndex){
+              tariffPackages.push(existingTariff[j])
+              flag++;
+              break;
+            }
+          
+        }
+        if(!flag){
+          tariffPackages.push(activtariff[i])
+          await companies.company.updateOne(
+            { CompanyID: profile.CompanyID },
+            { $push: { "roomtypes": activtariff[i] } },
+            { upsert: true }
+          );
+        }
+      }
+
+
+    //   let tariffPackagesa = existingTariff.filter(item1 =>
+    //   activtariff.some(item2 => item2.tariffIndex === item1.tariffIndex)
+    //   );
+
+    //  if (tariffPackages.length < 1) {
+    //     tariffPackages = await tariff.loadtariff('')
+    //     const tariffPromises = tariffPackages.map(async (element) => {
+    //     element.activated = false;
+    //     const tempTariff = await companies.company.updateOne(
+    //       { CompanyID: profile.CompanyID },
+    //       { $push: { "roomtypes": element } },
+    //       { upsert: true }
+    //     );
+    //    });
+    //   await Promise.all(tariffPromises);
+    //  }
+    // else {
+    //  }
+    res.cookie('userName',req.body.userName)
+    if (!availablerooms )availablerooms={};
+    res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category });
+    
+  }
+    else{
+      res.redirect('/')
+    }
+    
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+
+});
+
+router.post('/saveTariff', async (req, res) => {
+  const newRoomType = {
+    tariffName: req.body.tariffName,
+    tariffIndex: req.body.tariffIndex,
+    roomRentSingle: parseInt(req.body.roomRentSingle),
+    extraPerson: parseInt(req.body.extraPerson),
+    tax: parseInt(req.body.tax),
+    includeChild: req.body.includeChild,
+    defaultCheckinplan: req.body.defaultCheckinplan,
+    Discription: req.body.Discription,
+    username: req.body.username,
+    SpecialRent: parseInt(req.body.specialRent),
+    deleted: false
+  };
+  let result
+   console.log(newRoomType);
+  if (!newRoomType.tariffIndex) {
+    newRoomType.tariffIndex = await controller.getIndex('TARIFF');
+    result = await companies.company.updateOne(
+      {
+        CompanyID: req.body.CompanyID
+      },
+      {
+        $push: { roomtypes: newRoomType }
+      },
+      {
+        upsert:true
+      }
+    ); 
+      
+    await tariffmaster.tariff.updateOne(
+        { tariffIndex: newRoomType.tariffIndex },
+        newRoomType,
+        { upsert: true }
+      );
+  
+      } else {
+     result = await companies.company.updateOne(
+      {
+        CompanyID: req.body.CompanyID,
+        'roomtypes.tariffIndex': newRoomType.tariffIndex
+      },
+      {
+        $set: { 'roomtypes.$': newRoomType,
+      
+      }  
+      },
+       
+    );
+  }
+  console.log(result);
+    let response = {};
+    if (result.modifiedCount > 0) {
+      response = { update: true };
+    } else if (result.upsertedCount > 0) {
+      response = { saved: true };
+    } else {
+      response = { matched: true };
+    }
+    res.json(response);
+});
+
+router.post('/disableTariff',async (req,res)=>{
+  const result = await companies.company.updateOne(
+    {CompanyID:req.body.CompanyID,
+      'roomtypes.tariffIndex': req.body.tariffIndex
+    },
+    {
+      $set:{"roomtypes.$.isActive":false
+      
+      }
+    }
+  )
+  
+ let responce ={}
+ if(result.modifiedCount>0) responce={update:true} 
+ else if(result.upsertedCount>0) responce={saved:true}
+ else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
+ res.json(responce)
+  
+})
+
+router.post('/enableTariff',async (req,res)=>{
+  const result = await companies.company.updateOne(
+    {CompanyID:req.body.CompanyID,
+      'roomtypes.tariffIndex': req.body.tariffIndex
+    },
+    {
+      $set:{"roomtypes.$.isActive":true
+      }
+    }
+  )
+ let responce ={}
+ if(result.modifiedCount>0) responce={update:true} 
+ else if(result.upsertedCount>0) responce={saved:true}
+ else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
+ res.json(responce)
+})
+
+
+router.post('/deletetariffPermanent',async (req,res)=>{
+
+  const result = await companies.company.updateOne(
+    {CompanyID:req.body.CompanyID,
+      'roomtypes.tariffIndex': req.body.tariffIndex
+    },
+    {
+      $set:{"roomtypes.$.deleted":true
+      
+      }
+    }
+  )
+  
+ let responce ={}
+ if(result.modifiedCount>0) responce={update:true} 
+ else if(result.upsertedCount>0) responce={saved:true}
+ else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
+ res.json(responce)
+})
+
+router.post('/savePlanToCompanies',async(req,res)=>{
+   
+   
+    const addToComp = await companies.insertNewCheckinPlan(req.body)
+   res.json(addToComp)
+})
+router.post('/activatePlan',async (req,res)=>{
+  const result = await companies.activateCheckinplan(req.body);
+  res.json(result);
+})
+
+
+router.get('/loadtariff', async (req, res) => {
+
+    const inputs = req.body;
+    const userlogrecord = {
+      username: req.body.Username,
+      sessionId: req.sessionID,
+      folder: req.path,
+      method: req.method,
+      loggedOut: false,
+      ip: req.ip,
+    };
+     
+    req.body.session = req.sessionID;
+    const result =await HBank.verifyUser(req.body)   
+    console.log(result)
+    const user = result.userdetails;
+    bookingDetails={};
+  if(result.verified){
       const profile = await companies.company.findOne({email:req.body.userName});
       if(!profile){
         res.redirect('/custom/customSearch')
@@ -76,145 +316,14 @@ router.post('/loadhomepage', async (req, res) => {
     res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category });
     
   }
-    else{
-      res.redirect('/')
-    }
+  else{
+    res.redirect('/')
+  }
     
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'An error occurred' });
-  }
+  
 
 });
 
-router.post('/saveTariff', async (req, res) => {
-  const newRoomType = {
-    tariffName: req.body.tariffName,
-    tariffIndex: req.body.tariffIndex,
-    roomRentSingle: parseInt(req.body.roomRentSingle),
-    extraPerson: parseInt(req.body.extraPerson),
-    tax: parseInt(req.body.tax),
-    includeChild: req.body.includeChild,
-    defaultCheckinplan: req.body.defaultCheckinplan,
-    Discription: req.body.Discription,
-    username: req.body.username,
-    SpecialRent: parseInt(req.body.specialRent),
-    deleted: false
-  };
-  let result
-   
-  if (!newRoomType.tariffIndex) {
-    newRoomType.tariffIndex = await controller.getIndex('TARIFF');
-    result = await companies.company.updateOne(
-      {
-        CompanyID: req.body.CompanyID
-      },
-      {
-        $push: { roomtypes: newRoomType }
-      },
-      {
-        upsert:true
-      }
-    );   
-    await tariffmaster.tariff.updateOne(
-        { tariffIndex: newRoomType.tariffIndex },
-        newRoomType,
-        { upsert: true }
-      );
-  
-      } else {
-     result = await companies.company.updateOne(
-      {
-        CompanyID: req.body.CompanyID,
-        'roomtypes.tariffIndex': newRoomType.tariffIndex
-      },
-      {
-        $set: { 'roomtypes.$': newRoomType,
-      
-      }  
-      },
-       
-    );
-  }
-  console.log(result);
-    let response = {};
-    if (result.modifiedCount > 0) {
-      response = { update: true };
-    } else if (result.upsertedCount > 0) {
-      response = { saved: true };
-    } else {
-      response = { matched: true };
-    }
-    res.json(response);
-});
-
-router.post('/disableTariff',async (req,res)=>{
-  const result = await companies.company.updateOne(
-    {CompanyID:req.body.CompanyID,
-      'roomtypes.tariffIndex': req.body.tariffIndex
-    },
-    {
-      $set:{"roomtypes.$.deleted":true
-      
-      }
-    }
-  )
-  
- let responce ={}
- if(result.modifiedCount>0) responce={update:true} 
- else if(result.upsertedCount>0) responce={saved:true}
- else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
- res.json(responce)
-  
-})
-
-router.post('/enableTariff',async (req,res)=>{
-  const result = await companies.company.updateOne(
-    {CompanyID:req.body.CompanyID,
-      'roomtypes.tariffIndex': req.body.tariffIndex
-    },
-    {
-      $set:{"roomtypes.$.deleted":false
-      
-      }
-    }
-  )
-  
- let responce ={}
- if(result.modifiedCount>0) responce={update:true} 
- else if(result.upsertedCount>0) responce={saved:true}
- else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
- res.json(responce)
-})
 
 
-router.post('/deletetariffPermanent',async (req,res)=>{
-
-  const result = await tariff.tariff.updateOne(
-    {
-      tariffIndex:req.body.tariffIndex 
-    },
-    {
-      $set:{deleted:true
-      }
-    }
-  )
-  
- let responce ={}
- if(result.modifiedCount>0) responce={update:true} 
- else if(result.upsertedCount>0) responce={saved:true}
- else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
- res.json(responce)
-})
-
-router.post('/savePlanToCompanies',async(req,res)=>{
-   
-   
-    const addToComp = await companies.insertNewCheckinPlan(req.body)
-   res.json(addToComp)
-})
-router.post('/activatePlan',async (req,res)=>{
-  const result = await companies.activateCheckinplan(req.body);
-  res.json(result);
-})
 module.exports = router;

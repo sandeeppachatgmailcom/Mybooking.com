@@ -275,7 +275,7 @@ function readmore() {
   console.log(tariffDetails,'tariffDetails');
 
   for (let i of tariffDetails){
-    if(!i.deleted){    
+  if(i.isActive){    
   let masterhtml = `<div class="container-fluid  " >
     <div class="container-fluid d-flex  border btn" style="height :400px ;background-size: cover;background-position: center;">
         <img src="${result.image1}" class="card-img-top" alt="...">

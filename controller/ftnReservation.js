@@ -77,7 +77,7 @@ return result
 
 async function loadreservationByCustID(custID){
     console.log(custID);
-    const result = await frontOffice.checkIn.find({createUser:custID})
+    const result = await frontOffice.checkIn.find({createUser:custID,delete:false})
     return result;
 }
 

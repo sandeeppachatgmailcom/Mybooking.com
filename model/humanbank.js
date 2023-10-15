@@ -64,14 +64,15 @@ async function saveHuman(NewHumanObj) {
         isloggedIn: NewHumanObj.isloggedIn,
         pancard: NewHumanObj.pancard,
         adhaar: NewHumanObj.adhaar,
-        dob: NewHumanObj.dob,
-        marriedDate: NewHumanObj.marriedDate,
+        dob: new Date(NewHumanObj.dob),
+        marriedDate: new Date(NewHumanObj.marriedDate),
         gender: NewHumanObj.gender,
         deleted: NewHumanObj.false,
         createduser: NewHumanObj.createduser,
         systemUser: NewHumanObj.systemUser,
         activeSession:NewHumanObj.session
     }
+    console.log(data,'human datadatadatadatadata')
     const result = await HumanResource.updateOne({ hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })
     return result;
 }
@@ -93,12 +94,12 @@ async function verifyUser(userObject){
     const user = await  HumanResource.findOne({activeSession:userObject.session})
     if(user){
         
-        return {verified:true,user:user.firstName};
+        return {verified:true,user:user.firstName,userdetails:user};
     }
     else{
         
         let verified = false;
-        const password = await HumanResource.findOne({email:userObject.userName},{password:1,firstName:1,email:1,_id:0})
+        const password = await HumanResource.findOne({email:userObject.userName},{_id:0})
         if(password){
             const otpValidation = await OtpMaster.Otp.findOne({ authorisationname: userObject.userName, verified: false })
             console.log(otpValidation);
@@ -110,7 +111,8 @@ async function verifyUser(userObject){
                 }
                 verified = {
                     verified: true,
-                    email: userObject.userName
+                    email: userObject.userName,
+                    userdetails:password
                 }
             }
             else {
@@ -156,7 +158,7 @@ async function changePassword(humanObj){
 }
 
 async function findUser(sessionID) {
-    const activeUser = await HumanResource.findOne({ activeSession: sessionID }, { hrId: 1, _id: 0 })
+    const activeUser = await HumanResource.findOne({ activeSession: sessionID }, { password:0, _id: 0 })
     console.log(activeUser);
     return activeUser
 }

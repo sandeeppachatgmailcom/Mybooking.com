@@ -1,44 +1,151 @@
-<button type="button" id="ModalButton" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
+<div class="btn  container-fluid col-10" style="  opacity: 90%; border: 5px rgba(245, 222, 179, 0.689) solid; ">
+        
+    <div class="container-fluid col-12 justify-content-end d-flex">
+      
+      <button class="btn " onclick="drilldown('idDivPlans')"> ALL PLANS  </button>
+      <button type="button " data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan"
+                    class="btn btn-success h-100 btn bi bi-clipboard-plus  text-light "> CREATE  </button>
+                
+    
+    </div>
+    <div class="container-fluid  justify-content-start  d-flex "
+      data-bs-toggle="collapse" style="flex-wrap:nowrap; overflow: hidden;   border: 5px solid rgba(255, 255, 255, 0.268); border-radius: 5px; " 
+      id="idDivPlans" > 
+      
+      <% Plans.forEach(element=> { %>
+        
+        <% if (!element.deleted) { %>
+          
+            <div data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan<%=element.planIndex%>"
+              class="btn  m-1 col-2 p-1"
+              style="opacity: 90%; border: 5px rgba(245, 222, 179, 0.689) solid; background-color: rgba(24, 96, 212, 0.914)">
+              <% } else { %>
+              <div data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan<%=element.planIndex%>"
+                class="btn  m-1 col-2 p-1"
+                style="opacity: 90%; border: 5px rgba(245, 222, 179, 0.473) solid; background-color:rgba(24, 96, 212, 0.432)">
+                <% } %>
+                  <button class="btn text-light  p-1  " style="text-transform: capitalize;">
+                    <%= element.planName %>
+                      (<%= element.shortName %>) <br>
+                        Amount: <%= element.amount %>/- <br>
+                          Extra cover: <%= element.extraCharge %>/- <br>
+                            <% if (!element.deleted) { %>
+                              <button type="button" value="<%=element.planIndex%>,<%=profile.CompanyID%>"
+                                onclick="enableplanModal(event.target.value)"
+                                class="btn bi bi-power btn-outline-warning"> </button>
+                              <% } else { %>
+                                <button type="button" value="<%=element.planIndex%>,<%=profile.CompanyID%>"
+                                  onclick="enableplanModal(event.target.value)"
+                                  class="btn bi bi-bell btn-outline-light"> </button>
+                                <% } %>
+                  </button>
+              </div>
+              <% }) %>
+                
+          </div>
+        
+          
+          <div class="container-fluid">
+          <div class="container-fluid d-flex justify-content-end" >
+              
+              <button class="btn" onclick="drilldown('idDivRoomtypes')"> ALL CATEGORY  </button>
+              <button class="btn btn-success  bi bi-clipboard-plus" data-bs-toggle="modal" 
+                            data-bs-target="#idModalnewTariff"> CREATE  </button>
+          </div>
+            <div class="container-fluid justify-content-start m-1 col-12 d-flex" id="idDivRoomtypes"
+              style="flex-wrap:nowrap; overflow: hidden;   border: 5px solid rgba(255, 255, 255, 0.268); border-radius: 5px; ">
+              
+              <% tariffPackages.forEach(element=> { %>
+                <div class="btn p-1 col-lg-2 col-md-3 col-sm-4 col-6 border border-light m-1 row">
+                  <% if (element.deleted) { %>
+                    <div class="card text-white mb-1"
+                      style="max-width: 18rem; background-color: rgba(32, 45, 78, 0.251); ">
+                      <% } else { %>
+                        <div class="card text-white mb-1"
+                          style="max-width: 18rem; background-color: rgb(32, 45, 78); ">
+                          <% } %>
+                            <div class="card-header btn d-flex" style="text-transform: uppercase" type="button"
+                              value="<%= element.tariffIndex %>">
+                              <div data-bs-toggle="modal" data-bs-target="#<%= element.tariffName%>"
+                                value="<%= element.tariffIndex %>" class="btn text-light">
+                                <%= element.tariffName %>
+                              </div>
+                              <div>
+                                <% if (element.deleted) { %>
+                                  <button id="'btn'+<%= element.tariffname %>"
+                                    value="<%= element.tariffIndex%>,<%= profile.CompanyID%>"
+                                    class="btn btn-outline-light m-1 bi bi-bell" type="button"
+                                    onclick="enableTariff(event.target.value)">
+                                  </button>
+                                  <% } else { %>
+                                    <button value="<%= element.tariffIndex%>,<%= profile.CompanyID%>"
+                                      class="btn btn-outline-warning m-1 bi bi-power"
+                                      onclick="freezeTariff(event.target.value)"> </button>
+                                    <% } %>
+                              </div>
+                          </div>
+                            <div class="card-body">
+                              <h6 class="card-title">Offer Rate :<%= element.SpecialRent %>/-</h6>
+                              <small> (Room rent : <%= element.roomRentSingle %>)</small> <br>
+                              <small> Extra Person : <%= element.extraPerson %></small>
+                            </div>
+                            <div class="container d-flex">
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                  
+            </div>
+            
+              <div class="container-fluid d-flex justify-content-end" >
+                
+                <button class="btn" onclick="drilldown('idDivRooms')"> ALL ROOMS  </button>
+              </div>
+              <div id="idDivRooms" class="container-fluid justify-content-start m-1 col-12 d-flex flex-nowrap"
+                style="overflow: hidden ; border: 5px solid rgba(255, 255, 255, 0.268); border-radius: 5px;  ">
 
-<!-- Modal -->
-<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
+                <% availablerooms.forEach(rooms=> { %>
+                  <div class="btn p-1 col-lg-2 col-md-3 col-sm-4 col-6 border border-light m-1 row">
+                    <div class="card text-white m-2 bg-danger">
+                      <div class="card-header d-flex justify-content-end" style="text-transform: uppercase">
+                            <h4 class="card-title text-warning btn">
+                            <%= rooms.roomNumber %>
+                            </h4>
+                            <button class="btn btn-outline-warning m-1 me-4 bi bi-power  " data-bs-toggle="modal"
+                            data-bs-target="#idModalnewRoom"> </button>
+                      </div>
+                      <div class="card-body">
+                        <small>CAPACITY: <%= rooms.maxOccupancy %> </small> <br>
+                        <small>TARIFF: <%= rooms.roomType %> </small><br>
+                        <small>FLOOR: <%= rooms.floor %>  </small><br>
+
+                      
+                      </div>
+                      <div class="container row">
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+                
+                    <div class="btn p-1 col-lg-2 col-md-3 col-sm-4 col-6 border border-light m-1 row">
+                      <div class="card text-white m-2 h-100 bg-secondary">
+                        <div class="card-header" style="text-transform: uppercase">
+                          <h6 class="card-title"> CREATE </h6>
+                        </div>
+                        <div class="card-body">
+                          <button class="btn btn-success m-1 me-4 bi bi-clipboard-plus" data-bs-toggle="modal"
+                            data-bs-target="#idModalnewTariff"> </button>
+                        </div>
+                        <div class="container row">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-4">
+                    </div>
+              </div>
           </div>
-          <div class="modal-body" id="modalBody">
-              <!-- Data will be loaded here -->
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-      </div>
-  </div>
+    </div>
+
+  </div> 
+  
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  // Add an event listener to the button that triggers the modal
-  $('#ModalButton').click(function () {
-      // Make an AJAX request to fetch server-side data
-      $.ajax({
-          url: 'your_server_endpoint_url',
-          method: 'GET',
-          dataType: 'html', // Change this to match the data type you expect
-          success: function (data) {
-              // Populate the modal body with the fetched data
-              $('#modalBody').html(data);
-          },
-          error: function (error) {
-              console.error('Error fetching data:', error);
-          }
-      });
-  });
-</script>

@@ -9,7 +9,7 @@ const router = express.Router();
 const session = require('express-session');
 const { render } = require('ejs');
 const HBank = require('../model/humanbank');
-const DBcollections = require('../model/DBcollections');
+const DBcollections = require('../model/dbcollections');
 const frontoffice = require('../model/checkIn') 
 const floor = require('../model/floor')
 const rooms = require('../model/rooms')
@@ -28,12 +28,20 @@ router.get('/human',async(req,res)=>{
 })
 router.post('/SaveHuman',async (req,res)=>{
     req.body.session=req.sessionID;
-    let result =await HBank.saveHuman(req.body) ;
-    if((result.modifiedCount + result.upsertedCount)>0){result = {saved:true}}
-    else {result={saved:false}}
+    let result =await HBank.saveHuman(req.body) ; 
+    if((result.modifiedCount )>0){
+        result = {saved:true} 
+        result.message= 'profile Edited successfully'}
+    else if(( result.upsertedCount)>0){    
+        result = {saved:true} 
+        result.message= 'profile created successfully'}
+     
+    else {
+        result={saved:false}
+        result.message= 'Something went wrong please try again!!'}
     res.json(result)
     })
-
+    
 router.post('/searchHuman', async (req,res)=>{
     let data = await HBank.SearchHuman(req.body.searchvalue);
     res.render('human',{data});

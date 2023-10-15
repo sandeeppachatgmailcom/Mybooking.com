@@ -1,3 +1,4 @@
+ 
 
 
 function deleteUser(id) {
@@ -199,6 +200,7 @@ async function deletetariff() {
     }
 }
 async function SaveHuman() {
+    
     const data = {
         hrId: document.getElementById('idHid').value,
         firstName: document.getElementById('idFirstName').value,
@@ -210,11 +212,11 @@ async function SaveHuman() {
         HouseNumber: document.getElementById('idHouseNumber').value,
         HouseName: document.getElementById('idHouseName').value,
         StreetName: document.getElementById('idStreetName').value,
-        district: document.getElementById('idDistrict').value,
-        city: document.getElementById('idCity').value,
-        pincode: document.getElementById('idPincode').value,
-        state: document.getElementById('idState').value,
-        country: document.getElementById('idCountry').value,
+        district: document.getElementById('iddistrict').value,
+        city: document.getElementById('idcity').value,
+        pincode: document.getElementById('idpincode').value,
+        state: document.getElementById('idstate').value,
+        country: document.getElementById('idcountry').value,
         Active: document.getElementById('idActive').checked,
         isAdmin: document.getElementById('idisAdmin').checked,
         isSystemUser: document.getElementById('idSystemUser').checked,
@@ -235,10 +237,28 @@ async function SaveHuman() {
         .catch(err => {
             console.log(err)
         })
-    if (result.saved) {
-        alert('New registration done success fully');
-        window.location.reload();
-    }
+        if (result.saved){
+            
+            swal({
+                title: "success",
+                text: result.message,
+                icon: "success",
+                button: "OK",
+              }).then(()=>{
+                window.location.reload();
+              } );
+        }
+        else {
+            swal({
+                title: "Failed",
+                text: result.message,
+                icon: "error",
+                button: "OK",
+              });
+        }  
+        
+       
+     
 }
 function Createnew() {
     window.location.reload();
@@ -599,4 +619,98 @@ function convertToHTMLDatetimeFormat(inputDateTime) {
   async function verifyOtp(){
     const mobile = document.getElementById().value ; 
   }
+
+  window.addEventListener('load', loadPincode()); 
+async function loadPincode() {
+     
+    const data = {
+        pincode: document.getElementById('idpincode').value
+    };
+
+    try {
+
+
+        const response = await fetch('/authenticate/loadPincode', {
+            method: 'post',
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+
+        const selectcity = document.getElementById('idcity');
+        const selectdistrict = document.getElementById('iddistrict');
+        const selectstate = document.getElementById('idstate');
+        const selectcountry = document.getElementById('idcountry');
+        while (selectcity.options.length > 0) {
+            selectcity.remove(0);
+        }
+        while (selectdistrict.options.length > 0) {
+            selectdistrict.remove(0);
+        }
+        while (selectstate.options.length > 0) {
+            selectstate.remove(0);
+        }
+        while (selectcountry.options.length > 0) {
+            selectcountry.remove(0);
+        }
+
+        let city = new Set();
+        let district = new Set();
+        let state = new Set();
+        let country = new Set();
+
+        console.log(result, 'result');
+
+        if (result) {
+            result.forEach(item => {
+                city.add(item.officename);
+                district.add(item.Districtname);
+                state.add(item.statename);
+                country.add("India");
+            });
+        }
+
+        
+        city.forEach(cityName => {
+            const newOption = document.createElement('option');
+            newOption.value = cityName;
+            newOption.textContent = cityName;
+            selectcity.appendChild(newOption);
+            
+        });
+
+        district.forEach(districtName => {
+            const newOption = document.createElement('option');
+            newOption.value = districtName;
+            newOption.textContent = districtName;
+            selectdistrict.appendChild(newOption);
+             
+        });
+
+        state.forEach(stateName => {
+            const newOption = document.createElement('option');
+            newOption.value = stateName;
+            newOption.textContent = stateName;
+            selectstate.appendChild(newOption);
+            
+        });
+
+        country.forEach(countryName => {
+            const newOption = document.createElement('option');
+            newOption.value = countryName;
+            newOption.textContent = countryName;
+            selectcountry.appendChild(newOption);
+            
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}
   

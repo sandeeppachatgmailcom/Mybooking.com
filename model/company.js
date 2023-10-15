@@ -39,7 +39,8 @@ const NewCompany = new mongoose.Schema({
         user:{type:String},
         LastUpdate:{type:Date,required:true,default:Date.now()},
         discription:{type:String},
-        deleted:{type:Boolean,default:false}
+        deleted:{type:Boolean,default:false},
+        isActive:{ type:Boolean,default:false}
     }],
     roomtypes:[{
         tariffName:{type:String },
@@ -58,20 +59,17 @@ const NewCompany = new mongoose.Schema({
         deleted:{type:Boolean,default:false,required:true},
         reservationCount:{type:Number,required:true,default:0},
         totalRoom:{type:Number,required:true,default:0},
-        bufferTime:{type:Number,default:48}  
+        bufferTime:{type:Number,default:48}  ,
+        isActive:{ type:Boolean,default:false}
     }]
 });
 const  company = db.model('Company',NewCompany);
 
 async function saveCompany(objcompany) {
     if (!objcompany.CompanyID) { objcompany.CompanyID = await controller.getIndex('COMPANY') }
-
-    
     if(objcompany.imagearray[0]=="http://localhost:5200/Images/"){objcompany.imagearray[0] =await company.findOne({ CompanyID: objcompany.CompanyID }, { image1: 1, _id: 0 })}
     if(objcompany.imagearray[1]=="http://localhost:5200/Images/"){objcompany.imagearray[1] =await company.findOne({ CompanyID: objcompany.CompanyID }, { image2: 1, _id: 0 })}
-
     const data = {
-        
         CompanyID:objcompany.CompanyID,
         firstName:objcompany.firstname,
         lastName:objcompany.lastName,

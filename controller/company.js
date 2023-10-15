@@ -26,6 +26,9 @@ router.get('/Company',async(req,res)=>{
     res.render('companies',{data,count,pincode});
 
 })
+
+ 
+
 router.post('/SaveCompany',multer.upload.array("roomiMages",3),async (req,res)=>{
      
     let imgArray = [];

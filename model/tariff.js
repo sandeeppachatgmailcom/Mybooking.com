@@ -1,4 +1,4 @@
-const { login } = require('../controller/adminController');
+const controller = require('../controller/adminController');
 const db = require('./mongoose')
 const mongoose = require('mongoose')
 const companies = require('../model/company')
@@ -53,7 +53,7 @@ tariffIndex:{type:String,required:true,unique:true},
 roomRentSingle:{type:Number,required:true,default:0},
 extraPerson:{type:Number,required:true,default:0},
 tax:{type:Number,required:true,default:0},
-includeChild:{type:String,required:true,default:true},
+includeChild:{type:Boolean,required:true,default:true},
 defaultCheckinplan:{type:String,required:true},
 Discription:{type:String},
 timestamp: { type: Date, default: Date.now },

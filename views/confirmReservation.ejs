@@ -188,7 +188,7 @@
         <div class="container-fluid col-2 d-flex border border-warning">
             <div class="container-fluid col-12   border border-warning" id="">
                 <% checkinplan.forEach(element => { %>
-                   <% if (!element.deleted) { %>
+                   <% if (element.isActive) { %>
                     
                    
                         <div class="btn container-fluid border rounded m-1" style="overflow: hidden; ">

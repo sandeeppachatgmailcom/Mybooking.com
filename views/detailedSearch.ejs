@@ -108,6 +108,9 @@
                          
                             
                               <% result.forEach(element => { %>
+                                
+                                 
+                                
                                 <div class="card col-3 p-1 m-0"   >
                                     <img class="w-100 rounded" style="height: 30%;" name="companyImage" value="<%= element.image1 %>" src="<%= element.image1 %>" class="card-img-top" alt="...">
                                     <div class="card-body">
@@ -127,6 +130,7 @@
                                             <button name="submitCompanyDetails" value="<%=element.CompanyID%>"  onclick="loadHotelBasedResult(event.target.value)" type="button" value="<%=  element.CompanyID  %>" class="btn btn-primary">Details</button>
                                        </div>
                                   </div>
+                                   
                             <% }) %>
                                     
                             <%- include('footer') %>

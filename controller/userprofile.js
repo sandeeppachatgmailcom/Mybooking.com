@@ -48,15 +48,38 @@ router.post('/cancelBooking',async (req,res)=>{
     }
 
 })
-router.post('/getPaymentHistory',async (req,res)=>{
-    console.log(req.body.userID);
-    let result = await payments.payment.find({accountHead:req.body.userID},{_id:0,cancelled:0})
-    for(let i =0;i<result.length;i++){
-        let p  = await company.company.findOne({CompanyID:result[i].companyID})
-        console.log(p);
+router.get('/getPaymentHistory',async (req,res)=>{
+    const user =await userBank.findUser(req.sessionID);
+    console.log(user)
+    if(!user) {
+        res.redirect('/')
+        return;
     }
-     
-    console.log(result);
-    res.json(result)
+    let bookingDetails = null
+    console.log(req.body.userID);
+    const paymentHistory = await payments.payment.find({accountHead:user.hrId},{_id:0,cancelled:0})
+    for(let i =0;i<paymentHistory.length;i++){
+        let p  = await company.company.findOne({CompanyID:paymentHistory[i].companyID})
+        paymentHistory[i].hotel = p.lastName
+        console.log(paymentHistory[i].hotel);
+    }
+    
+    
+    res.render('custommerHomePage',{user,bookingDetails,paymentHistory})
+
+})
+
+router.get('/loadProfile',async (req,res)=>{
+    const user =await userBank.findUser(req.sessionID);
+    console.log(user)
+    if(!user) {
+        res.redirect('/')
+        return;
+    }
+    let bookingDetails = null;
+    let paymentHistory = null;
+    
+    res.render('custommerHomePage',{user,bookingDetails,paymentHistory})
+
 })
 module.exports = router

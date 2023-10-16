@@ -8,6 +8,10 @@ const express = require('express');
 const router = express.Router();
 const companies = require('../model/company') 
 const pincodes = require('../model/pincode') 
+const HBank = require('../model/humanbank') 
+const tariff = require('../model/tariff')
+const checkinPlans = require('../model/planMaster')
+const rooms = require('../model/rooms')
 router.post('/loadcustommer',async (req,res)=>{
     
     const result = await company.loadcompany('');
@@ -15,6 +19,133 @@ router.post('/loadcustommer',async (req,res)=>{
     res.json(result);
 })
 
+router.get('/loadTariff',async (req,res)=>{
+    req.body.session = req.sessionID;
+    const result =await HBank.verifyUser(req.body)  
+    const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false },{password:0});
+    if(result.verified){
+        const profile = await companies.company.findOne({email:req.body.userName});
+        if(!profile){
+          res.redirect('/custom/customSearch')
+          return
+        }
+        const activtariff = await tariff.loadtariff('');
+        let existingTariff = profile.roomtypes;
+        let tariffPackages=[];
+        for (let i=0;i<activtariff.length;i++){
+        let flag=0;
+            for (let j=0;j<existingTariff.length;j++){
+                if(existingTariff[j].tariffIndex==activtariff[i].tariffIndex){
+                tariffPackages.push(existingTariff[j])
+                flag++;
+                break;
+                }
+            }
+            if(!flag){
+            tariffPackages.push(activtariff[i])
+            await companies.company.updateOne(
+                { CompanyID: profile.CompanyID },
+                { $push: { "roomtypes": activtariff[i] } },
+                { upsert: true }
+            );
+            }
+        }
+        res.cookie('userName',req.body.userName)
+        let   availablerooms
+        let   inputs 
+        let   Plans 
+        let   floors 
+        let   category 
+        let reservation 
+        let payments
+        res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments});
+    }
+    else{
+        res.redirect('/')
+      }  
+  
+})
+
+router.get('/loadPlan',async (req,res)=>{
+    req.body.session = req.sessionID;
+    const result =await HBank.verifyUser(req.body)  
+    const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false },{password:0});
+    if(result.verified){
+        const profile = await companies.company.findOne({email:req.body.userName});
+        if(!profile){
+          res.redirect('/custom/customSearch')
+          return
+        }
+
+        const activePlans = await checkinPlans.LoadPlan();
+        let existingPlan = profile.checkinplan;
+        let Plans = [];
+        for (let i=0;i<activePlans.length;i++){
+        let flag=0;
+        for(let j=0;j<existingPlan.length;j++){
+          if( existingPlan[j].planIndex==activePlans[i].planIndex   ){
+               Plans.push(existingPlan[j])
+               flag++; 
+               break;
+          }
+           
+        }
+        if(!flag) {Plans.push(activePlans[i])
+          await companies.company.updateOne(
+                    {CompanyID:profile.CompanyID},
+                    {$push:{"checkinplan":activePlans[i]}},
+                    {upsert:true}
+                    );}
+      }
+        res.cookie('userName',req.body.userName)
+        let  availablerooms 
+        let  inputs  
+        let  tariffPackages 
+        let  floors   
+        let  category   
+        let reservation 
+        let payments
+        
+        res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments });
+    }
+    else{
+        res.redirect('/')
+      }  
+  
+
+    })
+
+router.get('/loadRoom',async (req,res)=>{
+    req.body.session = req.sessionID;
+    const result =await HBank.verifyUser(req.body)  
+    const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false },{password:0});
+     
+    if(result.verified){
+        const profile = await companies.company.findOne({email:user.email});
+        if(!profile){
+          res.redirect('/custom/customSearch')
+          return
+        } 
+
+        const availablerooms =await rooms.loadroomByCompanyId(profile.CompanyID);
+        console.log(profile.CompanyID,availablerooms);
+        res.cookie('userName',req.body.userName)
+        let tariffPackages 
+        let  inputs ;
+        let  Plans  ;
+        let  floors ;
+        let  category ;
+        let reservation 
+        let payments
+        
+        res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments });
+    }
+    else{
+        res.redirect('/')
+      }  
+  
+
+    })
 // /Company
 router.get('/Company',async(req,res)=>{
     let data = await companies.SearchCompany('');

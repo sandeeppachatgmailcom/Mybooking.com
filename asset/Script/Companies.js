@@ -457,6 +457,7 @@ async function deleteTariffPermanently(tariff){
 }
 
 function drilldown(iddiv,originsize){
+    alert('hai')
 const divclass = document.getElementById(iddiv);
 let height = originsize+'px';
 if(divclass.style.overflow=="hidden"){
@@ -489,3 +490,23 @@ function readlesspaln(Element,toggleElement){
     document.getElementById(Element).style.overflow='hidden'
      
    } 
+
+   
+function collapse(iddiv,originsize){
+     
+const divclass = document.getElementById(iddiv);
+let height = originsize+'px';
+if(divclass.style.height==height){
+    divclass.style=""
+    divclass.style.overflow='hidden' ;   
+    console.log(divclass.style,divclass.classList)
+}
+else if (divclass.style.height ==""){
+    divclass.style=""
+    divclass.style.height = height;
+    divclass.style.overflow='hidden' ;
+    console.log(divclass.style,divclass.classList)
+
+}
+ 
+}

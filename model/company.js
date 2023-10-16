@@ -122,7 +122,7 @@ async function deleteCompany(CompanyID) {
 }
 async function loadHuman(contactNumber) {
     const result = await company.find({ contactNumber: contactNumber, deleted: false })
-    return result
+    return result   
 }
 async function SearchbyCompanyByAny(SerchKey) {
     const data = await company.findOne({$or:[{firstName: {$regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' }},{CompanyID: { $regex: `^${SerchKey.CompanySearchKey}`, $options: 'i' } },{contactNumber: { $regex: `^${SerchKey.Username}`, $options: 'i' } }]})
@@ -131,7 +131,7 @@ async function SearchbyCompanyByAny(SerchKey) {
 }
 async function insertNewCheckinPlan(planobj){
     
-    checkinplan={
+    let checkinplan={
         planIndex:planobj.planIndex,
         planName:planobj.planName,
         shortName:planobj.shortName,
@@ -151,7 +151,7 @@ async function insertNewCheckinPlan(planobj){
     })
     }
     else {
-        console.log('elese executed in mongo');
+         
         checkinplan.planIndex = await controller.getIndex('CheckinPlan');
         const ogplans = await checkinPlans.saveCheckinPlan(checkinplan);
         result =  result = await company.updateOne({CompanyID:planobj.CompanyID}
@@ -173,23 +173,23 @@ let response = {};
 }
 async function activateCheckinplan(planobj){
     const exist = await company.findOne({CompanyID:planobj.companyId,"checkinplan.planIndex":planobj.planIndex},{"checkinplan.$":1,_id:0}) 
-    console.log(exist.checkinplan[0].deleted,'esist');
+    
     let result ;
     if (exist.checkinplan[0].deleted) {
-        console.log(exist.deleted,'if executed')
+         
      result =await company.updateOne({CompanyID:planobj.companyId,"checkinplan.planIndex":planobj.planIndex},
         {$set:{
             "checkinplan.$.deleted":false
         }})
     }else if (!exist.checkinplan[0].deleted)  {
-        console.log(exist.deleted,'else executed')
+         
         result =await company.updateOne({CompanyID:planobj.companyId,"checkinplan.planIndex":planobj.planIndex},
         {$set:{
             "checkinplan.$.deleted":true
         }})    
 
 }
-console.log(result);
+ 
 let response = {};
     if (result.modifiedCount > 0) {
       response = { update: true };

@@ -23,6 +23,8 @@ async function getReservationDateWise(fromTime, endTime, companyID, roosObj) {
           .find({
             tariffIndex: element.tariffIndex,
             dateString: dateString,
+            companyIndex:companyID
+
           })
           .countDocuments();
            
@@ -61,9 +63,7 @@ for(const tariff of roosObj ){
  
   
 }      
-
-
-
+ 
  
   return  {roosObj,dailyReservation} ;
 }
@@ -118,15 +118,13 @@ for(const tariff of roosObj ){
 
 
   async function getRoomAvailalability(companyID){
-   
-   
     const result =await company.company.findOne({CompanyID:companyID,deleted:false})
     let roomTypes = result.roomtypes;
     for(const item of roomTypes){
-      item.availableRoom = await rooms.depart.find({roomType:item.tariffIndex,deleted:false}).countDocuments() 
+      item.availableRoom = await rooms.depart.find({roomType:item.tariffIndex,deleted:false,companyIndex:companyID}).countDocuments() 
     } 
      
-    
+    console.log(roomTypes)
     return roomTypes
     }
     

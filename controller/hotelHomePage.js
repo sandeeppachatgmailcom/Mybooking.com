@@ -13,6 +13,13 @@ const payment = require('../model/payments');
 const reception = require('../model/checkinDetails')
 const dailyoccupancy = require('../model/occupancydetails')
 
+
+router.get('/',(req,res)=>{
+  res.render('login')
+})
+
+
+
 router.post('/updateReservationWithRoom',async (req,res)=>{
   const dailydetails = await dailyoccupancy.occupancy.updateMany({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   
   const checkinSummary = await reception.checkinDetails.updateOne({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   

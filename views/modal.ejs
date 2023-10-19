@@ -177,6 +177,8 @@
                             class="btn btn-outline-success col-4  bi bi-cursor-fill" value="signup"> SAVE </button>
                         <button id="Bt_Cancel_signup" onclick="CancelEntry()" type="button"
                             class="btn btn-outline-warning col-4 bi bi-x-square"> CANCEL </button>
+                        <button id="Bt_verifyOtp"  data-bs-toggle="modal" data-bs-target="#idEnterOtp" type="button"
+                            class="btn btn-outline-warning col-4 bi bi-x-square"> VALIDATE OTP </button>
                     </div>
                     <div class=" container-fluid d-flex flex-row-reverse col-4">
                         <button id="Bt_Login_back" onclick="loadHome()" type="button"
@@ -194,7 +196,59 @@
 
 
 
- 
+<!-- OTP Modal -->
+<div class="modal fade btn" id="idEnterOtp" style="background-color: rgba(128, 109, 0, 0.408);" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg " >
+      <div class="modal-content"  >
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Verify Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/authenticate/signUp" method="post">  
+            
+            <div class="container btn justify-content-evenly "     >
+                <div class="container-fluid "   >
+                     
+                     
+                    
+                    <!-- ************ -->
+                    <div class="container-fluid border-light d-flex rounded mb-3">
+                         
+                        <button class="border-0 rounded-start col-4" id="Signup_input_group_text">Email</button>
+                        <input id="idverify_Email" type="email"  class="form-control " name="email" placeholder="Email" required>
+                        
+            
+                    </div>
+                    
+                    <!-- ************ -->
+                    <div class="container-fluid border-light d-flex rounded mb-3">
+                            <button class="border-0 rounded-start col-4 " required>OTP</button>
+                            <input autocomplete="new-password"    id="id_otp"
+                            type="text" class="form-control" name="password" placeholder="password">
+                    </div>
+            
+                </div>
+                <div class=" d-flex">
+                    <div class="  d-flex flex-row col-8">
+                        <button id="Bt_Save_Signup"   type="button"
+                            class="btn btn-outline-success col-4  bi bi-cursor-fill" onclick="verifyOtp()"  value="signup"> SUBMIT </button>
+                        <button id="Bt_resendOtp"   type="button" onclick="resendOtp('idverify_Email')"
+                            class="btn btn-danger col-4 "> RESEND OTP </button>
+                        
+                        </div>
+                    <div class=" container-fluid d-flex flex-row-reverse col-4">
+                        <button id="Bt_signinOtp"  data-bs-toggle="modal" data-bs-target="#customerLogin" type="button"
+                        class="btn btn-outline-warning bi bi-x-square"> LOG-IN  </button>
+                   </div>
+                </div>
+                <br>
+            </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div> 
  
      
  

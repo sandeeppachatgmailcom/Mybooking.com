@@ -144,10 +144,10 @@ function readmore() {
     const currentDate = new Date().toISOString().slice(0, 16);
 
     // Set the value of the input with id "idStartDate" to the current date and time
-    document.getElementById("idStartDate").value = currentDate;
+    // document.getElementById("idStartDate").value = currentDate;
     document.getElementById("idStartDate").min = currentDate;
-    console.log(document.getElementById("idStartDate").value)
-    console.log(document.getElementById("idEndDate").value);
+    // console.log(document.getElementById("idStartDate").value)
+    // console.log(document.getElementById("idEndDate").value);
     document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
     if(document.getElementById("idEndDate").value< document.getElementById("idStartDate").value){
     document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;}

@@ -8,7 +8,7 @@ const ejs = require('ejs')
 const human = require('../model/humanbank')
 const controller = require('../controller/adminController')
 const ftnReservation = require('../controller/ftnReservation');
-const { JSONCookie } = require('cookie-parser');
+ 
 const payments = require('../model/payments')
    
 router.post('/viewReservation',async (req,res)=>{
@@ -62,7 +62,7 @@ router.post('/confirmBooking',(req,res)=>{
 })
 
 router.post('/customSearch',async (req,res)=>{
-      
+    console.log('/customSearch REACHED ');  
     let user = await human.HumanResource.findOne({activeSession:req.sessionID})
     if (!user)
     user = {};
@@ -70,9 +70,10 @@ router.post('/customSearch',async (req,res)=>{
     const tariff = await tariffs.loadtariff('')
     let district = new Set();
     let  inputData = req.body;
+    
     inputData.GuestCount = parseInt(inputData.GuestCount)
     inputData.nameRoomCount = parseInt(inputData.nameRoomCount)
-   
+    console.log(inputData,'inputDatainputDatainputDatainputDatainputDatainputDatainputData');
     const pincode = generalData.forEach(element => {
         district.add(element.district )
     });
@@ -146,7 +147,7 @@ router.use('/loadPlans',async(req,res)=>{
 router.post('/loadHotelDetails', async (req, res) => {
     const totalRoomSummary = await ftnReservation.getRoomAvailalability(req.body.hotelId);
     const reservationSummary = await ftnReservation.getReservationDateWise(req.body.StartDate, req.body.EndDate, req.body.hotelId,totalRoomSummary );
-     
+     console.log(totalRoomSummary,reservationSummary);
     req.body.CompanySearchKey = req.body.hotelId;
     let result  = await companies.SearchbyCompanyByAny(req.body);
     result.roomtypes =  reservationSummary.roosObj

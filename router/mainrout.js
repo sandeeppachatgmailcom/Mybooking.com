@@ -21,6 +21,7 @@ const hotelshomePage = require('../controller/hotelHomePage')
 const clearCache = require('../middleware/userAccess')
 const reservation = require('../controller/reservation')
 const personalProfile = require('../controller/userprofile')
+ 
 router.use(clearCache.clearCache);
 
 
@@ -42,9 +43,10 @@ router.use('/DocumentUpload',verifyAccess.VerifyAccess,DocumentUpload)
 router.use('/Company',verifyAccess.VerifyAccess,company)
 router.use('/custom',verifyAccess.VerifyAccess,customSearch)
 router.use('/vedurehomepage',verifyAccess.VerifyAccess,hotelshomePage)
+router.use('/hotel',verifyAccess.VerifyAccess,hotelshomePage)
 router.use('/reservation',verifyAccess.VerifyAccess,reservation)
 router.use('/user',personalProfile)
-
+ 
 
 
 

@@ -1,7 +1,5 @@
 
 
- 
-
 async function SaveCheckinPlan(){
     const data = {
     planIndex:document.getElementById('idplanIndex').value,
@@ -429,7 +427,10 @@ async function verifyandupdate() {
 
             if (result.saved) {
                 alert("User Saved")
-                window.location.reload();
+                document.getElementById("Bt_verifyOtp").click();
+                document.getElementById("idverify_Email").value = data.email; 
+                document.getElementById("idverify_Email").disabled = true;
+                executeOtpTimer("Bt_resendOtp");
                 document.getElementById("IdInfoText").innerText='Click Signup for sign in '
             }
             
@@ -441,6 +442,66 @@ async function verifyandupdate() {
     
 
 }
+
+
+  function executeOtpTimer(btnElement) {
+    const otpButton = document.getElementById(btnElement);
+    let time = 30;
+    otpButton.value = time;
+    async function updateTimer() {
+      if (time >= 0) {
+        otpButton.textContent = time + " remaining ";
+        time--;
+        setTimeout(updateTimer, 1000);
+      }
+      else {
+        otpButton.textContent ='Resend OTP'
+        data ={
+            email:document.getElementById("idverify_Email").value
+        }
+        console.log(data);
+        const result =await fetch('/authenticate/SetOtpExpired',{method:'post',headers:{"content-Type":"Application/json"},body:JSON.stringify(data)})
+        .then(res=>{
+            return res.json()
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+        console.log(result);
+        if(result.expired){
+            swal({
+                title: "Expired",
+                text: "Otp Expired!",
+                icon: "error",
+                button: "OK",
+              })
+        }
+      }
+    }
+  
+    updateTimer();
+  }
+async function resendOtp(email){
+    data ={
+        email: document.getElementById(email).value
+    }
+    const result =await fetch('/authenticate/resendOtp',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+    .then(res=>{
+        return res.json()
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+    if(result.created){
+        executeOtpTimer("Bt_resendOtp");
+    }
+}
+
+
+
+
+
+
 function CancelEntry() {
     window.location.reload();
 }
@@ -488,8 +549,6 @@ function upload(file) {
 function deleteFloor() {
     const data = { floorindex: document.getElementById('Bt_Save_Update').value }
     let sure = confirm('do you want to delete ?')
-
-    
     if (sure) {
         const result = fetch('/floorMaster/deleteFloor', {
             method: 'POST',
@@ -624,6 +683,26 @@ async function CheckUser() {
     }
 }
 
+
+
+                    
+async function verifyOtp(){
+    data ={
+        email:   document.getElementById("idverify_Email").value,
+        otp : document.getElementById("id_otp").value
+    }
+    const result = await fetch('/authenticate/confirmOtp',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+    .then(res=>{
+        return res.json()
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+    if (result.verified){
+        document.getElementById("Bt_signinOtp").click();
+
+    }
+}
 
 
 

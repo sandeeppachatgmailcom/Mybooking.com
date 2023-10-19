@@ -16,6 +16,8 @@ const tariffs = require('../model/tariff')
 const nodeMailer = require('nodemailer')
 const randomString = require('randomstring') 
 const validation = require('../model/otpvalidation')
+const email = require('../controller/emailService')
+
 async function findUser(sessionID) {
     const activeUser = await ActiveID.UserLog.findOne({ sessionId: sessionID, loggedOut: false }, { username: 1, _id: 0 })
     
@@ -263,7 +265,7 @@ router.post('/VerifyEmail',async(req,res)=>{
     }
  })
      
-router.post('/signup',async (req, res) => {
+ router.post('/signup',async (req, res) => {
    
     try {
         let transporter =await nodeMailer.createTransport({
@@ -279,7 +281,7 @@ router.post('/signup',async (req, res) => {
         });
         let randomOtp = otp
         const mailOptions = {
-            from: process.env.nodeMailerEmail, // Sender email
+            from: 'info@lajhna.com', // Sender email
             to: req.body.email, // Recipient email
             subject: 'OTP Verification Code',
             text: `Your OTP is: ${otp}`,
@@ -327,6 +329,7 @@ router.post('/signup',async (req, res) => {
     }
 })
  
+ 
 router.get('/signup', (req, res) => {
     res.render('signup');
 })
@@ -347,5 +350,38 @@ router.post('/loadUserCompany',async (req,res)=>{
 })
 
 
- 
+router.post('/confirmOtp',async (req,res)=>{
+    const result =await OTPValidate.validateOtp(req.body.email,req.body.otp);
+    if(result.modifiedCount){
+    res.json({verified:true});       
+    }
+    else{
+        res.json({verified:false});       
+    }
+    
+})
+router.post('/SetOtpExpired',async (req,res)=>{
+    const result =await OTPValidate.makeOTPExpired(req.body.email);
+    if(result.modifiedCount){
+    res.json({expired:true});       
+    }
+    else{
+        res.json({expired:false});       
+    }
+    
+})
+
+router.post('/resendOtp',async (req,res)=>{
+    console.log('reached here');
+    const result =await OTPValidate.resendOtp(req.body.email,res.sessionID);
+    console.log(result);
+    if(result.upsertedCount){
+    res.json({created:true});       
+    }
+    else{
+        res.json({created:false});       
+    }
+    
+})
+
 module.exports = router;

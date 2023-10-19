@@ -5,7 +5,8 @@ const newEntry = mongoose.Schema({
     authorisationname:{type:String},
     otp:{type:String} ,
     verified:{type:Boolean,default:false},
-    sessionId:{type:String}
+    sessionId:{type:String},
+    expired:{type:Boolean,default:false}
     
 })
 const Otp = db.model('OTP',newEntry)

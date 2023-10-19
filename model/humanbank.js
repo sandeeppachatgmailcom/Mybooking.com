@@ -26,8 +26,8 @@ const humanResourceSchema = new mongoose.Schema({
     isloggedIn: { type: Boolean, default: false },
     pancard: { type: String },
     adhaar: { type: String },
-    dob: { type: Date },
-    marriedDate: { type: Date },
+    dob: { type: Date,default:new Date(Date.now()) },
+    marriedDate: { type: Date,default:new Date(Date.now())  },
     gender: { type: String },
     password: { type: String },
     deleted: { type: Boolean, default: false },
@@ -96,6 +96,7 @@ async function verifyUser(userObject){
     
     if(user){
         user.companyID = await company.company.findOne({email:user.email},{CompanyID:1,_id:0})
+        if(!user.companyID)user.companyID = {}
         return {verified:true,user:user.firstName,userdetails:user,company:user.companyID.CompanyID};
     }
     else{

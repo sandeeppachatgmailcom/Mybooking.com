@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const db = require('./mongoose');
 const controller = require('../controller/adminController')
 const humanBank = require('../model/humanbank')
+const tariff = require('../model/tariff')
 
 const Newcheckin = new mongoose.Schema({
   frontDeskTransid: { type: String, requfrontDeskTransidired: true, unique: true },
@@ -110,7 +111,7 @@ async function saveCheckin(checkinobj) {
   return result;
 }
 async function saveReservation(reservationObj) {
-  console.log(reservationObj,'reservationObj')
+   
   if (!reservationObj.reservationNumber) { reservationObj.reservationNumber = await controller.getIndex('RESERVATION') }
   if (!await checkIn.findOne({ reservationNumber: reservationObj.reservationNumber })) { reservationObj.frontDeskTransid = await controller.getIndex('FRONTID') }
   data = {
@@ -224,8 +225,23 @@ async function loadCheckin(checkinReferance) {
   const checkinDetails = await checkIn.find({ checkinReferance: { $regex: `${checkinReferance}`, $options: 'i' }, delete: false })
   return checkinDetails;
 }
-async function loadReservation(reservationNumber) {
-  const reservationDetails = await checkIn.find({ reservationNumber: reservationNumber, delete: false })
-  return reservationDetails;
-} 
-module.exports = { checkIn, saveCheckin, saveReservation, deleteCheckin, loadCheckin, SearchCheckin, getCheckinWithAllDetails }
+async function loadReservationbyCompany(companyID) {
+  const reservationDetails = await checkIn.find({ CompanyName: companyID, delete: false });
+   
+
+  const bookings = reservationDetails.map(async (booking) => {
+    booking.tariffName = (await tariff.tariff.findOne({ tariffIndex: booking.tariff }, { _id: 0, tariffName: 1 })).tariffName;
+    const bookedBy = await humanBank.HumanResource.findOne({ hrId: booking.createUser }, { _id: 0, firstName: 1, contactNumber: 1, email: 1,specialrequierments:1 });
+    booking.firstName = bookedBy.firstName;
+    booking.email = bookedBy.email;
+    booking.contactNumber = bookedBy.contactNumber;
+    booking.preferance = bookedBy.specialrequierments;
+    return booking; // Return the modified booking object
+  });
+
+  const result = await Promise.all(bookings); // Wait for all promises to complete
+  return result;
+}
+
+  
+module.exports = { checkIn, saveCheckin, saveReservation, deleteCheckin, loadCheckin, SearchCheckin, getCheckinWithAllDetails,loadReservationbyCompany }

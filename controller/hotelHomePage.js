@@ -7,9 +7,65 @@ const controller = require('../controller/adminController')
 const tariffmaster = require('../model/tariff')
 const checkinPlans = require('../model/planMaster');
 const rooms = require('../model/rooms');
-const  floorMaster   = require('../model/floor');
+const floorMaster   = require('../model/floor');
 const checkinmaster = require('../model/checkIn');
 const payment = require('../model/payments');
+const reception = require('../model/checkinDetails')
+const dailyoccupancy = require('../model/occupancydetails')
+
+router.post('/updateReservationWithRoom',async (req,res)=>{
+  const dailydetails = await dailyoccupancy.occupancy.updateMany({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   
+  const checkinSummary = await reception.checkinDetails.updateOne({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   
+  console.log(dailydetails,'dailydetails',checkinSummary,'checkinSummary')
+  if(dailydetails.modifiedCount && checkinSummary.modifiedCount ){
+    res.json({
+      updated:true,
+      roomIndex:req.body.roomIndex,
+      
+    })   
+  }
+  
+})
+
+
+
+router.post('/loadAvailableRooms',async (req,res)=>{
+  
+  let allRooms = await rooms.loadroomByCompanyId(req.body.companiIndex);
+  
+  let availableroom = allRooms.filter((room) => {
+    return (room.roomType === req.body.tariffIndex && (!room.blocked)) ;
+
+  });
+ 
+  let room=[];
+ 
+  let bookedRooms = await dailyoccupancy.occupancy.find({ tariffIndex: req.body.tariffIndex, transDate: {
+    $gte: new Date(req.body.arrivalDate),
+    $lte: new Date(req.body.depart_Date)
+  }});
+
+  console.log(bookedRooms,'bookedRooms');
+  if (!bookedRooms){  bookedRooms='';}
+  
+  for(let i =0;i<availableroom.length;i++){
+    let flag = 0;
+    for(let j=0;j<bookedRooms.length;j++){
+      if(availableroom[i].roomIndex==bookedRooms[j].roomIndex){
+        flag++ 
+        break;
+      }
+      
+    }
+    if(!flag){
+      room.push(availableroom[i]);
+    }
+  }
+  console.log(room,'room');
+  res.json(room)
+})
+
+
 router.post('/loadhomepage', async (req, res) => {
   try {
     const inputs = req.body;
@@ -87,12 +143,13 @@ router.post('/loadhomepage', async (req, res) => {
 
     res.cookie('userName',req.body.userName)
     if (!availablerooms )availablerooms={};
-    let  reservation = await checkinmaster.checkIn.find({CompanyName: profile.CompanyID})         
+    let  reservation = await checkinmaster.loadReservationbyCompany(profile.CompanyID)         
     if(!reservation)reservation ='';
-    let  payments = await payment.payment.find({companyID:profile.CompanyID})
+    let payments = await payment.loadPaymentByCompanyID(profile.CompanyID)
     if(!payments)  payments='';
-   
-  res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments });
+    let occupancyDetails = await reception.loadIndividualBookingByCompany(profile.CompanyID);
+   if(!occupancyDetails) occupancyDetails='';
+  res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments,occupancyDetails });
   }
     else{
       res.redirect('/')
@@ -122,7 +179,7 @@ router.post('/saveTariff', async (req, res) => {
     deleted: false
   };
   let result
-   console.log(profile.CompanyID,'req.body.CompanyID');
+    
   if (!newRoomType.tariffIndex) {
     newRoomType.tariffIndex = await controller.getIndex('TARIFF');
     result = await companies.company.updateOne(

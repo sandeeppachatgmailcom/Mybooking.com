@@ -25,191 +25,101 @@ function loadHotel(SelectedValue,generalData ){
   } 
  }
  
- async function loadSearchResult(){
- if (!document.getElementById('idBudgetEnd').value) document.getElementById('idBudgetEnd').value=3000000
-  const data = {
-       SearchText:document.getElementById('idSearchText').value,
-      
-       StartDate:document.getElementById('idStartDate').value,
-       EndDate:document.getElementById('idEndDate').value,
-       GuestCount:document.getElementById('idGuestCount').value,
-       RoomCount:document.getElementById('idRoomCount').value,
-       BudgetFrom:Number(document.getElementById('idBudgetFrom').value),
-       BudgetEnd:Number(document.getElementById('idBudgetEnd').value),
-       SelectTariff:document.getElementById('idSelectTariff').value       
-  } 
-    // document.getElementById('idCustSearchFirstDiv').innerHTML='';
-  // document.getElementById('idTariffDetails').innerHTML='';
-  const result = await fetch('/custom/customSearch',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
-  .then(res=>{
-    return res.json()
-  }).catch(err=>{
-    console.log(err);
-  })
-  
-let  innerHtml = '';
-let hotels = new Set();
-hotels = result.add 
-for(let i=0;i<result.length;i++){
-   
-  innerHtml+= `<div class="card btn col-2">
-  <img class="w-100"  src="${result[i].image1}" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title" data-hotelTariffs="${result[i].tariffDetails}" >${result[i].lastName}</h5>
-    <div class="d-flex justify-content-center">
-      <h6 class="bi bi-star-fill text-warning"></h6>
-      <h6 class="bi bi-star-fill text-warning"></h6>
-      <h6 class="bi bi-star-fill text-warning"></h6>
-      <h6 class="bi bi-star-fill"></h6>
-      <h6 class="bi bi-star-fill"></h6>
-    </div>
-    <p class="card-text">${result[i].Companydiscription}</p>
-  </div>
-  <div class="card-footer">
-    <small class="text-body-secondary">Last updated 3 mins ago</small>
-    <a href="#idTariffDetails"  class="link-fancy">
-    <button type="button" onclick="loadRoomTariffs('${result[i].CompanyID}','${result[i].lastName}','${result[i].image1}')" class="btn btn-primary"> Details </button>
-    </a>
-    </div>
-</div>`
-}
-  
-// document.getElementById('idCustSearchFirstDiv').innerHTML=innerHtml;
-innerHtml = '';
-let tariffdetails = new Set();
-for (let i=0;i< result.length;i++){
-  for(let j=0;j<result[i].tariffDetails.length;j++){
-    
-    tariffdetails.add({companyID:result[i].CompanyID,
-                CompanyName:result[i].lastName,
-                CompanyID:result[i].companyID,
-                tariffName:result[i].tariffDetails[j].tariffName,
-                tariffID:result[i].tariffDetails[j].tariffIndex,
-                roomRentSingle:result[i].tariffDetails[j].roomRentSingle,
-                SpecialRent:result[i].tariffDetails[j].SpecialRent,
-                imagePath:result[i].image1,
-                Discription:result[i].tariffDetails[j].Discription
-              })
-  }
-}
- 
-for (const i of  tariffdetails){     
-  innerHtml+= `
-  <div class="card p-3 col-3" >
-      <img src="${i.imagePath}" class="card-img-top" alt="...">
-      <div class="card-body">
-      <h6 class="bi text-warning">${i.CompanyName}</h6>
-          <h5 class="card-title">${i.tariffName}</h5>
-          <h3 class="bi text-warning">${i.SpecialRent}/-</h3>
-        <p class="card-text">${i.Discription} </p>
-        <a href="#TariffDetails" > <button type="button" onclick="loadtariffBasedPlans('${i.CompanyID}','${i.CompanyName}','${i.imagePath}','${i.SpecialRent}','${i.tariffName}',${i.tariffID}  )" class="btn btn-primary"> Next!!</button>
-        </a>
-        </div>
-    </div>`
- 
-}
 
+// async function loadRoomTariffs(companyID,companyName,image) {
+   
+//   const data = {
+//     CompanySearchKey: companyID,
+//     priceFrom: Number(document.getElementById('idBudgetFrom').value),
+//     PriceEnd: Number(document.getElementById('idBudgetEnd').value),
+//     startDate:document.getElementById("idStartDate").value,
+//     endDate:document.getElementById("idEndDate").value
+//   }
   
+//   const tariffdetails = await fetch('/custom/TariffSearch',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+  
+//   .then(res=>{
+//     return res.json()
+//   })
+//   .catch(err=>{
+//     console.log(err)
+//   })
+   
+//   let innerHtml = '';
+//   for (const i of  tariffdetails){     
+//     innerHtml+= `
+//     <div class="card p-3 col-3" >
+//         <img src="${image}" class="card-img-top" alt="...">
+//         <div class="card-body">
+//         <h6 class="bi text-warning">${companyName}</h6>
+//             <h3 class="card-title">${i.tariffName},${i.SpecialRent}/-</h3>
+//             <h5 class="bi text-secondary">Extra Pax:${i.extraPerson}</h5>
+//           <p class="card-text">${i.Discription}</p>
+//           <a href="#idTariffDetails++" > <button type="button" onclick="loadtariffBasedPlans('${companyID}','${companyName}','${image}','${i.SpecialRent}','${i.tariffName}','${i.tariffIndex}'  )" class="btn btn-primary"> Next!!</button>
+//          </a>
+//           </div>
+//       </div>`
+   
+//   }
+    
 
 // document.getElementById('idTariffDetails').innerHTML=innerHtml;
+// }
 
-}
-
-
-async function loadRoomTariffs(companyID,companyName,image) {
-   
-  const data = {
-    CompanySearchKey: companyID,
-    priceFrom: Number(document.getElementById('idBudgetFrom').value),
-    PriceEnd: Number(document.getElementById('idBudgetEnd').value),
-    startDate:document.getElementById("idStartDate").value,
-    endDate:document.getElementById("idEndDate").value
-  }
-  
-  const tariffdetails = await fetch('/custom/TariffSearch',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
-  
-  .then(res=>{
-    return res.json()
-  })
-  .catch(err=>{
-    console.log(err)
-  })
-   
-  let innerHtml = '';
-  for (const i of  tariffdetails){     
-    innerHtml+= `
-    <div class="card p-3 col-3" >
-        <img src="${image}" class="card-img-top" alt="...">
-        <div class="card-body">
-        <h6 class="bi text-warning">${companyName}</h6>
-            <h3 class="card-title">${i.tariffName},${i.SpecialRent}/-</h3>
-            <h5 class="bi text-secondary">Extra Pax:${i.extraPerson}</h5>
-          <p class="card-text">${i.Discription}</p>
-          <a href="#idTariffDetails++" > <button type="button" onclick="loadtariffBasedPlans('${companyID}','${companyName}','${image}','${i.SpecialRent}','${i.tariffName}','${i.tariffIndex}'  )" class="btn btn-primary"> Next!!</button>
-         </a>
-          </div>
-      </div>`
-   
-  }
-    
-
-document.getElementById('idTariffDetails').innerHTML=innerHtml;
-}
-
-async function loadtariffBasedPlans(Companyid,companyName,image,SpecialRent, tariffName  , tariffIndex  ){
-   document.getElementById('idTariffDetails++').innerHTML='';
-  const data = {
-    Companyid:Companyid,
-    companyName:companyName,
-    image:image,
-    SpecialRent:SpecialRent 
+// async function loadtariffBasedPlans(Companyid,companyName,image,SpecialRent, tariffName  , tariffIndex  ){
+//    document.getElementById('idTariffDetails++').innerHTML='';
+//   const data = {
+//     Companyid:Companyid,
+//     companyName:companyName,
+//     image:image,
+//     SpecialRent:SpecialRent 
      
-  }
+//   }
   
-const plans = await fetch('/custom/loadPlans',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
-.then(res=>{
-  return res.json();
-})
-.catch(err=>{
-  console.log(err);
-}) 
-let innerhtml = '';
-for (let i of plans){
-  const total =Number( i.amount) +Number( SpecialRent) ; 
-innerhtml+=` <div class="card" style="width: 18rem;">
-<img src="${image}" class="card-img-top p-1" alt="...">
-<div class="card-body">
-  <h6 class="card-title">${tariffName} : ${SpecialRent}/- <small>(2pax)</small> </h6>
-  <small> Extra pax:${i.extraCharge}/-</small>
-  <button class="btn btn-secondary" > <h4 class="card-title ">${i.planName} :${i.amount}/- <small>(2pax)</small> </h4>  
-    <small> Extra Pax 350/-</small>
-  </button>
-  <div  class="d-flex">
+// const plans = await fetch('/custom/loadPlans',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+// .then(res=>{
+//   return res.json();
+// })
+// .catch(err=>{
+//   console.log(err);
+// }) 
+// let innerhtml = '';
+// for (let i of plans){
+//   const total =Number( i.amount) +Number( SpecialRent) ; 
+// innerhtml+=` <div class="card" style="width: 18rem;">
+// <img src="${image}" class="card-img-top p-1" alt="...">
+// <div class="card-body">
+//   <h6 class="card-title">${tariffName} : ${SpecialRent}/- <small>(2pax)</small> </h6>
+//   <small> Extra pax:${i.extraCharge}/-</small>
+//   <button class="btn btn-secondary" > <h4 class="card-title ">${i.planName} :${i.amount}/- <small>(2pax)</small> </h4>  
+//     <small> Extra Pax 350/-</small>
+//   </button>
+//   <div  class="d-flex">
     
     
-  </button>
+//   </button>
   
-  <div class="btn-group col-6"   role="group" aria-label="Basic mixed styles example">
-      gouest count:
-      <button type="button"  style="border:1px solid grey" class="btn btn-danger col-4 bi bi-arrow-up-circle-fill">   </button>
-      <input type="text" style="border:1px solid grey"  class="btn   col-4">  
-      <button type="button" style="border:1px solid grey" class="btn btn-success col-4 bi bi-arrow-down-circle-fill">  </button>
-  </div>
+//   <div class="btn-group col-6"   role="group" aria-label="Basic mixed styles example">
+//       gouest count:
+//       <button type="button"  style="border:1px solid grey" class="btn btn-danger col-4 bi bi-arrow-up-circle-fill">   </button>
+//       <input type="text" style="border:1px solid grey"  class="btn   col-4">  
+//       <button type="button" style="border:1px solid grey" class="btn btn-success col-4 bi bi-arrow-down-circle-fill">  </button>
+//   </div>
   
-</div>
-  <h4 class="card-title text-secondary" >Total Amount:<small>${total}/- </small> </h4>
-  <p class="card-text">${i.discription}</p>
-  <a   data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success  ">Add to Cart</a>
-</div>
-</div>`
+// </div>
+//   <h4 class="card-title text-secondary" >Total Amount:<small>${total}/- </small> </h4>
+//   <p class="card-text">${i.discription}</p>
+//   <a   data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success  ">Add to Cart</a>
+// </div>
+// </div>`
 
  
 
-}
+// }
  
-document.getElementById('idTariffDetails++').innerHTML=innerhtml;
+// document.getElementById('idTariffDetails++').innerHTML=innerhtml;
  
-}
+// }
 
 function readmore() {
   var dots = document.getElementById("dots");
@@ -268,62 +178,65 @@ function readmore() {
   }).catch(err=>{
     console.log(err);
   }) 
-  let innerhtml ='';
+  let innerhtml =' ';
 
   let tariffDetails = result.roomtypes;  
   let checkinplans = result.checkinplan;
   console.log(tariffDetails,'tariffDetails');
 
-  for (let i of tariffDetails){
-  if(i.isActive){    
-  let masterhtml = `<div class="container-fluid  " >
+  document.getElementById("idTariffDetails").innerHTML = `
+  <div class="container-fluid" >
     <div class="container-fluid d-flex  border btn" style="height :400px ;background-size: cover;background-position: center;">
         <img src="${result.image1}" class="card-img-top" alt="...">
     </div>
     <div class="container-fluid d-flex justify-content-evenly border btn" >
-         <div>
          <h6 class="card-title" style="text-transform: uppercase;">${result.firstName}</h6> 
-         
-
-         </div>
-         <div class="form-check form-check-inline">
-         <input class="form-check-input" type="checkbox" id="idshowallpricecheckbox" value="option1">
-         <label class="form-check-label" for="idshowallpricecheckbox">SHOW ALL PRICE RANGE</label>
-       </div>
-         </div>     
-    
+    </div>     
     <div class="container-fluid d-flex" id="idprinttariffcard" style="flex-wrap:wrap" >
     </div>
   </div>`
+  
+     
 
-const graceHours = .5;
-let temp = data.StartDate.split('T');
-const fromdate =new Date(temp[0]);
-let  arrivalTime = temp[1].split(':')
-temp = data.EndDate.split('T');
-const todate = new Date(temp[0]);
-let  deptTime = temp[1].split(':')
-const days =todate-fromdate;
-let diffDays = calculateDays(data.StartDate,data.EndDate) 
  
-deptTime = ((parseInt(deptTime[0])*60)+(parseInt(deptTime[1])))/60 
-arrivalTime = ((parseInt(arrivalTime[0])*60)+(parseInt(arrivalTime[1])))/60
-const timeDiff = deptTime - arrivalTime ;
-if(timeDiff>graceHours) diffDays++; 
- 
-document.getElementById("")
+  const graceHours = .5;
+  let temp = data.StartDate.split('T');
+  const fromdate =new Date(temp[0]);
+  let  arrivalTime = temp[1].split(':')
+  temp = data.EndDate.split('T');
+  const todate = new Date(temp[0]);
+  let  deptTime = temp[1].split(':')
+  const days =todate-fromdate;
+  let diffDays = calculateDays(data.StartDate,data.EndDate) 
+   
+  deptTime = ((parseInt(deptTime[0])*60)+(parseInt(deptTime[1])))/60 
+  arrivalTime = ((parseInt(arrivalTime[0])*60)+(parseInt(arrivalTime[1])))/60
+  const timeDiff = deptTime - arrivalTime ;
+  if(timeDiff>graceHours) diffDays++; 
+   
+  document.getElementById("")
+
+
+
+
+for (let i of tariffDetails){
+if(i.isActive){    
 let bodycolorclass = 'btn-cyan-700'
-if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.SpecialRent<= Number(document.getElementById("idBudgetEnd").value)))bodycolorclass = 'btn-light'
+if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.SpecialRent<= Number(document.getElementById("idBudgetEnd").value)))
+{
+  bodycolorclass = ' rgba(52, 152, 219, 0.853)'
+}
 else {
-   bodycolorclass = 'btn-secondary'
+   bodycolorclass = 'rgba(224, 224, 224)'
 
 }
 if(! i.totalRoom) i.totalRoom=1;
   
-  innerhtml+=`<div class="card" p-2 style="width: 21rem; ">
-  <form action="/custom/viewReservation" method="post">
+  innerhtml+=`
+  <div class="card" p-2 style="width: 21rem; ">
+    <form action="/custom/viewReservation" method="post">
       <div onClick="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}', ${diffDays})"
-          class="card-body ${bodycolorclass}">
+          class="card-body " style="background-color:${bodycolorclass}">
   
           <h6 style="text-transform: uppercase;" class="card-title">${i.tariffName} : ${i.SpecialRent}/-
           <h6 class="card-title" style="text-transform: uppercase;">${i.totalRoom-i.reservationCount} rooms available  </h6> 
@@ -337,8 +250,9 @@ if(! i.totalRoom) i.totalRoom=1;
               </button>
           </div>
           <h4   class="card-title ">Total Amount:<small id="idTotalamount${i.tariffIndex}"> </small> </h4>
-          <div style="height: 80px; wrap:nowrap ; overflow:hidden" onClick"drilldown('iDtariffDiscription'+'${i.tariffIndex}','80')" id="iDtariffDiscription${i.tariffIndex}">
-              <p class="card-text btn"  onClick="drilldown('iDtariffDiscription'+'${i.tariffIndex}','80')">${i.Discription}</p>
+          <div style="height: 80px; wrap:nowrap ; overflow:hidden"   id="iDtariffDiscript${i.tariffIndex}">
+              
+              <p class="card-text btn"   onClick="drilldown('iDtariffDiscript${i.tariffIndex}','80')">${i.Discription}</p>
           </div>
           <div class="continer-flex">
               <div class="input-group d-flex ">
@@ -347,7 +261,7 @@ if(! i.totalRoom) i.totalRoom=1;
                   </div>
                   <input type="Number" name="roomCount" value="${parseInt(data.RoomCount)}"
                       onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
-                      id="idTotalRoomReq${i.tariffIndex}" class="form-control" placeholder="Username"
+                      max="${i.totalRoom}" id="idTotalRoomReq${i.tariffIndex}" class="form-control" placeholder="Username"
                       aria-label="Username" aria-describedby="basic-addon1">
               </div>
               <div class="input-group d-flex ">
@@ -392,8 +306,8 @@ if(! i.totalRoom) i.totalRoom=1;
       </div>
   </form>
   </div>`
-    
-  document.getElementById("idTariffDetails").innerHTML =  masterhtml;
+  
+  document.getElementById("idprinttariffcard").innerHTML ='';
   document.getElementById("idprinttariffcard").innerHTML =  innerhtml;
   
   document.getElementById("idCheckinPlan").innerHTML =''

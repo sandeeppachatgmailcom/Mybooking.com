@@ -1,46 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/Machintko.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-</head>
-<body>
-    <form action="/login" method="post">
-<div class="container-fluid d-flex ">
-    <div class="container col-8" >
-        <label class="text Machintko text-primary" for="">Mashintko</label>
-    </div>
-    <div class="container col-3">
-        <div class="container col-11 loginbox justify-content-evenly">
-            <h1 class="text ">Welcome</h1>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">Username</span>
-                </div>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Dropdown
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                  <button class="dropdown-item" type="button">Action</button>
-                  <button class="dropdown-item" type="button">Another action</button>
-                  <button class="dropdown-item" type="button">Something else here</button>
-                </div>
-              </div>
-              
+<div class="card col-3 p-1 m-0"   >
+  <img class="w-100 rounded" style="height: 30%;" name="companyImage" value="<%= element.image1 %>" src="<%= element.image1 %>" class="card-img-top" alt="...">
+  <div class="card-body">
+        <h3 class="card-title" data-hotelTariffs="${result[i].tariffDetails}" style="text-transform: uppercase"> <%= element.lastName %></h3> <small class="card-text" style="text-transform: uppercase; height: fit-content;"  ><%= element.district %> </small> <br>
+        <small class="card-text bi bi-telephone-fill" style="height: fit-content;"  > <%= element.contactNumber %></small><br>
+        <small class="card-text bi bi-envelope-at"  style="height: fit-content;"  >  <%= element.email %> </small>
+        <div class="d-flex justify-content-center">
+          <h6 class="bi bi-star-fill text-warning"></h6>
+          <h6 class="bi bi-star-fill text-warning"></h6>
+          <h6 class="bi bi-star-fill text-warning"></h6>
+          <h6 class="bi bi-star-fill"></h6>
+          <h6 class="bi bi-star-fill"></h6>
         </div>
-        <h1>Sandeep</h1>
+        <small class="card-text" ><%= element.Companydiscription %></small>
     </div>
-
+  <div class="card-footer">
+          <button name="submitCompanyDetails" value="<%=element.CompanyID%>"  onclick="loadHotelBasedResult(event.target.value)" type="button" value="<%=  element.CompanyID  %>" class="btn btn-primary">Details</button>
+  </div>
 </div>
-    </form>
-</body>
-</html>

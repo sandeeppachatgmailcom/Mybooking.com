@@ -27,14 +27,18 @@ router.post('/viewReservation',async (req,res)=>{
      departureTime: temp[3].split('T')[1],
      totalDays:controller.calculateDays(temp[2],temp[3])
 }
-const user = await human.HumanResource.findOne({activeSession:req.sessionID})
+
+
+req.body.session = req.sessionID;
+const result =await human.verifyUser(req.body)  
+const user = result.userdetails;
 
     
 if(user){
     
     req.body.CompanySearchKey = temp[0];
     const company=await companies.SearchbyCompanyByAny(req.body)
-    const checkinplan = company.checkinplan.filter(item => item.deleted===false);
+    const checkinplan = company.checkinplan.filter(item => item.isActive===true);
     const tariffplans = company.roomtypes.filter(item=> item.tariffIndex===BookingSummary.tariffIndex)
      
     res.render('confirmReservation',{user,company,checkinplan,tariffplans,BookingSummary})
@@ -140,44 +144,12 @@ router.use('/loadPlans',async(req,res)=>{
 })
 
 router.post('/loadHotelDetails', async (req, res) => {
-    const reservationSummary = await ftnReservation.getReservationDateWise(req.body.StartDate, req.body.EndDate, req.body.hotelId);
     const totalRoomSummary = await ftnReservation.getRoomAvailalability(req.body.hotelId);
+    const reservationSummary = await ftnReservation.getReservationDateWise(req.body.StartDate, req.body.EndDate, req.body.hotelId,totalRoomSummary );
      
-    let maximumReservation = {};
-    for (const item of reservationSummary) {
-        const tariffIndex = item.tariffIndex;
-        if (!item.reservationCount) item.reservationCount = 0;
-        
-        if (!maximumReservation[tariffIndex]) {
-            maximumReservation[tariffIndex] = item.reservationCount;
-        } else if (maximumReservation[tariffIndex] < item.reservationCount) {
-            maximumReservation[tariffIndex] = item.reservationCount;
-        }
-    } 
     req.body.CompanySearchKey = req.body.hotelId;
     let result  = await companies.SearchbyCompanyByAny(req.body);
-     
-     
-    
-    for (let i=0;i<result.roomtypes.length;i++) {
-        
-        
-        
-        if (maximumReservation[result.roomtypes[i].tariffIndex]) {
-            result.roomtypes[i].reservationCount = maximumReservation[result.roomtypes[i].tariffIndex]
-            
-        }  
-        for (let k = 0; k < totalRoomSummary.length; k++) {
-            if (totalRoomSummary[k].roomType == result.roomtypes[i].tariffIndex) {
-              result.roomtypes[i].totalRoom = totalRoomSummary[k].roomCount;
-              
-              break; // Exit the loop since a match was found
-            }
-
-          }
-         
-    }
- 
+    result.roomtypes =  reservationSummary.roosObj
     res.json(result);
 });
 
@@ -191,7 +163,7 @@ router.get('/Home',async (req,res)=>{
     const reservationDetails = await ftnReservation.loadreservationByCustID(user.hrId)
     let bookingDetails = JSON.stringify(reservationDetails)
     bookingDetails = JSON.parse(bookingDetails )
-    console.log(bookingDetails,'bookingDetailsbookingDetailsbookingDetailsbookingDetailsbookingDetails');
+     
     for(let i=0;i<bookingDetails.length;i++){
         const hotel = await companies.SearchbyCompanyByAny({CompanySearchKey:bookingDetails[i].CompanyName})
         bookingDetails[i].companyName = hotel.firstName;
@@ -204,8 +176,8 @@ router.get('/Home',async (req,res)=>{
         bookingDetails[i].companyName = hotel.firstName;
         const checkinPlan = await checkinplans.LoadPlanByID(bookingDetails[i].CheckinPlan)
         const tariffDetails = hotel.roomtypes;
-        const payment = await payments.payment.findOne({paymentReferance:bookingDetails[i].reservationNumber,custommerId:user.hrId,entryType:"Cr"})
-        
+        const payment = await payments.payment.findOne({paymentReferance:bookingDetails[i].reservationNumber,custommerId:user.hrId,entryType:"Dr"})
+            
         if(payment){ 
             bookingDetails[i].transactionReferanceNumber = payment.transactionReferanceNumber
             bookingDetails[i].receiptNumber=payment.receiptNumber

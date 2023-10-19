@@ -67,7 +67,7 @@
                             </th>
                             
                             <td class="col-3 border">
-                                <%= tariffplans[0].SpecialRent  %> 
+                                <%= tariffplans[0].SpecialRent*BookingSummary.totalRoom  %> 
                             </td>
                             
                             <td class="col-2 border">
@@ -164,14 +164,14 @@
                 <div class="container-fluid border col-4 rounded justify-content-start">
                     <textarea class="bornder rounded w-100" name="specialRequest" placeholder="Special requierment" id="idSpecialRequest" cols="30" rows="5"></textarea>
                     <small>Estimated Rent (<%=BookingSummary.totalDays %> days :)   
-                        <%=((parseInt(BookingSummary.totalDays))* (parseInt(tariffplans[0].SpecialRent))*(parseInt(BookingSummary.totalRoom)))
-                        +((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))) %>/-
+                        <%=  ((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))*(parseInt(BookingSummary.totalDays))+( tariffplans[0].SpecialRent*BookingSummary.totalDays* BookingSummary.totalRoom )) 
+                                 %>/-
                         </small>  
                         <br> 
                     <h6 style="opacity: 0;" id="idCheckinPlan">Checkin Plan </h6> <br>
-                     <h6>Net Amount Payable </h6> <h6 id="idfinalAmount">
-                         
-                      </h6><br>
+                     <h6>Net Amount Payable </h6> <h6 id="idfinalAmount"> 
+                        <%=  ((parseInt(tariffplans[0].extraPerson)) * (parseInt(BookingSummary.extraPax))*(parseInt(BookingSummary.totalDays))+( tariffplans[0].SpecialRent*BookingSummary.totalDays* BookingSummary.totalRoom )) 
+                                 %></h6><br>
                      <button class="btn btn-outline-success w-100  " type="button"  onclick="saveReservation(event.target.value )"  value="<%= JSON.stringify(BookingSummary) %> " > PAY & CONFIRM
                     </button>
                     

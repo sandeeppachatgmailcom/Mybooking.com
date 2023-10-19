@@ -1,11 +1,12 @@
 <%- include('header') %>
 <%- include('MenuBarCustomer') %>
-    <form action="/custom/customSearch" method="post"> 
+    
         <div class="container-fluid">
              <%  console.log(inputData) %>
                 <div class="container-fluid border rounded" style="background-color: rgba(65, 90, 69, 0.762) ; ">
                     <div class="col">
                         <!-- Main Search box Start here -->
+                    <form action="/custom/customSearch" method="post"> 
                         <div class="row" >
                             <div class="col d-flex" >
                                 <button type="button" class="input-group-text text-light btn"style="background-color: transparent;" id="iDServiceImages1btn2">Location</button>
@@ -97,20 +98,17 @@
                      
 
                         </div>
-
+                    </form> 
                         <!-- Main Search box Ends here -->
                     </div>
                 </div>
              
-                 
-                <div class="container-fluid border rounded d-flex   " style="overflow: auto; flex-wrap: wrap;display: flex;" id="idTariffDetails"> 
+                                     
+                <div class="container-fluid border rounded d-flex   " style="  overflow: auto; flex-wrap: wrap;display: flex;" id="idTariffDetails"> 
                  
                          
                             
                               <% result.forEach(element => { %>
-                                
-                                 
-                                
                                 <div class="card col-3 p-1 m-0"   >
                                     <img class="w-100 rounded" style="height: 30%;" name="companyImage" value="<%= element.image1 %>" src="<%= element.image1 %>" class="card-img-top" alt="...">
                                     <div class="card-body">
@@ -133,7 +131,7 @@
                                    
                             <% }) %>
                                     
-                            <%- include('footer') %>
+                           
 
  
                      
@@ -144,7 +142,7 @@
         <div class="container-fluid" id="idConfirmBooking">
                  
         </div>
-    </form>
+    
 
     
     <script src="/Script/customerSearch.js"> </script>

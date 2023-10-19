@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const db = require('./mongoose');
-adminController = require('../controller/adminController')
+const adminController = require('../controller/adminController')
+const floor = require ('../model/floor')
+const tariff = require('../model/tariff')
+const hBank = require('../model/humanbank')
 
 
 const newRoom = new mongoose.Schema({
@@ -52,6 +55,10 @@ async function SaveRooms(Roomobj,fileObj) {
         if (!Roomobj.checkinId) { Roomobj.checkinId = 'Vacant' }
         if (!Roomobj.billing) { Roomobj.billing = false }
         if (!Roomobj.rentOut) { Roomobj.rentOut = false }
+        if(!Roomobj.companyIndex){
+          let company = await  hBank.verifyUser(Roomobj)
+          Roomobj.companyIndex = company.company;
+        }
         const room = {
             roomNumber: Roomobj.roomNumber,
             roomIndex: Roomobj.roomIndex,
@@ -72,10 +79,11 @@ async function SaveRooms(Roomobj,fileObj) {
             guestId: Roomobj.guestId,
             checkinId: Roomobj.checkinId,
             billing: Roomobj.billing,
-            rentOut: Roomobj.rentOut
+            rentOut: Roomobj.rentOut,
+            companyIndex:Roomobj.companyIndex
         }
         let result =await depart.updateOne({ roomIndex: Roomobj.roomIndex }, room, { upsert: true })
-        
+       
         return result;
     }
 
@@ -115,11 +123,18 @@ async function SaveRooms(Roomobj,fileObj) {
           console.error(error);
         }
       }
+      async function loadroomByCompanyId(companyId) {
+        const result = await depart.find({ companyIndex: companyId, deleted: false }, { _id: 0 });
+        let rooms = [];
+          const roomPromises = result.map(async (items) => {
+          items.floorName = (await floor.floors.findOne({ floorindex: items.floor }, { floorname: 1, _id: 0 })).floorname;
+          items.category =  (await tariff.tariff.findOne({tariffIndex:items.roomType},{tariffName:1,_id:0})).tariffName;
+          return items ;
+        });
+        rooms = await Promise.all(roomPromises);
+        return rooms;
+      }
       
-async function loadroomByCompanyId(companyId){
-  result = await depart.find({companyIndex:companyId,deleted:false})
-  return result;
-}  
      
     
     

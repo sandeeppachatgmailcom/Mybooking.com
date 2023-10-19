@@ -355,29 +355,120 @@ async function logout() {
 }
 
 
-async function SaveRooms() {
+async function loadSearchResult(){
+    if (!document.getElementById('idBudgetEnd').value) document.getElementById('idBudgetEnd').value=3000000
+     const data = {
+          SearchText:document.getElementById('idSearchText').value,
+         
+          StartDate:document.getElementById('idStartDate').value,
+          EndDate:document.getElementById('idEndDate').value,
+          GuestCount:document.getElementById('idGuestCount').value,
+          RoomCount:document.getElementById('idRoomCount').value,
+          BudgetFrom:Number(document.getElementById('idBudgetFrom').value),
+          BudgetEnd:Number(document.getElementById('idBudgetEnd').value),
+          SelectTariff:document.getElementById('idSelectTariff').value       
+     } 
+    document.getElementById('idCustSearchFirstDiv').innerHTML='';
+   document.getElementById('idTariffDetails').innerHTML='';
+     const result = await fetch('/custom/customSearch',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+     .then(res=>{
+       return res.json()
+     }).catch(err=>{
+       console.log(err);
+     })
+     
+   let  innerHtml = '';
+   let hotels = new Set();
+   hotels = result.add 
+   for(let i=0;i<result.length;i++){
+      
+     innerHtml+= `<div class="card btn col-2">
+     <img class="w-100"  src="${result[i].image1}" class="card-img-top" alt="...">
+     <div class="card-body">
+       <h5 class="card-title" data-hotelTariffs="${result[i].tariffDetails}" >${result[i].lastName}</h5>
+       <div class="d-flex justify-content-center">
+         <h6 class="bi bi-star-fill text-warning"></h6>
+         <h6 class="bi bi-star-fill text-warning"></h6>
+         <h6 class="bi bi-star-fill text-warning"></h6>
+         <h6 class="bi bi-star-fill"></h6>
+         <h6 class="bi bi-star-fill"></h6>
+       </div>
+       <p class="card-text">${result[i].Companydiscription}</p>
+     </div>
+     <div class="card-footer">
+       <small class="text-body-secondary">Last updated 3 mins ago</small>
+       <a href="#idTariffDetails"  class="link-fancy">
+       <button type="button" onclick="loadRoomTariffs('${result[i].CompanyID}','${result[i].lastName}','${result[i].image1}')" class="btn btn-primary"> Details </button>
+       </a>
+       </div>
+   </div>`
+   }
+     
+   // document.getElementById('idCustSearchFirstDiv').innerHTML=innerHtml;
+   innerHtml = '';
+   let tariffdetails = new Set();
+   for (let i=0;i< result.length;i++){
+     for(let j=0;j<result[i].tariffDetails.length;j++){
+       
+       tariffdetails.add({companyID:result[i].CompanyID,
+                   CompanyName:result[i].lastName,
+                   CompanyID:result[i].companyID,
+                   tariffName:result[i].tariffDetails[j].tariffName,
+                   tariffID:result[i].tariffDetails[j].tariffIndex,
+                   roomRentSingle:result[i].tariffDetails[j].roomRentSingle,
+                   SpecialRent:result[i].tariffDetails[j].SpecialRent,
+                   imagePath:result[i].image1,
+                   Discription:result[i].tariffDetails[j].Discription
+                 })
+     }
+   }
+    
+   for (const i of  tariffdetails){     
+     innerHtml+= `
+     <div class="card p-3 col-3" >
+         <img src="${i.imagePath}" class="card-img-top" alt="...">
+         <div class="card-body">
+         <h6 class="bi text-warning">${i.CompanyName}</h6>
+             <h5 class="card-title">${i.tariffName}</h5>
+             <h3 class="bi text-warning">${i.SpecialRent}/-</h3>
+           <p class="card-text">${i.Discription} </p>
+           <a href="#TariffDetails" > <button type="button" onclick="loadtariffBasedPlans('${i.CompanyID}','${i.CompanyName}','${i.imagePath}','${i.SpecialRent}','${i.tariffName}',${i.tariffID}  )" class="btn btn-primary"> Next!!</button>
+           </a>
+           </div>
+       </div>`
+    
+   }
+   
+     
+   
+   // document.getElementById('idTariffDetails').innerHTML=innerHtml;
+   
+   }
+   
+   
 
-    if (!document.getElementById("idroomname").value) alert('Roomname cannot be empty');
-    if (!document.getElementById("idroomnumber").value) alert('idroomnumber cannot be empty');
-    if (document.getElementById("idroomname").value && document.getElementById("idroomnumber").value) {
+async function SaveRooms(index) {
+
+    if (!document.getElementById(`idroomname${index}`).value) alert('Roomname cannot be empty');
+    if (!document.getElementById(`idroomnumber${index}`).value) alert('idroomnumber cannot be empty');
+    if (document.getElementById(`idroomname${index}`).value && document.getElementById(`idroomnumber${index}`).value) {
         const formData = new FormData();
-        formData.append("roomName", document.getElementById("idroomname").value)
-        formData.append("roomNumber", document.getElementById("idroomnumber").value)
-        formData.append("userCreated", document.getElementById("loggeduser").innerHTML)
-        formData.append("billing", document.getElementById("idBilling").checked)
-        formData.append("rentOut", document.getElementById("idRentout").checked)
-        formData.append("NormalOccupancy", document.getElementById("idNormalOccupancy").value)
-        formData.append("roomIndex", document.getElementById("IdRoomindexvalue").value)
-        formData.append("floor", document.getElementById("idFloorindex").value)
-        formData.append("roomType", document.getElementById("idTariffIndex").value)
-        formData.append("interCom", document.getElementById("idIntercom").value)
-        formData.append("size", document.getElementById("idroomsize").value)
-        formData.append("blocked", document.getElementById("IdBlocked1").checked)
-        formData.append("maxOccupancy", document.getElementById("IdMaxOccupancy").value)
-        formData.append("minimumPax", document.getElementById("IdMinOccupany").value)
-        formData.append("guestId", document.getElementById("IdGuestId").value)
-        formData.append("checkinId", document.getElementById("IdCheckinref").value)
-        formData.append("status", document.getElementById("IDStatus").value)
+        formData.append("roomName", document.getElementById(`idroomname${index}`).value)
+        formData.append("roomNumber", document.getElementById(`idroomnumber${index}`).value) 
+        formData.append("billing", document.getElementById(`idBilling${index}`).checked)
+        formData.append("rentOut", document.getElementById(`idRentout${index}`).checked)
+        formData.append("NormalOccupancy", document.getElementById(`idNormalOccupancy${index}`).value)
+        formData.append("roomIndex", document.getElementById(`IdRoomindexvalue${index}`).value)
+        formData.append("floor", document.getElementById(`idFloorindex${index}`).value)
+        formData.append("roomType", document.getElementById(`idTariffIndex${index}`).value)
+        formData.append("interCom", document.getElementById(`idIntercom${index}`).value)
+        formData.append("size", document.getElementById(`idroomsize${index}`).value)
+        formData.append("blocked", document.getElementById(`IdBlocked1${index}`).checked)
+        formData.append("maxOccupancy", document.getElementById(`IdMaxOccupancy${index}`).value)
+        formData.append("minimumPax", document.getElementById(`IdMinOccupany${index}`).value)
+        formData.append("guestId", document.getElementById(`IdGuestId${index}`).value)
+        formData.append("checkinId", document.getElementById(`IdCheckinref${index}`).value)
+        formData.append("status", document.getElementById(`IDStatus${index}`).value)
         const roomImageInput = document.getElementById('IdImages');
         for (const file of roomImageInput.files) {
             formData.append("roomiMages", file);

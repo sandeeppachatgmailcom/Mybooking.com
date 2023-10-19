@@ -18,7 +18,18 @@ router.post('/loadcustommer',async (req,res)=>{
     
     res.json(result);
 })
-
+router.post('/switchRoomStatus',async (req,res)=>{
+  let result = await rooms.depart.findOne({roomIndex:req.body.roomIndex},{blocked:1,_id:0})
+  if(result.blocked){
+       await rooms.depart.updateOne({roomIndex:req.body.roomIndex},{$set:{blocked:false}})
+  }
+  else {
+       await rooms.depart.updateOne({roomIndex:req.body.roomIndex},{$set:{blocked:true}})
+  }
+  const reply = await rooms.depart.findOne({roomIndex:req.body.roomIndex},{blocked:1,_id:0})
+  
+  res.json(reply);
+})
 router.get('/loadTariff',async (req,res)=>{
     req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)  
@@ -128,7 +139,7 @@ router.get('/loadRoom',async (req,res)=>{
         } 
 
         const availablerooms =await rooms.loadroomByCompanyId(profile.CompanyID);
-        console.log(profile.CompanyID,availablerooms);
+         
         res.cookie('userName',req.body.userName)
         let tariffPackages 
         let  inputs ;
@@ -157,8 +168,6 @@ router.get('/Company',async(req,res)=>{
     res.render('companies',{data,count,pincode});
 
 })
-
- 
 
 router.post('/SaveCompany',multer.upload.array("roomiMages",3),async (req,res)=>{
      

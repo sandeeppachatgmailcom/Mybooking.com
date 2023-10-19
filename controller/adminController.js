@@ -25,7 +25,7 @@ async function comparePassword(newPassword,hashedPassword) {
     
 async function getIndex(CollName) {
     let result = await serialNumbers.serialNumbers.findOne({ tableName: CollName });
-     
+     console.log(result,CollName);
     await serialNumbers.serialNumbers.updateOne({ tableName: CollName }, { $inc: {nextIndex:1} })
     const serialnumber = result.prefix + result.nextIndex;
     return serialnumber;

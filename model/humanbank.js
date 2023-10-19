@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const db = require('./mongoose'); // Ensure the correct path to your mongoose connection setup
 const Controller = require('../controller/adminController')
 const OtpMaster = require('../model/otpvalidation')
+const company = require('../model/company')
 
 const humanResourceSchema = new mongoose.Schema({
     hrId: { type: String },
@@ -72,7 +73,7 @@ async function saveHuman(NewHumanObj) {
         systemUser: NewHumanObj.systemUser,
         activeSession:NewHumanObj.session
     }
-    console.log(data,'human datadatadatadatadata')
+     
     const result = await HumanResource.updateOne({ hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })
     return result;
 }
@@ -92,9 +93,10 @@ async function verifyUser(userObject){
         userObject.session="noactivesession"
     }
     const user = await  HumanResource.findOne({activeSession:userObject.session})
+    
     if(user){
-        
-        return {verified:true,user:user.firstName,userdetails:user};
+        user.companyID = await company.company.findOne({email:user.email},{CompanyID:1,_id:0})
+        return {verified:true,user:user.firstName,userdetails:user,company:user.companyID.CompanyID};
     }
     else{
         
@@ -102,9 +104,9 @@ async function verifyUser(userObject){
         const password = await HumanResource.findOne({email:userObject.userName},{_id:0})
         if(password){
             const otpValidation = await OtpMaster.Otp.findOne({ authorisationname: userObject.userName, verified: false })
-            console.log(otpValidation);
+            
             const result = await Controller.comparePassword(userObject.password, password.password)
-            console.log(result, 'passwordMatch');
+             
             if (result) {
                 if (userObject.path != '/verifyUsenameWithPassword') {
                     await HumanResource.updateOne({ email: userObject.userName }, { $set: { activeSession: userObject.session } })

@@ -26,7 +26,7 @@ router.get('/rooms',async (req,res)=>{
   const data = await rooms.depart.find({deleted: false, rentOut: true });
   const floors = await floor.floors.find();
   const category = await modeltariff.tariff.find()
-  console.log(data);
+   
   res.render('rooms',{data,floors,category});
 })
 
@@ -38,6 +38,7 @@ router.post('/SaveRooms',upload.array("roomiMages",3) ,async (req,res)=>{
     }
     console.log('Uploaded Images:', imgArray);
     console.log('Other Room Data:', req.body);
+    req.body.session = req.sessionID
   let result = await rooms.SaveRooms(req.body,imgArray);
       if(result) {result = {saved:true}}
       else {result = {saved:false}}
@@ -49,18 +50,18 @@ router.post('/searchRooms',async (req,res)=>{
   const data =await rooms.loadSaleRoom(req.body.searchvalue)
   const floors = await floor.floors.find();
   const category = await modeltariff.tariff.find()
-  console.log(data);
+   
   res.render('rooms',{data,floors,category});
 })
 
 
 router.post('/deleteRoom',async (req,res)=>{
-  console.log(req.body,'body ');
+   
 let result =await rooms.deleteRoom(req.body.Roomindex)
 if(result.modifiedCount== 1){result={deleted:true}
   }
   else result={deleted:false}
-  console.log(result);
+   
   res.json(result)
 })
 

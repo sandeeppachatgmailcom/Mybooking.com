@@ -15,22 +15,23 @@ router.post('/savereservation', async (req, res) => {
  
   
   let plans = tariff.checkinplan 
-  console.log(  plans  ,'company tariff & length');
+   
  
   tariff = tariff.roomtypes;
   if(!req.body.checkinplan)req.body.checkinplan = '';
    let plansfilter = plans.filter(element=>element.planIndex==req.body.checkinplan   );
-   console.log(plansfilter,'plansplansplansplansplansplansplansplansplansplansplansplansplansplansplans'); 
+   if(!plansfilter) plansfilter=[];
+    
    let tarifffilter = tariff.filter(element => element.tariffIndex === req.body.tariffIndex);
-  req.body.rent = tarifffilter[0].roomRentSingle
+  req.body.rent = tarifffilter[0].roomRentSingle 
   req.body.specialRate = tarifffilter[0].SpecialRent
   req.body.extraCharge  = tarifffilter[0].extraPerson
-  req.body.planAmount = plansfilter[0].amount;
-  req.body.planExtraAmount = plansfilter[0].extraCharge;
-  req.body.planCapacity = plansfilter[0].maxPax   
+  req.body.planAmount = plansfilter[0] ?plansfilter[0].amount:0;
+  req.body.planExtraAmount = plansfilter[0]?plansfilter[0].extraCharge:0;
+  req.body.planCapacity = plansfilter[0]?plansfilter[0].maxPax:0   
   req.body.totalRoom  = parseInt(req.body.totalRoom)
   const totalAmount = parseInt(req.body.totalAmount);
-  console.log(req.body)
+   
   const result = await checkin.saveReservation(req.body)
   
 
@@ -60,7 +61,7 @@ router.post('/savereservation', async (req, res) => {
 router.post('/confirmPayment', async (req, res) => {
    
    
-  console.log(req.body,'input')
+   
    
   let bookingDetails = req.body.bookingDetails
   const payment_id = req.body.razorpay_payment_id;

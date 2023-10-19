@@ -3,52 +3,136 @@ const rooms = require ('../model/rooms')
 const express = require('express')
 const mongoose = require('mongoose');
 const adminController = require('../controller/adminController')
-const checkinDetails = require('../model/checkIn')
+const company = require('../model/company')
 const frontOffice = require('../model/checkIn') 
 
-async function getReservationDateWise(fromTime, endTime, companyID) {
+async function getReservationDateWise(fromTime, endTime, companyID, roosObj) {
+  const startDate = new Date(fromTime);
+  const endDate = new Date(endTime);
+  const result = [];
+  
+  let dailyReservation = []; 
+  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+    const dateString = date.toISOString().split('T')[0];
+    
+    for (const element of roosObj) {
+      const temp={}
+      try {
+        
+          const reservedcount = await occupancies.occupancy
+          .find({
+            tariffIndex: element.tariffIndex,
+            dateString: dateString,
+          })
+          .countDocuments();
+           
    
-        const result = await occupancies.occupancy.aggregate([
-            {
-                $match: {
-                    transDate: {
-                        $gte: new Date(fromTime),
-                        $lte: new Date(endTime)
-                    },
-                    companyIndex: companyID
-                }
-            },
-            {
-                $group: {
-                    _id: {
-                        roomType: "$roomType",
-                        transDate: "$dateString" 
-                    },
-                    blockedCount: { $sum: { $cond: [{ $eq: ["$blocked", true] }, 1, 0] } },
-                    dirtyCount: { $sum: { $cond: [{ $eq: ["$dirty", true] }, 1, 0] } },
-                    maintenanceCount: { $sum: { $cond: [{ $eq: ["$maintainance", true] }, 1, 0] } },
-                    reservationCount: { $sum: { $cond: [{ $ne: ["$reservationId", !null] }, 1, 0] } },
-                    checkinCount: { $sum: { $cond: [{ $ne: ["$checkinId", !null] }, 1, 0] } }
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    transDate: "$_id.transDate",
-                    tariffIndex: "$_id.roomType",  
-                    blockedCount: 1,
-                    dirtyCount: 1,
-                    maintenanceCount: 1,
-                    reservationCount: 1,
-                    checkinCount: 1
-                }
-            }
-        ]);
-       console.log(result)
-        return result;
+         temp.dateString=dateString
+         temp.tariffIndex=element.tariffIndex
+         temp.reservedcount = reservedcount;
+         temp.availableRoom =  element.availableRoom - reservedcount >0 ?element.availableRoom - reservedcount:0;
+         dailyReservation.push(temp)  
+      } catch (error) {
+        console.error("Error querying database:", error);
+      }
+    }
+  }
+   
+  const minReservations = {};
 
+  dailyReservation.forEach((item) => {
+    const { tariffIndex, availableRoom } = item;
+  
+    // Check if we have seen this tariffIndex before
+    if (minReservations[tariffIndex] === undefined) {
+      // If not, initialize it with the current reservedcount
+      minReservations[tariffIndex] = availableRoom;
+    } else {
+      // If we have seen this tariffIndex before, update it if the current reservedcount is smaller
+      if (availableRoom < minReservations[tariffIndex]) {
+        minReservations[tariffIndex] = availableRoom;
+      }
+    }
+  });
+ 
+for(const tariff of roosObj ){
+ 
+  tariff.totalRoom = minReservations[tariff.tariffIndex];
+ 
+  
+}      
+
+
+
+ 
+  return  {roosObj,dailyReservation} ;
 }
-async function getRoomAvailalability(companyID){
+
+
+
+
+  async function oldgetReservationDateWise(fromTime, endTime, companyID) {
+    const result = await occupancies.occupancy.aggregate([
+      {
+        $match: {
+          transDate: {
+            $gte: new Date(fromTime),
+            $lte: new Date(endTime)
+          },
+          companyIndex: companyID
+        }
+      },
+      {
+        $group: {
+          _id: {
+            roomType: "$tariffIndex",
+            transDate: "$transDate",
+            blockedCount: { $sum: { $cond: [{ $eq: ["$blocked", true] }, 1, 0] } },
+            dirtyCount: { $sum: { $cond: [{ $eq: ["$dirty", true] }, 1, 0] } },
+            reservationCount: { $sum: { $cond: [{ $ne: ["$occupancyIndex", null] }, 1, 0] }},
+          
+        },
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          transDate: "$_id.transDate",
+          roomType: "$_id.tariffIndex",
+          blockedCount: 1,
+          dirtyCount: 1,
+          reservationCount: 1,
+           
+        }
+      }
+    ]);
+     
+    return result;
+  }
+
+
+
+
+
+
+
+
+  async function getRoomAvailalability(companyID){
+   
+   
+    const result =await company.company.findOne({CompanyID:companyID,deleted:false})
+    let roomTypes = result.roomtypes;
+    for(const item of roomTypes){
+      item.availableRoom = await rooms.depart.find({roomType:item.tariffIndex,deleted:false}).countDocuments() 
+    } 
+     
+    
+    return roomTypes
+    }
+    
+
+
+async function oldgetRoomAvailalability(companyID){
 const result =await rooms.depart.aggregate([{
     $match:{
         companyIndex:companyID,
@@ -58,7 +142,8 @@ const result =await rooms.depart.aggregate([{
 {
     $group:{
         _id:{
-            roomType:"$roomType"
+            roomType:"$roomType",
+            bookedDate:"$dateString"
         },
         roomCount: { $sum: { $cond: [{ $eq: ["$deleted", false] }, 1, 0] } },
    }
@@ -67,16 +152,20 @@ const result =await rooms.depart.aggregate([{
     $project:{
         _id:0,
         roomType:"$_id.roomType",
+        bookedDate:"$dateString",
         roomCount:1
     }
 }])
  
-console.log(result,'room aggregation')
+ 
 return result
 }
 
+
+
+
 async function loadreservationByCustID(custID){
-    console.log(custID);
+     
     const result = await frontOffice.checkIn.find({createUser:custID,delete:false})
     return result;
 }

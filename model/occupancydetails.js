@@ -1,81 +1,116 @@
 const mongoose = require('mongoose');
 const db = require('./mongoose');
-const adminController = require('../controller/adminController')
-const checkinDetails = require('../model/checkIn')
-
-
+const controller =  require('../controller/adminController')
+const checkins = require('../model/checkIn')
+const checkinDetail = require('../model/checkinDetails')
     const newRoom = new mongoose.Schema({
             occupancyIndex:{type:String},
-            roomNumber:{type:Number},
-            roomIndex:{type:String},
-            roomName:{type:String},
             companyIndex:{type:String},
-            roomType:{type:String },
+            tariffIndex:{type:String },
+            roomIndex:{type:String},
+            userCreated:{type:String},
+            totalOccupancy:{type:Number,default:0},
+            guestId:{type:String},
+            roomRent:{type:Number,default:0},
+            planIndex:{type:String},
+            transDate:{type:Date,default:Date.now()},
+            startTime:{type:String},
+            endTime:{type:String},
+            dateString:{type:String},
             blocked:{type:Boolean,default:true},
             deleted:{type:Boolean,default:false},
-            userCreated:{type:String},
-            timeStamp:{type:String,default:Date.now()},
-            totalOccupancy:{type:Number,default:0},
-            adult:{type:Number,default:0},
-            male:{type:Number,default:0},
-            feMale:{type:Number,default:0},
-            guestId:{type:String},
-            rent:{type:Number,default:0},
-            specialRent:{type:Number,default:0},
-            checkinId:{type:String},
-            reservationId:{type:String},
-            arrivalDate:{type:Date},
-            arrivalTime :{type:String},
-            departureDate:{type:Date},
-            departureTime:{type:String},
-            dirty:{type:Boolean,default:false},
             maintainance:{type:Boolean,default:false},
             blocked:{type:Boolean,default:false},
             occupied:{type:Boolean,default:false},
-            transDate:{type:Date,default:Date.now()},
-            dateString:{type:String}
+            timeStamp:{type:String,default:Date.now()},
+            dirty:{type:Boolean,default:false},
+            blockedBy:{type:String}
             })
-
  const occupancy = db.model('dailyroomStatus',newRoom )  
 
+
+
+
+
  async function saveReservationDetails(bookingDetai) {
-    console.log(bookingDetai,'booking details')
+    
     let bookingDetails =  bookingDetai 
-    console.log(bookingDetails)     
+    console.log(bookingDetai,'bookingDetai',bookingDetails,'bookingDetails');
         let tempDate = bookingDetails.arrivalDate.split('T');
         let startDate =  tempDate[0]
         tempDate = bookingDetails.departureDate.split('T');
         let startTime = tempDate[1];
-        
         let endDate = tempDate[0];
         let endTime = tempDate[1];
-        console.log(startDate,startTime,endDate,endTime);
-        const reservationDetails = await checkinDetails.checkIn.findOne({ reservationNumber: bookingDetails.reservedDetails.reference })
-         
-        while (startDate <= endDate) {
-            let dailyEntry = {
-                occupancyIndex: await adminController.getIndex('OCCUPANCY'),
-                companyIndex: bookingDetails.companyID,
-                roomType: bookingDetails.tariffIndex,
-                userCreated: bookingDetails.custId,
-                totalOccupancy: bookingDetails.totalGuest,
-                guestId: bookingDetails.custId,
-                specialRent:  reservationDetails.specialRate ,
-                reservationId: bookingDetails.reservedDetails.reference,
-                checkinPlan: reservationDetails.CheckinPlan,
-                transDate: startDate, // You need to format the date here
-                startTime: startTime,
-                endTime: endTime,
-                dateString:startDate,
+        const reservationDetails = await checkins.checkIn.findOne({ reservationNumber: bookingDetails.reservedDetails.reference })
+        
+
+        for (let i = 0; i < reservationDetails.totalRoom; i++) {
+            
+            const summary= {
+                occupancyIndex:await controller.getIndex('CHKDETAIL'),
+                frontDeskTransid: reservationDetails.frontDeskTransid,
+                reservationNumber: reservationDetails.reservationNumber,
+                tariffIndex: reservationDetails.tariff,
+                planIndex:reservationDetails.CheckinPlan,
+                planCapacity: reservationDetails.planCapacity,
+                roomIndex:'',
+                companiIndex: reservationDetails.CompanyName,
+                roomRent: reservationDetails.specialRate,
+                rentCapacity:2,
+                PlanAmount: reservationDetails.PlanAmount,
+                ExtraChargePlan: reservationDetails.ExtraChargePlan,
+                ExtraChargeRent: reservationDetails.ExtraChargeRent,
+                TotalPax: reservationDetails.TotalPax,
+                arrivalDate: reservationDetails.arrivalDate,
+                arrivalTime: reservationDetails.arrivalTime,
+                depart_Date: reservationDetails.depart_Date,
+                departureTime: reservationDetails.departureTime,
+                specialrequierments: reservationDetails.specialrequierments,
+                totalAmount: reservationDetails.totalAmount,
+                totalDays: reservationDetails.totalDays,
+                transDate: reservationDetails.transDate,
+                updatee: reservationDetails.update,
+                createUser: reservationDetails.createUser,
+                delete: reservationDetails.delete ,
+                guestindex:reservationDetails.createUser    
             }
-            const save = await occupancy.updateOne({reservationId:bookingDetails.reservationNumber,transDate:startDate},{$set:dailyEntry},{upsert:true}) 
-            console.log(save,'dailyroomStatus');
-            startDate++;
-            startTime = '00:00:00';
-            if (startDate=== endDate) {
-                endTime = bookingDetails.departureTime;
+            await checkinDetail.checkinDetails.create(summary);
+            console.log(startDate, 'startDate', endDate, 'endDate');
+
+        
+            let currentDate = new Date(startDate);
+            let endDateObj = new Date(endDate);
+        
+            while (currentDate <= endDateObj) {
+                let dailyEntry = {
+                    occupancyIndex: summary.occupancyIndex,
+                    companyIndex: summary.companiIndex,
+                    tariffIndex: summary.tariffIndex,
+                    userCreated: summary.guestindex,
+                    totalOccupancy: summary.TotalPax,
+                    guestId: summary.guestindex,
+                    roomRent: reservationDetails.roomRent,
+                    planIndex: summary.planIndex,
+                    transDate: currentDate.toISOString().split('T')[0],
+                    startTime: startTime,
+                    endTime: endTime,
+                    dateString: currentDate.toISOString().split('T')[0],
+                    blockedBy: summary.reservationNumber
+                };
+        
+                const save = await occupancy.create(dailyEntry);
+                console.log(save, 'dailyroomStatus');
+        
+                currentDate.setDate(currentDate.getDate() + 1);
+                if (currentDate >= endDateObj) {
+                    endTime = bookingDetails.departureTime;
+                }
             }
         }
+        
+         
+        
 
         return {saved:true}
     }

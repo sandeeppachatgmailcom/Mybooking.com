@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const db = require('./mongoose')
 const controller = require('../controller/adminController')
 const voucherSerial = require('../model/voucherSerial') 
+const  hBank   = require('./humanbank')
 
 const NewPayment = new mongoose.Schema({
     transDate:{type:Date},
@@ -38,7 +39,7 @@ const debitData = {
     debit : reqobj.amount ,
     entryType:'Dr',
     credit : 0,
-    custommerId : reqobj.custommerId ,
+    custommerId :  reqobj.accountHead ,
     companyID : reqobj.companyID ,
     cancelled : reqobj.cancelled ,
     createdUser : reqobj.createdUser 
@@ -53,7 +54,7 @@ const crediData = {
     debit :0 ,
     entryType:'Cr',
     credit : reqobj.amount ,
-    custommerId :  reqobj.accountHead ,
+    custommerId : reqobj.custommerId ,
     companyID : reqobj.companyID ,
     cancelled : reqobj.cancelled ,
     createdUser : reqobj.createdUser 
@@ -67,11 +68,11 @@ return [debitEntry,creditEntry];
 
 
 async function MakeCreditEntry(reqobj){
-    console.log(reqobj,'ReceipttEntryReceipttEntryReceipttEntry');
+     
     reqobj.bookName =reqobj.accountHead
 if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherNumber(reqobj)
     if(!reqobj.paymentIndex) reqobj.paymentIndex = await controller.getIndex('PAYMENT') 
-    const crediData = { 
+    const debitData= { 
         transDate : reqobj.transDate ,
         paymentDate : reqobj.paymentDate ,
         paymentIndex : reqobj.paymentIndex ,
@@ -89,7 +90,7 @@ if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherN
         transactionReferanceNumber:reqobj.transactionReferanceNumber,
         TransferMode:reqobj.TransferMode
     }
-    const  debitData= { 
+    const  crediData = { 
         transDate : reqobj.transDate ,
         paymentDate : reqobj.paymentDate ,
         paymentIndex : reqobj.paymentIndex ,
@@ -106,13 +107,44 @@ if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherN
         transactionReferanceNumber:reqobj.transactionReferanceNumber,
         createdUser : reqobj.createdUser 
     }
-    console.log(crediData,'crediData',debitData,'debitData');
+     
     const debitEntry = await payment.updateOne({voucherNumber:reqobj.voucherNumber,companyID : reqobj.companyID,entryType:'Dr' },{$set:debitData},{upsert:true})
     const creditEntry = await payment.updateOne({voucherNumber:reqobj.voucherNumber,companyID : reqobj.companyID,entryType:'Cr'},{$set:crediData},{upsert:true})
     if((debitEntry.upsertedCount>0||debitEntry.modifiedCount>0)&&(creditEntry.upsertedCount>0||creditEntry.modifiedCount>0))
     return {saved:true};
-     
-    
-    
     }
-module.exports = {payment,MakeEntry,MakeCreditEntry}  	
+    
+    
+    
+    async function loadPaymentByCompanyID(CompanyID) {
+        const paymentDetails = await payment.find({
+          companyID: CompanyID,
+          custommerId: { $regex: `^${'HR'}`, $options: 'i' }
+        });
+      
+        const custommerPromises = paymentDetails.map(async (entry) => {
+          const custommer = await hBank.HumanResource.findOne({ hrId: entry.custommerId });
+          if(custommer){ 
+            entry.customerName = custommer.firstName;
+          }
+          else{
+            entry.customerName = 'Reservation'
+          }
+        });
+      
+        await Promise.all(custommerPromises); // Wait for all custommerPromises to complete
+        paymentDetails.sort((a, b) => {
+            const dateComparison = new Date(a.transDate) - new Date(b.transDate);
+        
+            if (dateComparison === 0) {
+              return a.paymentIndex - b.paymentIndex;
+            }
+        
+            return dateComparison;
+          });
+        
+      
+        return paymentDetails;
+      }
+      
+module.exports = {payment,MakeEntry,MakeCreditEntry,loadPaymentByCompanyID}  	

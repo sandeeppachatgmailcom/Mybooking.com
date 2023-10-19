@@ -179,13 +179,13 @@ async function activateCheckinplan(planobj){
          
      result =await company.updateOne({CompanyID:planobj.companyId,"checkinplan.planIndex":planobj.planIndex},
         {$set:{
-            "checkinplan.$.deleted":false
+            "checkinplan.$.isActive":false
         }})
     }else if (!exist.checkinplan[0].deleted)  {
          
         result =await company.updateOne({CompanyID:planobj.companyId,"checkinplan.planIndex":planobj.planIndex},
         {$set:{
-            "checkinplan.$.deleted":true
+            "checkinplan.$.isActive":true
         }})    
 
 }

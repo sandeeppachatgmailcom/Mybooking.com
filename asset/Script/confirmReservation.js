@@ -54,10 +54,10 @@ function readmoreplan(Element,toggleElement){
 async function saveReservation(bookings) {
   let data = JSON.parse(bookings);
   data.checkinplan = document.getElementById("idCheckinPlan").innerText;
-  data.totalAmount = document.getElementById("idfinalAmount").innerText;
+  data.totalAmount = document.getElementById("idfinalAmount").innerText?document.getElementById("idfinalAmount").innerText:0;
   data.specialRequest = document.getElementById("idSpecialRequest").value;
   data.totalRent =   document.getElementById("idSpecialRequest").value;
-  console.log(bookings,'bookingbookingbookingbookingbookingbookingbooking')
+   
 
   try {
     const result = await fetch("/reservation/savereservation", {
@@ -99,7 +99,7 @@ function handleRazorpayPayment(result, bookingDetails) {
        
       // Handle successful payment
       const confirmed = await confirmPayment(response);
-      console.log(confirmed);
+       
     },
   };
 
@@ -117,7 +117,7 @@ const result = await fetch('/custom/getPayment',{method:'POST',headers:{"Content
   return res
 })
 .catch(err=>{
-  console.log(console.log(result))
+   
 })
 }
 

@@ -55,6 +55,32 @@ function convertToUpperCase() {
 function loadpage(pagenumber) {
 
 }
+
+
+function uploadImageToParent17102023(fileInputId, parentElementId, relativeElementID) {
+    
+    const fileInput = document.getElementById(fileInputId);
+    const parentElement = document.getElementById(parentElementId);
+    const relativeElement = document.getElementById(relativeElementID);
+    
+    if (fileInput.files.length > 0) {
+        const imageUrl = URL.createObjectURL(fileInput.files[0]);   
+         
+    
+        parentElement.style.backgroundImage = `url(${imageUrl})`;
+        relativeElement.style.backgroundImage = `url(${imageUrl})`;
+    } else {
+
+        parentElement.style.backgroundImage = 'none';
+        relativeElement.style.backgroundImage = 'none';
+    }
+}
+
+
+
+
+
+
 function uploadImageToParent(fileInputId, parentElementId, relativeElementID) {
     
     const fileInput = document.getElementById(fileInputId);
@@ -457,7 +483,7 @@ async function deleteTariffPermanently(tariff){
 }
 
 function drilldown(iddiv,originsize){
-    alert('hai')
+    
 const divclass = document.getElementById(iddiv);
 let height = originsize+'px';
 if(divclass.style.overflow=="hidden"){
@@ -482,13 +508,11 @@ else if (divclass.style.overflow ==""){
 }
 
 function readlesspaln(Element,toggleElement){  
-     
     document.getElementById(toggleElement).style=null
     document.getElementById(toggleElement).style.display='none'
     document.getElementById(Element).style.display=''
     document.getElementById(Element).style.height='20px'
     document.getElementById(Element).style.overflow='hidden'
-     
    } 
 
    
@@ -502,11 +526,89 @@ if(divclass.style.height==height){
     console.log(divclass.style,divclass.classList)
 }
 else if (divclass.style.height ==""){
-    divclass.style=""
+    divclass.style="";
     divclass.style.height = height;
     divclass.style.overflow='hidden' ;
     console.log(divclass.style,divclass.classList)
 
 }
  
+}
+async function switchRoomStatus(roomIndex,buttonID){
+const bt = document.getElementById(buttonID)
+    const result = await fetch('/Company/switchRoomStatus',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify({roomIndex:roomIndex})})
+    .then(res=>{
+        return res.json()
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+    console.log(result);
+    if(result.blocked){
+        bt.classList.remove('btn-danger');
+        bt.classList.add('btn-success');
+        bt.textContent='ON'
+    }
+    else{
+        bt.classList.remove('btn-success');
+        bt.classList.add('btn-danger');
+        bt.textContent='OFF' 
+    }
+}
+
+async function loadAvailableRooms(bookidDetails) {
+    let tempbooking = JSON.parse(bookidDetails)
+    console.log(JSON.parse(bookidDetails));
+    const result = await fetch('/vedurehomepage/loadAvailableRooms', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: bookidDetails
+    })
+    .then((res) => res.json())
+    .catch((err) => {
+        console.log(err);
+    });
+
+    console.log(result);
+    console.log(tempbooking.occupancyIndex);
+
+    if (result) {
+        const selectList = document.getElementById(`idAvailableRoom${tempbooking.occupancyIndex}`);
+        console.log(selectList);
+        while (selectList.options.length > 0) {
+            selectList.options.remove(0);
+        }
+        result.forEach((room) => {
+            const option = document.createElement('option');
+            option.value = room.roomIndex;
+            option.innerText = room.roomName;
+            selectList.appendChild(option);
+        });
+
+    }
+}
+
+async function updateReservationWithRoom(bookidDetails) {
+    let tempbooking = JSON.parse(bookidDetails)
+    const selectList = document.getElementById(`idAvailableRoom${tempbooking.occupancyIndex}`);
+    tempbooking.roomIndex=selectList.value;
+    console.log(JSON.parse(bookidDetails));
+    const result = await fetch('/vedurehomepage/updateReservationWithRoom', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tempbooking)
+    })
+    .then((res) => res.json())
+    .catch((err) => {
+        console.log(err);
+    });
+
+    console.log(result);
+    console.log(tempbooking.occupancyIndex);
+
+    if (result.updated) {
+        
+        selectList.disabled=true
+
+    }
 }

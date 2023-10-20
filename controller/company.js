@@ -35,7 +35,7 @@ router.get('/loadTariff',async (req,res)=>{
     const result =await HBank.verifyUser(req.body)  
     const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false },{password:0});
     if(result.verified){
-        const profile = await companies.company.findOne({email:req.body.userName});
+      const profile = await companies.company.findOne({email:user.email});
         if(!profile){
           res.redirect('/custom/customSearch')
           return
@@ -69,7 +69,8 @@ router.get('/loadTariff',async (req,res)=>{
         let   category 
         let reservation 
         let payments
-        res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments});
+        let occupancyDetails 
+        res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments,occupancyDetails });
     }
     else{
         res.redirect('/')
@@ -82,7 +83,7 @@ router.get('/loadPlan',async (req,res)=>{
     const result =await HBank.verifyUser(req.body)  
     const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false },{password:0});
     if(result.verified){
-        const profile = await companies.company.findOne({email:req.body.userName});
+      const profile = await companies.company.findOne({email:user.email});
         if(!profile){
           res.redirect('/custom/customSearch')
           return
@@ -116,8 +117,9 @@ router.get('/loadPlan',async (req,res)=>{
         let  category   
         let reservation 
         let payments
+        let occupancyDetails 
         
-        res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments });
+        res.render('companyhomePage', { occupancyDetails ,user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments });
     }
     else{
         res.redirect('/')
@@ -147,9 +149,10 @@ router.get('/loadRoom',async (req,res)=>{
         let  floors ;
         let  category ;
         let reservation 
-        let payments
+        let payments;
+        let occupancyDetails ;
         
-        res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments });
+        res.render('companyhomePage', { occupancyDetails ,user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments });
     }
     else{
         res.redirect('/')

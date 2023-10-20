@@ -226,21 +226,34 @@ async function loadCheckin(checkinReferance) {
   return checkinDetails;
 }
 async function loadReservationbyCompany(companyID) {
+  
+  
   const reservationDetails = await checkIn.find({ CompanyName: companyID, delete: false });
-   
-
-  const bookings = reservationDetails.map(async (booking) => {
-    booking.tariffName = (await tariff.tariff.findOne({ tariffIndex: booking.tariff }, { _id: 0, tariffName: 1 })).tariffName;
-    const bookedBy = await humanBank.HumanResource.findOne({ hrId: booking.createUser }, { _id: 0, firstName: 1, contactNumber: 1, email: 1,specialrequierments:1 });
-    booking.firstName = bookedBy.firstName;
-    booking.email = bookedBy.email;
-    booking.contactNumber = bookedBy.contactNumber;
-    booking.preferance = bookedBy.specialrequierments;
-    return booking; // Return the modified booking object
-  });
-
-  const result = await Promise.all(bookings); // Wait for all promises to complete
-  return result;
+  
+  if(reservationDetails){ 
+    const bookings = reservationDetails.map(async (booking) => {
+      booking.tariffName = (await tariff.tariff.findOne({ tariffIndex: booking.tariff }, { _id: 0, tariffName: 1 })).tariffName;
+      const bookedBy = await humanBank.HumanResource.findOne({ hrId: booking.createUser }, { _id: 0, firstName: 1, contactNumber: 1, email: 1,specialrequierments:1 });
+      if(bookedBy){
+          booking.firstName = bookedBy.firstName;
+          booking.email = bookedBy.email;
+          booking.contactNumber = bookedBy.contactNumber;
+          booking.preferance = bookedBy.specialrequierments;
+      }
+      else {
+        booking.firstName = 'bookedBy.firstName';
+          booking.email = 'bookedBy.email';
+          booking.contactNumber = 'bookedBy.contactNumber';
+          booking.preferance = 'bookedBy.specialrequierments';
+      }
+      return booking; // Return the modified booking object
+    });
+  
+    const result = await Promise.all(bookings); // Wait for all promises to complete
+    return result;
+  }
+  else return {}
+    
 }
 
   

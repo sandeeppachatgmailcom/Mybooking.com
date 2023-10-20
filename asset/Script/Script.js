@@ -332,7 +332,7 @@ async function currentUser() {
         
  
 }
-currentUser();
+ 
 async function logout() {
     const data = {
         username: document.getElementById('loggeduser').innerHTML
@@ -348,7 +348,7 @@ async function logout() {
     console.log(logoutuser.logout,'result')
     if (logoutuser.logout) {
 
-        window.location.assign("/");
+        window.location.assign("/admin");
        
     }
      

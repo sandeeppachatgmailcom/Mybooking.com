@@ -18,6 +18,15 @@ const randomString = require('randomstring')
 const validation = require('../model/otpvalidation')
 const email = require('../controller/emailService')
 
+
+router.post('/hotelLogin',async (req,res)=>{
+    req.body.session = req.sessionID; 
+    const result =await HBank.verifyUser(req.body);
+    console.log(result);
+    res.json({verified:result.verified,path:'/vedurehomepage/loadhomepage'})
+})
+
+
 async function findUser(sessionID) {
     const activeUser = await ActiveID.UserLog.findOne({ sessionId: sessionID, loggedOut: false }, { username: 1, _id: 0 })
     
@@ -114,8 +123,20 @@ router.post('/OtpAuthentication', async (req, res) => {
 })
 
 router.post('/logout', async (req, res) => {
-    const logout = await userlog.logout(req.cookies.userName)
-    await HBank.HumanResource.updateOne({activeSession:req.sessionID},{$set:{activeSession:null}})
+    req.body.session = req.sessionID
+    const verifyaccount = HBank.verifyUser(req.body)
+    console.log(verifyaccount); 
+    let logout= await HBank.HumanResource.updateOne({activeSession:req.sessionID},{$set:{activeSession:null}})
+    if(logout.modifiedCount){
+        logout={
+            logout:true
+        }
+    }
+    else{
+        logout={
+            logout:false
+        }
+    }
     res.clearCookie('username');
     res.clearCookie('userName');
     res.clearCookie('connect.sid');
@@ -192,9 +213,9 @@ router.post('/verifyUsenameWithPassword',async (req,res)=>{
 
 router.post('/changePassword',async (req,res)=>{
     const result =await HBank.changePassword(req.body);
-     
+    console.log(result); 
     let responseData = false;
-     if(result){
+    if(result){
 
          responseData= {updated:true} 
      }

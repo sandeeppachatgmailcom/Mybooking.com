@@ -12,6 +12,9 @@ router.post('/cancelBooking',async (req,res)=>{
     const temp = (new Date(reservedtime)-currentTime)
     let hoursDifference =(reservedtime.arrivalDate-currentTime) / (1000 * 60 * 60);
     console.log((reservedtime.arrivalDate-currentTime) / (1000 * 60 * 60));
+     
+
+    
     if(hoursDifference<48){
         const status={
             status:false,

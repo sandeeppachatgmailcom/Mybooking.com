@@ -54,10 +54,6 @@ router.post('/savereservation', async (req, res) => {
   res.json({ success: true, order, totalAmount,result })
 })
 
-
-
-
-
 router.post('/confirmPayment', async (req, res) => {
    
    

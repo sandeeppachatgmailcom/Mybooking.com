@@ -1,9 +1,24 @@
 <%- include('header') %>
 <%- include('MenuBarCustomer') %>
-<div class="container-fluid justify-content-center row w-100">
-    <div class="container-fluid   w-100 btn  row bg-secondary " style="height: 300px;">
+<div class="container-fluid justify-content-center row w-100"> 
+    <div class="container-fluid   w-100 btn  row d-flex bg-secondary d-flex flex-row"   style="background-size: cover; background-position: center; background-image: url('<%= profile.image1 %>'); height: 400px;">
+        <div class="container-fluid col-9">
+
+        </div>
       <canvas id="eventChart" style="display: block; height: 238px; width: 476px;" width="952" height="476" class="chartjs-render-monitor"></canvas>
     </div>
+    <div class="container-fluid d-flex flex-row"  >
+      <div class="container-fluid col-2">
+        <small style="font-size: 50px;" class="text-secondary "> <%= profile.lastName %></small>  
+      </div>
+      <div class="container-fluid ">
+        <small class="text-secondary">Email: <%= profile.email %></small>  
+      <small class="text-secondary">Contact: <%= profile.contactNumber %></small> <br>
+      <small class="text-secondary">Address: <%= profile.StreetName %> <%= profile.city %> pin:<%= profile.pincode %></small>  
+      
+      </div>
+  </div>
+  
     <div class="container-fluid d-flex ">
         <div class=" col-2 container-fluid border rounded  ">
           <form action="/vedurehomepage/loadhomepage" method="post">
@@ -333,6 +348,8 @@
       </div>
   </div>
 <!-- modal division starts here  -->
+<% if (Plans) { %>
+
 
 <% Plans.forEach(newplan => { %>
   <div class="modal fade  mr-2 " id="idModalnewCheckinPlan<%=newplan.planIndex%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -399,7 +416,6 @@
       </div>
     </div>
   </div>
-  
   <% }) %>
   <div class="modal fade  mr-2 " id="idModalnewCheckinPlan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -465,7 +481,8 @@
       </div>
     </div>
   </div>    
-
+ 
+  <% } %>
 
   <div class="modal fade  mr-2 fixed-button  " id="idModalnewTariff" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -544,6 +561,9 @@
     </div>
   </div>
 
+  <% if (availablerooms) { %>
+   
+  
   <% availablerooms.forEach(items=> { %>
     <div class="modal fade  mr-2 fixed-button" data-backdrop="static" id="<%= items.roomIndex %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
@@ -576,7 +596,10 @@
                   </div>
                   <div class="input-group mb-3">
                       <span class="input-group-text col-4" id="basic-addon1">Category</span>
-                          <select id="idTariffIndex<%= items.roomIndex %>" name="TariffIndex" class="btn rounded btn-light text-secondary col-8" ><% tariffPackages.forEach(function(item) { %>
+                        <% if (tariffPackages) { %>
+                         
+                        
+                      <select id="idTariffIndex<%= items.roomIndex %>" name="TariffIndex" class="btn rounded btn-light text-secondary col-8" ><% tariffPackages.forEach(function(item) { %>
                               <% if (item.isActive) { %>
                                 <option class="" value="<%= item.tariffIndex %>" > <%= item.tariffName %></option>   
                               <% } %>  
@@ -584,7 +607,7 @@
                               <% }); %>
                               
                             </select>
-                        
+                            <% } %>    
                   </div>
                   
                   <div class="input-group mb-3">
@@ -594,12 +617,14 @@
                   </div>
                   <div class="input-group mb-3">
                       <span class="input-group-text col-4" id="basic-addon1<%= items.roomIndex %>">Floor</span>
+                       <% if (floors) { %>
+                        
                        
                           <select id="idFloorindex<%= items.roomIndex %>" name="Floorindex" class="btn btn-light border-none rounded text-secondary col-8" ><% floors.forEach(function(item) { %>
                               <option selected value="<%= item.floorindex %>"  > <%= item.floorname %></option>
                           <% }); %>
                       </select>
-                       
+                      <% } %>
                   </div>
                   
               </div>
@@ -676,11 +701,13 @@
         </div>
       </div>
     </div>
-    
+
 
   <% }) %>
-    
+  <% } %>     
 
+<% if (tariffPackages) { %>
+ 
 
   <% tariffPackages.forEach(element=> { %>
     <!-- Scrollable modal -->
@@ -763,7 +790,7 @@
     </div>
     <% }) %>
     
-    
+    <% } %>    
     <div class="modal fade  mr-2 fixed-button  " id="idModalnewTariff" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content" style="background-color: rgba(255, 255, 255, 0.888) ;">
@@ -870,12 +897,15 @@
                   </div>
                   <div class="input-group mb-3">
                       <span class="input-group-text col-4" id="basic-addon1">Category</span>
+                      <% if (tariffPackages) { %>
+                       
+                      
                           <select id="idTariffIndex" name="TariffIndex" class="btn rounded btn-light text-secondary col-8" ><% tariffPackages.forEach(function(item) { %>
                             <% if (item.isActive) { %>
                               <option class="" value="<%= item.tariffIndex %>" > <%= item.tariffName %></option>   
                             <% } %><% }); %>
                           </select>
-                        
+                          <% } %>  
                   </div>
                   
                   <div class="input-group mb-3">
@@ -885,12 +915,14 @@
                   </div>
                   <div class="input-group mb-3">
                       <span class="input-group-text col-4" id="basic-addon1">Floor</span>
-                       
+                       <% if (floors) { %>
+                        
+
                           <select id="idFloorindex" name="Floorindex" class="btn btn-light border-none rounded text-secondary col-8" ><% floors.forEach(function(item) { %>
                               <option value="<%= item.floorindex %>"  > <%= item.floorname %></option>
                           <% }); %>
                       </select>
-                       
+                      <% } %>                       
                   </div>
                   
               </div>

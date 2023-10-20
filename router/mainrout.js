@@ -21,6 +21,7 @@ const hotelshomePage = require('../controller/hotelHomePage')
 const clearCache = require('../middleware/userAccess')
 const reservation = require('../controller/reservation')
 const personalProfile = require('../controller/userprofile')
+const admin = require('../controller/admin')
  
 router.use(clearCache.clearCache);
 
@@ -46,6 +47,7 @@ router.use('/vedurehomepage',verifyAccess.VerifyAccess,hotelshomePage)
 router.use('/hotel',verifyAccess.VerifyAccess,hotelshomePage)
 router.use('/reservation',verifyAccess.VerifyAccess,reservation)
 router.use('/user',personalProfile)
+router.use('/admin',admin)
  
 
 

@@ -19,7 +19,6 @@ router.get('/',(req,res)=>{
 })
 
 
-
 router.post('/updateReservationWithRoom',async (req,res)=>{
   const dailydetails = await dailyoccupancy.occupancy.updateMany({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   
   const checkinSummary = await reception.checkinDetails.updateOne({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   
@@ -33,8 +32,6 @@ router.post('/updateReservationWithRoom',async (req,res)=>{
   }
   
 })
-
-
 
 router.post('/loadAvailableRooms',async (req,res)=>{
   
@@ -71,6 +68,91 @@ router.post('/loadAvailableRooms',async (req,res)=>{
   console.log(room,'room');
   res.json(room)
 })
+
+router.get('/loadhomepage', async (req, res) => {
+   
+    const inputs = req.body;
+     
+    req.body.session = req.sessionID;
+    const result =await HBank.verifyUser(req.body)   
+   
+    const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false });
+    bookingDetails={};
+    if(result.verified){
+    
+      const profile = await companies.company.findOne({email:user.email});
+      
+    
+      if(!profile){
+        res.redirect('/custom/customSearch')
+        return
+      }
+      const activtariff = await tariff.loadtariff('');
+      const activePlans = await checkinPlans.LoadPlan();
+      let existingTariff = profile.roomtypes;
+      let existingPlan = profile.checkinplan;
+      const availablerooms =await rooms.loadroomByCompanyId(profile.CompanyID);
+      const floors = await floorMaster.loadAllFloor()
+      const category = await tariffmaster.loadtariff('')
+      let Plans = [];
+            for (let i=0;i<activePlans.length;i++){
+              let flag=0;
+              for(let j=0;j<existingPlan.length;j++){
+                if( existingPlan[j].planIndex==activePlans[i].planIndex   ){
+                    Plans.push(existingPlan[j])
+                    flag++; 
+                    break;
+                }
+                
+              }
+              if(!flag) {Plans.push(activePlans[i])
+                await companies.company.updateOne(
+                          {CompanyID:profile.CompanyID},
+                          {$push:{"checkinplan":activePlans[i]}},
+                          {upsert:true}
+                          );}
+            }
+
+
+        let tariffPackages=[];
+              for (let i=0;i<activtariff.length;i++){
+                let flag=0;
+                for (let j=0;j<existingTariff.length;j++){
+                    
+                    if(existingTariff[j].tariffIndex==activtariff[i].tariffIndex){
+                      tariffPackages.push(existingTariff[j])
+                      flag++;
+                      break;
+                    }
+                  
+                }
+                if(!flag){
+                  tariffPackages.push(activtariff[i])
+                  await companies.company.updateOne(
+                    { CompanyID: profile.CompanyID },
+                    { $push: { "roomtypes": activtariff[i] } },
+                    { upsert: true }
+                  );
+                }
+              }
+
+    res.cookie('userName',result.user)
+    if (!availablerooms )availablerooms={};
+    let  reservation = await checkinmaster.loadReservationbyCompany(profile.CompanyID)         
+    if(!reservation)reservation ='';
+    let payments = await payment.loadPaymentByCompanyID(profile.CompanyID)
+    if(!payments)  payments='';
+    let occupancyDetails = await reception.loadIndividualBookingByCompany(profile.CompanyID);
+   if(!occupancyDetails) occupancyDetails='';
+  res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments,occupancyDetails });
+  }
+    else{
+      res.redirect('/')
+    }
+    
+  
+
+});
 
 
 router.post('/loadhomepage', async (req, res) => {

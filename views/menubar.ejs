@@ -1,43 +1,78 @@
 
-<div class="container-fluid d-flex  >
-    <div class="container menubar btn-group ">
-        <form action="/floorMaster/floors" method="get">
-            <button class="btn btn-secondary fw-bold  button " > <h6>FLOOR</h6></button>
-        </form>
-        <form action="/rooms/rooms" method="get">
-            <button class="btn btn-secondary fw-bold  button " > <h6>ROOMS</h6></button>
-        </form>
-        <form action="/roomType/tariff" method="get">
-            <button class="btn btn-secondary fw-bold  button " > <h6>TARIFF</h6></button>
-        </form>
-        <form action="/checkinplan/plan" method="get">
-            <button class="btn btn-secondary fw-bold  button" > <h6> PLANS</h6> </button>
-        </form>
-        <form action="/Human/human" method="get">
-            <button class="btn btn-secondary fw-bold  button" > <h6> USERS</h6> </button>
-        </form>
-        <form action="/floorMap/floorMap" method="get">
-            <button class="btn btn-secondary fw-bold  button" > <h6> FLOORMAP</h6> </button>
-        </form>
-        <form action="/facilty/facilty" method="get">
-            <button class="btn btn-secondary fw-bold  button" > <h6> SERVICES </h6> </button>
-        </form>
-        <form action="/checkin" method="get">
-            <button class="btn btn-secondary fw-bold  button" > <h6> CHECKIN</h6> </button>
-        </form>
-        <form action="/Company/company" method="get">
-            <button class="btn btn-secondary fw-bold  button" > <h6> COMPANIES</h6> </button>
-        </form>
-            <button class="btn btn-secondary fw-bold bi bi-power" onclick="logout()" value="but" type="button">  </button>
-       
+<nav class="navbar navbar-expand-lg border navbar-dark" style="background-color: rgb(86,99,86);">
+    <div class="container-fluid  btn d-flex w-100">
+        <ul class="navbar-nav  ">
+            <li class="nav-item">
+                <form action="/floorMaster/floors" method="get">
+                    <button class="btn  rounded text-light fw-bold button  " type="submit">
+                        FLOOR
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/rooms/rooms" method="get">
+                    <button class="btn  rounded text-light fw-bold button" type="submit">
+                        ROOMS
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/roomType/tariff" method="get">
+                    <button class="btn  rounded text-light fw-bold button" type="submit">
+                        TARIFF
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/checkinplan/plan" method="get">
+                    <button class="btn  rounded text-light fw-bold button" type="submit">
+                        PLANS
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/Human/human" method="get">
+                    <button class="btn  rounded text-light fw-bold button" type="submit">
+                        USERS
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/floorMap/floorMap" method="get">
+                    <button class="btn  rounded text-light fw-bold button" type="submit">
+                        FLOORMAP
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/facilty/facilty" method="get">
+                    <button class="btn  rounded text-light fw-bold button" type="submit">
+                        SERVICES
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/checkin" method="get">
+                    <button class="btn  rounded text-light fw-bold button" type="submit">
+                        CHECKIN
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/Company/company" method="get">
+                    <button class="btn   rounded text-light fw-bold button" type="submit">
+                        COMPANIES
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/Company/company" method="get">
+                    <button class="btn   rounded text-light fw-bold bi bi-power" onclick="logout()" type="button">
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
 
- 
-        
-    </div>
-    <div>
-        
-    </div>
-    <script>
-        
-    </script>
-  
+<script src="/Script/Script.js"> </script>

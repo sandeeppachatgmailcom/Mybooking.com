@@ -234,11 +234,13 @@
                         <button id="Bt_Save_Signup"   type="button"
                             class="btn btn-outline-success col-4  bi bi-cursor-fill" onclick="verifyOtp()"  value="signup"> SUBMIT </button>
                         <button id="Bt_resendOtp"   type="button" onclick="resendOtp('idverify_Email')"
-                            class="btn btn-danger col-4 "> RESEND OTP </button>
+                            class="btn btn-danger col-4 "> SEND OTP </button>
                         
                         </div>
                     <div class=" container-fluid d-flex flex-row-reverse col-4">
                         <button id="Bt_signinOtp"  data-bs-toggle="modal" data-bs-target="#customerLogin" type="button"
+                        class="btn btn-outline-warning bi bi-x-square"> LOG-IN  </button>
+                        <button id="openResetModal"  data-bs-toggle="modal" data-bs-target="#resetPasswordafterOtp" style="display: none;" type="button"
                         class="btn btn-outline-warning bi bi-x-square"> LOG-IN  </button>
                    </div>
                 </div>
@@ -256,9 +258,46 @@
 
 </body>
 </html>
-<!-- vendurelogin -->
+<!-- reset Password After Otp Verification -->
 
+<div class="modal fade modal-lg mr-2" id="resetPasswordafterOtp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">       
+    <div class="modal-dialog modal-lg"> <!-- Add modal-lg class to the modal-dialog -->
+        <div class="modal-content" style="background-color: rgba(255, 250, 245, 0.738); height: 100%; width: 600px;"> <!-- Adjust height and width as needed -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
+                </button>
+            </div>
+            <div class="modal-body">
+               <div class="container-fluid border border-light align-item-centre ">
+                <label for="">Change Password</label>
+                
+                <div class="input-group mb-3">
+                    <span class="input-group-text col-4" id="basic-addon1">email/Mobile</span>
+                    <input type="text" id="idVerifyEmailOtp" class="form-control" onchange="verifyEmail('idVerifyEmail-Phone','Signup_Email_Btn','/VerifyEmail')" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                    <button id="Signup_Email_Btn" class="btn"></button>
+                </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">New Password</span>
+                        <input id="idNewPasswordtextotp"  type="password" onchange="verifyPassword('idNewPasswordtextotp','idNewPasswordbtnotp') " class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <button id="idNewPasswordbtnotp" class="btn"></button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text col-4" id="basic-addon1">retype Password</span>
+                        <input id="idRetypePasswordtextotp" type="password" onchange="matchPassword('idNewPasswordtextotp','idRetypePasswordtextotp','idRetypePasswordbtn')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <button id="idRetypePasswordbtnotp" class="btn"></button>
+                    </div>                          
+               </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button"  onclick="changeaPassword('idVerifyEmailOtp','idNewPasswordtextotp')"  class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#"> Submit </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Signup -->
   

@@ -291,8 +291,54 @@ else {
 
 
 }
+
+async function changeaPassword(email,newpassword){
+    
+    const userName = document.getElementById(email).value;
+    const NewPassword = document.getElementById(newpassword).value;
+data = {
+    username :userName,
+    password:NewPassword 
+}
+if( userName&&NewPassword ){
+    const result =await fetch('/authenticate/changePassword',{method:'post',headers:{"Content-type":"Application/json"},body:JSON.stringify(data)})
+    .then(res=>{
+        return res.json()
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    console.log(result);
+    if(result.updated){
+        swal({
+            title: "success",
+            text: "Password changed successfully!",
+            icon: "success",
+            button: "OK",
+          }).then((value)=>{
+            window.location.reload();
+          }) 
+    }
+}
+else {
+    swal({
+        title: "failed",
+        text: "Wrong or incvalid credentials !",
+        icon: "error",
+        button: "OK",
+      })  
+}
+
+
+
+}
+
+
+
+
+
 function verifyPassword(inputElement,outputElement) {
-    let password = document.getElementById(inputElement) .value;
+    let password = document.getElementById(inputElement).value;
     let uppercase = false;
     let lowercase = false;
     let specialcase = false;
@@ -443,6 +489,46 @@ async function verifyandupdate() {
 
 }
 
+if (document.getElementById("idanimatedMessageLogin")){
+document.getElementById("idanimatedMessageLogin").addEventListener('load',AnimatedTextforhotelLogin())
+
+    function AnimatedTextforhotelLogin(){
+        
+        const message = document.getElementById("idanimatedMessageLogin").textContent;
+        const text = document.getElementById("idanimatedMessageLogin");
+        let i=0
+        function animation (){
+            if(i< message.length){
+                setTimeout( () => {
+                    text.innerText = message.slice(0,i+1);
+                    i++
+                    animation()
+                }, 50);
+            }
+            
+        }
+        animation ();
+
+    }
+}
+async function vedurelogin( email,password){
+const data = {
+    userName:document.getElementById(email).value,
+    password:document.getElementById(password).value
+}
+const result = await fetch('/authenticate/hotelLogin',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+.then(res=>{
+    return res.json()
+})
+.catch(err=>{
+    console.log(err);
+})
+if(result.verified){
+    window.location.href=result.path
+}
+}
+
+
 
   function executeOtpTimer(btnElement) {
     const otpButton = document.getElementById(btnElement);
@@ -450,9 +536,9 @@ async function verifyandupdate() {
     otpButton.value = time;
     async function updateTimer() {
       if (time >= 0) {
-        otpButton.textContent = time + " remaining ";
+        otpButton.textContent = time + "Sec remains ";
         time--;
-        setTimeout(updateTimer, 1000);
+        const timer = setTimeout(updateTimer, 1000);
       }
       else {
         otpButton.textContent ='Resend OTP'
@@ -691,6 +777,7 @@ async function verifyOtp(){
         email:   document.getElementById("idverify_Email").value,
         otp : document.getElementById("id_otp").value
     }
+    console.log(data);
     const result = await fetch('/authenticate/confirmOtp',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
     .then(res=>{
         return res.json()
@@ -699,8 +786,12 @@ async function verifyOtp(){
         console.log(err)
     })
     if (result.verified){
-        document.getElementById("Bt_signinOtp").click();
-
+         
+        const myElement = document.getElementById("openResetModal");
+        const email = document.getElementById("idVerifyEmailOtp");
+        myElement.click()
+        email.value = data.email;
+        email.disabled = true;
     }
 }
 

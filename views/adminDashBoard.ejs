@@ -1,0 +1,82 @@
+<%- include('header') %>
+<%- include('MenuBarCustomer') %>
+ 
+
+<div class="container-fluid">
+    <div>
+    </div>
+    <div class="container-fluid ">
+        <div>main board 
+        
+        </div>
+        <div class="container-fluid d-flex " >
+            <div class="container-fluid col-4 w-100 border "style="height: 300px;"  >
+                <canvas id="myChart" class="container-fluid w-100"  ></canvas>
+                
+                <button class="btn " id="idGraphData" style="display: none;" value="<%= JSON.stringify(bookings) %>" onclick="myloadGraph()">  my button</button>
+            
+            </div>
+            <div class="container-fluid col-4 border " style="height: 300px;">
+            <canvas id="myChart"  ></canvas>
+            
+            <button class="btn " id="idGraphDat" value="<%= JSON.stringify(bookings) %>" onclick="myloadGraph()">  my button</button>
+           
+        </div>
+         
+        </div>
+    </div>      
+</div>
+      
+
+<script> 
+window.onload = function() {
+    myloadGraph();
+};
+function myloadGraph() {
+    
+const Graphdata = document.getElementById("idGraphData").value;     
+
+const booking = JSON.parse(Graphdata);
+const labels = booking.map( item => item.transdate.split('T')[0]  )
+const data = booking.map( item =>  item.totalRoom) 
+
+const ctx = document.getElementById('myChart');
+ 
+new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# of Votes',
+        data: data,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  
+  
+}
+
+    
+ 
+
+
+
+
+ 
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<%- include('footer') %>
+ 

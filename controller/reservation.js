@@ -6,6 +6,9 @@ const checkin = require('../model/checkIn')
 const paymentModel = require('../model/payments') 
 const occupancy = require('../model/occupancydetails')
 const Razorpaytrans = require('../controller/razorPay')
+router.get('/',(req,res)=>{
+  res.redirect('/')
+})
 router.post('/savereservation', async (req, res) => {
   const userDetails = await hbank.HumanResource.findOne({ activeSession: req.sessionID })
   req.body.custId = userDetails.hrId

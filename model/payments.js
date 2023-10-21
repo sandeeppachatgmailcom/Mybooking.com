@@ -119,7 +119,7 @@ if(!reqobj.voucherNumber) reqobj.voucherNumber = await voucherSerial.getVoucherN
     async function loadPaymentByCompanyID(CompanyID) {
         const paymentDetails = await payment.find({
           companyID: CompanyID,
-          custommerId: { $regex: `^${'HR'}`, $options: 'i' }
+          accountHead: { $regex: `^${'HR'}`, $options: 'i' }
         });
       
         const custommerPromises = paymentDetails.map(async (entry) => {

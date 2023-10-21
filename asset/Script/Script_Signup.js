@@ -526,6 +526,9 @@ const result = await fetch('/authenticate/hotelLogin',{method:'post',headers:{"C
 if(result.verified){
     window.location.href=result.path
 }
+else{
+    document.getElementById('idInfoVendureLogin').textContent ='invalid text login details'
+}
 }
 
 

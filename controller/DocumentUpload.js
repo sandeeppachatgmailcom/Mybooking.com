@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router();
 const midware = require('../middleware/multer')
-
+router.get('/',(req,res)=>{
+    res.redirect('/')
+})
 
 
 

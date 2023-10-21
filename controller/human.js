@@ -14,7 +14,9 @@ const frontoffice = require('../model/checkIn')
 const floor = require('../model/floor')
 const rooms = require('../model/rooms')
 const adminController = require('../controller/adminController')
-
+router.get('/',(req,res)=>{
+    res.redirect('/admin')
+})
 router.post('/loadcustommer',async (req,res)=>{
     console.log(req.body);
     const result = await HBank.loadHuman('');

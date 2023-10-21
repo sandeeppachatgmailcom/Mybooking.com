@@ -7,6 +7,9 @@ const tariffmaster = require('../model/tariff')
 const frontoffice = require('../model/checkIn')
 const floor =  require('../model/floor')
 const token = require('../middleware/jwt')
+router.get('/',(req,res)=>{
+    res.redirect('/admin')
+})
 router.post('/loadfloorbypagenumber',async (req, res) => {
     let pagenumber = req.body.index;
     const perpage = 2;

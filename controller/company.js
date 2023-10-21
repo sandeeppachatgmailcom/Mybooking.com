@@ -12,6 +12,9 @@ const HBank = require('../model/humanbank')
 const tariff = require('../model/tariff')
 const checkinPlans = require('../model/planMaster')
 const rooms = require('../model/rooms')
+router.get('/',(req,res)=>{
+  res.redirect('/hotel')
+})
 router.post('/loadcustommer',async (req,res)=>{
     
     const result = await company.loadcompany('');

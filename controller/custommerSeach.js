@@ -10,7 +10,9 @@ const controller = require('../controller/adminController')
 const ftnReservation = require('../controller/ftnReservation');
  
 const payments = require('../model/payments')
-   
+router.get('/',(req,res)=>{
+    res.redirect('/')
+})   
 router.post('/viewReservation',async (req,res)=>{
     let temp = req.body.bookingDetails.split(',');
     let extrapax =parseInt(req.body.guestCount)- parseInt(req.body.roomCount*2)

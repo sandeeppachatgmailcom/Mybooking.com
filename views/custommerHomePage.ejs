@@ -8,22 +8,24 @@
 </style>
 <div class="container-fluid col-12">
 
-    <div class="container-fluid d-flex row" id="iduserWallpapper"style="height: 400px;background-image: url('<%=user.wallPappper %>');background-position: center ;background-size: cover ">
+    <div class="container-fluid d-flex row" id="IdProfileWallpapper"style="height: 400px;background-image: url('<%=user.wallPappper %>');background-position: center ;background-size: cover ">
         <div class="col-10">
-            <div class="container-fluid mb-1" >
-                <button type="button" id="openFileDialogButton" onclick="changeProfilePik(event.target.value)"  class="btn btn-secondary bi bi-camera-fill position-absolute bottom-0 end-0 mb-3 me-2">
-                <input type="file" name="userProfilepik" hidden  id="iduserProfilepik">
-                </button >
-            </div>
-        </div>
-        <div class="container-fluid col-2 mt-3">
-            <div class="rounded container-fluid col-10 position-relative" style="margin-top: 50%; background-image: url('<%=user.profilePicture %>'); height: 250px; background-position: center; background-size: cover;">
-                <div class="container-fluid mb-1">
-                    <button class="btn btn-secondary bi bi-camera-fill position-absolute bottom-0 end-0 mb-2 me-2"></button>
-                </div>
-            </div>
-        </div>
-        
+            <label for="IdUploadProfileWallPapper" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
+              <input class="form-control d-none" onchange="uploadImageToParentNew('IdUploadProfileWallPapper','IdProfileWallpapper','idWpSaveButton','idWalllabelChange')" name="roomImages" id="IdUploadProfileWallPapper" type="file" multiple>
+              <i id="idWalllabelChange" class="bi bi-camera" style="font-size: 24px;"></i>
+            </label>
+            <button  value="<%= user.hrId %> <%= user.wallPappper %> IdUploadProfileWallPapper idWpSaveButton" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idWpSaveButton" > SAVE</button> 
+            
+          </div>
+         
+        <div class="container-fluid col-2 mt-3" id="IdProfilePic" style="background-position: center ;background-size: cover; height: 75%; background-image: url('<%= user.profilePicture %>')">
+            <label for="IdUploadProfile" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
+              <input class="form-control d-none" onchange="uploadImageToParentNew('IdUploadProfile','IdProfilePic','idprofileSaveButton','idlabelChange')" name="roomImages" id="IdUploadProfile" type="file" multiple>
+              <i id="idlabelChange" class="bi bi-camera" style="font-size: 24px;"></i>
+            </label>
+            <button  value="<%= user.hrId %> <%= user.profilePicture %> IdUploadProfile idprofileSaveButton" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idprofileSaveButton" > SAVE</button> 
+            
+          </div>
         
     </div>
     <div class="container-fluid row ">

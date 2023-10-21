@@ -336,6 +336,7 @@ async function currentUser() {
 async function logout() {
     const data = {
         username: document.getElementById('loggeduser').innerHTML
+        
     }
     console.log(data)
     const logoutuser = await fetch('/authenticate/logout', { method: 'POST', headers: { "Content-Type": "Application/json" }, body: JSON.stringify(data) })
@@ -348,7 +349,7 @@ async function logout() {
     console.log(logoutuser.logout,'result')
     if (logoutuser.logout) {
 
-        window.location.assign("/admin");
+        window.location.assign(logoutuser.path);
        
     }
      

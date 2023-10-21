@@ -1,6 +1,51 @@
-
-
  
+
+async function saveImagetoCollection(inputString,){
+    const temp = inputString.split(" ");
+    imageInput =document.getElementById(temp[2]); 
+    const saveButton =document.getElementById(temp[3]); 
+    console.log(temp) 
+    let imageForm = new FormData();
+    imageForm.append("ImageRecordIndex",temp[0])
+    imageForm.append("imageField",temp[1])
+    for(let file of imageInput.files  ){
+        imageForm.append("currentImage",file)
+        }
+    const upload = await fetch('/imageDoc/upload',{method:'post',body:imageForm})
+    .then(res=>{
+        return res.json()
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+    console.log(upload);
+    if(upload.saved){
+        swal({
+            title: "success",
+            text: upload.message,
+            icon: "success",
+            button: "OK",
+          }).then(()=>{
+            saveButton.style.display='none'
+          })
+    }
+    else if(upload.update){
+        swal({
+            title: "success",
+            text: upload.message,
+            icon: "success",
+            button: "OK",
+          }).then(((value)=>saveButton.style.display='none'))
+    }
+    else if(upload.found){
+        swal({
+            title: "success",
+            text: upload.message,
+            icon: "success",
+            button: "OK",
+          }).then(((value)=>saveButton.style.display='none'))
+    }
+} 
 
 async function SaveCompany() {
 
@@ -56,49 +101,33 @@ function loadpage(pagenumber) {
 
 }
 
+ 
 
-function uploadImageToParent17102023(fileInputId, parentElementId, relativeElementID) {
-    
+
+
+
+function uploadImageToParentNew(fileInputId, parentElementId, savebutton,uploadIcon) {
+
     const fileInput = document.getElementById(fileInputId);
     const parentElement = document.getElementById(parentElementId);
-    const relativeElement = document.getElementById(relativeElementID);
+    const saveElement = document.getElementById(savebutton);
+    const inputIcon = document.getElementById(uploadIcon);
     
     if (fileInput.files.length > 0) {
         const imageUrl = URL.createObjectURL(fileInput.files[0]);   
-         
-    
         parentElement.style.backgroundImage = `url(${imageUrl})`;
-        relativeElement.style.backgroundImage = `url(${imageUrl})`;
+        saveElement.style.display = ''
+        
     } else {
 
         parentElement.style.backgroundImage = 'none';
-        relativeElement.style.backgroundImage = 'none';
+        //relativeElement.style.backgroundImage = 'none';
     }
 }
 
 
 
 
-
-
-function uploadImageToParent(fileInputId, parentElementId, relativeElementID) {
-    
-    const fileInput = document.getElementById(fileInputId);
-    const parentElement = document.getElementById(parentElementId);
-    const relativeElement = document.getElementById(relativeElementID);
-    
-    if (fileInput.files.length > 0) {
-        const imageUrl = URL.createObjectURL(fileInput.files[0]);   
-        alert(imageUrl);
-    
-        parentElement.style.backgroundImage = `url(${imageUrl})`;
-        relativeElement.style.backgroundImage = `url(${imageUrl})`;
-    } else {
-
-        parentElement.style.backgroundImage = 'none';
-        relativeElement.style.backgroundImage = 'none';
-    }
-}
 async function loadCompanies(value) {
     const company = JSON.parse(value);
     console.log(company);

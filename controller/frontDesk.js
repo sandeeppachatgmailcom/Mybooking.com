@@ -7,6 +7,12 @@ const Rooms = require('../model/rooms')
 const tariffmaster = require('../model/tariff')
 const frontoffice = require('../model/checkIn')
 console.log('I reched front desk router')
+ 
+
+router.get('/',(req,res)=>{
+    res.redirect('/')
+})
+
 router.get('/',async (req,res)=>{
     const saveCheckIn =await frontDesk.getCheckinWithAllDetails(req.body);
     const plan = await checkinPlan.LoadPlan('');

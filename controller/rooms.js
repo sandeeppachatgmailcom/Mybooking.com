@@ -8,8 +8,11 @@ const session = require('express-session');
 const floor = require('../model/floor')
 const rooms = require('../model/rooms')
 const modeltariff = require('../model/tariff')
+const midMult = require('../middleware/multer')
 const multer = require('multer')
-
+router.get('/',(req,res)=>{
+  res.redirect('/admin')
+})
     
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -31,7 +34,7 @@ router.get('/rooms',async (req,res)=>{
 })
 
 
-router.post('/SaveRooms',upload.array("roomiMages",3) ,async (req,res)=>{
+router.post('/SaveRooms',midMult.upload.array("roomiMages",3) ,async (req,res)=>{
      let imgArray = [];
     for (let i = 0; i < req.files.length; i++) {
       imgArray.push(req.files[i].filename);

@@ -3,6 +3,7 @@ const db = require('./mongoose'); // Ensure the correct path to your mongoose co
 const  loadtariff  = require('./tariff');
 const controller = require('../controller/adminController')
 const checkinPlans =require('../model/planMaster')
+const document = require('../model/documents')
 
 const NewCompany = new mongoose.Schema({
     CompanyID: { type: String },
@@ -27,6 +28,7 @@ const NewCompany = new mongoose.Schema({
     createduser: { type: String },
     image1:{type:String},
     image2:{type:String},
+    image3:{type:String},
     Companydiscription:{type:String},
     checkinplan:[{
         planIndex:{type:String,required:true,unique:true},
@@ -63,10 +65,15 @@ const NewCompany = new mongoose.Schema({
         isActive:{ type:Boolean,default:false}
     }]
 });
+ 
+
+
+
 const  company = db.model('Company',NewCompany);
 
 async function saveCompany(objcompany) {
     if (!objcompany.CompanyID) { objcompany.CompanyID = await controller.getIndex('COMPANY') }
+    const server = 'http://localhost:5200/Images/';
     if(objcompany.imagearray[0]=="http://localhost:5200/Images/"){objcompany.imagearray[0] =await company.findOne({ CompanyID: objcompany.CompanyID }, { image1: 1, _id: 0 })}
     if(objcompany.imagearray[1]=="http://localhost:5200/Images/"){objcompany.imagearray[1] =await company.findOne({ CompanyID: objcompany.CompanyID }, { image2: 1, _id: 0 })}
     const data = {
@@ -90,8 +97,9 @@ async function saveCompany(objcompany) {
         RegisteredDate:objcompany.RegisteredDate,
         deleted:objcompany.deleted,
         createduser:objcompany.createduser ,
-        image1:objcompany.imagearray[0],
-        image2:objcompany.imagearray[1],
+        image1:server+objcompany.CompanyID+'image1',
+        image2:server+objcompany.CompanyID+'image2',
+        image3:server+objcompany.CompanyID+'image3',
         Companydiscription:objcompany.Companydiscription
        } 
    

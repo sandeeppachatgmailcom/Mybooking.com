@@ -3,7 +3,7 @@ const db = require('./mongoose'); // Ensure the correct path to your mongoose co
 const Controller = require('../controller/adminController')
 const OtpMaster = require('../model/otpvalidation')
 const company = require('../model/company')
-
+const server = 'http://localhost:5200/Images/';
 const humanResourceSchema = new mongoose.Schema({
     hrId: { type: String },
     firstName: { type: String, required: true },
@@ -34,8 +34,8 @@ const humanResourceSchema = new mongoose.Schema({
     createduser: { type: String },
     systemUser: { type: String },
     activeSession:{type:String},
-    profilePicture:{type:String,default:'http://localhost:5200/Images/person_6-min.jpg'},
-    wallPappper:{type:String,default:"http://localhost:5200/Images/personalImage1.jpg"}
+    profilePicture:{type:String,default: 'http://localhost:5200/Images/person_6-min.jpg'},
+    wallPappper:{type:String,default:'http://localhost:5200/Images/personalImage1.jpg'}
 
 
 });
@@ -71,7 +71,9 @@ async function saveHuman(NewHumanObj) {
         deleted: NewHumanObj.false,
         createduser: NewHumanObj.createduser,
         systemUser: NewHumanObj.systemUser,
-        activeSession:NewHumanObj.session
+        activeSession:NewHumanObj.session,
+        profilePicture:server+NewHumanObj.hrId+'profilePicture',
+        wallPappper:server+NewHumanObj.hrId+'wallPappper' 
     }
      
     const result = await HumanResource.updateOne({ hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })

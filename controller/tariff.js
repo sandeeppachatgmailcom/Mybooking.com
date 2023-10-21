@@ -12,6 +12,9 @@ const DBcollections = require('../model/dbcollections');
 const tariffmaster = require('../model/tariff')
 const controller = require('./adminController')
 const checkInPlan = require('../model/planMaster')
+router.get('/',(req,res)=>{
+    res.redirect('/admin')
+})
 
 router.get('/tariff',async (req, res) => {
     try {

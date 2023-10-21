@@ -22,6 +22,7 @@ const clearCache = require('../middleware/userAccess')
 const reservation = require('../controller/reservation')
 const personalProfile = require('../controller/userprofile')
 const admin = require('../controller/admin')
+const ImageDoc = require('../controller/documentMaster')
  
 router.use(clearCache.clearCache);
 
@@ -48,6 +49,7 @@ router.use('/hotel',verifyAccess.VerifyAccess,hotelshomePage)
 router.use('/reservation',verifyAccess.VerifyAccess,reservation)
 router.use('/user',personalProfile)
 router.use('/admin',admin)
+router.use('/imageDoc',ImageDoc)
  
 
 

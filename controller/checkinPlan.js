@@ -8,7 +8,9 @@ const session = require('express-session');
 const { render } = require('ejs');
 const CheckinPlan = require('../model/planMaster')
 const adminController = require('../controller/adminController')
-
+router.get('/',(req,res)=>{
+    res.redirect('/admin')
+})
 
 
 router.post( '/saveCheckinplan',async(req,res)=>{

@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router()
 const facilty = require('../model/facilty')
+
+router.get('/',(req,res)=>{
+   res.redirect('/admin')
+})
+
 router.get('/facilty',async (req,res)=>{
  const facility = await facilty.loadAllfacilty()
  console.log(facility);

@@ -17,7 +17,9 @@ const nodeMailer = require('nodemailer')
 const randomString = require('randomstring') 
 const validation = require('../model/otpvalidation')
 const email = require('../controller/emailService')
-
+router.get('/',(req,res)=>{
+    res.redirect('/')
+})
 
 router.post('/hotelLogin',async (req,res)=>{
     req.body.session = req.sessionID; 
@@ -124,12 +126,15 @@ router.post('/OtpAuthentication', async (req, res) => {
 
 router.post('/logout', async (req, res) => {
     req.body.session = req.sessionID
+    const source = req.get('Referer').split('/')[3];  
+    console.log(source,'sourcesourcesourcesource');
     const verifyaccount = HBank.verifyUser(req.body)
     console.log(verifyaccount); 
     let logout= await HBank.HumanResource.updateOne({activeSession:req.sessionID},{$set:{activeSession:null}})
     if(logout.modifiedCount){
         logout={
-            logout:true
+            logout:true,
+            path:'/'+source
         }
     }
     else{

@@ -6,6 +6,11 @@ const roomsDetails = require('../model/rooms')
 const floors = require('../model/floor')
 
 const verifyAccess = require('../middleware/userAccess')
+
+router.get('/',(req,res)=>{
+    res.redirect('/admin')
+})
+
 router.get('/floorMap', verifyAccess.VerifyAccess, async (req, res) => {
     let rooms = await department.getRoomsWithTariffDetails();
     let tariff = await tarifftype.loadtariff('')

@@ -1,1031 +1,159 @@
 <%- include('header') %>
-<%- include('MenuBarCustomer') %>
-<div class="container-fluid justify-content-center row w-100"> 
-  <div class="container-fluid w-100 btn row d-flex bg-secondary d-flex flex-row" style="flex-wrap: nowrap; background-color: transparent; height: 400px;">
+<%- include('menubarCustomer') %>
+<%- include('menubar') %>
+<div class="container-fluid">
     
-      
-    <div class="d-flex container-fluid col-4 p-1"id="IdCompanyImagesbuton1" style="background-image: url('<%= profile.image1 %>'); height: 100%; background-position: center ; background-size: cover;">
-       
-      <label for="IdCompanyImages1" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
-        <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages1','IdCompanyImagesbuton1','idCompanyimageSave1','id_icon_imageinput1')" name="roomImages" id="IdCompanyImages1" type="file" multiple>
-        <i id="id_icon_imageinput1" class="bi bi-camera" style="font-size: 24px;"></i>
-      </label>
-      <button  value="<%= profile.CompanyID %> <%= profile.image1 %> IdCompanyImages1 idCompanyimageSave1" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave1" > SAVE</button> 
-      
-    </div>
-      
-    <div class="d-flex container-fluid col-4 p-1"id="IdCompanyImagesbuton2" style="background-image: url('<%= profile.image2 %>'); height: 100%; background-position: center ; background-size: cover;">
-       
-      <label for="IdCompanyImages2" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
-        <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages2','IdCompanyImagesbuton2','idCompanyimageSave2','id_icon_imageinput2')" name="roomImages" id="IdCompanyImages2" type="file" multiple>
-        <i id="id_icon_imageinput2" class="bi bi-camera" style="font-size: 24px;"></i>
-      </label>
-      <button  value="<%= profile.CompanyID %> <%= profile.image2 %> IdCompanyImages2 idCompanyimageSave2" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave2" > SAVE</button> 
-      
-    </div>
-      
-    <div class="d-flex container-fluid col-4 p-1"id="IdCompanyImagesbuton3" style="background-image: url('<%= profile.image3 %>'); height: 100%; background-position: center ; background-size: cover;">
-       
-      <label for="IdCompanyImages3" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
-        <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages3','IdCompanyImagesbuton3','idCompanyimageSave3','id_icon_imageinput3')" name="roomImages" id="IdCompanyImages3" type="file" multiple>
-        <i id="id_icon_imageinput3" class="bi bi-camera" style="font-size: 24px;"></i>
-      </label>
-      <button  value="<%= profile.CompanyID %> <%= profile.image3 %> IdCompanyImages3 idCompanyimageSave3" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave3" > SAVE</button> 
-      
-    </div>
-    
-   
-    
-  </div>
-  
-    <div class="container-fluid d-flex flex-row"  >
-      <div class="container-fluid  ">
-        <small style="font-size: 50px;" class="text-secondary "> <%= profile.lastName %></small>  <br>
-       
-        <small class="text-secondary">Email: <%= profile.email %></small>  
-      <small class="text-secondary">Contact: <%= profile.contactNumber %></small> <br>
-      <small class="text-secondary">Address: <%= profile.StreetName %> <%= profile.city %> pin:<%= profile.pincode %></small>  
-      
-      </div>
-  </div>
-  
-    <div class="container-fluid d-flex ">
-        <div class=" col-2 container-fluid border rounded  ">
-          <form action="/vedurehomepage/loadhomepage" method="post">
-            <button class="btn border btn-success col-12 col "> Dashboard </button>
-          </form>
-          <form action="/Company/loadTariff" method="get">
-              <button class="btn border btn-success col-12 col "> Tariff </button>
-          </form>
-          <form action="/Company/loadPlan" method="get">
-              <button class="btn border btn-success col-12 col "> Checkin Plan </button>
-          </form>
-          <form action="/Company/loadRoom" method="get">
-              <button class="btn border btn-success col-12 col "> Rooms </button>
-          </form>
-          <form action="/Company/loadReservations" method="get">
-              <button class="btn border btn-success col-12 col "> Reservation Details </button>
-          </form>
-          <form action="/Company/loadPayments" method="get">
-              <button class="btn border btn-success col-12 col "> Collection Details </button>
-          </form>
-          <form action="/Company/loadGallery" method="get">
-              <button class="btn border btn-success col-12 col "> Gallery </button>
-          </form>
-          </div>
-          <div class="col-10 container-fluid d-flex border rounded"  >
-            <div class="col-6 container-fluid "  >
-              <% if ( occupancyDetails ) { %>
-                <div  class="col-12 container-fluid border rounded  border-primary p-1 m-2" >
-                  <div class="table-responsive  border-primary  " >
-                    <table class="table border-primary">
-                      <button  class="bi bi-caret-down-square  btn btn-primary col-6"> ROOM ALIGATION</button>
-                       <tbody>
-                          <% occupancyDetails.forEach(occupancy=> { %>
-                            <tr class="text-secondary">
-                              <td > 
-                                <small class="font-weight-bold mt-1"> <%= occupancy.reservationNumber %> </small> <br>
-                                <small class="font-weight-bold mt-1"> <%= occupancy.customer.firstName %> </small> <br>
-                                <small class="font-weight-bold mt-1"> <%= occupancy.customer.contactNumber %> </small> <br>
-                                <small class="font-weight-bold mt-1"> <%= occupancy.customer.email %> </small> <br>
-                                <small class="font-weight-bold mt-1"> <%= occupancy.customer.pincode %> </small> <br>
-                              </td>
-                              <td > 
-                                <small class="font-weight-bold  mt-1">  <%= occupancy.tariff.tariffName %>  </small> <br>
-                                <small class="font-weight-bold  mt-1">  Rent :<%= occupancy.bookings.specialRate %> Extra Person <%= occupancy.bookings.ExtraChargeRent %>   </small> <br>
-                                <% if (occupancy.plan) { %>
-                                  <small class="font-weight-bold  mt-1">  <%= occupancy.plan.planName %>  </small> <br> 
-                                  <small class="font-weight-bold  mt-1">  Checkin plan :<%= occupancy.bookings.PlanAmount %> Extra person plan <%= occupancy.bookings.ExtraChargeRent %>   </small> <br>
-                                  <% } %>
-                                <small class="font-weight-bold  mt-1">  Arrival <%= (occupancy.bookings.arrivalDate).toString().slice(0,21) %>  </small> <br>
-                                <small class="font-weight-bold  mt-1">  Departure <%= (occupancy.bookings.depart_Date).toString().slice(0,21) %>  </small> <br>
-                                <small class="font-weight-bold  mt-1">  <%= occupancy.bookings.specialrequierments %>  </small> <br>
-                                </td>
-                              <td > 
-                                <small class="font-weight-bold text-success  mt-1">  </small>
-                              </td>
-                              <td >
-                                                                 
-                              </td>
-                              <td >
-                                <% if (occupancy.room) { %>
-                                  <div class="container-fluid d-flex"> 
-                                    <button class="btn btn-warning col-6 bi bi-journal-bookmark-fill "> <%= occupancy.room.roomName %> </button>
-                                    <button class="btn btn-danger col-6 bi bi-trash3 "> Unlink  </button>
-                                  
-                                  </div>
-                                  <% } else { %>
-                                    <button type="button " onclick="loadAvailableRooms(event.target.value)" value="<%= JSON.stringify(occupancy) %>"  class="btn btn-sm btn-success bi bi-power col-6"> SHOW ROOMS </button>
-                                    <button type="button " onclick="updateReservationWithRoom(event.target.value)" value="<%=JSON.stringify(occupancy) %>"  class="btn btn-sm btn-success bi bi-power col-5 "> SAVE</button>  
-                                    <select  class="btn col-12"  name="nameAvailableRoom" id="idAvailableRoom<%= occupancy.occupancyIndex %>" >
-                                      <option  value="">  </option> 
-                                      <%= console.log(occupancy.room,'occupancy.roomoccupancy.roomoccupancy.roomoccupancy.room') %>
-                                          <option  value="">  </option> 
-                                      </select> 
-                                
-                                <% } %>
-                                
-                                    </td>
-                                  
-                            </tr>
-                            <% }) %>
-                          </tbody>
-                    </table>
-                  </div>
-                </div>
-                <% } %>
-            </div>  
-            <div class="col-6 container-fluid "  >
-                <% if ( Plans ) { %>
-                <div id="idDivPlans" class="col-12 container-fluid border rounded  border-primary p-1 m-2" style=" height: 250px; overflow: hidden ;">
-                  <div class="table-responsive  border-primary  " >
-                    <table class="table border-primary">
-                      <button onclick="collapse('idDivPlans', 250 )" class="bi bi-caret-down-square  btn btn-primary col-3"> Checkin Plans</button>
-                      <button type="button " data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan"
-                      class="btn btn-success h-100 btn bi bi-clipboard-plus  text-light "> CREATE  </button>
-                      <tbody>
-                       
-                          <% Plans.forEach(plans=> { %>
-                            <tr>
-                              <td class="col-3">
-                                <small class="font-weight-bold mt-1  ">
-                                  <%= plans.planName %>
-                                </small>
-                              </td>
-                              <td class="col-2">
-                                <small class="font-weight-bold  mt-1"> &#8377 <%= plans.amount %>(<%= plans.maxPax %>) </small>
-                              </td>
-                              <td class="col-2">
-                                <small class="font-weight-bold  mt-1"> Extra &#8377 <%= plans.extraCharge %>/- </small>
-                                
-                              </td>
-                              <td class="col-4">
-                                <div class="container-fluid">
-                                  <button data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan<%=plans.planIndex%>"  type="button" class="col-5 btn  btn-warning bi bi-pencil-fill">EDIT</button>
-                                  <% if (plans.isActive) { %>
-                                    <button type="button" value="<%=plans.planIndex%>,<%=profile.CompanyID%>"
-                                      onclick="enableplanModal(event.target.value)"
-                                      class="btn bi bi-power col-6 btn-danger "> OFF </button>
-                                    <% } else { %>
-                                      <button type="button" value="<%=plans.planIndex%>,<%=profile.CompanyID%>"
-                                        onclick="enableplanModal(event.target.value)"
-                                        class="btn bi bi-power col-6  btn-success"> ON </button>
-                                      <% } %>
-                                </div>
-                  
-                              </td>
-                            </tr>
-                            <% }) %>
-                              
-                  
-                  
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <% } %>
-                <% if ( tariffPackages ) { %>
-                  <div id="idTariffDetails" class="  container-fluid border border-primary rounded p-2  m-2"style="height:250px;   overflow: hidden ;" >
-                  <div class="table-responsive bg-white border-primary " >
-                    <table class="table">
-                      <button onclick="collapse('idTariffDetails', 250 )" class="bi bi-caret-down-square  btn btn-primary col-3"> Classification</button onclick="">
-                        <button class="btn btn-success  bi bi-clipboard-plus" data-bs-toggle="modal"  data-bs-target="#idModalnewTariff"> CREATE  </button>   
-                        <tbody>
-                      
-                            <% tariffPackages.forEach(tariff => { %>
-                              <tr >
-                                  <td class="">
-                                      <small class="font-weight-bold mt-1  "> <%= tariff.tariffName %> </small>
-                                </td>
-                                <td class="">
-                                  <small class="font-weight-bold  mt-1"> &#8377 <%= tariff.SpecialRent %>(2)  </small>
-                                </td>
-                                <td>
-                                  <small class="font-weight-bold  mt-1">Extra &#8377 <%= tariff.extraPerson %>/-  </small>
-                                    
-                                  </td>
-                      
-                                <td>
-                                  <button class="btn btn-warning bi bi-pencil-fill" data-bs-toggle="modal"  data-bs-target="#<%= tariff.tariffName%>"value="<%= tariff.tariffIndex %>"   >EDIT</button>
-                                  
-                       
-                                  <% if (!tariff.isActive) { %>
-                                    <button id="'btn'+<%= tariff.tariffname %>"value="<%= tariff.tariffIndex%>,<%= profile.CompanyID%>"class="btn btn-success m-1 bi bi bi-power" type="button" onclick="enableTariff(event.target.value)"> ON </button>
-                                <% } else { %>
-                                    <button id="'btn'+<%= tariff.tariffname %>" value="<%= tariff.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-danger m-1 bi bi-power" type="button" onclick="freezeTariff(event.target.value)">OFF </button>
-                                <% } %>
-                                </td>
-                              </tr>
-                            <% }) %>
-                      
-                        
-                        
-                      </tbody>
-                    </table>
-                  </div>
-                  </div>
-                <% } %>
+    <div class="container-fluid" style="height: 300px ;background-color: whitesmoke;">
 
-              <% if ( availablerooms ) { %>
-                  <div id="idRoomDetails" class="  container-fluid border border-primary  rounded  p-1 m-2" style=" height: 250px; overflow: hidden ;">
-                    <div class="table-responsive bg-white border-primary " >
-                      <table class="table">
-                        <div class="container justify-content-evenly">
-                          <button onclick="collapse('idRoomDetails', 250 )"  class="bi bi-caret-down-square btn btn-primary col-3"> Rooms </button>
-                          <button class="btn btn-success bi bi-clipboard-plus  " data-bs-toggle="modal"
-                          data-bs-target="#idModalnewRoom"> CREATE </button>
-                        </div>
-                        <tbody>
-                        
-                            
-                            <% availablerooms.forEach(items=> { %>
-                              <tr class=" "   >
-                                <td class="">
-                                  <div class="d-flex">
-                                    <h6 class="font-weight-bold mt-1  "> <%= items.roomNumber %>  </h6>
-                                    <small> (<%= items.maxOccupancy %>)</small></div>
-                                  
-                                </td >
-                                <td class="">
-                                  <small class="font-weight-bold  mt-1"> <%= items.floorName %> </small>
-                                  
-                                </td>
-                                <td>
-                                  <small class="font-weight-bold  mt-1"> <%= items.category %> </small>
-                                </td>
-                                <td>
-                                  <button type="button"data-bs-toggle="modal"  data-bs-target="#<%= items.roomIndex%>"class="btn btn-sm btn-warning bi bi-pencil-fill">EDIT</button>
-                                  <% if (items.blocked) { %>
-                                    <button type="button" id="idSwitchRoomsStatus<%= items.roomIndex%>" onclick="switchRoomStatus(event.target.value,'idSwitchRoomsStatus<%= items.roomIndex%>')" value="<%= items.roomIndex%>" class="btn btn-sm btn-success bi bi-power col-4">ON </button>
-                                    <% } else { %>
-                                    <button type="button" id="idSwitchRoomsStatus<%= items.roomIndex%>" onclick="switchRoomStatus(event.target.value,'idSwitchRoomsStatus<%= items.roomIndex%>')" value="<%= items.roomIndex%>"  class="btn btn-sm btn-danger bi bi-power col-4">OFF </button>
-                                  <% } %>
-                                  
-                                </td>
-                              </tr>
-                              <% }) %>
-                              
-                    
-                    
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-              <% } %>
-
-              <% if ( reservation ) { %>
-                <div id="idReservations" class="  container-fluid border border-primary rounded  p-1 m-2" style=" height: 250px; overflow: hidden ;">
-                  <div class="table-responsive bg-white border-primary " >
-                    <table class="table">
-                      <button onclick="collapse('idReservations', 250 )" class="bi bi-caret-down-square  btn btn-primary col-3"> Reservations   </button> 
-                      <tbody>
-                      
-                          
-                          <% reservation.forEach(items=> { %>
-                            <tr>
-                              <td class="">
-                                <small class="font-weight-bold mt-1  ">
-                                  <%= items.reservationNumber %> <br>
-                                </small>
-                                  <small class="font-weight-bold mt-1"><%= items.tariffName %>  </small>
-                                
-                              </td>
-                              <td>
-                                
-                                <small class="font-weight-bold  mt-1"> <%= items.firstName %> </small> <br>
-                                <small class="   mt-1"> <%= items.email %> </small> <br>
-                                <small class="  mt-1"> <%= items.contactNumber %> </small> <br>
-                                <small class="  mt-1"> <%= items.preferance %> </small> <br>
-                                
-                                </td> 
-                              <td>
-                                <button class="btn  btn-primary bi bi-box-arrow-in-down-right " > </button> <small class="font-weight-bold text-primary  mt-1 ">  ARR <%=  (items.arrivalDate).toString().slice(0,24) %>  </small> <br>
-                                <button class="btn  btn-warning bi bi-box-arrow-up-left" > </button> <small class="font-weight-bold text-warning  mt-1"> DEP <%=  (items.depart_Date).toString().slice(0,24) %>  </small> <br>
-                                <button class="btn  btn-info bi bi-house-door" > </button> <small class="font-weight-bold text-secondary  mt-1"> ROOMS <%= items.totalRoom %>  </small> <br> 
-                                <button class="btn  btn-secondary bi bi-people-fill" > </button> <small class="font-weight-bold text-secondary  mt-1"> GUEST <%= items.TotalPax %></small> 
-                                
-                                
-                              </td>
-                              <td>
-                                <button type="button" class="btn btn-sm btn-danger bi bi-power">VIEW</button>
-                  
-                              </td>
-                            </tr>
-                            <% }) %>
-                            
-                  
-                  
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-            <% } %>
-            <% if ( payments ) { %>
-              <div id="idPayments" class="  container-fluid border border-primary rounded  p-1 m-2" style=" height: 250px; overflow: hidden ;">
-                <div class="table-responsive bg-white border-primary " >
-                  <table class="table">
-                    <button onclick="collapse('idPayments', 250 )" class="bi bi-caret-down-square  btn btn-primary col-3"> Collection </button>
-                     <tbody>
-                      <tr class="border border-primary text-primary">
-                        <td class="">
-                          <small class="font-weight-bold mt-1  ">
-                            VOUCHER
-                          </small>
-                        </td>
-                        <td class="">
-                          <small class="font-weight-bold  mt-1">  ENTRY DETAILS </small> <br>
-                        </td>
-                        <td>
-                          <small class="font-weight-bold  mt-1">  CREDIT  </small>  
-                          
-                        </td>
-                        <td>
-                          <small class="font-weight-bold  mt-1">  DEBIT </small>  
+    </div>
+    <div class=" container-fluid d-flex">
+        <div class="container-fluid col-5  ">
             
-                        </td>
-                      </tr>
-                        <% payments.forEach(items=> { %>
-                          <tr>
-                            <td class="">
-                              <small class="font-weight-bold mt-1  ">
-                                <%= items.paymentIndex %>
-                              </small>
-                            </td>
-                            <td class="">
-                              <small class="font-weight-bold  mt-1">  <%= items.paymentReferance %> </small> <br>
-                              <small class="font-weight-bold  mt-1">  <%= items.customerName %> </small> <br>
-                              <small class="font-weight-bold  mt-1">  <%= items.transactionReferanceNumber %> </small> <br>
-                              
-                            </td>
-                            <td>
-                              <small class="font-weight-bold  mt-1">  <%= items.debit %> </small>  
-                              
-                            </td>
-                            <td>
-                              <small class="font-weight-bold  mt-1">  <%= items.credit %> </small>  
-                
-                            </td>
-                          </tr>
+            <div class="container-fluid border border-warning rounded bg-white">
+                <canvas style="border: 2ps solid yellow;" id="myChart" ></canvas>
+            </div>
+            <button class="btn " id="idGraphData" style="display: none;" value="<%= JSON.stringify(bookings) %>"
+                onclick="myloadGraph()"> my button</button>
+        </div>
+        <div class="container-fluid col-5 border w-100 m-0 p-0">
+            <div class="container-fluid d-flex">
+                <table class="table">
+                    <thead>
+                         
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>
+                                HOTEL
+                                
+                            </th>
+                            <th>
+                                ROOMS
+                            </th>
+                            <th>
+                                tariff
+                            </th>
+                            <th>
+                                plans
+                            </th>
+
+                        </tr>
+                        <% hotels.forEach(hotel => { %>
+                            <tr>
+                                <td> 
+                                    <small class="text text-primary " style="font-size: 20px;">
+                                   <%= hotel.firstName %>
+                                   </small> <br>
+                                    <small>
+                                    <%= hotel.email %>
+                                    </small> <br>
+                                    <small>
+                                    <%= hotel.contactNumber %>
+                                    </small>
+                                </td>
+                                <td> 
+                                    <small>
+                                    <%= hotel.totalRooms %>
+                                    </small>
+                                </td>
+                                <td> 
+                                    <small>
+                                    <%= hotel.activeTariff %>
+                                    </small>
+                                </td>
+                                <td> 
+                                    <small>
+                                    <%= hotel.activePlans %>
+                                    </small>
+                                </td>
+                                <td>
+                                    <% if (hotel.active) { %>
+                                        <button  value="<%-user.hrId  %>"   class="btn text-danger bi bi-pause-circle-fill"  > </button>
+                                        <% } else { %>
+                                            <button  value="<%-user.hrId  %>"   class="btn text-success bi bi-play-fill"  > </button>
+                                    <% } %>
+                                </td>
+                            </tr>
                         <% }) %>
                     </tbody>
-                  </table>
-                </div>
-              </div>
-          <% } %>
+                </table>
             </div>
         </div>
-        
-      </div>
-  </div>
-<!-- modal division starts here  -->
-<% if (Plans) { %>
-
-<% Plans.forEach(newplan => { %>
-  <div class="modal fade  mr-2 " id="idModalnewCheckinPlan<%=newplan.planIndex%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content" style="background-color: rgba(255, 255, 255, 0.712) ;">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-          </h5>
-          <h2 id="idCompanyId<%=newplan.planIndex%>" style="opacity: 0;">
-            <%= profile.CompanyID %>
-          </h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- <form action="" name="formTariff"> -->
-         
-      <div class="d-flex">
-        <div class="container-fluid">
-            <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Plan Index</span>
-                <input value="<%=newplan.planIndex%>" name="planIndex" id="idplanIndex<%=newplan.planIndex%>" type="text" readonly="true" class="form-control" placeholder="IndexNumber" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Plan Name </span>
-                <input name="Planname" value="<%=newplan.planName%>" id="idPlanname<%=newplan.planIndex%>" type="text" class="form-control" placeholder="planName" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Short Name</span>
-                <input name="ShortName" value="<%=newplan.shortName%>" id="idShortName<%=newplan.planIndex%>" type="text" class="form-control" placeholder="ShortName" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Allowed Pax</span>
-                <input name="AllowedPax" id="idAllowedPax<%=newplan.planIndex%>"value="<%=newplan.maxPax%>"  type="number" class="form-control" placeholder="AllowedPax" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Amount</span>
-                <input name="PlanAmount" id="idPlanAmount<%=newplan.planIndex%>" type="number" value="<%=newplan.amount%>" class="form-control" placeholder="Plan Amount" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Extra Pax Charge</span>
-                <input name="ExtraCharge" id="idExtraCharge<%=newplan.planIndex%>" type="number" value="<%=newplan.extraCharge%>" class="form-control" placeholder="Plan Amount" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-        </div>
-        <div class="container-fluid">
-            <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Discription</span>
-                <textarea class="form-control"      id="iddiscription<%=newplan.planIndex%>" name="discription" rows="11" cols="50"> <%=newplan.discription%></textarea>
-        
-            </div>
-           
-        </div>
-        <div class="container-fluid">
-  
-        </div>
-  
-    </div>
-        </div>..
-        <div class="modal-footer">
-          <button type="button"  class="btn btn-warning bi bi-pencil">EDIT </button>
-          <button type="button" class="btn btn-secondary bi bi-x-octagon" data-bs-dismiss="modal">CANCEL</button>
-          <button name="modalSubmit" type="button" onclick="savePlanToCompanies(event.target.value)" value="<%=newplan.planIndex%>" class="btn btn-success bi bi-send">SAVE</button>
-        </div>
-        <!-- </form> -->
-      </div>
-    </div>
-  </div>
-  <% }) %>
-  <div class="modal fade  mr-2 " id="idModalnewCheckinPlan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content" style="background-color: rgba(239, 232, 217, 0.349) ;">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-          </h5>
-          <h2 id="idCompanyIdNew" style="opacity:0;">
-            <%= profile.CompanyID %>
-          </h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- <form action="" name="formTariff"> -->
-         
-      <div class="d-flex">
-        <div class="container-fluid">
-            <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Plan Index</span>
-                <input value="" name="planIndex" id="idplanIndexNew" type="text" readonly="true" class="form-control" placeholder="IndexNumber" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Plan Name </span>
-                <input name="Planname" value="" id="idPlannameNew" type="text" class="form-control" placeholder="planName" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Short Name</span>
-                <input name="ShortName" value="" id="idShortNameNew" type="text" class="form-control" placeholder="ShortName" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Allowed Pax</span>
-                <input name="AllowedPax" id="idAllowedPaxNew"value=""  type="number" class="form-control" placeholder="AllowedPax" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Amount</span>
-                <input name="PlanAmount" id="idPlanAmountNew" type="number" value="" class="form-control" placeholder="Plan Amount" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Extra Pax Charge</span>
-                <input name="ExtraCharge" id="idExtraChargeNew" type="number" value="" class="form-control" placeholder="Plan Amount" aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-        </div>
-        <div class="container-fluid">
-            <div class="input-group mb-3">
-                <span class="input-group-text col-4" id="basic-addon1">Discription</span>
-                <textarea class="form-control"      id="iddiscriptionNew" name="discription" rows="11" cols="50"> </textarea>
-        
-            </div>
-           
-        </div>
-        <div class="container-fluid">
-  
-        </div>
-  
-    </div>
-        </div>..
-        <div class="modal-footer">
-          <button type="button" value=" " onclick="EnabletariiModal(event.target.value)" class="btn btn-warning bi bi-pencil">EDIT </button>
-          <button type="button" class="btn btn-secondary bi bi-x-octagon" data-bs-dismiss="modal">CANCEL</button>
-          <button name="modalSubmit" type="button" onclick="savePlanToCompanies('New')" value="" class="btn btn-success bi bi-send">SAVE</button>
-        </div>
-        <!-- </form> -->
-      </div>
-    </div>
-  </div>    
- 
-  <% } %>
-
-  <div class="modal fade  mr-2 fixed-button  " id="idModalnewTariff" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content" style="background-color: rgba(255, 255, 255, 0.888) ;">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-          </h5>
-          <h2 id="idCompanyId" style="opacity: 0;">
-            <%=profile.CompanyID%>
-          </h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- <form action="" name="formTariff"> -->
-          <div class="">
-            <div class="container row">
-              <div class="container-fluid col-lg-4">
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">Name</span>
-                  <input name="tariffname" id="idCompTariffname+" type="text" class="form-control" placeholder="tariffname" aria-label="Username" aria-describedby="basic-addon1"  >
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">Rent </span>
-                  <input name="Rent-Single" id="idRent-Single+" type="number" class="form-control" placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1" > 
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">Offer Price </span>
-                  <input name="Rent-Single" id="idSpecialRent+" type="number" class="form-control" placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1" >
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">Extra person</span>
-                  <input name="ExtraPerson" id="idExtraPerson+" type="number" class="form-control" placeholder="ExtraPerson" aria-label="ExtraPerson" aria-describedby="basic-addon1" >
-                </div>
-                <div class="input-group mb-2">
-                  <label class="input-group-text col-4" id="basic-addon1" for="#idincludeChild">includeChild</label>
-                  <div class="form-control">
-                    <input name="includeChild" id="idincludeChild+" type="checkbox" class="form-check-input"  
-                    aria-label="includeChild" aria-describedby="basic-addon1">
-                  </div>
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">Item Name </span>
-                  <input name="Itemname" id="IdItemname" type="text" class="form-control" placeholder="Item Name " aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">Tax Rate </span>
-                  <input name="Taxrate" id="IdTaxrate+" type="number" class="form-control" placeholder="Tax Rate" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">Tariff Index </span>
-                  <input name="TariffIndex" id="IdTariffIndex+" type="text" readonly="true" class="form-control" placeholder="tariffId" aria-label="Username" aria-describedby="basic-addon1" value="">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">default Plan </span>
-                  <input name="DefaultPlan" id="IdDefaultPlan+" type="text" readonly="true" class="form-control" placeholder="tariffId" aria-label="Username" aria-describedby="basic-addon1"  >
-                </div>
-              </div>
-              <div class="container-fluid col-lg-8">
-                <div class="input-group mb-2">
-                  <span class="input-group-text col-4" id="basic-addon1">Plan Discription</span>
-                  <textarea class="form-control" id="iddiscription+" name="discription" rows="15rem" cols="100">  </textarea>
-                </div>
-              </div>
-              <div class="container-fluid col">
-              </div>
-            </div>
-          </div>
-        </div>..
-        <div class="modal-footer">
-          <button type="button" value=" " onclick="EnabletariiModal(event.target.value)" class="btn btn-warning bi bi-pencil">EDIT </button>
-          <button type="button" class="btn btn-secondary bi bi-x-octagon" data-bs-dismiss="modal">CANCEL</button>
-          <button name="modalSubmit" type="button" onclick="saveTariffToCompanies('')" value="" class="btn btn-success bi bi-send">SAVE</button>
-        </div>
-        <!-- </form> -->
-      </div>
-    </div>
-  </div>
-
-  <% if (availablerooms) { %>
-   
-  
-  <% availablerooms.forEach(items=> { %>
-    <div class="modal fade  mr-2 fixed-button" data-backdrop="static" id="<%= items.roomIndex %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content" style="background-color: rgba(255, 255, 255, 0.888) ;">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-            </h5>
-            <h2 id="idCompanyId<%= items.roomIndex %>" style="opacity: 0;">
-              <%=profile.CompanyID%>
-            </h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="container-fluid row d-flex">
-              <div class="col container-fluid">
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Room Name </span>
-                      <input name="roomname" id="idroomname<%= items.roomIndex %>" value="<%= items.roomName %>" type="text" class="form-control" placeholder="Room name"
-                          aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Room Number</span>
-                      <input name="roomnumber" id="idroomnumber<%= items.roomIndex %>" type="number" value="<%= items.roomNumber %>" class="form-control"
-                          placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Intercom</span>
-                      <input name="Intercom   " id="idIntercom<%= items.roomIndex %>" value="<%= items.interCom %>" type="text" class="form-control"
-                          placeholder="intercom" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Category</span>
-                        <% if (tariffPackages) { %>
-                         
-                        
-                      <select id="idTariffIndex<%= items.roomIndex %>" name="TariffIndex" class="btn rounded btn-light text-secondary col-8" ><% tariffPackages.forEach(function(item) { %>
-                              <% if (item.isActive) { %>
-                                <option class="" value="<%= item.tariffIndex %>" > <%= item.tariffName %></option>   
-                              <% } %>  
-                            
-                              <% }); %>
-                              
-                            </select>
-                            <% } %>    
-                  </div>
-                  
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Size(Sqf)</span>
-                      <input name="Room Size" value="<%= items.size %>"  id="idroomsize<%= items.roomIndex %>" type="number" class="form-control" placeholder="floor"
-                          aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1<%= items.roomIndex %>">Floor</span>
-                       <% if (floors) { %>
-                        
-                       
-                          <select id="idFloorindex<%= items.roomIndex %>" name="Floorindex" class="btn btn-light border-none rounded text-secondary col-8" ><% floors.forEach(function(item) { %>
-                              <option selected value="<%= item.floorindex %>"  > <%= item.floorname %></option>
-                          <% }); %>
-                      </select>
-                      <% } %>
-                  </div>
-                  
-              </div>
-              <div class="col container-fluid">
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Roomindex</span>
-                      <input name="Roomindex" id="IdRoomindexvalue<%= items.roomIndex %>"value="<%= items.roomIndex %>"  type="text" class="form-control"
-                          placeholder="New"  readonly="true" aria-label="Username"  aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Max Occupany</span>
-                      <input name="MaxOccupany" id="IdMaxOccupancy<%= items.roomIndex %>" value="<%= items.maxOccupancy %>" type="number" class="form-control"
-                          placeholder="Max Occupany" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Normal Occupany</span>
-                      <input name="NormalOccupancy" id="idNormalOccupancy<%= items.roomIndex %>" type="number" value="<%= items.NormalOccupancy %>" class="form-control"
-                          placeholder="NOrmal Occupany" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Min Occupany</span>
-                      <input name="MinOccupany" id="IdMinOccupany<%= items.roomIndex %>" type="number" class="form-control" value="<%= items.minimumPax %>"
-                          placeholder="Min Occupany" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">GuestId</span>
-                      <input name="GuestId" id="IdGuestId<%= items.roomIndex %>" type="text" class="form-control" placeholder="GuestID"
-                          readonly="true" aria-label="Username" aria-describedby="basic-addon1" value="<%= items.guestID %>" > 
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Checkinref</span>
-                      <input name="CheckinRef" id="IdCheckinref<%= items.roomIndex %>" type="text" class="form-control" readonly="true"
-                          placeholder="CheckinRef" aria-label="Username" aria-describedby="basic-addon1" value="<%= items.checkinId %>"> 
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Status</span>
-                      <input name="Status" id="IDStatus<%= items.roomIndex %>" type="text" class="form-control" readonly="true"
-                          placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1"value="<%= items.status %>" >
-                  </div>
-             </div>
-              <div class="col container-fluid">
-                  <div class=" d-flex">
-                      <label class="input-group-text" for="idBilling">Billing</label> <input    type="checkbox" name="Billing" id="idBilling<%= items.roomIndex %>">
-                      <label class="input-group-text" for="idRentout">Rented Out</label> <input   type="checkbox" name="Rentout" id="idRentout<%= items.roomIndex %>">
-                      <label class="input-group-text" for="IdBlocked1">Blocked</label> <input   type="checkbox" name="Blocked" id="IdBlocked1<%= items.roomIndex %>">
-                      
-                      
-                  </div>
-                  <h6 class="text-secondary" >Images</h6>  
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Room Images</span>
-                      <input name="roomiMages" id="IdImages<%= items.roomIndex %>" type="file" class="form-control btn" multiple 
-                      placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
-                  </div> 
-                  <div class="container-fluid d-flex">
-                      <button id="IdRoomgaeTile1<%= items.roomIndex %>" class="btn btn-outline-secondary imagebutton" type="button"></button>
-                      <button class="btn btn-outline-secondary imagebutton" type="button"></button>
-                      <button class="btn btn-outline-secondary imagebutton" type="button"></button>
-                  </div>
-                  
-                  
-            
-              </div>
-              <div class="col container-fluid ">
-                <button id="Bt_Save_Update" name="floorIndex"value="<%= items.roomIndex %>"  onclick="SaveRooms(event.target.value)" class="btn btn-success bi bi-send-plus-fill" type="submit"> </button>
-                <button class="btn btn-dark bi bi-trash3"  onclick="deleteRoom()" type="button"> </button>
-                <button  class="btn btn-warning bi bi-pencil-fill" onclick="MakeRoomreadOnlyFalse()"  type="button"> </button>           
-                <button  class="btn btn-primary bi bi-file-earmark-plus" onclick="CreatenewHuman()"  type="submit"> </button>            
-        </div>
-          </div>
-          </div>..
-           
-          <!-- </form> -->
-        </div>
-      </div>
-    </div>
-
-
-  <% }) %>
-  <% } %>     
-
-<% if (tariffPackages) { %>
- 
-
-  <% tariffPackages.forEach(element=> { %>
-    <!-- Scrollable modal -->
-    <div class="modal fade  mr-2 "  id="<%=element.tariffName%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content" style="background-color: rgb(255, 255, 255) ;">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <%=element.tariffName%>
-            </h5>
-            <h2 id="idCompanyId" style="opacity: 0;">
-              <%= profile.CompanyID %>
-            </h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!-- <form action="" name="formTariff"> -->
-            <div class="">
-              <div class="container row">
-                <div class="container-fluid col-lg-4">
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Name</span>
-                    <input name="tariffname" id="idCompTariffname+<%=element.tariffIndex%>" type="text" class="form-control" placeholder="tariffname" aria-label="Username" aria-describedby="basic-addon1" value="<%=element.tariffName  %>">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Rent </span>
-                    <input name="Rent-Single" id="idRent-Single+<%=element.tariffIndex%>" type="number" class="form-control" placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1" value="<%=element.roomRentSingle  %>">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Offer Price </span>
-                    <input name="Rent-Single" id="idSpecialRent+<%=element.tariffIndex%>" type="number" class="form-control" placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1" value="<%=element.SpecialRent  %>">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Extra person</span>
-                    <input name="ExtraPerson" id="idExtraPerson+<%=element.tariffIndex%>" type="number" class="form-control" placeholder="ExtraPerson" aria-label="ExtraPerson" aria-describedby="basic-addon1" value="<%=element.extraPerson  %>">
-                  </div>
-                  <div class="input-group mb-2">
-                    <label class="input-group-text col-4" id="basic-addon1" for="#idincludeChild">includeChild</label>
-                    <div class="form-control">
-                      <input name="includeChild" id="idincludeChild+<%=element.tariffIndex%>" type="checkbox" class="form-check-input" <%=element.includeChild ? 'checked' : '' %> aria-label="includeChild" aria-describedby="basic-addon1">
+        <div class="container-fluid col-2 border w-100 m-0 p-0">
+            <div class="container-fluid w-100">
+                <button class="border btn w-100 btn-primary  rounded">
+                USERS
+                </button>
+                <div class="container-fluid d-flex border btn  rounded " style="height: 60px;">
+                    <input id="idSearchtextUser" onkeyup="searchUser(event.target.value)" class="text col-9 border  rounded" type="text">
+                    <div class=" btn ">
+                        <input type="checkbox" onchange="loadActiveuser(event.target.value)" value="<%=JSON.stringify(activeUsers) %> " name="" id="idadminActiveUser">
+                    <label class="text h-100" style="font-size: 10px; ;" for="idActiveUser" >Active</label>
                     </div>
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Item Name </span>
-                    <input name="Itemname" id="IdItemname+<%=element.tariffIndex%>" type="text" class="form-control" placeholder="Item Name " aria-label="Username" aria-describedby="basic-addon1" value="<%=element.itemname%>">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Tax Rate </span>
-                    <input name="Taxrate" id="IdTaxrate+<%=element.tariffIndex%>" type="text" class="form-control" placeholder="Tax Rate" aria-label="Username" aria-describedby="basic-addon1" value="<%=element.tax%>">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Tariff Index </span>
-                    <input name="TariffIndex" id="IdTariffIndex+<%=element.tariffIndex%>" type="text" readonly="true" class="form-control" placeholder="tariffId" aria-label="Username" aria-describedby="basic-addon1" value="<%=element.tariffIndex%>">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">default Plan </span>
-                    <input name="DefaultPlan" id="IdDefaultPlan+<%=element.tariffIndex%>" type="text" readonly="true" class="form-control" placeholder="tariffId" aria-label="Username" aria-describedby="basic-addon1" value="<%=element.itemname%>">
-                  </div>
+                     
                 </div>
-                <div class="container-fluid col-lg-8">
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Plan Discription</span>
-                    <textarea class="form-control" id="iddiscription+<%=element.tariffIndex%>" name="discription" rows="15rem" cols="100"> <%=element.Discription %></textarea>
-                  </div>
+                <div id="idlistusers" class="container-fluid" >
+                <% activeUsers.forEach(user => { %>
+                    <div class="container-fluid d-flex border btn  rounded ">
+                        <div class="container-fluid w-100 col-9 " disabled >
+                            <small class="text-left btn w-100 rounded text-dark justify-content-start " style="font-size: 10px;" >
+                                <small class="text-primary" style="font-size: 15px;"> <%= user.firstName %>  </small> <br>
+                                <%= user.contactNumber %><br>
+                                <%= user.email %>  
+                               
+                            </small> 
+                        </div>
+                        <div class="btn col-3  w-100 rounded text-secondary justify-content-start ">
+                            <% if (user.Active) { %>
+                                <button  value="<%-user.hrId  %>" onclick="activateUser(event.target.value)" id="idbtActivateuser<%-user.hrId  %>" class="btn text-danger bi bi-pause-circle-fill"  > </button>
+                                <% } else { %>
+                                    <button  value="<%-user.hrId  %>" onclick="activateUser(event.target.value)" id="idbtActivateuser<%-user.hrId  %>" class="btn text-success bi bi-play-fill"  > </button>
+                            <% } %>
+                        </div>
+                    </div> 
+                <% }) %>
                 </div>
-                <div class="container-fluid col">
-                </div>
-              </div>
             </div>
-          </div>..
-          <div class="modal-footer">
-            <button type="button" value="<%=element.tariffIndex%>" onclick="EnabletariiModal(event.target.value)" class="btn btn-warning bi bi-pencil">EDIT </button>
-            <button type="button" class="btn btn-secondary bi bi-x-octagon" data-bs-dismiss="modal">CANCEL</button>
-            <button name="modalSubmit" type="button" onclick="saveTariffToCompanies(event.target.value)" value="<%=element.tariffIndex%>" class="btn btn-success bi bi-send">SAVE</button>
-            <button name="modalSubmit" type="button" onclick="deleteTariffPermanently(event.target.value)" value="<%=element.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-success bi bi-send"> DELETE </button>
-          </div>
-          <!-- </form> -->
         </div>
-      </div>
-    </div>
-    <% }) %>
-    
-    <% } %>    
-    <div class="modal fade  mr-2 fixed-button  " id="idModalnewTariff" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content" style="background-color: rgba(255, 255, 255, 0.888) ;">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-            </h5>
-            <h2 id="idCompanyId" style="opacity: 0;">
-              <%=profile.CompanyID%>
-            </h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!-- <form action="" name="formTariff"> -->
-            <div class="">
-              <div class="container row">
-                <div class="container-fluid col-lg-4">
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Name</span>
-                    <input name="tariffname" id="idCompTariffname+" type="text" class="form-control" placeholder="tariffname" aria-label="Username" aria-describedby="basic-addon1"  >
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Rent </span>
-                    <input name="Rent-Single" id="idRent-Single+" type="number" class="form-control" placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1" > 
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Offer Price </span>
-                    <input name="Rent-Single" id="idSpecialRent+" type="number" class="form-control" placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1" >
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Extra person</span>
-                    <input name="ExtraPerson" id="idExtraPerson+" type="number" class="form-control" placeholder="ExtraPerson" aria-label="ExtraPerson" aria-describedby="basic-addon1" >
-                  </div>
-                  <div class="input-group mb-2">
-                    <label class="input-group-text col-4" id="basic-addon1" for="#idincludeChild">includeChild</label>
-                    <div class="form-control">
-                      <input name="includeChild" id="idincludeChild+" type="checkbox" class="form-check-input"  
-                      aria-label="includeChild" aria-describedby="basic-addon1">
-                    </div>
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Item Name </span>
-                    <input name="Itemname" id="IdItemname" type="text" class="form-control" placeholder="Item Name " aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Tax Rate </span>
-                    <input name="Taxrate" id="IdTaxrate+" type="number" class="form-control" placeholder="Tax Rate" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Tariff Index </span>
-                    <input name="TariffIndex" id="IdTariffIndex+" type="text" readonly="true" class="form-control" placeholder="tariffId" aria-label="Username" aria-describedby="basic-addon1" value="">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">default Plan </span>
-                    <input name="DefaultPlan" id="IdDefaultPlan+" type="text" readonly="true" class="form-control" placeholder="tariffId" aria-label="Username" aria-describedby="basic-addon1"  >
-                  </div>
-                </div>
-                <div class="container-fluid col-lg-8">
-                  <div class="input-group mb-2">
-                    <span class="input-group-text col-4" id="basic-addon1">Plan Discription</span>
-                    <textarea class="form-control" id="iddiscription+" name="discription" rows="15rem" cols="100">  </textarea>
-                  </div>
-                </div>
-                <div class="container-fluid col">
-                </div>
-              </div>
-            </div>
-          </div>..
-          <div class="modal-footer">
-            <button type="button" value=" " onclick="EnabletariiModal(event.target.value)" class="btn btn-warning bi bi-pencil">EDIT </button>
-            <button type="button" class="btn btn-secondary bi bi-x-octagon" data-bs-dismiss="modal">CANCEL</button>
-            <button name="modalSubmit" type="button" onclick="saveTariffToCompanies('')" value="" class="btn btn-success bi bi-send">SAVE</button>
-          </div>
-          <!-- </form> -->
-        </div>
-      </div>
-    </div>
-  
+    </div>    
+</div>
 
-    <div class="modal fade mr-2 fixed-button" id="idModalnewRoom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-      <div class="modal-dialog modal-xl">
-          <div class="modal-content" style="background-color: rgba(255, 255, 255, 0.888);">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel"></h5>
-                  <h2 id="idCompanyId" style="opacity: 0;"><%=profile.CompanyID%></h2>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-            <div class="container-fluid row d-flex">
-              <div class="col container-fluid">
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Room Name </span>
-                      <input name="roomname" id="idroomname" type="text" class="form-control" placeholder="Room name"
-                          aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Room Number</span>
-                      <input name="roomnumber" id="idroomnumber" type="number" class="form-control"
-                          placeholder="Room number" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Intercom</span>
-                      <input name="Intercom   " id="idIntercom" type="text" class="form-control"
-                          placeholder="intercom" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Category</span>
-                      <% if (tariffPackages) { %>
-                       
-                      
-                          <select id="idTariffIndex" name="TariffIndex" class="btn rounded btn-light text-secondary col-8" ><% tariffPackages.forEach(function(item) { %>
-                            <% if (item.isActive) { %>
-                              <option class="" value="<%= item.tariffIndex %>" > <%= item.tariffName %></option>   
-                            <% } %><% }); %>
-                          </select>
-                          <% } %>  
-                  </div>
-                  
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Size(Sqf)</span>
-                      <input name="Room Size" id="idroomsize" type="number" class="form-control" placeholder="floor"
-                          aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-4" id="basic-addon1">Floor</span>
-                       <% if (floors) { %>
-                        
+<script>
+    window.onload = function () {
+      myloadGraph();
+    };
+    function myloadGraph() {
 
-                          <select id="idFloorindex" name="Floorindex" class="btn btn-light border-none rounded text-secondary col-8" ><% floors.forEach(function(item) { %>
-                              <option value="<%= item.floorindex %>"  > <%= item.floorname %></option>
-                          <% }); %>
-                      </select>
-                      <% } %>                       
-                  </div>
-                  
-              </div>
-              <div class="col container-fluid">
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Roomindex</span>
-                      <input name="Roomindex" id="IdRoomindexvalue" type="text" class="form-control"
-                          placeholder="New"  readonly="true" aria-label="Username"  aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Max Occupany</span>
-                      <input name="MaxOccupany" id="IdMaxOccupancy" type="number" class="form-control"
-                          placeholder="Max Occupany" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Normal Occupany</span>
-                      <input name="NormalOccupancy" id="idNormalOccupancy" type="number" class="form-control"
-                          placeholder="NOrmal Occupany" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Min Occupany</span>
-                      <input name="MinOccupany" id="IdMinOccupany" type="number" class="form-control"
-                          placeholder="Min Occupany" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">GuestId</span>
-                      <input name="GuestId" id="IdGuestId" type="text" class="form-control" placeholder="GuestID"
-                          readonly="true" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Checkinref</span>
-                      <input name="CheckinRef" id="IdCheckinref" type="text" class="form-control" readonly="true"
-                          placeholder="CheckinRef" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Status</span>
-                      <input name="Status" id="IDStatus" type="text" class="form-control" readonly="true"
-                          placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-             </div>
-              <div class="col container-fluid">
-                  <div class=" d-flex">
-                      <label class="input-group-text" for="idBilling">Billing</label> <input    type="checkbox" name="Billing" id="idBilling">
-                      <label class="input-group-text" for="idRentout">Rented Out</label> <input   type="checkbox" name="Rentout" id="idRentout">
-                      <label class="input-group-text" for="IdBlocked1">Blocked</label> <input   type="checkbox" name="Blocked" id="IdBlocked1">
-                      
-                      
-                  </div>
-                  <h6 class="text-secondary" >Images</h6>  
-                  <div class="input-group mb-3">
-                      <span class="input-group-text col-5" id="basic-addon1">Room Images</span>
-                      <input name="roomiMages" id="IdImages" type="file" class="form-control btn" multiple 
-                      placeholder="Floor" aria-label="Username" aria-describedby="basic-addon1">
-                  </div> 
-                  
-                  
-            
-              </div>
-              <div class="col container-fluid ">
-                <button id="Bt_Save_Update" name="floorIndex" value="" onclick="SaveRooms('')" class="btn btn-success bi bi-send-plus-fill" type="submit"> </button>
-                <button class="btn btn-dark bi bi-trash3" onclick="deleteRoom()" type="button"> </button>
-                <button  class="btn btn-warning bi bi-pencil-fill" onclick="MakeRoomreadOnlyFalse()"  type="button"> </button>           
-                <button  class="btn btn-primary bi bi-file-earmark-plus" onclick="CreatenewHuman()"  type="submit"> </button>            
-        </div>
-          </div>
-          </div>..
-           
-          <!-- </form> -->
-        </div>
-      </div>
-    </div>
-    
-     
-    
-<script src="/Script/Companies.js"> </script>
+      const Graphdata = document.getElementById("idGraphData").value;
+         
+      const booking = JSON.parse(Graphdata);
+      const labels = booking.map(item => item.transdate.split('T')[0])
+      const data = booking.map(item => item.totalRoom)
+ 
+      const ctx = document.getElementById('myChart');
+ 
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'RESERVATION STATUS',
+            data: data,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
 
+
+    }
+</script>
+<script src="/Script/adminPage.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <%- include('footer') %>

@@ -4,9 +4,12 @@ const router  = express.Router()
 const HBank = require('../model/humanbank')
 const checkin = require('../model/checkIn')
 const reserv = require('../functions/reservation')
+const fntcompany = require('../functions/company')
 const utils = require('../functions/commonUtils')
 
-router.get('/',(req,res)=>{
+
+router.get('/',async (req,res)=>{
+   
     res.render('adminlogin')
 })
 module.exports = router
@@ -23,9 +26,33 @@ router.post('/adminLogin',async (req,res)=>{
 
 })
 
+router.post('/disableUser',async (req,res)=>{
+    const active =await  HBank.HumanResource.findOne({hrId:req.body.hrId},{Active:1,_id:0})
+    console.log(active);
+    let result ={
+        active:false,
+        message:''
+    }
+    if(active.Active){
+        await HBank.HumanResource.updateOne({hrId:req.body.hrId},{$set:{Active:false,activeSession:null}})
+        result.active=false;
+        result.message='user disabled'
+    }
+    else{
+        await  HBank.HumanResource.updateOne({hrId:req.body.hrId},{$set:{Active:true}})
+        result.active=true;
+        result.message='user activated'
+    }
+    res.json( result)
+})
+
+
 router.get('/dashboard',async (req,res)=>{
     req.body.session = req.sessionID;
-    const result =await HBank.verifyUser(req.body)   
+    const result =await HBank.verifyUser(req.body)  
+    const activeUsers =  await  HBank.HumanResource.find({deleted:false},{hrId:1,_id:0,firstName:1,email:1,contactNumber:1,Active:1})  
+    const hotels = await fntcompany.getCompanySummary()
+    console.log(activeUsers);
 
     let user = ''
     if(result.verified){
@@ -60,7 +87,7 @@ router.get('/dashboard',async (req,res)=>{
                 }
                  
         
-           res.render('adminDashBoard',{user,bookings})
+           res.render('adminDashBoard',{user,bookings,activeUsers,hotels})
     }
     else{
         

@@ -15,7 +15,6 @@ router.get('/floorMap', verifyAccess.VerifyAccess, async (req, res) => {
     let rooms = await department.getRoomsWithTariffDetails();
     let tariff = await tarifftype.loadtariff('')
     let floor = await floors.loadAllFloor();
-    
     res.render('floorMap', { rooms, tariff,floor })
 })
 

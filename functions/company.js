@@ -25,14 +25,32 @@ allcompany.map( (async hotel=>{
         activeTariff : activeroomTypes.length,
         activePlans: activePlans.length ,
         totalRooms : ActiveRooms.length
-
     }
     summary.push(data)
 }))  
  
 return summary
 }
-
-module.exports = {getCompanySummary} 
+async function changeCompanyActiveNot(reqObj){
+    let result ={
+        active:false,
+        message:''
+    }
+const Active =  await company.company.findOne({CompanyID:reqObj.CompanyID},{_id:0,Active:1})
+ 
+if(Active.Active){
+    const update  = await company.company.updateOne({CompanyID:reqObj.CompanyID},{$set:{Active:false}})
+        result.active=false  
+        result.message= 'company deactivated'
+}
+else{
+    const update = await company.company.updateOne({CompanyID:reqObj.CompanyID},{$set:{Active:true}})
+        result.active=true  
+        result.message= 'company Activated'
+}
+ 
+return result;
+}
+module.exports = {getCompanySummary,changeCompanyActiveNot  }
 
 

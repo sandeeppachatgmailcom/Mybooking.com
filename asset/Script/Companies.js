@@ -641,3 +641,21 @@ async function updateReservationWithRoom(bookidDetails) {
 
     }
 }
+
+async function unlinkAssignedReservation(occupancyIndex){
+    const data = {
+        occupancyIndex:occupancyIndex,
+         
+    }
+    const result = await fetch('/hotel/unlinkRoom',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)}) 
+    .then(res=>{
+        return res.json()
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+    console.log(result);
+    if(result.unlink){
+        window.location.reload();
+    }
+    }

@@ -64,7 +64,6 @@ router.post('/confirmBooking',(req,res)=>{
 })
 
 router.post('/customSearch',async (req,res)=>{
-    console.log('/customSearch REACHED ');  
     let user = await human.HumanResource.findOne({activeSession:req.sessionID})
     if (!user)
     user = {};
@@ -75,12 +74,11 @@ router.post('/customSearch',async (req,res)=>{
     
     inputData.GuestCount = parseInt(inputData.GuestCount)
     inputData.nameRoomCount = parseInt(inputData.nameRoomCount)
-    console.log(inputData,'inputDatainputDatainputDatainputDatainputDatainputDatainputData');
     const pincode = generalData.forEach(element => {
         district.add(element.district )
     });
         
-     let result = await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false})
+     let result = await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false,Active:true})
         res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
         
     
@@ -115,7 +113,7 @@ router.get('/customSearch',async (req,res)=>{
         district.add(element.district )
     });
         
-     let result = await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false})
+     let result = await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false,Active:true})
         res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
  })
 

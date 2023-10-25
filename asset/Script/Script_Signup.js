@@ -523,11 +523,14 @@ const result = await fetch('/authenticate/hotelLogin',{method:'post',headers:{"C
 .catch(err=>{
     console.log(err);
 })
-if(result.verified){
+if(result.verified&& result.companyActive){
     window.location.href=result.path
 }
+else if(result.verified&& !result.companyActive){
+    document.getElementById('idInfoVendureLogin').textContent ='Your Company id is not Active, please contact the admin'
+}
 else{
-    document.getElementById('idInfoVendureLogin').textContent ='invalid text login details'
+    document.getElementById('idInfoVendureLogin').textContent =result.message
 }
 }
 

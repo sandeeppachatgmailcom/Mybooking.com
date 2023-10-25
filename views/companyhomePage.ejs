@@ -66,12 +66,8 @@
           <form action="/Company/loadReservations" method="get">
               <button class="btn border btn-success col-12 col "> Reservation Details </button>
           </form>
-          <form action="/Company/loadPayments" method="get">
-              <button class="btn border btn-success col-12 col "> Collection Details </button>
-          </form>
-          <form action="/Company/loadGallery" method="get">
-              <button class="btn border btn-success col-12 col "> Gallery </button>
-          </form>
+           
+           
           </div>
           <div class="col-10 container-fluid d-flex border rounded"  >
             <div class="col-6 container-fluid "  >
@@ -108,10 +104,11 @@
                                                                  
                               </td>
                               <td >
+                                <%= console.log(occupancy) %>
                                 <% if (occupancy.room) { %>
                                   <div class="container-fluid d-flex"> 
                                     <button class="btn btn-warning col-6 bi bi-journal-bookmark-fill "> <%= occupancy.room.roomName %> </button>
-                                    <button class="btn btn-danger col-6 bi bi-trash3 "> Unlink  </button>
+                                    <button onclick="unlinkAssignedReservation(event.target.value)" value="<%= occupancy.occupancyIndex %>" class="btn btn-danger col-6 bi bi-trash3 "> Unlink  </button>
                                   
                                   </div>
                                   <% } else { %>
@@ -119,7 +116,7 @@
                                     <button type="button " onclick="updateReservationWithRoom(event.target.value)" value="<%=JSON.stringify(occupancy) %>"  class="btn btn-sm btn-success bi bi-power col-5 "> SAVE</button>  
                                     <select  class="btn col-12"  name="nameAvailableRoom" id="idAvailableRoom<%= occupancy.occupancyIndex %>" >
                                       <option  value="">  </option> 
-                                      <%= console.log(occupancy.room,'occupancy.roomoccupancy.roomoccupancy.roomoccupancy.room') %>
+                                       
                                           <option  value="">  </option> 
                                       </select> 
                                 

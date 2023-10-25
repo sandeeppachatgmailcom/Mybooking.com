@@ -46,6 +46,12 @@ const Newcheckin = new mongoose.Schema({
   createUser: { type: String },
   totalAmount:{type:Number},
   transDate:{type:Date,default:Date.now()},
+  occupancyDetails:[
+    {contactNumber:{type:String},
+    Name:{type:String},
+    hrId:{type:String},
+    }
+  ]
   
 })
 const checkinDetails = db.model('checkinDetail', Newcheckin);

@@ -187,7 +187,10 @@ function readmore() {
   document.getElementById("idTariffDetails").innerHTML = `
   <div class="container-fluid" >
     <div class="container-fluid d-flex  border btn" style="height :400px ;background-size: cover;background-position: center;">
-        <img src="${result.image1}" class="card-img-top" alt="...">
+    <img src="${result.image1}" class="card-img-top col-4" alt="...">
+    <img src="${result.image2}" class="card-img-top col-4" alt="...">
+    <img src="${result.image3}" class="card-img-top col-4" alt="...">
+    
     </div>
     <div class="container-fluid d-flex justify-content-evenly border btn" >
          <h6 class="card-title" style="text-transform: uppercase;">${result.firstName}</h6> 

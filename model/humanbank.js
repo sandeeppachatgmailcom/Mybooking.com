@@ -41,6 +41,14 @@ const humanResourceSchema = new mongoose.Schema({
 });
 const HumanResource = db.model('USER', humanResourceSchema);
 
+
+
+
+ 
+            
+            
+            
+              
 async function saveHuman(NewHumanObj) {
     if (!NewHumanObj.hrId) { NewHumanObj.hrId = await Controller.getIndex('humanBank') }
     if (!NewHumanObj.isAdmin) { NewHumanObj.isAdmin = false }
@@ -94,36 +102,93 @@ async function verifyUser(userObject){
     if(userObject.path=='/verifyUsenameWithPassword'){
         userObject.session="noactivesession"
     }
-    const user = await  HumanResource.findOne({activeSession:userObject.session})
-    
+    const user = await HumanResource.findOne({activeSession:userObject.session},{password:0,_id:0})
+    console.log(user);
     if(user){
-        user.companyID = await company.company.findOne({email:user.email},{CompanyID:1,_id:0})
+        user.companyID = await company.company.findOne({email:user.email},{CompanyID:1,Active:1 ,_id:0})
         if(!user.companyID)user.companyID = {}
-        return {verified:true,user:user.firstName,userdetails:user,company:user.companyID.CompanyID};
+            return {verified:true,
+                user:user.firstName,
+                userdetails:user,
+                userActive:user.Active ,
+                userIsAdmin:user.isAdmin, 
+                company:user.companyID.CompanyID,
+                companyActive:user.companyID.Active,
+                message:'',
+                isAdmin:user.isAdmin,
+                user:user
+            };
     }
     else{
         
-        let verified = false;
+        let  verified = {
+            verified:'',
+            email:'',
+            user:'',
+            userdetails:'',
+            userActive:'',
+            isAdmin:'',
+            company:'',
+            companyActive:'',
+            message:'',
+            isAdmin:'',
+            user:'',
+        }
+
         const password = await HumanResource.findOne({email:userObject.userName},{_id:0})
         if(password){
+            password.companyID=await company.company.findOne({email:password.email},{CompanyID:1,Active:1 ,_id:0});
             const otpValidation = await OtpMaster.Otp.findOne({ authorisationname: userObject.userName, verified: false })
+            if(otpValidation){
+                verified =  {
+                    verified: false,
+                    otp: null,
+                    message:'Otp Validation Pending',
+                    userdetails: '',
+                    company:'',
+                    isAdmin:false
+                }
+                return verified
+            } 
             
             const result = await Controller.comparePassword(userObject.password, password.password)
-             
             if (result) {
                 if (userObject.path != '/verifyUsenameWithPassword') {
                     await HumanResource.updateOne({ email: userObject.userName }, { $set: { activeSession: userObject.session } })
                 }
-                verified = {
-                    verified: true,
-                    email: userObject.userName,
-                    userdetails:password
+                if (password.Active){
+                    verified = {
+                        verified:true,
+                        email: userObject.userName,
+                        user:password.firstName,
+                        userdetails:user,
+                        userActive:password.Active ,
+                        isAdmin:password.isAdmin,
+                        company:password.companyID.CompanyID,
+                        companyActive:password.companyID.Active,
+                        message:'Account is veryfied ,your profile is '+verified.userActive+'you have power to login'+company,
+                        isAdmin:password.isAdmin,
+                        user:password
+                    }
+                    return verified
+                }
+                else{
+                    verified = {
+                        verified: false,
+                        email: userObject.userName,
+                        userdetails:password,
+                        isAdmin:password.isAdmin,
+                        message:'blocked by the admin!!! '
+
+                    }
+                    return verified
                 }
             }
             else {
                 verified = {
                     verified: false,
-                    otp: null
+                    otp: null,
+                    message:"invalid credentials"
                 }
             }
             verified.user = password.firstName;
@@ -131,11 +196,11 @@ async function verifyUser(userObject){
         }
         return {
             verified: false,
-            otp: null
+            otp: null,
+            message:"not a valid user"
         }
     }
 }
-
 
 async function combiSearchHuman(searchValues) {
     const data = await HumanResource.find({

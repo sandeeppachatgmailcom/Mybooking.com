@@ -68,9 +68,9 @@
                                 </td>
                                 <td>
                                     <% if (hotel.active) { %>
-                                        <button  value="<%-user.hrId  %>"   class="btn text-danger bi bi-pause-circle-fill"  > </button>
+                                        <button  value="<%=hotel.companyId%>" onclick="activateCompany(event.target.value)"  id="idBtadminActivateCompany<%= hotel.companyId%>" class="btn text-danger bi bi-pause-circle-fill"> </button>
                                         <% } else { %>
-                                            <button  value="<%-user.hrId  %>"   class="btn text-success bi bi-play-fill"  > </button>
+                                            <button  value="<%= hotel.companyId %>" onclick="activateCompany(event.target.value)"  id="idBtadminActivateCompany<%= hotel.companyId%>"  class="btn text-success bi bi-play-fill"> </button>
                                     <% } %>
                                 </td>
                             </tr>
@@ -96,8 +96,8 @@
                 <% activeUsers.forEach(user => { %>
                     <div class="container-fluid d-flex border btn  rounded ">
                         <div class="container-fluid w-100 col-9 " disabled >
-                            <small class="text-left btn w-100 rounded text-dark justify-content-start " style="font-size: 10px;" >
-                                <small class="text-primary" style="font-size: 15px;"> <%= user.firstName %>  </small> <br>
+                            <small class="text-left btn w-100 rounded text-dark justify-content-start "  style="text-transform: lowercase; font-size: 10px;" >
+                                <small class="text-primary" style="text-transform: uppercase; font-size: 14px;"> <%= user.firstName %>  </small> <br>
                                 <%= user.contactNumber %><br>
                                 <%= user.email %>  
                                
@@ -119,40 +119,7 @@
 </div>
 
 <script>
-    window.onload = function () {
-      myloadGraph();
-    };
-    function myloadGraph() {
-
-      const Graphdata = document.getElementById("idGraphData").value;
-         
-      const booking = JSON.parse(Graphdata);
-      const labels = booking.map(item => item.transdate.split('T')[0])
-      const data = booking.map(item => item.totalRoom)
- 
-      const ctx = document.getElementById('myChart');
- 
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'RESERVATION STATUS',
-            data: data,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-
-
-    }
+   
 </script>
 <script src="/Script/adminPage.js"> </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

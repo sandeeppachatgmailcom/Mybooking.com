@@ -17,6 +17,7 @@ const nodeMailer = require('nodemailer')
 const randomString = require('randomstring') 
 const validation = require('../model/otpvalidation')
 const email = require('../controller/emailService')
+const server = 'http://localhost:5200/Images/';
 router.get('/',(req,res)=>{
     res.redirect('/')
 })
@@ -25,7 +26,8 @@ router.post('/hotelLogin',async (req,res)=>{
     req.body.session = req.sessionID; 
     const result =await HBank.verifyUser(req.body);
     console.log(result);
-    res.json({verified:result.verified,path:'/vedurehomepage/loadhomepage'})
+    result.path = '/vedurehomepage/loadhomepage'
+    res.json(result)
 })
 
 
@@ -150,8 +152,6 @@ router.post('/logout', async (req, res) => {
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     res.json(logout)
-
-
 })
 
 router.post('/findUser', async (req, res) => {
@@ -215,7 +215,6 @@ router.post('/verifyUsenameWithPassword',async (req,res)=>{
     const result =await HBank.verifyUser(req.body)
     res.json(result)
 })
-
 router.post('/changePassword',async (req,res)=>{
     const result =await HBank.changePassword(req.body);
     console.log(result); 
@@ -249,7 +248,6 @@ router.post('/VerifyEmail',async(req,res)=>{
      console.log(responseData);
      res.json(responseData);
 })
- 
  router.post('/verifyPhone', async (req,res)=>{
        
       const result = await HBank.HumanResource.findOne({contactNumber:req.body.phone})
@@ -263,7 +261,6 @@ router.post('/VerifyEmail',async(req,res)=>{
       res.json(responseData);
  
  })
- 
  router.post('/verifyUser', async (req,res)=>{
      const result = await HBank.HumanResource.findOne({username:req.body.username})
       
@@ -278,7 +275,6 @@ router.post('/VerifyEmail',async(req,res)=>{
  
  
  })
- 
  router.post('/authenticatelogin',  async(req,res)=>{
     
    const result = await HBank.HumanResource.findOne({username:req.body.username , password:req.body.password})
@@ -290,7 +286,6 @@ router.post('/VerifyEmail',async(req,res)=>{
        res.json({verified:false})
     }
  })
-     
  router.post('/signup',async (req, res) => {
    
     try {
@@ -336,9 +331,12 @@ router.post('/VerifyEmail',async(req,res)=>{
             isAdmin: req.body.isAdmin,
             isActive: req.body.Active,
             isloggedIn: req.body.isLoggedIn,
-            deleted:false
+            deleted:false,
+            profilePicture:server+hrid+'profilePicture',
+            wallPappper:server+hrid+'wallPappper'
         } 
         console.log('reachd backend');    
+       
         let saved = await HBank.HumanResource.updateOne({hrId: hrid},{$set:newUser},{upsert:true}) 
         console.log(newUser)    
         let result ;
@@ -354,17 +352,13 @@ router.post('/VerifyEmail',async(req,res)=>{
         res.status(500).json({ error: 'An error occurred' });
     }
 })
- 
- 
 router.get('/signup', (req, res) => {
     res.render('signup');
 })
-    
 router.post('/loadPincode',async (req,res)=>{
 const result =await pincode.loadPincode(req.body);
 res.json(result)
 })
-
 router.post('/loadUserCompany',async (req,res)=>{
         
     const result =await HBank.SearchHumanbyUsername(req.body)
@@ -374,8 +368,6 @@ router.post('/loadUserCompany',async (req,res)=>{
     const companyList =await companies.loadHuman(mobile);
     res.json(companyList);
 })
-
-
 router.post('/confirmOtp',async (req,res)=>{
     const result =await OTPValidate.validateOtp(req.body.email,req.body.otp);
     if(result.modifiedCount){
@@ -396,7 +388,6 @@ router.post('/SetOtpExpired',async (req,res)=>{
     }
     
 })
-
 router.post('/resendOtp',async (req,res)=>{
     console.log('reached here');
     const result =await OTPValidate.resendOtp(req.body.email,res.sessionID);

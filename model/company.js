@@ -110,7 +110,7 @@ async function saveCompany(objcompany) {
 
 async function SearchCompany(SerchKey) {
 
-    const data = await company.find({firstName: { $regex: `^${SerchKey}`, $options: 'i' }, deleted: false })
+    const data = await company.find({firstName: { $regex: `^${SerchKey}`, $options: 'i' }, deleted: false,Active:true })
     
     return data
 }

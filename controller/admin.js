@@ -1,11 +1,15 @@
-const express = require('express')
-const { route } = require('./rooms')
+const express = require('express') 
 const router  = express.Router()
 const HBank = require('../model/humanbank')
 const checkin = require('../model/checkIn')
 const reserv = require('../functions/reservation')
 const fntcompany = require('../functions/company')
 const utils = require('../functions/commonUtils')
+
+router.post('/activateCompany',async (req,res)=>{
+    const status =await  fntcompany.changeCompanyActiveNot(req.body)    
+    res.json(status)
+})
 
 
 router.get('/',async (req,res)=>{
@@ -18,10 +22,21 @@ router.post('/adminLogin',async (req,res)=>{
     req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)   
     if(result.verified){
-        res.json({verified:true,path:'/admin/dashBoard'})
+        if(result.isAdmin){
+            result.path='/admin/dashBoard'
+            console.log(result,'resultresult');
+            res.json(result)
+        }
+        else{
+            result.verified=true;
+            result.message = 'you are not a admin'
+            res.json(result)
+        }
+        
     }
     else{
-        res.json({verified:false,path:'/admin'})
+
+        res.json(result)
     }
 
 })
@@ -85,8 +100,6 @@ router.get('/dashboard',async (req,res)=>{
                     
                     tempDate.setDate(tempDate.getDate()+1)
                 }
-                 
-        
            res.render('adminDashBoard',{user,bookings,activeUsers,hotels})
     }
     else{

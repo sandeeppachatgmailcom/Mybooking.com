@@ -1,4 +1,73 @@
  
+ window.onload = function () {
+    myloadGraph();
+  };
+  function myloadGraph() {
+
+    const Graphdata = document.getElementById("idGraphData").value;
+       
+    const booking = JSON.parse(Graphdata);
+    const labels = booking.map(item => item.transdate.split('T')[0])
+    const data = booking.map(item => item.totalRoom)
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'RESERVATION STATUS',
+          data: data,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+
+  }
+
+async function activateCompany(CompanyID){
+
+const data = {
+  CompanyID:CompanyID
+}
+console.log(data);
+const result = await fetch('/admin/activateCompany',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
+.then(res=>{
+  return res.json()
+})
+.catch(err=>{
+  console.log(err);
+})
+console.log(result)
+
+const buttonActivate = document.getElementById('idBtadminActivateCompany'+CompanyID)
+console.log(buttonActivate);
+if(result.active){
+    buttonActivate.classList.remove('text-success');
+    buttonActivate.classList.add('text-danger');
+    buttonActivate.classList.remove('bi-play-fill');
+    buttonActivate.classList.add('bi-pause-circle-fill');
+    
+}
+else{
+    buttonActivate.classList.remove('text-danger');
+    buttonActivate.classList.add('text-success');
+    buttonActivate.classList.remove('bi-pause-circle-fill');
+    buttonActivate.classList.add('bi-play-fill');
+}
+
+
+}
+
 
 
 
@@ -148,13 +217,17 @@ async function adminlogin( email,password){
     .catch(err=>{
         console.log(err);
     })
-    if(result.verified){
+    console.log(result);
+      if(result.verified&&result.isAdmin&&result.userActive){
         window.location.href=result.path
+      }
+      else if(result.verified&&!result.isAdmin){
+        document.getElementById("idMessageBarAdminlogin").textContent = 'you are not an admin' 
+      }
+      else if(result.verified&&!result.userActive){
+        document.getElementById("idMessageBarAdminlogin").textContent ='Your id is not active'
+    
     }
-    else{
-        
-        document.getElementById("idMessageBarAdminlogin").textContent = 'Invalid Login Credential'
-    }
-    }
+}
 
    

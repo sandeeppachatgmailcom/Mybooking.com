@@ -1,0 +1,19 @@
+<%- include('header') %>
+<%- include('MenuBarCustomer') %>
+<div class="container-flex ">
+<div class=" container-flex d-flex ">
+ <% bookingDetails.forEach(booking => { %>
+  <div class="container-flex col-6 border ">
+    <small class="text text-primary" style="font-size: 15px;">  <%= booking.occupancyIndex %></small> <br>  
+    <small> <%= booking.reservationNumber %></small> <br>
+    <small> <%= booking.guest.firstName %></small> <br> 
+    <small> <%= booking.guest.contactNumber %></small> <br>  
+    <small> <%= booking.guest.email %></small> <br>  
+    <small> Arrival Date: <%= String(booking.arrivalDate).slice(0,15) %></small> <br> 
+    <small> Arrival Time : <%= String(booking.arrivalDate).slice(16,21) %></small>
+    
+  </div>
+ <% }) %>   
+</div>
+</div>
+<%- include('footer') %>

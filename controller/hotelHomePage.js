@@ -12,12 +12,34 @@ const checkinmaster = require('../model/checkIn');
 const payment = require('../model/payments');
 const reception = require('../model/checkinDetails')
 const dailyoccupancy = require('../model/occupancydetails')
+const fntReservation = require('../functions/reservation')
+
 
 
 router.get('/',(req,res)=>{
   res.render('login')
 })
 
+router.post('/addoccupancy',async (req,res)=>{
+  req.body.session = req.sessionID;
+  const verify = await HBank.verifyUser(req.body)
+  console.log(req.body.bookingID,'req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body');
+  if(verify.verified){
+    let  bookingDetails = await fntReservation.getReservationBybookingID(req.body.bookingID) 
+    console.log(bookingDetails)
+    const user =verify.user;
+     
+    res.render('RoomChart',{user,bookingDetails})
+  }
+  else {
+    res.redirect('/hotel')
+  }
+})
+router.post('/unlinkRoom',async (req,res)=>{
+  
+  const unlinkBooking  = await fntReservation.unlinkBooking(req.body)  
+  res.json(unlinkBooking)
+}) 
 
 router.post('/updateReservationWithRoom',async (req,res)=>{
   const dailydetails = await dailyoccupancy.occupancy.updateMany({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   
@@ -68,6 +90,9 @@ router.post('/loadAvailableRooms',async (req,res)=>{
   console.log(room,'room');
   res.json(room)
 })
+
+
+
 
 router.get('/loadhomepage', async (req, res) => {
    
@@ -144,6 +169,7 @@ router.get('/loadhomepage', async (req, res) => {
     if(!payments)  payments='';
     let occupancyDetails = await reception.loadIndividualBookingByCompany(profile.CompanyID);
    if(!occupancyDetails) occupancyDetails='';
+   console.log(tariffPackages);
   res.render('companyhomePage', { user, tariffPackages, profile, inputs,Plans,availablerooms,floors,category,reservation,payments,occupancyDetails });
   }
     else{

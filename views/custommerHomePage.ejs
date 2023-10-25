@@ -234,7 +234,10 @@
                         </div>
                         <div class="card-footer text-muted d-flex justify-content-end  rounded">
                             <button onclick="cancelBooking(event.target.value)" value="<%= element.reservationNumber %>" class="btn btn-danger col-1" >DELETE </button>
-                            <button class="btn btn-primary  ">ADD GUEST </button>
+                           <form action="/hotel/addoccupancy" method="post">
+                                <button onclick="addGuestDetails(event.target.value)" name="bookingID" value="<%= element.reservationNumber%>"  class="btn btn-primary  ">ADD GUEST </button>
+                           </form>
+                            
                         </div>
                     </div>
                 <% }) %>
@@ -466,6 +469,12 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
+ 
+
+
+
+
+
 function changeProfilePik() {
     const inputElement = document.getElementById('iduserProfilepik');
     const openFileDialogButton = document.getElementById('openFileDialogButton');

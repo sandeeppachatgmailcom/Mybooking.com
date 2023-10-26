@@ -1,13 +1,22 @@
 const mongoose = require('mongoose');
-const dbURI = 'mongodb+srv://sandeeppachat:Asd@123.com@cluster0.3tvy5da.mongodb.net/?tls=true'; // Replace 'mydatabase' with your actual database name
+const dbURI = "mongodb+srv://sandeeppachat:w6yGtOSj60IeUvXk@cluster0.s4hqvyg.mongodb.net/?retryWrites=true&w=majority"
+
+// let dbURI="mongodb://127.0.0.1:27017/HOST"
+// mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+//     .then(() => {
+//         console.log('DB Is Connected');
+//     })
+//     .catch((error) => {
+//         console.error('DB Connection Error:', error);
+//     });
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('DB Is Connected');
-    })
-    .catch((error) => {
-        console.error('DB Connection Error:', error);
-    });
+  .then(() => {
+    console.log('MongoDB connected successfully');
+  })
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
+  });
 
 const db = mongoose.connection;
 

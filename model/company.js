@@ -73,7 +73,7 @@ const  company = db.model('Company',NewCompany);
 
 async function saveCompany(objcompany) {
     if (!objcompany.CompanyID) { objcompany.CompanyID = await controller.getIndex('COMPANY') }
-    const server = 'http://localhost:5200/Images/';
+     
     if(objcompany.imagearray[0]=="http://localhost:5200/Images/"){objcompany.imagearray[0] =await company.findOne({ CompanyID: objcompany.CompanyID }, { image1: 1, _id: 0 })}
     if(objcompany.imagearray[1]=="http://localhost:5200/Images/"){objcompany.imagearray[1] =await company.findOne({ CompanyID: objcompany.CompanyID }, { image2: 1, _id: 0 })}
     const data = {
@@ -97,9 +97,9 @@ async function saveCompany(objcompany) {
         RegisteredDate:objcompany.RegisteredDate,
         deleted:objcompany.deleted,
         createduser:objcompany.createduser ,
-        image1:server+objcompany.CompanyID+'image1',
-        image2:server+objcompany.CompanyID+'image2',
-        image3:server+objcompany.CompanyID+'image3',
+        image1:objcompany.CompanyID+'image1',
+        image2:objcompany.CompanyID+'image2',
+        image3:objcompany.CompanyID+'image3',
         Companydiscription:objcompany.Companydiscription
        } 
    

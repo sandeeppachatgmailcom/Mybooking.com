@@ -3,7 +3,7 @@ const db = require('./mongoose'); // Ensure the correct path to your mongoose co
 const Controller = require('../controller/adminController')
 const OtpMaster = require('../model/otpvalidation')
 const company = require('../model/company')
-const server = 'http://localhost:5200/Images/';
+ 
 const humanResourceSchema = new mongoose.Schema({
     hrId: { type: String },
     firstName: { type: String, required: true },
@@ -80,8 +80,8 @@ async function saveHuman(NewHumanObj) {
         createduser: NewHumanObj.createduser,
         systemUser: NewHumanObj.systemUser,
         activeSession:NewHumanObj.session,
-        profilePicture:server+NewHumanObj.hrId+'profilePicture',
-        wallPappper:server+NewHumanObj.hrId+'wallPappper' 
+        profilePicture:NewHumanObj.hrId+'profilePicture',
+        wallPappper:NewHumanObj.hrId+'wallPappper' 
     }
      
     const result = await HumanResource.updateOne({ hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })

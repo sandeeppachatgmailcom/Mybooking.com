@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const dbURI = 'mongodb://127.0.0.1:27017/HOST'; // Replace 'mydatabase' with your actual database name
+const dbURI = 'mongodb+srv://sandeeppachat:Asd@123.com@cluster0.3tvy5da.mongodb.net/?tls=true'; // Replace 'mydatabase' with your actual database name
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {

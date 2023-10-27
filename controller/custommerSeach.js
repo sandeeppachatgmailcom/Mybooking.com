@@ -79,7 +79,7 @@ router.post('/customSearch',async (req,res)=>{
     });
         
      let result = await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false,Active:true})
-        res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
+        res.render('detailedSearch',{user,result,generalData,tariff,district,inputData,pincode} )
         
     
     

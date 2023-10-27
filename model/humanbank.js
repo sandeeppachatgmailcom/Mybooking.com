@@ -164,8 +164,8 @@ async function verifyUser(userObject){
                         userdetails:user,
                         userActive:password.Active ,
                         isAdmin:password.isAdmin,
-                        company:password.companyID.CompanyID,
-                        companyActive:password.companyID.Active,
+                        company:password.companyID,
+                        companyActive:password.Active,
                         message:'Account is veryfied ,your profile is '+verified.userActive+'you have power to login'+company,
                         isAdmin:password.isAdmin,
                         user:password

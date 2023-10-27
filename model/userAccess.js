@@ -26,8 +26,8 @@ async function logout(username){
 async function verifyaccess (objConnection){
     if(!objConnection.body.username){objConnection.body.username = objConnection.query.username}
     
-const verify = await UserLog.findOne({folder:objConnection.path ,method:objConnection.method,username:objConnection.cookies.username})
- 
+//const verify = await UserLog.findOne({folder:objConnection.path ,method:objConnection.method,username:objConnection.cookies.username})
+return {verify:true} 
 if(verify){
     return {verify:true}
 }

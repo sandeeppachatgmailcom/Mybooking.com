@@ -60,7 +60,7 @@ router.post('/custLogin',async (req,res)=>{
         return
     }
     const user={
-        firstName:verified.user,
+        firstName:verified.user.firstName,
     }
     if (verified.verified){
         res.cookie('username',verified.user)
@@ -90,8 +90,7 @@ router.get('/custLogin',async (req,res)=>{
 
     const verified =await HBank.verifyUser(req.body)
     const user={
-        firstName:verified.user,
-        
+        firstName:verified.user.firstName,
     }
     if (verified.verified){
         res.cookie('username',verified.user)

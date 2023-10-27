@@ -115,8 +115,7 @@ async function verifyUser(userObject){
                 company:user.companyID.CompanyID,
                 companyActive:user.companyID.Active,
                 message:'',
-                isAdmin:user.isAdmin,
-                 
+                isAdmin:user.isAdmin
             };
     }
     else{
@@ -160,15 +159,15 @@ async function verifyUser(userObject){
                     verified = {
                         verified:true,
                         email: userObject.userName,
-                        user:'password.firstName',
-                        userdetails:user,
+                        user: password.firstName,
+                        userdetails:password,
                         userActive:password.Active ,
                         isAdmin:password.isAdmin,
                         company:password.companyID,
                         companyActive:password.Active,
                         message:'Account is veryfied ,your profile is '+verified.userActive+'you have power to login'+company,
                         isAdmin:password.isAdmin,
-                        user:password
+                         
                     }
                     return verified
                 }

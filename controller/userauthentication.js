@@ -52,15 +52,16 @@ async function userSessionAuthentication(sessionID, username, password) {
     }
 }
 router.post('/custLogin',async (req,res)=>{
-    req.body.session = req.sessionID;
+    req.body.session = 'req.sessionID';
 
     const verified =await HBank.verifyUser(req.body)
     if(verified.otp){
         res.render('otp',{verified})
         return
     }
+    console.log(verified,'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     const user={
-        firstName:verified.user.firstName ,
+        firstName:verified.user,
     }
     if (verified.verified){
         res.cookie('username',verified.user)

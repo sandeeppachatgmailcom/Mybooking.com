@@ -103,7 +103,7 @@ async function verifyUser(userObject){
         userObject.session="noactivesession"
     }
     const user = await HumanResource.findOne({activeSession:userObject.session},{password:0,_id:0})
-    console.log(user);
+     
     if(user){
         user.companyID = await company.company.findOne({email:user.email},{CompanyID:1,Active:1 ,_id:0})
         if(!user.companyID)user.companyID = {}
@@ -116,7 +116,7 @@ async function verifyUser(userObject){
                 companyActive:user.companyID.Active,
                 message:'',
                 isAdmin:user.isAdmin,
-                user:user
+                 
             };
     }
     else{
@@ -160,7 +160,7 @@ async function verifyUser(userObject){
                     verified = {
                         verified:true,
                         email: userObject.userName,
-                        user:password.firstName,
+                        user:'password.firstName',
                         userdetails:user,
                         userActive:password.Active ,
                         isAdmin:password.isAdmin,

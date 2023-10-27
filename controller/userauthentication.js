@@ -52,7 +52,7 @@ async function userSessionAuthentication(sessionID, username, password) {
     }
 }
 router.post('/custLogin',async (req,res)=>{
-    req.body.session = 'req.sessionID';
+    req.body.session = req.sessionID;
 
     const verified =await HBank.verifyUser(req.body)
     if(verified.otp){

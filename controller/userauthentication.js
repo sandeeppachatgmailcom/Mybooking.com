@@ -59,7 +59,7 @@ router.post('/custLogin',async (req,res)=>{
         res.render('otp',{verified})
         return
     }
-    console.log(verified,'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    
     const user={
         firstName:verified.user,
     }

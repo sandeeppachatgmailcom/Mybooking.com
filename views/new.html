@@ -34,6 +34,47 @@
 
   
 
+************************************
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark  " style="background-color:  rgba(43, 59, 43, 0.796);">
+  <div class="container-fluid">
+    <div class="container-fluid ">
+      <small class="text text-light" > <span class="navbar-brand" style="font-size: 50px;" href="#!">Book My Trip </span> Navigate Luxury, Book with Ease.</small>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+       
+         
+        <button id="idloggedusermenubar" value="" class="btn"> </button>
+        <% if (user.firstName) { %>
+              <!-- Example single danger button -->
+                       
+                        <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn text-light  bi bi-house-up-fill w-100 h-100" href="/authenticate/custLogin">HOME </a>
+                        <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-1 btn text-light   bi bi-power w-100 h-100" href="#">LOGOUT</a>
+                        <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn text-light bi bi-person-square w-100 h-100" href="/custom/Home">PROFILE </a>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-warning dropdown-toggle col-12" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%=user.firstName%>
+                          </button>
+                          <div class="dropdown-menu btn  border-0 col-12">
+                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn-warning btn bi bi-person-square w-100 h-100" data-bs-toggle="modal" data-bs-target="#VendureLogin"  > PARTNER LOGIN  </a>
+                            <a id="idloggedusermenubar" type="button"  value="<%=user.firstName%>" class="p-1 btn btn-warning  bi bi-person-square w-100 h-100" data-bs-toggle="modal" data-bs-target="#exampleModal" >STAFF LOGIN  </a>
+                        
+                          </div>
+                        </div>   
+        
+       <% } else { %>
+          <li class="nav-item"><button type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#customerLogin"
+              style="background-color: rgb(98, 111, 98);" class="btn btn-success nav-link"> LOGIN </button> </li>        
+       <% } %>
+
+                    
+      </ul>
+    </div>
+  </div>
+</nav>
 
 
 

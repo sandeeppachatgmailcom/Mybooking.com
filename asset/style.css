@@ -172,6 +172,26 @@ body {
     
 }
  
+/* Default font size */
+.custom-text {
+    font-size: 90px;
+  }
+  
+  /* Medium screens (e.g., tablets) */
+  @media (max-width: 768px) {
+    .custom-text {
+      font-size: 40px;
+    }
+  }
+  
+  /* Small screens (e.g., mobile phones) */
+  @media (max-width: 576px) {
+    .custom-text {
+      font-size: 30px;
+    }
+  }
+
+
 #id_div_Floor_left{
     height: 700px;
 }

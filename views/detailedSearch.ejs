@@ -105,11 +105,9 @@
              
                                      
                 <!-- <div class="container-fluid border rounded d-flex   " style="  overflow: auto; flex-wrap: wrap;display: flex;" id="idTariffDetails">  -->
-                    <div class="container-fluid border rounded d-flex flex-wrap flex-sm-nowrap" style="overflow: auto;" id="idTariffDetails">                 
-                         
-                            
-                              <% result.forEach(element => { %>
-                                <div class="card col-12 col-sm-6 col-md-4 col-lg-3 p-2" style="margin: 0;">
+                    <div class="container-fluid border w-100 rounded d-flex flex-wrap  col-12" style="overflow: auto; flex-wrap: wrap;" id="idTariffDetails">
+                        <% result.forEach(element => { %>
+                          <div class="card col-12  col-sm-6 col-md-4 col-lg-3  p-2">
                                     <img class="w-100 rounded" style="height: 30%;" name="companyImage" value="<%= element.image1 %>" src="<%= element.image1 %>" class="card-img-top" alt="...">
                                     <div class="card-body">
                                       <h3 class="card-title" data-hotelTariffs="${result[i].tariffDetails}" style="text-transform: uppercase"> <%= element.lastName %></h3> <small class="card-text" style="text-transform: uppercase; height: fit-content;"  ><%= element.district %> </small> <br>

@@ -12,47 +12,39 @@
     <div class="LoginPage d-flex justify-content-evenly" data-ride="carousel"
       style="background-position:center  ;background-size:cover;   background-image: url('/Images/BackGround_Admin.jpg'  );">
       <div class=" container-fluid" style="background-color: rgba(62, 62, 62, 0.668);">
-          <div class="container-fluid col-12 d-flex" style="height: 500px;">
-            <div class="container-fluid col-9">
-              <br><br><br><br><br>
-              <small id="idanimatedMessageLogin" class=" text-warning w-100" style="font-size: 90px; height: 100px;" >"Elevate the Celebration!"</small>
-            </div>
-             
-            <div class="container-fluid col-3 border border-light    rounded   m-4   p-3 " style="  background-color: rgba(86,81,59,.5);">
-               <div class="container-fluid mt-2   ">
-                <div class="container-fluid d-flex align-items-center col-12 " style="height: 50px;  ;">
-                  
-                </div> 
-                 <div class="container-fluid  align-items-center col-12 " style="height: 80px;  ;">
-                    
-                  
-                  <small   class="text-light"> Welcome to </small>   <br>
-                  <small style="font-size: 30px;" class="text-warning"> Book my trip</small> <br>
-                  <small id="idMessageBarAdminlogin" class="text-warning">  </small> <br>  
-                 </div>
-                 <br>
-                  <div class="input-group  border border-secondary p-2 rounded   ">
-                    <span class="input-group-text text-primary bg-light btn btn-secondary bi bi-person-bounding-box " id="basic-addon1"> </span>
-                    <input type="email" class="form-control" id="idInputEmail" placeholder="email" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                 
-                  <div class="input-group  border border-secondary p-2 rounded ">
-                    <span class="input-group-text text-primary btn btn-secondary bi bi-shield-lock " id="basic-addon1"> </span>
-                    <input type="password" id="idinputPassword" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                  </div>
-                  <div class=" container-fluid d-flex p-2 rounded justify-content-center ">
-                    <div class="btn">
-                      <button type="button" class="input-group-text btn btn-secondary rounded " onclick="adminlogin( 'idInputEmail','idinputPassword')"   id="basic-addon1"> SIGN-IN</button>
-                    <small> <a class="text-warning"    data-bs-toggle="modal" data-bs-target="#idEnterOtp" > FORGOT? </a></small>
-                    
-                 
-                  </div>
-                  </div>
-                  
-                  
-               </div>
+        <div class="container-fluid d-flex" style="min-height: 100vh;">
+          <div class="container col-md-9">
+            <br><br><br><br><br>
+            <small id="idanimatedMessageLogin" class="text-warning" style="font-size: 2.5rem; height: 100px;">Elevate the Celebration!</small>
+          </div>
+        
+          <div class="container col-md-3 border border-light rounded m-4 p-3" style="background-color: rgba(86, 81, 59, 0.5);">
+            <div class="container mt-2">
+              <div class="container d-flex align-items-center" style="height: 50px;"></div>
+              <div class="container align-items-center" style="height: 80px;">
+                <small class="text-light">Welcome to</small><br>
+                <small style="font-size: 1.5rem;" class="text-warning">Book my trip</small><br>
+                <small id="idMessageBarAdminlogin" class="text-warning"></small><br>
+              </div>
+              <br>
+              <div class="input-group border border-secondary p-2 rounded">
+                <span class="input-group-text text-primary bg-light btn btn-secondary bi bi-person-bounding-box" id="basic-addon1"></span>
+                <input type="email" class="form-control" id="idInputEmail" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group border border-secondary p-2 rounded">
+                <span class="input-group-text text-primary btn btn-secondary bi bi-shield-lock" id="basic-addon2"></span>
+                <input type="password" id="idinputPassword" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2">
+              </div>
+              <div class="container d-flex p-2 rounded justify-content-center">
+                <div class="btn">
+                  <button type="button" class="input-group-text btn btn-secondary rounded" onclick="adminlogin('idInputEmail', 'idinputPassword')" id="basic-addon3">SIGN-IN</button>
+                  <small><a class="text-warning" data-bs-toggle="modal" data-bs-target="#idEnterOtp">FORGOT?</a></small>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+        
       </div>
     </div>
   </form>

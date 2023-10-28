@@ -63,11 +63,7 @@ router.use('/imageDoc',ImageDoc)
 
 router.get('/' ,async (req, res) => {
     try {
-        user = {
-                email:'',
-                firstName:'',
-                username:''
-              }
+        user = ''
          
         const generalData = await companies.SearchCompany('')
         const tariff = await tariffs.loadtariff('')

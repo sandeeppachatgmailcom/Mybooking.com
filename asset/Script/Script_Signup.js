@@ -100,7 +100,7 @@ async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
                 document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
             }
             document.getElementById(outputfield).classList.add('btn')
-            document.getElementById(outputfield).classList.add('btn-primary')
+            document.getElementById(outputfield).classList.add('btn-success')
             document.getElementById(outputfield).classList.add('bi')
             document.getElementById(outputfield).classList.add('bi-patch-check')
         }
@@ -166,7 +166,7 @@ async function verifyEmail(Email_Field,outputfield,path) {
             document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
         }
         document.getElementById(outputfield).classList.add('btn')
-        document.getElementById(outputfield).classList.add('btn-primary')
+        document.getElementById(outputfield).classList.add('btn-success')
         document.getElementById(outputfield).classList.add('bi')
         document.getElementById(outputfield).classList.add('bi-patch-check')
         signuptxt.setAttribute("readonly", "true");
@@ -228,7 +228,7 @@ if(document.getElementById(firstText).value==document.getElementById(retypeText)
         document.getElementById(resultbtn).classList.remove(document.getElementById(resultbtn).classList.item(0));
     }
     document.getElementById(resultbtn).classList.add('btn')
-    document.getElementById(resultbtn).classList.add('btn-primary')
+    document.getElementById(resultbtn).classList.add('btn-success')
     document.getElementById(resultbtn).classList.add('bi')
     document.getElementById(resultbtn).classList.add('bi-patch-check')
     return true;
@@ -247,9 +247,9 @@ else{
 }
 
 async function changeaPassword(){
-    const userName = document.getElementById('idVerifyEmail-Phone').value;
-    const oldPassword = document.getElementById('idCurrentPassword').value;
-    const NewPassword = document.getElementById('idNewPasswordtext').value;
+const userName = document.getElementById('idVerifyEmail-Phone').value;
+const oldPassword = document.getElementById('idCurrentPassword').value;
+const NewPassword = document.getElementById('idNewPasswordtext').value;
 const confirmuserName =await verifyEmail('idVerifyEmail-Phone','Signup_Email_Bt');
 const confirmoldPassword =await verifyPasswordBackend('idVerifyEmail-Phone' ,'idCurrentPassword','idVerifieOldPassword');
 const confirmNewPassword = await verifyPassword('idNewPasswordtext','idNewPasswordbtn');
@@ -361,7 +361,7 @@ function verifyPassword(inputElement,outputElement) {
             document.getElementById(outputElement).classList.remove(document.getElementById(outputElement).classList.item(0));
         }
         document.getElementById(outputElement).classList.add('btn')
-        document.getElementById(outputElement).classList.add('btn-primary')
+        document.getElementById(outputElement).classList.add('btn-success')
         document.getElementById(outputElement).classList.add('bi')
         document.getElementById(outputElement).classList.add('bi-patch-check')
         return verified = true;

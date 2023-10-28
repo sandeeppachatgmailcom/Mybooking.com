@@ -1,56 +1,47 @@
 <%- include('header') %>
 <%- include('MenuBarCustomer') %>
-<div class="container-fluid justify-content-center row w-100"> 
-  <div class="container-fluid w-100 btn row d-flex bg-secondary d-flex flex-row" style="flex-wrap: nowrap; background-color: transparent; height: 400px;">
-    
-      
-    <div class="d-flex container-fluid col-4 p-1"id="IdCompanyImagesbuton1" style="background-image: url('<%= profile.image1 %>'); height: 100%; background-position: center ; background-size: cover;">
-       
-      <label for="IdCompanyImages1" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
-        <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages1','IdCompanyImagesbuton1','idCompanyimageSave1','id_icon_imageinput1')" name="roomImages" id="IdCompanyImages1" type="file" multiple>
-        <i id="id_icon_imageinput1" class="bi bi-camera" style="font-size: 24px;"></i>
-      </label>
-      <button  value="<%= profile.CompanyID %> <%= profile.image1 %> IdCompanyImages1 idCompanyimageSave1" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave1" > SAVE</button> 
-      
-    </div>
-      
-    <div class="d-flex container-fluid col-4 p-1"id="IdCompanyImagesbuton2" style="background-image: url('<%= profile.image2 %>'); height: 100%; background-position: center ; background-size: cover;">
-       
-      <label for="IdCompanyImages2" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
-        <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages2','IdCompanyImagesbuton2','idCompanyimageSave2','id_icon_imageinput2')" name="roomImages" id="IdCompanyImages2" type="file" multiple>
-        <i id="id_icon_imageinput2" class="bi bi-camera" style="font-size: 24px;"></i>
-      </label>
-      <button  value="<%= profile.CompanyID %> <%= profile.image2 %> IdCompanyImages2 idCompanyimageSave2" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave2" > SAVE</button> 
-      
-    </div>
-      
-    <div class="d-flex container-fluid col-4 p-1"id="IdCompanyImagesbuton3" style="background-image: url('<%= profile.image3 %>'); height: 100%; background-position: center ; background-size: cover;">
-       
-      <label for="IdCompanyImages3" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
-        <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages3','IdCompanyImagesbuton3','idCompanyimageSave3','id_icon_imageinput3')" name="roomImages" id="IdCompanyImages3" type="file" multiple>
-        <i id="id_icon_imageinput3" class="bi bi-camera" style="font-size: 24px;"></i>
-      </label>
-      <button  value="<%= profile.CompanyID %> <%= profile.image3 %> IdCompanyImages3 idCompanyimageSave3" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave3" > SAVE</button> 
-      
-    </div>
-    
-   
-    
+<div class="container-fluid  col-12"> 
+  <div class="container-fluid w-100 btn  d-flex flex-wrap" >
+        <div class="d-flex container-fluid col-lg-4 col-sm-12 rounded p-1"id="IdCompanyImagesbuton1" style="background-image: url('<%= profile.image1 %>'); height: 400px; background-position: center ; background-size: cover;">
+          
+          <label for="IdCompanyImages1" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
+            <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages1','IdCompanyImagesbuton1','idCompanyimageSave1','id_icon_imageinput1')" name="roomImages" id="IdCompanyImages1" type="file" multiple>
+            <i id="id_icon_imageinput1" class="bi bi-camera" style="font-size: 24px;"></i>
+          </label>
+          <button  value="<%= profile.CompanyID %> <%= profile.image1 %> IdCompanyImages1 idCompanyimageSave1" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave1" > SAVE</button> 
+          
+        </div>
+          
+        <div class="d-flex container-fluid col-lg-4 col-sm-12 rounded p-1"id="IdCompanyImagesbuton2" style="background-image: url('<%= profile.image2 %>'); height: 400px; background-position: center ; background-size: cover;">
+          
+          <label for="IdCompanyImages2" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
+            <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages2','IdCompanyImagesbuton2','idCompanyimageSave2','id_icon_imageinput2')" name="roomImages" id="IdCompanyImages2" type="file" multiple>
+            <i id="id_icon_imageinput2" class="bi bi-camera" style="font-size: 24px;"></i>
+          </label>
+          <button  value="<%= profile.CompanyID %> <%= profile.image2 %> IdCompanyImages2 idCompanyimageSave2" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave2" > SAVE</button> 
+          
+        </div>
+          
+        <div class="d-flex container-fluid col-lg-4 col-sm-12 rounded  p-1"id="IdCompanyImagesbuton3" style="background-image: url('<%= profile.image3 %>'); height: 400px; background-position: center ; background-size: cover;">
+          
+          <label for="IdCompanyImages3" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
+            <input class="form-control d-none" onchange="uploadImageToParentNew('IdCompanyImages3','IdCompanyImagesbuton3','idCompanyimageSave3','id_icon_imageinput3')" name="roomImages" id="IdCompanyImages3" type="file" multiple>
+            <i id="id_icon_imageinput3" class="bi bi-camera" style="font-size: 24px;"></i>
+          </label>
+          <button  value="<%= profile.CompanyID %> <%= profile.image3 %> IdCompanyImages3 idCompanyimageSave3" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idCompanyimageSave3" > SAVE</button> 
+          
+        </div>
   </div>
   
-    <div class="container-fluid d-flex flex-row"  >
-      <div class="container-fluid  ">
-        <small style="font-size: 50px;" class="text-secondary "> <%= profile.lastName %></small>  <br>
-       
-        <small class="text-secondary">Email: <%= profile.email %></small>  
+  <div class="container-fluid col-12"  >
+      <small style="font-size: 50px;" class="text-secondary "> <%= profile.lastName %></small>  <br>
+      <small class="text-secondary">Email: <%= profile.email %></small>  
       <small class="text-secondary">Contact: <%= profile.contactNumber %></small> <br>
       <small class="text-secondary">Address: <%= profile.StreetName %> <%= profile.city %> pin:<%= profile.pincode %></small>  
-      
-      </div>
   </div>
   
-    <div class="container-fluid d-flex ">
-        <div class=" col-2 container-fluid border rounded  ">
+  <div class="container-fluid d-flex col-12  flex-wrap ">
+        <div class=" col-lg-2 col-sm-12 container-fluid border rounded  ">
           <form action="/vedurehomepage/loadhomepage" method="post">
             <button class="btn border btn-success col-12 col "> Dashboard </button>
           </form>
@@ -68,14 +59,14 @@
           </form>
            
            
-          </div>
-          <div class="col-10 container-fluid d-flex border rounded"  >
-            <div class="col-6 container-fluid "  >
+        </div>
+        <div class="col-lg-10 col-sm-12 container-fluid flex-wrap d-flex border rounded"  >
+            <div class="col-lg-6 col-sm-12 container-fluid "  >
               <% if ( occupancyDetails ) { %>
                 <div  class="col-12 container-fluid border rounded  border-primary p-1 m-2" >
                   <div class="table-responsive  border-primary  " >
                     <table class="table border-primary">
-                      <button  class="bi bi-caret-down-square  btn btn-primary col-6"> ROOM ALIGATION</button>
+                      <button  class="bi bi-caret-down-square  btn btn-primary "> ROOM ALIGATION</button>
                        <tbody>
                           <% occupancyDetails.forEach(occupancy=> { %>
                             <tr class="text-secondary">
@@ -132,12 +123,12 @@
                 </div>
                 <% } %>
             </div>  
-            <div class="col-6 container-fluid "  >
+            <div class="col-lg-6 col-sm-12  container-fluid "  >
                 <% if ( Plans ) { %>
                 <div id="idDivPlans" class="col-12 container-fluid border rounded  border-primary p-1 m-2" style=" height: 250px; overflow: hidden ;">
                   <div class="table-responsive  border-primary  " >
-                    <table class="table border-primary">
-                      <button onclick="collapse('idDivPlans', 250 )" class="bi bi-caret-down-square  btn btn-primary col-3"> Checkin Plans</button>
+                    <table class="table border-primary d-flex">
+                      <button onclick="collapse('idDivPlans', 250 )" class="bi bi-caret-down-square  btn btn-primary  "> Checkin Plans</button>
                       <button type="button " data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan"
                       class="btn btn-success h-100 btn bi bi-clipboard-plus  text-light "> CREATE  </button>
                       <tbody>
@@ -158,15 +149,15 @@
                               </td>
                               <td class="col-4">
                                 <div class="container-fluid">
-                                  <button data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan<%=plans.planIndex%>"  type="button" class="col-5 btn  btn-warning bi bi-pencil-fill">EDIT</button>
+                                  <button data-bs-toggle="modal" data-bs-target="#idModalnewCheckinPlan<%=plans.planIndex%>"  type="button" class="btn  btn-warning bi bi-pencil-fill">EDIT</button>
                                   <% if (plans.isActive) { %>
                                     <button type="button" value="<%=plans.planIndex%>,<%=profile.CompanyID%>"
                                       onclick="enableplanModal(event.target.value)"
-                                      class="btn bi bi-power col-6 btn-danger "> OFF </button>
+                                      class="btn bi bi-power btn-danger "> OFF </button>
                                     <% } else { %>
                                       <button type="button" value="<%=plans.planIndex%>,<%=profile.CompanyID%>"
                                         onclick="enableplanModal(event.target.value)"
-                                        class="btn bi bi-power col-6  btn-success"> ON </button>
+                                        class="btn bi bi-power    btn-success"> ON </button>
                                       <% } %>
                                 </div>
                   
@@ -185,7 +176,7 @@
                   <div id="idTariffDetails" class="  container-fluid border border-primary rounded p-2  m-2"style="height:250px;   overflow: hidden ;" >
                   <div class="table-responsive bg-white border-primary " >
                     <table class="table">
-                      <button onclick="collapse('idTariffDetails', 250 )" class="bi bi-caret-down-square  btn btn-primary col-3"> Classification</button onclick="">
+                      <button onclick="collapse('idTariffDetails', 250 )" class="bi bi-caret-down-square  btn btn-primary  "> Classification</button onclick="">
                         <button class="btn btn-success  bi bi-clipboard-plus" data-bs-toggle="modal"  data-bs-target="#idModalnewTariff"> CREATE  </button>   
                         <tbody>
                       
@@ -207,9 +198,9 @@
                                   
                        
                                   <% if (!tariff.isActive) { %>
-                                    <button id="'btn'+<%= tariff.tariffname %>"value="<%= tariff.tariffIndex%>,<%= profile.CompanyID%>"class="btn btn-success m-1 bi bi bi-power" type="button" onclick="enableTariff(event.target.value)"> ON </button>
+                                    <button id="'btn'+<%= tariff.tariffname %>"value="<%= tariff.tariffIndex%>,<%= profile.CompanyID%>"class="btn btn-success  bi bi-power" type="button" onclick="enableTariff(event.target.value)"> ON </button>
                                 <% } else { %>
-                                    <button id="'btn'+<%= tariff.tariffname %>" value="<%= tariff.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-danger m-1 bi bi-power" type="button" onclick="freezeTariff(event.target.value)">OFF </button>
+                                    <button id="'btn'+<%= tariff.tariffname %>" value="<%= tariff.tariffIndex%>,<%= profile.CompanyID%>" class="btn btn-danger  bi bi-power" type="button" onclick="freezeTariff(event.target.value)">OFF </button>
                                 <% } %>
                                 </td>
                               </tr>
@@ -228,7 +219,7 @@
                     <div class="table-responsive bg-white border-primary " >
                       <table class="table">
                         <div class="container justify-content-evenly">
-                          <button onclick="collapse('idRoomDetails', 250 )"  class="bi bi-caret-down-square btn btn-primary col-3"> Rooms </button>
+                          <button onclick="collapse('idRoomDetails', 250 )"  class="bi bi-caret-down-square btn btn-primary"> Rooms </button>
                           <button class="btn btn-success bi bi-clipboard-plus  " data-bs-toggle="modal"
                           data-bs-target="#idModalnewRoom"> CREATE </button>
                         </div>
@@ -253,9 +244,9 @@
                                 <td>
                                   <button type="button"data-bs-toggle="modal"  data-bs-target="#<%= items.roomIndex%>"class="btn btn-sm btn-warning bi bi-pencil-fill">EDIT</button>
                                   <% if (items.blocked) { %>
-                                    <button type="button" id="idSwitchRoomsStatus<%= items.roomIndex%>" onclick="switchRoomStatus(event.target.value,'idSwitchRoomsStatus<%= items.roomIndex%>')" value="<%= items.roomIndex%>" class="btn btn-sm btn-success bi bi-power col-4">ON </button>
+                                    <button type="button" id="idSwitchRoomsStatus<%= items.roomIndex%>" onclick="switchRoomStatus(event.target.value,'idSwitchRoomsStatus<%= items.roomIndex%>')" value="<%= items.roomIndex%>" class="btn  btn-success bi bi-power  ">ON </button>
                                     <% } else { %>
-                                    <button type="button" id="idSwitchRoomsStatus<%= items.roomIndex%>" onclick="switchRoomStatus(event.target.value,'idSwitchRoomsStatus<%= items.roomIndex%>')" value="<%= items.roomIndex%>"  class="btn btn-sm btn-danger bi bi-power col-4">OFF </button>
+                                    <button type="button" id="idSwitchRoomsStatus<%= items.roomIndex%>" onclick="switchRoomStatus(event.target.value,'idSwitchRoomsStatus<%= items.roomIndex%>')" value="<%= items.roomIndex%>"  class="btn  btn-danger bi bi-power  ">OFF </button>
                                   <% } %>
                                   
                                 </td>
@@ -274,7 +265,7 @@
                 <div id="idReservations" class="  container-fluid border border-primary rounded  p-1 m-2" style=" height: 250px; overflow: hidden ;">
                   <div class="table-responsive bg-white border-primary " >
                     <table class="table">
-                      <button onclick="collapse('idReservations', 250 )" class="bi bi-caret-down-square  btn btn-primary col-3"> Reservations   </button> 
+                      <button onclick="collapse('idReservations', 250 )" class="bi bi-caret-down-square  btn btn-primary  "> Reservations   </button> 
                       <tbody>
                       
                           
@@ -321,7 +312,7 @@
               <div id="idPayments" class="  container-fluid border border-primary rounded  p-1 m-2" style=" height: 250px; overflow: hidden ;">
                 <div class="table-responsive bg-white border-primary " >
                   <table class="table">
-                    <button onclick="collapse('idPayments', 250 )" class="bi bi-caret-down-square  btn btn-primary col-3"> Collection </button>
+                    <button onclick="collapse('idPayments', 250 )" class="bi bi-caret-down-square  btn btn-primary"> Collection </button>
                      <tbody>
                       <tr class="border border-primary text-primary">
                         <td class="">
@@ -372,8 +363,14 @@
             </div>
         </div>
         
-      </div>
   </div>
+</div>
+
+
+
+
+
+
 <!-- modal division starts here  -->
 <% if (Plans) { %>
 

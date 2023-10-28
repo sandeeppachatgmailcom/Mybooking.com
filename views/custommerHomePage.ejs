@@ -7,462 +7,442 @@
     }
 </style>
 <div class="container-fluid col-12">
-
-    <div class="container-fluid d-flex row" id="IdProfileWallpapper"style="height: 400px;background-image: url('<%=user.wallPappper %>');background-position: center ;background-size: cover ">
-        <div class="col-10">
-            <label for="IdUploadProfileWallPapper" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
-              <input class="form-control d-none" onchange="uploadImageToParentNew('IdUploadProfileWallPapper','IdProfileWallpapper','idWpSaveButton','idWalllabelChange')" name="roomImages" id="IdUploadProfileWallPapper" type="file" multiple>
-              <i id="idWalllabelChange" class="bi bi-camera" style="font-size: 24px;"></i>
-            </label>
-            <button  value="<%= user.hrId %> <%= user.wallPappper %> IdUploadProfileWallPapper idWpSaveButton" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idWpSaveButton" > SAVE</button> 
+    <div class="row">
+        <div class="container-fluid d-flex row col-sm-12 col-lg-12 " id="IdProfileWallpapper"style="height: 400px;background-image: url('<%=user.wallPappper %>');background-position: center ;background-size: cover ">
+            <div class="container-fluid col-lg-8 col-sm-12">
+                <label for="IdUploadProfileWallPapper" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
+                <input class="form-control d-none" onchange="uploadImageToParentNew('IdUploadProfileWallPapper','IdProfileWallpapper','idWpSaveButton','idWalllabelChange')" name="roomImages" id="IdUploadProfileWallPapper" type="file" multiple>
+                <i id="idWalllabelChange" class="bi bi-camera" style="font-size: 24px;"></i>
+                </label>
+                <button  value="<%= user.hrId %> <%= user.wallPappper %> IdUploadProfileWallPapper idWpSaveButton" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idWpSaveButton" > SAVE</button> 
+                
+            </div>
             
-          </div>
-         
-        <div class="container-fluid col-2 mt-3" id="IdProfilePic" style="background-position: center ;background-size: cover; height: 75%; background-image: url('<%= user.profilePicture %>')">
-            <label for="IdUploadProfile" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
-              <input class="form-control d-none" onchange="uploadImageToParentNew('IdUploadProfile','IdProfilePic','idprofileSaveButton','idlabelChange')" name="roomImages" id="IdUploadProfile" type="file" multiple>
-              <i id="idlabelChange" class="bi bi-camera" style="font-size: 24px;"></i>
-            </label>
-            <button  value="<%= user.hrId %> <%= user.profilePicture %> IdUploadProfile idprofileSaveButton" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idprofileSaveButton" > SAVE</button> 
+            <div class="container-fluid col-lg-2 col-sm-6 border rounded mt-3" id="IdProfilePic" style="background-position: center ;background-size: cover; height: 75%; background-image: url('<%= user.profilePicture %>')">
+                <label for="IdUploadProfile" class="btn btn-secondary position-absolute bottom-0 end-0 me-3 " >
+                <input class="form-control d-none" onchange="uploadImageToParentNew('IdUploadProfile','IdProfilePic','idprofileSaveButton','idlabelChange')" name="roomImages" id="IdUploadProfile" type="file" multiple>
+                <i id="idlabelChange" class="bi bi-camera" style="font-size: 24px;"></i>
+                </label>
+                <button  value="<%= user.hrId %> <%= user.profilePicture %> IdUploadProfile idprofileSaveButton" onclick="saveImagetoCollection(event.target.value)"   class="btn btn-light bi bi-camera position-absolute bottom-1 end-1 me-3 mb-5" style="display: none;" id="idprofileSaveButton" > SAVE</button> 
+                
+            </div>
             
-          </div>
-        
-    </div>
-    <div class="container-fluid row ">
-        
-        
-            <div class="container-fluid  col-10 border">
-                <% if (bookingDetails) { %>
-                <% bookingDetails.forEach(element => { %>
-                    <div class="card d-flex ">
-                        <div class="card-header d-flex ">
-                            
-                            <small class="card-title">BOOKING  ID : </small> <small><%= element.reservationNumber  %></small> 
-                            <small style="text-transform: capitalize;" class="card-title">Arrival  : </small> <small style="text-transform: capitalize;"><%= (element.arrivalDate.split('T'))[0]    %> TIME : <%= ((element.arrivalDate.split('T'))[1].split(':'))[0]  %> : <%=  ((element.arrivalDate.split('T'))[1].split(':'))[1] %></small> 
-                            <small style="text-transform: capitalize;" class="card-title">Departure  : </small> <small style="text-transform: capitalize;"> <%= (element.depart_Date.split('T'))[0]    %> TIME : <%= ((element.depart_Date.split('T'))[1].split(':'))[0]  %> : <%=  ((element.depart_Date.split('T'))[1].split(':'))[1] %></small> 
-                            
-                           
-                        </div>
-                        
-                        <div class="container-fluid d-flex ">
-                            
-                        </div>
-                        <div class="container-fluid d-flex ">
+        </div>
+        <div class="container-fluid row ">
+            <div class="container-fluid   col-lg-2 col-sm-12 mt-2">
+                <form action="/user/loadProfile" method="get">
+                    <button value="<%=user.hrId%>" class="w-100 btn btn-primary m-1"> My profile</button>
+                </form> 
+                <form action="/custom/Home" method="get">
+                    <button value="<%=user.hrId%>" class="w-100 btn btn-primary m-1"> My Bookings</button>
+                </form> 
+                <form action="/user/getPaymentHistory" method="get">
+                    <button  class="w-100 btn btn-primary  m-1"> Payment History</button>
+                </form>
+            </div>
+                <div class="container-fluid  col-10 border">
+                    <% if (bookingDetails) { %>
+                    <% bookingDetails.forEach(element => { %>
+                        <div class="card d-flex ">
+                            <div class="card-header d-flex flex-wrap">
+                                <small class="card-title">BOOKING  ID : </small> <small><%= element.reservationNumber  %></small> <br>
+                                <small style="text-transform: capitalize;" class="card-title">Arrival  : <%= (element.arrivalDate.split('T'))[0]    %> TIME : <%= ((element.arrivalDate.split('T'))[1].split(':'))[0]  %> : <%=  ((element.arrivalDate.split('T'))[1].split(':'))[1] %></small> <br>
+                                <small style="text-transform: capitalize;" class="card-title">Departure  :  <%= (element.depart_Date.split('T'))[0]    %> TIME : <%= ((element.depart_Date.split('T'))[1].split(':'))[0]  %> : <%=  ((element.depart_Date.split('T'))[1].split(':'))[1] %></small> 
                             </div>
-                        <div class="card-body" id="IdbookidDetailsDiv" style="display:contents;">
-                            <div class="container-fluid d-flex ">
-                                <div class="container-fluid col-4 border rounded">
-                                    <div class="container-fluid row w-100 border rounded ">
-                                        <div class="container-fluid ">
-                                            <small style="text-transform: capitalize;" class="card-title ">HOTEL : </small> <small style="text-transform: capitalize;"><%= element.companyName  %></small></div> 
-                                        <div class="container-fluid">
-                                            <small style="text-transform: capitalize; ;" class="card-title ">EMAIL  : </small> <small style="text-transform: capitalize; "><%= element.email  %></small> </div>
-                                        <div class="container-fluid   ">
-                                            <small style="text-transform: capitalize;" CLASS="card-title ">TELE:  : </small> <small style="text-transform: capitalize;"><%= element.contactNumber  %></small></div>
-                                        <div class="container-fluid   ">
-                                            <small style="text-transform: capitalize;" class="card-title ">ADDRESS  : </small> <small style="text-transform: capitalize;"><%= element.BuildingName,element.StreetName,element.district  %> <br><%= element.StreetName  %> <br> <%= element.district  %>  </small></div>
-                                    </div>       
-                                    <div class="container-fluid row w-100 border rounded ">
+                             
+                            <div class="card-body" id="IdbookidDetailsDiv" style="display:contents;">
+                                <div class="container-fluid d-flex flex-wrap col-12">
+                                    <div class="container-fluid col-lg-4 col-sm-12 border rounded h-100 ">
+                                        <div class="container-fluid row w-100 border rounded ">
+                                            <div class="container-fluid ">
+                                                <small style="text-transform: capitalize;" class="card-title ">HOTEL : </small> <small style="text-transform: capitalize;"><%= element.companyName  %></small></div> 
+                                            <div class="container-fluid">
+                                                <small style="text-transform: capitalize; ;" class="card-title ">EMAIL  : </small> <small style="text-transform: capitalize; "><%= element.email  %></small> </div>
+                                            <div class="container-fluid   ">
+                                                <small style="text-transform: capitalize;" CLASS="card-title ">TELE:  : </small> <small style="text-transform: capitalize;"><%= element.contactNumber  %></small></div>
+                                            <div class="container-fluid   ">
+                                                <small style="text-transform: capitalize;" class="card-title ">ADDRESS  : </small> <small style="text-transform: capitalize;"><%= element.BuildingName,element.StreetName,element.district  %> <br><%= element.StreetName  %> <br> <%= element.district  %>  </small></div>
+                                        </div>       
+                                        <div class="container-fluid row w-100 border rounded ">
+                                            
+                                            <div class="container-fluid d-flex ">
+                                                <small style="text-transform: capitalize;" class="card-title">ROOM CATEGORY : </small> <small style="text-transform: capitalize;"><%= element.tariffName  %></small>
+                                            </div> 
+                                            <div class="container-fluid  ">
+                                                <small class="card-title">Rent/extra person :  </small> <small><%= element.specialRate  %>/<%= element.ExtraChargeRent  %></small>
+                                                
+                                            </div>
+                                            
+                                            <div class="container-fluid  ">
+                                                <small class="card-title">Total occupancy: </small> <small> <%= element.TotalPax  %></small>
+                                            </div>
+                                            <div class="container-fluid  ">
+                                                <small class="card-title">Extra occupant Room: </small> <small> <%= element.TotalPax-2  %></small>
+                                            </div>
+                                            <div class="container-fluid  ">
+                                                <small class="card-title">CHECKIN  PLAN : </small> <small><%= element.checkinPlanName  %>( <%= element.planCapacity%>)</small>
+                                            </div>
+                                            <div class="container-fluid  ">
+                                                <small class="card-title">Plan amount/Extra Person : </small> <small><%= element.PlanAmount  %>/<%= element.ExtraChargePlan  %></small>
+                                            </div>
+                                            <div class="container-fluid  ">
+                                                <small class="card-title">Plan /Extra Person : </small> <small><%= element.TotalPax-element.planCapacity  %></small>
+                                            </div>
+                                        </div>     
+                                    </div>
+                                    <div class="container-fluid col-lg-4 col-sm-12 border rounded h-100 table-container">
+                                        <table class="table border align-content-center rounded">
+                                            <tr class="border col-12 w-100">
+                                                
+                                                    SUMMARY
+                                                
+                                            </tr>
+                                            <tr class="border">
+                                                <th class="col-3 border">
+                                                    
+                                                </th>
+                                                
+                                                <th class="col-3 border">
+                                                    AMOUNT
+                                                </th>
+                                                
+                                                <th class="col-3 border">
+                                                    DAYS
+                                                </th>
+                                                
+                                                <th class="col-3 border">
+                                                    TOTAL
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-3 border">
+                                                RENT
+                                                </th>
+                                                
+                                                <td class="col-3 border">
+                                                    <%= element.specialRate  %> 
+                                                </td>
+                                                
+                                                <td class="col-2 border">
+                                                    <%= element.totalDays  %>
+                                                </td>
+                                                
+                                                <td class="col-3 border">
+                                                    <%= element.specialRate*element.totalDays* element.totalRoom  %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4 border">
+                                                extraPax
+                                                </th>
+                                                
+                                                <td class="col-4 border">
+                                                    <%= element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0)   %>                                        </td>
+                                                
+                                                <td class="col-2 border">
+                                                    <%= element.totalDays  %>
+                                                </td>
+                                                
+                                                <td class="col-3 border">
+                                                    <%= (element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0))*element.totalDays  %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4 border">
+                                                Plan
+                                                </th>
+                                                
+                                                <td class="col-3 border">
+                                                    <%= element.PlanAmount     %>
+                                                </td>
+                                                
+                                                <td class="col-2 border">
+                                                    <%= element.totalDays  %>
+                                                </td>
+                                                
+                                                <td class="col-3 border">
+                                                    <%= (element.PlanAmount * element.totalDays * element.totalRoom)%>
+                                                </td>
+                                            </tr> 
+                                            
+                                            <tr>
+                                                <th class="col-4 border">
+                                                Plan(Extra)   
+                                                </th>
+                                                
+                                                <td class="col-3 border">
+                                                    <%= element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom >0? element.TotalPax-element.planCapacity:0 )     %>                                        </td>
+                                                
+                                                <td class="col-2 border">
+                                                    <%= element.totalDays  %>
+                                                </td>
+                                                
+                                                <td class="col-3 border">
+                                                    <%= element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom>0? element.TotalPax-element.planCapacity:0 ) * element.totalDays %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4 border">
+                                                Total
+                                                </th>
+                                                
+                                                <td class="col-3 border">
+                                                    <%=      %>                                        </td>
+                                                
+                                                <td class="col-2 border">
+                                                    <%= element.totalDays  %>
+                                                </td>
+                                                
+                                                <td class="col-3 border">
+                                                    <%= 
+                                                    (element.specialRate*element.totalDays* element.totalRoom )+
+                                                    ((element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0))*element.totalDays)+
+                                                    (element.PlanAmount * element.totalDays * element.totalRoom) +
+                                                    (element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom>0? element.TotalPax-element.planCapacity:0 ) * element.totalDays)
+                                                    %>
+                                                </td>
+                                            </tr>
+                                        </table>
+        
                                         
                                         <div class="container-fluid d-flex ">
-                                            <small style="text-transform: capitalize;" class="card-title">ROOM CATEGORY : </small> <small style="text-transform: capitalize;"><%= element.tariffName  %></small>
-                                        </div> 
-                                        <div class="container-fluid  ">
-                                            <small class="card-title">Rent/extra person :  </small> <small><%= element.specialRate  %>/<%= element.ExtraChargeRent  %></small>
-                                            
+                                            <small style="text-transform: capitalize;" class="card-title">Total amount  : </small> <small style="text-transform: capitalize;"><%= element.totalAmount  %>/-</small>
                                         </div>
                                         
-                                        <div class="container-fluid  ">
-                                            <small class="card-title">Total occupancy: </small> <small> <%= element.TotalPax  %></small>
+                                        <div class="container-fluid d-flex ">
+                                            <small class="card-title">PAYMENT MODE  : </small> <small><%= element.accountHead  %></small>
                                         </div>
-                                        <div class="container-fluid  ">
-                                            <small class="card-title">Extra occupant Room: </small> <small> <%= element.TotalPax-2  %></small>
+                                        <div class="container-fluid d-flex ">
+                                            <small class="card-title">RECEIPT NUMBER  : </small> <small><%= element.receiptNumber  %></small>
                                         </div>
-                                        <div class="container-fluid  ">
-                                            <small class="card-title">CHECKIN  PLAN : </small> <small><%= element.checkinPlanName  %>( <%= element.planCapacity%>)</small>
+                                        <div class="container-fluid d-flex ">
+                                            <small class="card-title">TRANSACTION NUMBER  : </small> <small><%= element.transactionReferanceNumber  %></small>
                                         </div>
-                                        <div class="container-fluid  ">
-                                            <small class="card-title">Plan amount/Extra Person : </small> <small><%= element.PlanAmount  %>/<%= element.ExtraChargePlan  %></small>
-                                        </div>
-                                        <div class="container-fluid  ">
-                                            <small class="card-title">Plan /Extra Person : </small> <small><%= element.TotalPax-element.planCapacity  %></small>
-                                        </div>
-                                    </div>     
+                                    </div>
+                                    <div class="container-fluid col-lg-4 col-sm-12 border rounded h-100"  >
+                                            <div class="container-fluid col-12 p-1 " style="height:400px">
+                                                <button class="btn w-100 " style="background-image: url('<%=element.image1  %>'); background-position: center ; background-size: cover; height:400px"></button>
+                                            </div>
+                                            
+                                    </div>
                                 </div>
                                 
-                                
-                                <div class="container-fluid col-4 border rounded">
-                                    <table class="border align-content-center rounded">
-                                        <tr class="border col-12 w-100">
-                                             
-                                                SUMMARY
-                                             
-                                        </tr>
-                                        <tr class="border">
-                                            <th class="col-3 border">
-                                                
-                                            </th>
-                                            
-                                            <th class="col-3 border">
-                                                AMOUNT
-                                            </th>
-                                            
-                                            <th class="col-3 border">
-                                                DAYS
-                                            </th>
-                                            
-                                            <th class="col-3 border">
-                                                TOTAL
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-3 border">
-                                             RENT
-                                            </th>
-                                            
-                                            <td class="col-3 border">
-                                                <%= element.specialRate  %> 
-                                            </td>
-                                            
-                                            <td class="col-2 border">
-                                                <%= element.totalDays  %>
-                                            </td>
-                                            
-                                            <td class="col-3 border">
-                                                <%= element.specialRate*element.totalDays* element.totalRoom  %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4 border">
-                                             extraPax
-                                            </th>
-                                            
-                                            <td class="col-4 border">
-                                                <%= element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0)   %>                                        </td>
-                                            
-                                            <td class="col-2 border">
-                                                <%= element.totalDays  %>
-                                            </td>
-                                            
-                                            <td class="col-3 border">
-                                                <%= (element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0))*element.totalDays  %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4 border">
-                                             Plan
-                                            </th>
-                                            
-                                            <td class="col-3 border">
-                                                <%= element.PlanAmount     %>
-                                            </td>
-                                            
-                                            <td class="col-2 border">
-                                                <%= element.totalDays  %>
-                                            </td>
-                                            
-                                            <td class="col-3 border">
-                                                <%= (element.PlanAmount * element.totalDays * element.totalRoom)%>
-                                            </td>
-                                        </tr> 
-                                        
-                                        <tr>
-                                            <th class="col-4 border">
-                                            Plan(Extra)   
-                                            </th>
-                                            
-                                            <td class="col-3 border">
-                                                <%= element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom >0? element.TotalPax-element.planCapacity:0 )     %>                                        </td>
-                                            
-                                            <td class="col-2 border">
-                                                <%= element.totalDays  %>
-                                            </td>
-                                            
-                                            <td class="col-3 border">
-                                                <%= element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom>0? element.TotalPax-element.planCapacity:0 ) * element.totalDays %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4 border">
-                                            Total
-                                            </th>
-                                            
-                                            <td class="col-3 border">
-                                                <%=      %>                                        </td>
-                                            
-                                            <td class="col-2 border">
-                                                <%= element.totalDays  %>
-                                            </td>
-                                            
-                                            <td class="col-3 border">
-                                                <%= 
-                                                (element.specialRate*element.totalDays* element.totalRoom )+
-                                                ((element.ExtraChargeRent *((element.TotalPax-(element.totalRoom*2)>0)?element.TotalPax-(element.totalRoom*2):0))*element.totalDays)+
-                                                (element.PlanAmount * element.totalDays * element.totalRoom) +
-                                                (element.ExtraChargePlan* (  element.TotalPax-element.planCapacity * element.totalRoom>0? element.TotalPax-element.planCapacity:0 ) * element.totalDays)
-                                                %>
-                                            </td>
-                                        </tr>
-                                    </table>
-    
-                                    
-                                    <div class="container-fluid d-flex ">
-                                        <small style="text-transform: capitalize;" class="card-title">Total amount  : </small> <small style="text-transform: capitalize;"><%= element.totalAmount  %>/-</small>
-                                    </div>
-                                    
-                                    <div class="container-fluid d-flex ">
-                                        <small class="card-title">PAYMENT MODE  : </small> <small><%= element.accountHead  %></small>
-                                    </div>
-                                    <div class="container-fluid d-flex ">
-                                        <small class="card-title">RECEIPT NUMBER  : </small> <small><%= element.receiptNumber  %></small>
-                                    </div>
-                                    <div class="container-fluid d-flex ">
-                                        <small class="card-title">TRANSACTION NUMBER  : </small> <small><%= element.transactionReferanceNumber  %></small>
-                                    </div>
-                                </div>
-                                <div class="container-fluid col-5 d-flex"  >
-                                        <div class="container-fluid col-10">
-                                            <button class="btn w-100 h-100  " style="background-image: url('<%=element.image1  %>'); background-position: center ; background-size: cover;"></button>
-                                        </div>
-                                        <div class="container-fluid col-2 "  >
-                                        </div>
-                                </div>
                             </div>
-                            <div class="container-fluid  ">
-                               
+                            <div class="card-footer text-muted d-flex justify-content-end  rounded">
+                                <button onclick="cancelBooking(event.target.value)" value="<%= element.reservationNumber %>" class="btn btn-danger" >DELETE </button>
+                            <form action="/hotel/addoccupancy" method="post">
+                                    <button onclick="addGuestDetails(event.target.value)" name="bookingID" value="<%= element.reservationNumber%>"  class="btn btn-primary  ">ADD GUEST </button>
+                            </form>
+                                
                             </div>
                         </div>
-                        <div class="card-footer text-muted d-flex justify-content-end  rounded">
-                            <button onclick="cancelBooking(event.target.value)" value="<%= element.reservationNumber %>" class="btn btn-danger col-1" >DELETE </button>
-                           <form action="/hotel/addoccupancy" method="post">
-                                <button onclick="addGuestDetails(event.target.value)" name="bookingID" value="<%= element.reservationNumber%>"  class="btn btn-primary  ">ADD GUEST </button>
-                           </form>
+                    <% }) %>
+                    <% } else if ( paymentHistory) { %>
+                        <div class="card d-flex ">
+                            <div class="card-header col-12 d-flex  bg-primary text-light">
+                                
+                                <div class="container-fluid col-3">
+                                    <small class="card-title ">TRANSACTION DETAILS  </small> <br>
+                                </div>
+                                <div class="container-fluid col-6 w-100 h-100">
+                                    <small class="card-title me-3 ">BOOKING_ID  </small>  <br>
+                                    
+                                </div>
+                            
+                                <div class="container-fluid col-3">
+                                    <small class="card-title me-3"> PAYMENT </small>  
+                                    
+                                     <small class="card-title me-3"> INVOICE AMOUNT  </small>      
+                                    
+                                </div>
+
+                                
+                            
+                            </div>
+                        </div>
+
+
+                    <% paymentHistory.forEach(payment => { %>
+                        <div class="card d-flex  ">
+                            <div class="card-header col-sm-12  d-flex bg-white text-secondary">
+                                
+                                <div class="container-fluid col-3 ">
+                                    <small class="card-title "></small> <small><%= String(payment.transDate).slice(3,16)  %></small> <br>
+                                </div>
+                                <div class="container-fluid col-6 ">
+                                    <small class="card-title me-3"><%= payment.paymentIndex  %></small> <br>
+                                    <small class="card-title me-3"><%= payment.hotel  %></small> <br>
+                                    <small class="card-title me-3 ">BOOKING_ID : <%= payment.paymentReferance  %></small> <br>
+                                    <small class="card-title me-3">TRANSACTION REF: </small> <small><%= payment.transactionReferanceNumber  %></small>   
+                                </div>
+                            
+                                <div class="container-fluid col-3 d-flex">
+                                    <small class="card-title me-3"></small> <small><%= payment.debit  %></small>  
+                                     <small class="card-title me-3"></small> <small><%= payment.credit  %></small>  
+                                </div>
+
+                            </div>
+                        </div>
+                    <% }) %>
+                    <% } else if (!paymentHistory && !bookingDetails && user) { %>
+                        <br>
+                        <div class="container-fluid row ">
+                            
+                                <button class=" btn btn-secondary">
+                                    PERSONAL PROFILE
+                                </button>
                             
                         </div>
-                    </div>
-                <% }) %>
-                <% } else if ( paymentHistory) { %>
-                    <div class="card d-flex ">
-                        <div class="card-header d-flex bg-primary text-light">
-                             
-                            <div class="container-fluid col-3 ">
-                                <small class="card-title ">TRANSACTION DETAILS  </small> <br>
-                            </div>
-                            <div class="container-fluid col-5 w-100 h-100">
-                                <small class="card-title me-3 ">BOOKING_ID  </small>  <br>
-                                
-                            </div>
-                           
-                            <div class="container-fluid col-2">
-                                <small class="card-title me-3"> PAYMENT </small>  
-                                
-                            </div>
-                            <div class="container-fluid col-2">
-                                <small class="card-title me-3"> INVOICE AMOUNT  </small>      
-                                
-                            </div>
-
-                             
-                           
-                        </div>
-                    </div>
-
-
-                 <% paymentHistory.forEach(payment => { %>
-                    <div class="card d-flex  ">
-                        <div class="card-header  d-flex bg-white text-secondary">
-                             
-                            <div class="container-fluid col-3 ">
-                                <small class="card-title "></small> <small><%= String(payment.transDate).slice(3,16)  %></small> <br>
-                                <small class="card-title me-3"></small> <small><%= payment.paymentIndex  %></small> <br>
-                                <small class="card-title me-3"></small> <small><%= payment.hotel  %></small> <br>
-                                 
-                            </div>
-                            <div class="container-fluid col-5 ">
-                                <small class="card-title me-3 ">BOOKING_ID : <%= payment.paymentReferance  %></small> <br>
-                                <small class="card-title me-3">TRANSACTION REF: </small> <small><%= payment.transactionReferanceNumber  %></small>   
-                            </div>
-                           
-                            <div class="container-fluid col-2">
-                                <small class="card-title me-3"></small> <small><%= payment.debit  %></small>  
-                                
-                            </div>
-                            <div class="container-fluid col-2">
-                                <small class="card-title me-3"></small> <small><%= payment.credit  %></small>  
-                                
-                            </div>
-
-                        </div>
-                    </div>
-                 <% }) %>
-                <% } else if (!paymentHistory && !bookingDetails && user) { %>
-                    <br>
+                        <br>
                     <div class="container-fluid row ">
-                         
-                            <button class=" btn btn-secondary">
-                                PERSONAL PROFILE
-                            </button>
-                         
+                        <div class="container-fluid col-lg-6 col-sm-12 col">
+                            <div class="input-group  ">
+                                <span class="input-group-text col-5" id="basic-addon1">First Name</span>
+                                <input name="FirstName" id="idFirstName" value="<%= user.firstName %>" type="text" class="form-control" placeholder="First Name" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">Second Name</span>
+                                <input name="SecondName" id="idSecondName" value="<%= user.lastName %>" type="text" class="form-control" placeholder="Second Name" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">Contact Number</span>
+                                <input name="ContactNumber" id="idContactNumber"  value="<%= user.contactNumber %>" type="number" class="form-control" placeholder="Contact Number" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">Secondary Number</span>
+                                <input name="SecondryNumber" id="idSecondryNumber"  value="<%= user.secondaryNumber %>" type="number" class="form-control" placeholder="Secondry Number" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">Email:</span>
+                                <input name="Email" id="idEmail" readonly type="email" value="<%= user.email %>" class="form-control col-7" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">Username</span>
+                                <input name="Username" id="idUsername"  value="<%= user.username %>"   type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                <label for="idPanCard" class="input-group-text col-5 " id="basic-addon1">PANCARD</label>
+                                <input name="PanCard" id="idPanCard" type="text"  value="<%= user.pancard %>"  class="form-control" placeholder="PanCard" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class=" mb-3 d-flex">
+                                <label for="idadhaar" class="input-group-text col-5" id="basic-addon1">ADHAAR</label>
+                                <input name="adhaar" id="idadhaar" type="text"value="<%= user.adhaar %>" class=" form-control " placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="mb-3 d-flex">
+                                <label for="idDOB" class="input-group-text col-5" id="basic-addon1">date of birth</label>
+                                <input name="DOB" id="idDOB" type="date" value="<%= (user.dob).toISOString().split('T')[0] %>" class="form-control col-7" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+                        
+                            </div>
+                            <%= console.log(user,'ejsejsejsejs'); %>
+                            <div class="mb-3 d-flex">
+                                <label for="idDOB" class="input-group-text col-5" id="basic-addon1">Married Date</label>
+                                <input name="MarriedDate"  id="idMarriedDate" value="<%= (user.marriedDate).toISOString().split('T')[0]  %>" type="date" class="form-control col-7" placeholder="Date of birth" aria-label="Username" aria-describedby="basic-addon1">  
+                            </div>
+                        
+                
+                        </div>
+                        <div class="container-fluid col-lg-6 col-sm-12 col">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">House No</span>
+                                <input name="HouseNumber" id="idHouseNumber"value="<%= user.HouseNumber %>"  type="text" class="form-control" placeholder="House No" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">HouseName</span>
+                                <input name="HouseName" id="idHouseName" value="<%= user.HouseName %>" type="text" class="form-control" placeholder="House Name" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">Street Name</span>
+                                <input name="StreetName" id="idStreetName" value="<%= user.StreetName %>" type="text" class="form-control" placeholder="Street Name" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">Pincode</span>
+                                <input name="Pincode" id="idpincode" onchange="loadPincode()"   type="text" value="<%= user.pincode %>" class="form-control" placeholder="Pincode" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">City</span>
+                                <select name="city" id="idcity" type="text"  style="text-transform:uppercase" value="<%= user.city %>" class="form-control" placeholder=""
+                                aria-label="Username" aria-describedby="basic-addon1">  
+                                <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">District</span>
+                                <select name="district" id="iddistrict" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                                aria-label="Username" aria-describedby="basic-addon1">  </select>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">State</span>
+                                <select name="state" id="idstate" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                                aria-label="Username" aria-describedby="basic-addon1">  </select>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">Country</span>
+                                <select name="country" id="idcountry" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
+                                aria-label="Username" aria-describedby="basic-addon1">  </select>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text col-5" id="basic-addon1">HIndex</span>
+                                <input readonly="true" name="hId" id="idHid"  value="<%= user.hrId %>"   type="text" class="form-control" placeholder="H Index" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="container-fluid d-flex col-12">
+                                <div class="form-check d-flex">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    <label class="form-check-label" for="flexRadioDefault1"> Male  </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    <label class="form-check-label" for="flexRadioDefault2"> Female </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked>
+                                    <label class="form-check-label" for="flexRadioDefault3"> Other  </label>
+                                </div>
+
+                                
+                            </div>
+                            
+                        </div>
+                        <div class="container-fluid d-flex col-sm-12" >
+                            <div class="input-group mb-3 col" hidden>
+                                <label for="" class="input-group-text col-10 " id="basic-addon1">Active</label>
+                                <input name="Active" value="checkboxValue" id="idActive" type="checkbox" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3 col" hidden>
+                                <label for="idSystemUser" class="input-group-text col-10" id="basic-addon1">System User</label>
+                                <input name="SystemUser" value="checkboxValue" id="idSystemUser" type="checkbox" class="form-control col-" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3 col  " hidden>
+                                <label for="idisAdmin" class="input-group-text col-10" id="basic-addon1">Admin</label>
+                                <input aria-describedby="basic-addon1" aria-label="Username" class="form-control  " type="checkbox"  name="isAdmin" value="checkboxValue" id="idisAdmin">
+                                
+                            </div>
+                            <div class="input-group mb-3 col " hidden >
+                                <label for="idMarried" class="input-group-text col-10" id="basic-addon1">Married</label>
+                                <input name="Married" value="checkboxValue" id="idMarried" type="checkbox" class="form-control col-" placeholder="Date of birth" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3 col " hidden >
+                                <label for="idisLoggedIn" class="input-group-text col-10" id="basic-addon1">Logged in </label>
+                                <input name="isLoggedIn" value="checkboxValue" id="idisLoggedIn" type="checkbox" class="form-control col-" placeholder="LoggedIn" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>    
                     </div>
-                     <br>
-                 <div class="container-fluid row ">
-                    <div class="container-fluid col-6 col">
-                        <div class="input-group  ">
-                            <span class="input-group-text col-5" id="basic-addon1">First Name</span>
-                            <input name="FirstName" id="idFirstName" value="<%= user.firstName %>" type="text" class="form-control" placeholder="First Name" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
+                    <button id="Bt_Save_Update" name="floorIndex" onclick="SaveHuman()" class="btn btn-success bi bi-send-plus-fill" type="buttonSS"> SAVE</button>
+                
+                    <% } %>
+                <div class="col-12 d-flex">
                         
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">Second Name</span>
-                            <input name="SecondName" id="idSecondName" value="<%= user.lastName %>" type="text" class="form-control" placeholder="Second Name" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">Contact Number</span>
-                            <input name="ContactNumber" id="idContactNumber"  value="<%= user.contactNumber %>" type="number" class="form-control" placeholder="Contact Number" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">Secondary Number</span>
-                            <input name="SecondryNumber" id="idSecondryNumber"  value="<%= user.secondaryNumber %>" type="number" class="form-control" placeholder="Secondry Number" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">Email:</span>
-                            <input name="Email" id="idEmail" readonly type="email" value="<%= user.email %>" class="form-control col-7" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">Username</span>
-                            <input name="Username" id="idUsername"  value="<%= user.username %>"   type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        
-                        <div class="input-group mb-3">
-                            <label for="idPanCard" class="input-group-text col-5 " id="basic-addon1">PANCARD</label>
-                            <input name="PanCard" id="idPanCard" type="text"  value="<%= user.pancard %>"  class="form-control" placeholder="PanCard" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class=" mb-3 d-flex">
-                            <label for="idadhaar" class="input-group-text col-5" id="basic-addon1">ADHAAR</label>
-                            <input name="adhaar" id="idadhaar" type="text"value="<%= user.adhaar %>" class=" form-control " placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="mb-3 d-flex">
-                            <label for="idDOB" class="input-group-text col-5" id="basic-addon1">date of birth</label>
-                            <input name="DOB" id="idDOB" type="date" value="<%= (user.dob).toISOString().split('T')[0] %>" class="form-control col-7" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
-                    
-                        </div>
-                        <%= console.log(user,'ejsejsejsejs'); %>
-                        <div class="mb-3 d-flex">
-                            <label for="idDOB" class="input-group-text col-5" id="basic-addon1">Married Date</label>
-                            <input name="MarriedDate"  id="idMarriedDate" value="<%= (user.marriedDate).toISOString().split('T')[0]  %>" type="date" class="form-control col-7" placeholder="Date of birth" aria-label="Username" aria-describedby="basic-addon1">  
-                        </div>
-                    
+                    </div>
+                    <div class="container-fluid d-flex  ">
             
                     </div>
-                    <div class="container-fluid col-6 col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">House No</span>
-                            <input name="HouseNumber" id="idHouseNumber"value="<%= user.HouseNumber %>"  type="text" class="form-control" placeholder="House No" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">HouseName</span>
-                            <input name="HouseName" id="idHouseName" value="<%= user.HouseName %>" type="text" class="form-control" placeholder="House Name" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">Street Name</span>
-                            <input name="StreetName" id="idStreetName" value="<%= user.StreetName %>" type="text" class="form-control" placeholder="Street Name" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">Pincode</span>
-                            <input name="Pincode" id="idpincode" onchange="loadPincode()"   type="text" value="<%= user.pincode %>" class="form-control" placeholder="Pincode" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">City</span>
-                            <select name="city" id="idcity" type="text"  style="text-transform:uppercase" value="<%= user.city %>" class="form-control" placeholder=""
-                            aria-label="Username" aria-describedby="basic-addon1">  
-                            <option value=""></option>
-                            </select>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">District</span>
-                            <select name="district" id="iddistrict" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
-                            aria-label="Username" aria-describedby="basic-addon1">  </select>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">State</span>
-                            <select name="state" id="idstate" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
-                            aria-label="Username" aria-describedby="basic-addon1">  </select>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">Country</span>
-                            <select name="country" id="idcountry" type="text"  style="text-transform:uppercase"  class="form-control" placeholder=""
-                            aria-label="Username" aria-describedby="basic-addon1">  </select>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-5" id="basic-addon1">HIndex</span>
-                            <input readonly="true" name="hId" id="idHid"  value="<%= user.hrId %>"   type="text" class="form-control" placeholder="H Index" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="container-fluid d-flex col-12">
-                            <div class="form-check d-flex">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                <label class="form-check-label" for="flexRadioDefault1"> Male  </label>
-                            </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                <label class="form-check-label" for="flexRadioDefault2"> Female </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked>
-                                <label class="form-check-label" for="flexRadioDefault3"> Other  </label>
-                              </div>
-
-                             
-                        </div>
-                        
-                    </div>
-                    <div class="container-fluid d-flex" >
-                        <div class="input-group mb-3 col" hidden>
-                            <label for="" class="input-group-text col-10 " id="basic-addon1">Active</label>
-                            <input name="Active" value="checkboxValue" id="idActive" type="checkbox" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3 col" hidden>
-                            <label for="idSystemUser" class="input-group-text col-10" id="basic-addon1">System User</label>
-                            <input name="SystemUser" value="checkboxValue" id="idSystemUser" type="checkbox" class="form-control col-" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3 col  " hidden>
-                            <label for="idisAdmin" class="input-group-text col-10" id="basic-addon1">Admin</label>
-                            <input aria-describedby="basic-addon1" aria-label="Username" class="form-control  " type="checkbox"  name="isAdmin" value="checkboxValue" id="idisAdmin">
-                            
-                        </div>
-                        <div class="input-group mb-3 col " hidden >
-                            <label for="idMarried" class="input-group-text col-10" id="basic-addon1">Married</label>
-                            <input name="Married" value="checkboxValue" id="idMarried" type="checkbox" class="form-control col-" placeholder="Date of birth" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3 col " hidden >
-                            <label for="idisLoggedIn" class="input-group-text col-10" id="basic-addon1">Logged in </label>
-                            <input name="isLoggedIn" value="checkboxValue" id="idisLoggedIn" type="checkbox" class="form-control col-" placeholder="LoggedIn" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                    </div>    
-                 </div>
-                 <button id="Bt_Save_Update" name="floorIndex" onclick="SaveHuman()" class="btn btn-success bi bi-send-plus-fill" type="buttonSS"> SAVE</button>
-               
-                 <% } %>
-               <div class="col-12 d-flex">
-                     
                 </div>
-                <div class="container-fluid d-flex  ">
         
-                </div>
-            </div>
-    
-        <div class="container-fluid   col-2 mt-2">
-            <form action="/user/loadProfile" method="get">
-                <button value="<%=user.hrId%>" class="w-100 btn btn-primary m-1"> My profile</button>
-            </form> 
-            <form action="/custom/Home" method="get">
-                <button value="<%=user.hrId%>" class="w-100 btn btn-primary m-1"> My Bookings</button>
-            </form> 
-            <form action="/user/getPaymentHistory" method="get">
-                <button  class="w-100 btn btn-primary  m-1"> Payment History</button>
-            </form>
+            
+            
         </div>
-         
     </div>
 </div>
 <%- include('footer') %>

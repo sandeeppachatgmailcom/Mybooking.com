@@ -80,8 +80,8 @@ async function saveHuman(NewHumanObj) {
         createduser: NewHumanObj.createduser,
         systemUser: NewHumanObj.systemUser,
         activeSession:NewHumanObj.session,
-        profilePicture:NewHumanObj.hrId+'profilePicture',
-        wallPappper:NewHumanObj.hrId+'wallPappper' 
+        profilePicture:'/images'+NewHumanObj.hrId+'profilePicture',
+        wallPappper:'/images'+NewHumanObj.hrId+'wallPappper' 
     }
      
     const result = await HumanResource.updateOne({ hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })

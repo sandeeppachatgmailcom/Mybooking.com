@@ -129,7 +129,7 @@
             <form action="/authenticate/signUp" method="post">  
             
             <div class="container btn justify-content-evenly "     >
-                <div class="container-fluid "   >
+                <div class="container-fluid col-sm-12 "   >
                      
                     <h6 id="IdInfoText"></h6>
                     <div class="container-fluid border-light d-flex rounded mb-3"  >
@@ -155,14 +155,12 @@
                     <!-- ************ -->
                     <div class="container-fluid border-light d-flex rounded mb-3">
                       
-                            <button class="border-0 rounded-start col-4 ">Username</button>
-                       
-                        <input type="text " id="Signup_User_Name" onchange="verifyUser('Signup_User_Name')" class="form-control " name="username" placeholder="Username"
-                            required>
+                        <button class="border-0 rounded-start col-4 ">Username</button>
+                       <input type="text " id="Signup_User_Name" onchange="verifyUser('Signup_User_Name')" class="form-control " name="username" placeholder="Username"
+                        required>
                         <button id="Signup_username_Bt" type="button" onclick="verifyUser('Signup_User_Name')"
                             class="btn btn-outline-success bi bi-search "></button>
-            
-                    </div>
+                        </div>
                     <!-- ************ -->
                     <div class="container-fluid border-light d-flex rounded mb-3">
                             <button class="border-0 rounded-start col-4 " required>Password</button>
@@ -171,18 +169,18 @@
                     </div>
             
                 </div>
-                <div class=" d-flex">
-                    <div class="  d-flex flex-row col-8">
+                <div class="container-fluid d-flex flex-wrap">
+                    <div class=" container-fluid d-flex flex-wrap col-sm-12">
                         <button id="Bt_Save_Signup" onclick="verifyandupdate()" type="button"
-                            class="btn btn-outline-success col-4  bi bi-cursor-fill" value="signup"> SAVE </button>
+                            class="btn btn-outline-success  col-sm-12  bi bi-cursor-fill" value="signup"> SAVE </button>
                         <button id="Bt_Cancel_signup" onclick="CancelEntry()" type="button"
-                            class="btn btn-outline-warning col-4 bi bi-x-square"> CANCEL </button>
+                            class="btn btn-outline-warning  col-sm-12 bi bi-x-square"> CANCEL </button>
                         <button id="Bt_verifyOtp"  data-bs-toggle="modal" data-bs-target="#idEnterOtp" type="button"
-                            class="btn btn-outline-warning col-4 bi bi-x-square"> VALIDATE OTP </button>
+                            class="btn btn-outline-warning  col-sm-12 bi bi-x-square"> VALIDATE OTP </button>
                     </div>
-                    <div class=" container-fluid d-flex flex-row-reverse col-4">
+                    <div class=" container-fluid d-flex flex-row  col-sm-12 ">
                         <button id="Bt_Login_back" onclick="loadHome()" type="button"
-                            class="btn btn-outline-primary col-10 bi bi-person-square">LOG-IN </button>
+                            class="btn btn-outline-primary col-sm-12 bi bi-person-square">LOG-IN </button>
                     </div>
                 </div>
                 <br>

@@ -216,7 +216,7 @@ async function verifyphone(phone) {
         document.getElementById('Signup_phone_Bt').classList.add('btn')
         document.getElementById('Signup_phone_Bt').classList.add('btn-success')
         document.getElementById('Signup_phone_Bt').classList.add('bi')
-        document.getElementById('Signup_phone_Bt').classList.add('bi-search')
+        document.getElementById('Signup_phone_Bt').classList.add('bi-patch-check')
         signuptxt.setAttribute("readonly", "true");
     }
     return result.verified
@@ -419,7 +419,7 @@ async function verifyUser(username) {
             document.getElementById('Signup_username_Bt').classList.add('btn')
             document.getElementById('Signup_username_Bt').classList.add('btn-success')
             document.getElementById('Signup_username_Bt').classList.add('bi')
-            document.getElementById('Signup_username_Bt').classList.add('bi-search')
+            document.getElementById('Signup_username_Bt').classList.add('bi-patch-check')
             signuptxt.setAttribute("readonly", "true");
         }
         return result.verified

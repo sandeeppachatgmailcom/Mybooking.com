@@ -164,23 +164,23 @@
                     <!-- ************ -->
                     <div class="container-fluid border-light d-flex rounded mb-3">
                             <button class="border-0 rounded-start col-4 " required>Password</button>
-                            <input autocomplete="new-password" onchange="verifyPassword()" onselect="nothing()" id="User_Login_password"
+                            <input autocomplete="new-password" onchange="verifyPassword('User_Login_password','verifyPassword_Bt' )" onselect="nothing()" id="User_Login_password"
                             type="password" class="form-control" name="password" placeholder="password">
+                            <button id="verifyPassword_Bt" type="button" onclick="verifyPassword('Signup_User_Name','verifyPassword_Bt')"
+                            class="btn btn-outline-success bi bi-search "></button>
                     </div>
             
                 </div>
                 <div class="container-fluid d-flex flex-wrap">
                     <div class=" container-fluid d-flex flex-wrap col-sm-12">
                         <button id="Bt_Save_Signup" onclick="verifyandupdate()" type="button"
-                            class="btn btn-outline-success  col-sm-12  bi bi-cursor-fill" value="signup"> SAVE </button>
+                            class="btn btn-success  col-sm-12 m-1 col-lg-2 bi bi-cursor-fill" value="signup"> SAVE </button>
                         <button id="Bt_Cancel_signup" onclick="CancelEntry()" type="button"
-                            class="btn btn-outline-warning  col-sm-12 bi bi-x-square"> CANCEL </button>
+                            class="btn btn-danger  col-sm-12 m-1 col-lg-2 bi bi-x-square"> CANCEL </button>
                         <button id="Bt_verifyOtp"  data-bs-toggle="modal" data-bs-target="#idEnterOtp" type="button"
-                            class="btn btn-outline-warning  col-sm-12 bi bi-x-square"> VALIDATE OTP </button>
-                    </div>
-                    <div class=" container-fluid d-flex flex-row  col-sm-12 ">
+                            class="btn btn-primary col-lg-3   col-sm-12 m-1 bi-envelope-check-fill"> VALIDATE </button>
                         <button id="Bt_Login_back" onclick="loadHome()" type="button"
-                            class="btn btn-outline-primary col-sm-12 bi bi-person-square">LOG-IN </button>
+                            class="btn btn-success col-sm-12 m-1 col-lg-2 bi bi-person-square">LOG-IN </button>
                     </div>
                 </div>
                 <br>

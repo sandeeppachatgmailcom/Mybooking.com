@@ -494,10 +494,11 @@ if (document.getElementById("idlaunchPageText")){
 }
 if (document.getElementById("idanimatedMessageLogin")){
 document.getElementById("idanimatedMessageLogin").addEventListener('load',AnimatedTextforhotelLogin("idanimatedMessageLogin"))
-
-   
 }
-
+if (document.getElementById("idanimatedMessageLogin")){
+    document.getElementById("idanimatedMessageLogin").addEventListener('load',AnimatedTextforhotelLogin("idanimatedMessageLogin"))
+    }
+    
 function AnimatedTextforhotelLogin(name){
         
     const message = document.getElementById(name).textContent;

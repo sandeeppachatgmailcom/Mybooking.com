@@ -63,7 +63,8 @@ async function loginvendure(){
     console.log(result);
     if(result.userActive && result.verified){
         const formId = document.getElementById('idconfirmReservationsbutton');
-        formId.click()
+        formId.click
+        ()
     }
     if( !result.verified){
         //document.getElementById('customerLogin').modal('show')

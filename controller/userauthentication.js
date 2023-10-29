@@ -88,10 +88,10 @@ router.post('/custLogin',async (req,res)=>{
         return
     }
     
-    const user={
-        firstName:verified.user,
-    }
+    let  user=''
+    if(verified.userdetails){user ={firstName : verified.userdetails.firstName}}
     if (verified.verified){
+        
         res.cookie('username',verified.user)
     
     req.body.ditrictName='';
@@ -111,6 +111,7 @@ router.post('/custLogin',async (req,res)=>{
      "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
     res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
 }
+ 
 else res.redirect('/')
 })
 
@@ -118,9 +119,8 @@ router.get('/custLogin',async (req,res)=>{
     req.body.session = req.sessionID;
 
     const verified =await HBank.verifyUser(req.body)
-    const user={
-        firstName:verified.user.firstName ,
-    }
+    let  user=''
+    if(verified.userdetails){user ={firstName : verified.userdetails.firstName}}
     if (verified.verified){
         res.cookie('username',verified.user)
     }

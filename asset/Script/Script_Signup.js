@@ -489,28 +489,36 @@ async function verifyandupdate() {
 
 }
 
-if (document.getElementById("idanimatedMessageLogin")){
-document.getElementById("idanimatedMessageLogin").addEventListener('load',AnimatedTextforhotelLogin())
-
-    function AnimatedTextforhotelLogin(){
-        
-        const message = document.getElementById("idanimatedMessageLogin").textContent;
-        const text = document.getElementById("idanimatedMessageLogin");
-        let i=0
-        function animation (){
-            if(i< message.length){
-                setTimeout( () => {
-                    text.innerText = message.slice(0,i+1);
-                    i++
-                    animation()
-                }, 50);
-            }
-            
-        }
-        animation ();
-
-    }
+if (document.getElementById("idlaunchPageText")){
+    document.getElementById("idlaunchPageText").addEventListener('load',AnimatedTextforhotelLogin("idlaunchPageText"))
 }
+if (document.getElementById("idanimatedMessageLogin")){
+document.getElementById("idanimatedMessageLogin").addEventListener('load',AnimatedTextforhotelLogin("idanimatedMessageLogin"))
+
+   
+}
+
+function AnimatedTextforhotelLogin(name){
+        
+    const message = document.getElementById(name).textContent;
+    const text = document.getElementById(name);
+    let i=0
+    function animation (){
+        if(i< message.length){
+            setTimeout( () => {
+                text.innerText = message.slice(0,i+1);
+                i++
+                animation()
+            }, 50);
+        }
+        
+    }
+    animation ();
+
+}
+
+
+
 async function vedurelogin( email,password){
 const data = {
     userName:document.getElementById(email).value,

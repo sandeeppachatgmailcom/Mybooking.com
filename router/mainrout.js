@@ -23,7 +23,7 @@ const reservation = require('../controller/reservation')
 const personalProfile = require('../controller/userprofile')
 const admin = require('../controller/admin')
 const ImageDoc = require('../controller/documentMaster')
- 
+const Hbank = require('../model/humanbank')
 router.use(clearCache.clearCache);
 
 
@@ -63,8 +63,15 @@ router.use('/imageDoc',ImageDoc)
 
 router.get('/' ,async (req, res) => {
     try {
-        user = ''
-         
+        req.body.session = req.sessionID;
+        let result  = await Hbank.verifyUser(req.body)
+        let user =''
+        console.log(result);
+        if(result.userdetails){
+          user ={firstName : result.userdetails.firstName}
+        }
+
+
         const generalData = await companies.SearchCompany('')
         const tariff = await tariffs.loadtariff('')
         let district = new Set();

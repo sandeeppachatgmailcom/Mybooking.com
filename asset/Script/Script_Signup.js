@@ -455,9 +455,9 @@ async function verifyandupdate() {
     if(!email&&!phone&&!user&&(document.getElementById('Signup_name_text').value)){
          
         setTimeout(async () => {
-       verified = confirm("Verified , Do you want create new user ?")
+    
        
-        if (verified) {
+        
             let result = await fetch('/authenticate/signup', {
                 method: 'post',
                 headers: {
@@ -472,7 +472,7 @@ async function verifyandupdate() {
                 .catch()
 
             if (result.saved) {
-                alert("User Saved")
+               
                 document.getElementById("Bt_verifyOtp").click();
                 document.getElementById("idverify_Email").value = data.email; 
                 document.getElementById("idverify_Email").disabled = true;
@@ -481,7 +481,7 @@ async function verifyandupdate() {
             }
             
 
-        }
+        
     
     }, 0);}
 },500);    

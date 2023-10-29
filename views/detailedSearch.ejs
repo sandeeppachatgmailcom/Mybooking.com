@@ -17,18 +17,20 @@
                                     class="   w-100 btn border-none h-100  text-light fw-lighter" id="idSearchText"
                                     onchange="loadHotel(event.target.value,'' ) ">
                                     <option style="background-color: rgba(65, 90, 69, 0.762) ; height: 100px;"
-                                        class="col-12 SearchTextBox text-light fw-LIGHTER" value="<%= inputData.ditrictName %>" > <%= inputData.ditrictName %>
+                                        class="col-12 SearchTextBox text-light fw-LIGHTER" selected value="<%= inputData.ditrictName %>" > <%= inputData.ditrictName %>
                                     </option>
                                     <option style="background-color:  rgba(65, 90, 69, 0.762) ; height: 100px;"
-                                    class="col-12 SearchTextBox text-light fw-LIGHTER" selected  value="">All the Space we
+                                    class="col-12 SearchTextBox text-light fw-LIGHTER"   value="">All the Space we
                                     have
                                 </option>
                                     <% district.forEach(element=> { %>
-                                        <option style="background-color: rgba(65, 90, 69, 0.762) ; height: 100px;"
-                                            class="col-12 SearchTextBox text-light fw-LIGHTER"
-                                            value="<%= element  %>">
-                                            <%= element %>
-                                        </option>
+                                            <% if (inputData.ditrictName!=element) { %>
+                                                <option style="background-color: rgba(65, 90, 69, 0.762) ; height: 100px;"
+                                                    class="col-12 SearchTextBox text-light fw-LIGHTER"
+                                                    value="<%= element  %>">
+                                                    <%= element %>
+                                                </option>
+                                            <% } %>
                                         <% }) %>
                                 </select>
                             </div>

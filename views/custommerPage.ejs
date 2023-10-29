@@ -17,21 +17,22 @@
                     <form action="/custom/customSearch" method="post">
                             <!-- Main Search box Start here -->
                            <h5 class="col-2 text-light ">Location </h5>
-                            <div class="container d-flex">
-                              <select name="ditrictName" type="text" data-hotels="<%= JSON.stringify(generalData) %>"  
-                                class=" col-11 btn w-100 text-light fw-lighter" id="idSearchText" onchange="">
+                            <div class="container d-flex ">
+                              <select name="ditrictName" type="text" data-hotels="<%= JSON.stringify(generalData) %>"
+                                class=" col-10 btn w-100 text-light fw-lighter" id="idSearchText" onchange="">
                                 <option style="background-color:rgba(186, 90, 21, 0.748); font-size: large;"
-                                  class="col-12 SearchTextBox text-light fw-LIGHTER" value="">  All Cities </option>
-                                    <% district.forEach(element=> { %>
-                                        <option style="background-color:rgba(186, 90, 21, 0.748); height: 100px;"
-                                          class=" col-12 btn w-100 text-light fw-lighter" value="<%=element%>">
-                                          <%=element%>
-                                        </option>
+                                  class="col-10 SearchTextBox text-light fw-LIGHTER" value=""> All Cities </option>
+                                <% district.forEach(element=> { %>
+                                  <option style="background-color:rgba(186, 90, 21, 0.748); height: 100px;"
+                                    class=" col-12 btn w-100 text-light fw-lighter" value="<%=element%>">
+                                    <%=element%>
+                                  </option>
                                   <% }) %>
                               </select>
-                              <button class="btn text-light bi bi-search">
+                              <button class="col-2 btn text-light bi bi-search">
                                 FIND
-                              </button></div>
+                              </button>
+                            </div>
                             
                              
                               

@@ -81,16 +81,18 @@
             </div>
         </div>
     </div>
-<form action="/authenticate/custLogin" method="post">
+<form   action="/authenticate/custLogin" method="post">
     <div class="modal fade mr-2" id="customerLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog "> <!-- Change modal-lg to modal-xl for an extra-large modal -->
             <div class="modal-content" style="background-color: rgba(72, 93, 74, 0.84); width:400px;">
                  <div class="modal-header">
-            <h5 class="modal-title txt text-light" id="exampleModalLabel">Sign in</h5>
+            <h5 class="modal-title txt text-light" id="exampleModalLabel">Sign in</h5> <br>
+            
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div> 
             <div class="modal-body">
             <div>
+                <small class="modal-title txt text-warning" id="exampleModalLabelHead"></small> <br>
                 <small class="txt text-light">Email</small>
             </div>
             <div class="input-group flex-nowrap mb-1">
@@ -108,7 +110,7 @@
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#resetPassword">ChangePassword</button>
             
-            <button type="submit" onclick="signinCustomer()" class="btn btn-success">Sign in </button>
+            <button type="button" onclick="signinCustomer('exampleModalLabelHead')" class="btn btn-success">Sign in </button>
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#customerRegister">Signup </button>
             
             </div>
@@ -118,7 +120,7 @@
 </form> 
 
 <!-- Modal -->
-<div class="modal fade btn" id="customerRegister" style="background-color: rgba(128, 109, 0, 0.408);" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade btn" id="customerRegister" style="  background-color: rgba(128, 109, 0, 0.408);" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg " >
       <div class="modal-content"  >
         <div class="modal-header">
@@ -230,14 +232,14 @@
                 <div class=" d-flex">
                     <div class="  d-flex flex-row col-8">
                         <button id="Bt_Save_Signup"   type="button"
-                            class="btn btn-outline-success col-4  bi bi-cursor-fill" onclick="verifyOtp()"  value="signup"> SUBMIT </button>
+                            class="btn btn-outline-success col-4  bi bi-cursor-fill" onclick="verifyOtp('validate')"  value="signup"> SUBMIT </button>
                         <button id="Bt_resendOtp"   type="button" onclick="resendOtp('idverify_Email')"
                             class="btn btn-danger col-4 "> SEND OTP </button>
                         
                         </div>
                     <div class=" container-fluid d-flex flex-row-reverse col-4">
                         <button id="Bt_signinOtp"  data-bs-toggle="modal" data-bs-target="#customerLogin" type="button"
-                        class="btn btn-outline-warning bi bi-x-square"> LOG-IN  </button>
+                        class="btn btn-primary  bi bi-envelope-check-fill"> LOG-IN  </button>
                         <button id="openResetModal"  data-bs-toggle="modal" data-bs-target="#resetPasswordafterOtp" style="display: none;" type="button"
                         class="btn btn-outline-warning bi bi-x-square"> LOG-IN  </button>
                    </div>

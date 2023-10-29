@@ -242,7 +242,7 @@ if(! i.totalRoom) i.totalRoom=1;
   
   innerhtml+=`
   <div class="card" p-2 style="width: 21rem; ">
-    <form action="/custom/viewReservation" method="post">
+    <form id="idFormViewReservation" action="/custom/viewReservation" method="post">
       <div onClick="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}', ${diffDays})"
           class="card-body " style="background-color:${bodycolorclass}">
   
@@ -308,7 +308,10 @@ if(! i.totalRoom) i.totalRoom=1;
                       aria-label="Username" aria-describedby="basic-addon1">
               </div>
           </div>
-          <button class="btn btn-success" name="bookingDetails" onClick="saveReservation(event.target.value)"
+          <button class="btn btn-success" name="boxokingDetails" onClick="verifyUserbeforeConfirm()"
+              value="${result.CompanyID},${i.tariffIndex},${data.StartDate},${data.EndDate},${diffDays}"
+              type="button">Book Now </button>
+              <button class="btn btn-success" name="bookingDetails" id="idconfirmReservationsbutton"  hidden
               value="${result.CompanyID},${i.tariffIndex},${data.StartDate},${data.EndDate},${diffDays}"
               type="submit">Book Now </button>
       </div>

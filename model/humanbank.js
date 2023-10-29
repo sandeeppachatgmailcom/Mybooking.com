@@ -114,7 +114,7 @@ async function verifyUser(userObject){
                 userIsAdmin:user.isAdmin, 
                 company:user.companyID.CompanyID,
                 companyActive:user.companyID.Active,
-                message:'',
+                message:'sas',
                 isAdmin:user.isAdmin
             };
     }

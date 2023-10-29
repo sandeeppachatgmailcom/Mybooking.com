@@ -14,6 +14,8 @@ router.get('/',(req,res)=>{
     res.redirect('/')
 })   
 router.post('/viewReservation',async (req,res)=>{
+    
+    console.log(req.body.bookingDetails);
     let temp = req.body.bookingDetails.split(',');
     let extrapax =parseInt(req.body.guestCount)- parseInt(req.body.roomCount*2)
     if (extrapax<0) extrapax=0  

@@ -778,7 +778,7 @@ async function CheckUser() {
 
 
                     
-async function verifyOtp(){
+async function verifyOtp(dofunc){
     data ={
         email:   document.getElementById("idverify_Email").value,
         otp : document.getElementById("id_otp").value
@@ -791,13 +791,24 @@ async function verifyOtp(){
     .catch(err=>{
         console.log(err)
     })
-    if (result.verified){
+    if (result.verified && dofunc=='reset'){
          
         const myElement = document.getElementById("openResetModal");
         const email = document.getElementById("idVerifyEmailOtp");
         myElement.click()
         email.value = data.email;
         email.disabled = true;
+    }
+    else if (result.verified && dofunc=='validate'){
+         
+        swal({
+            title: "success",
+            text: "otp Validation Success!",
+            icon: "success",
+            button: "OK",
+          }).then((value)=>{
+            window.location.reload();
+          })
     }
 }
 

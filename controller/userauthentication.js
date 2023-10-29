@@ -51,6 +51,34 @@ async function userSessionAuthentication(sessionID, username, password) {
     else {
     }
 }
+
+router.post('/custFetchLogin',async (req,res)=>{
+    req.body.session = req.sessionID;
+
+    const verified =await HBank.verifyUser(req.body)
+    if(verified.otp){
+        res.render('otp',{verified})
+        return
+    }
+    
+    const user={
+        firstName:verified.user,
+    }
+    if (verified.verified){
+        res.cookie('username',verified.user)
+    }
+    res.json(verified)
+    
+})
+
+
+
+
+
+
+
+
+
 router.post('/custLogin',async (req,res)=>{
     req.body.session = req.sessionID;
 

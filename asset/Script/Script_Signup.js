@@ -870,7 +870,7 @@ else{
 
                     
 async function verifyOtp(dofunc){
-    const result = await verifyOTP(document.getElementById("idverify_Email").value,document.getElementById("id_otp").value)
+    const result = await verifyOneTimePassword(document.getElementById("idverify_Email").value,document.getElementById("id_otp").value)
     if (result.verified && dofunc=='reset'){
          
         const myElement = document.getElementById("openResetModal");

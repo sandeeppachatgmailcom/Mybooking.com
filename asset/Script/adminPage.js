@@ -221,7 +221,7 @@ async function adminlogin( email,password){
       if(result.verified&&result.isAdmin&&result.userActive){
         window.location.href=result.path
       }
-      else if(result.verified&&!result.isAdmin){
+      else if(result.verified&& !result.isAdmin){
         document.getElementById("idMessageBarAdminlogin").textContent = 'you are not an admin' 
       }
       else if(result.verified&&!result.userActive){

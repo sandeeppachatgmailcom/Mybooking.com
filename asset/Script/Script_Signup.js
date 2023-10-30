@@ -430,7 +430,7 @@ async function verifyandupdate() {
     let email=true;
     let phone=true;
     let user=true;
-    let password=true;;
+    let password=true;
 
      setTimeout(async () => { email =  await verifyEmail('Signup_Email_text','Signup_Email_Bt') }, 50);
      setTimeout(async () => { phone =await verifyphone('Signup_Email_Phone') }, 150);
@@ -472,20 +472,14 @@ async function verifyandupdate() {
                 .catch()
 
             if (result.saved) {
-               
                 document.getElementById("Bt_verifyOtp").click();
                 document.getElementById("idverify_Email").value = data.email; 
                 document.getElementById("idverify_Email").disabled = true;
                 executeOtpTimer("Bt_resendOtp");
                 document.getElementById("IdInfoText").innerText='Click Signup for sign in '
             }
-            
-
-        
-    
     }, 0);}
 },500);    
-    
 
 }
 

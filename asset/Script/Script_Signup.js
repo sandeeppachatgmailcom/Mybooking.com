@@ -71,9 +71,7 @@ async function login(){
     .catch(err=>{
         
     })
-    
     window.location.assign("/floorMap/floorMap");
-    
   }
 async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
     const username = document.getElementById(inputusername).value;

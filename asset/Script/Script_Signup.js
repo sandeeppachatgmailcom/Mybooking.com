@@ -451,12 +451,9 @@ if (!document.getElementById('Signup_name_text').value) {
         document.getElementById('Signup_name_text').style.borderColor = 'red';
         document.getElementById('IdInfoText').innerText='All fields are Mandatory'
     }
-    if(!email&&!phone&&!user&&(document.getElementById('Signup_name_text').value)){
+    if(!email&&phone&&user&&(document.getElementById('Signup_name_text').value)){
          
         setTimeout(async () => {
-    
-       
-        
             let result = await fetch('/authenticate/signup', {
                 method: 'post',
                 headers: {
@@ -469,7 +466,6 @@ if (!document.getElementById('Signup_name_text').value) {
                 }
                 )
                 .catch()
-
             if (result.saved) {
                 document.getElementById("Bt_verifyOtp").click();
                 document.getElementById("idverify_Email").value = data.email; 

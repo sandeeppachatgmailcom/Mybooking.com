@@ -73,7 +73,8 @@ async function login(){
     })
     window.location.assign("/floorMap/floorMap");
   }
-async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
+
+  async function verifyuserWithPassword(inputusername ,input_Field,outputfield){
     const username = document.getElementById(inputusername).value;
     const password = document.getElementById(input_Field).value;
     if(password.length<1 || username.length<1 ){
@@ -92,6 +93,53 @@ async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
         .catch(err=>{
             console.log(err)
         }) 
+         
+        return result 
+    }
+   
+
+}  
+
+async function validateUserwithPassword(inputusername ,input_Field,outputfield,newpasswordtext,retypePassword){
+const result = await verifyuserWithPassword(inputusername,input_Field,outputfield)
+ 
+    if (result.verified) {
+        
+        while (document.getElementById(outputfield).classList.length > 0) {
+            document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
+        }
+        document.getElementById(outputfield).classList.add('btn')
+        document.getElementById(outputfield).classList.add('btn-success')
+        document.getElementById(outputfield).classList.add('bi')
+        document.getElementById(outputfield).classList.add('bi-patch-check')
+        document.getElementById(newpasswordtext).readOnly = false
+        document.getElementById(retypePassword).readOnly = false
+    }
+    else {
+        
+        while (document.getElementById(outputfield).classList.length > 0) {
+            document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
+        }
+        document.getElementById(outputfield).classList.add('btn')
+        document.getElementById(outputfield).classList.add('btn-danger')
+        document.getElementById(outputfield).classList.add('bi')
+        document.getElementById(outputfield).classList.add('bi-patch-check')
+        document.getElementById(newpasswordtext).readOnly = true
+        document.getElementById(retypePassword).readOnly = true 
+    } 
+}
+ 
+
+
+
+
+
+
+
+async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
+   
+        const result =await verifyuserWithPassword(inputusername,input_Field,outputfield)
+        
         if (result.verified) {
         
             while (document.getElementById(outputfield).classList.length > 0) {
@@ -101,6 +149,9 @@ async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
             document.getElementById(outputfield).classList.add('btn-success')
             document.getElementById(outputfield).classList.add('bi')
             document.getElementById(outputfield).classList.add('bi-patch-check')
+            
+
+            
         }
         else {
             
@@ -111,11 +162,12 @@ async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
             document.getElementById(outputfield).classList.add('btn-danger')
             document.getElementById(outputfield).classList.add('bi')
             document.getElementById(outputfield).classList.add('bi-patch-check')
+            
              
         }
         console.log(result);
         return result.verified; 
-    }
+     
    
 
 }  
@@ -244,20 +296,18 @@ else{
 }
 }
 
-async function changeaPassword(){
-const userName = document.getElementById('idVerifyEmail-Phone').value;
-const oldPassword = document.getElementById('idCurrentPassword').value;
-const NewPassword = document.getElementById('idNewPasswordtext').value;
+async function changeaPassword(email,newpassword){
+const userName = document.getElementById(email).value;
+const NewPassword = document.getElementById(newpassword).value;
 const confirmuserName =await verifyEmail('idVerifyEmail-Phone','Signup_Email_Bt');
-const confirmoldPassword =await verifyPasswordBackend('idVerifyEmail-Phone' ,'idCurrentPassword','idVerifieOldPassword');
 const confirmNewPassword = await verifyPassword('idNewPasswordtext','idNewPasswordbtn');
 const confirmmatchPassword = await matchPassword('idNewPasswordtext','idRetypePasswordtext','idRetypePasswordbtn')
 data = {
     username :userName,
     password:NewPassword 
 }
-console.log(userName,oldPassword,NewPassword,confirmuserName,confirmoldPassword,confirmNewPassword,confirmmatchPassword);
-if(!confirmuserName&&confirmoldPassword&&confirmNewPassword&&confirmmatchPassword ){
+console.log(userName,NewPassword,confirmuserName,confirmNewPassword,confirmmatchPassword);
+if(!confirmuserName&&confirmNewPassword&&confirmmatchPassword ){
     const result =await fetch('/authenticate/changePassword',{method:'post',headers:{"Content-type":"Application/json"},body:JSON.stringify(data)})
     .then(res=>{
         return res.json()
@@ -536,7 +586,7 @@ else{
 
   function executeOtpTimer(btnElement) {
     const otpButton = document.getElementById(btnElement);
-    let time = 30;
+    let time = 60;
     otpButton.value = time;
     async function updateTimer() {
       if (time >= 0) {
@@ -571,10 +621,13 @@ else{
   
     updateTimer();
   }
-async function resendOtp(email){
+async function resendOtp(email,count){
+     
+     
     data ={
         email: document.getElementById(email).value
     }
+    if (document.getElementById(email).value){ 
     const result =await fetch('/authenticate/resendOtp',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
     .then(res=>{
         return res.json()
@@ -583,8 +636,11 @@ async function resendOtp(email){
         console.log(err);
     })
     if(result.created){
-        executeOtpTimer("Bt_resendOtp");
+        executeOtpTimer(count);
+
     }
+}
+else alert('emaid id could not be blank ')
 }
 
 
@@ -617,10 +673,6 @@ async function Authenticateuser() {
         .catch()
     if (result.verified) {
         window.location.href = '/floor'
-
-        // const loginform = 
-        // document.getElementById('loginform');
-        // loginform.submit();
     }
     else {
         alert("Wrong username or Password ")
@@ -757,9 +809,7 @@ async function CheckUser() {
         .then(res => {
             return res.json();
         }).catch(err => {
-            
         })
-    
     const companylist = document.getElementById("idCompanyList");
     while (companylist.options.length >0) {
         companylist.remove(0);
@@ -769,19 +819,16 @@ async function CheckUser() {
         newOption.textContent = result[i].lastName
         newOption.value = result[i].CompanyID
         companylist.appendChild(newOption)
-        
     }
 }
 
 
 
-                    
-async function verifyOtp(dofunc){
+ async function verifyOneTimePassword(email,otp){
     data ={
-        email:   document.getElementById("idverify_Email").value,
-        otp : document.getElementById("id_otp").value
+        email:   document.getElementById(email).value,
+        otp : document.getElementById(otp).value
     }
-    console.log(data);
     const result = await fetch('/authenticate/confirmOtp',{method:'post',headers:{"Content-Type":"Application/json"},body:JSON.stringify(data)})
     .then(res=>{
         return res.json()
@@ -789,6 +836,41 @@ async function verifyOtp(dofunc){
     .catch(err=>{
         console.log(err)
     })
+    return result ;
+ }
+ 
+async function tryOtp(  passwordDiv,otpDiv,email,idbtResendOtp ){
+    document.getElementById(passwordDiv).hidden = true
+    document.getElementById(otpDiv).hidden = false;
+    await resendOtp(email,idbtResendOtp)
+} 
+
+
+
+async function validateuserUsingOtp(email,newOtp,alertbtn,newPassword,retypePassword){
+const result = await verifyOneTimePassword(email,newOtp);
+if(result.verified){
+    document.getElementById(alertbtn).classList.add('btn')
+    document.getElementById(alertbtn).classList.add('btn-success')
+    document.getElementById(alertbtn).classList.add('bi')
+    document.getElementById(alertbtn).classList.add('bi-patch-check')
+    document.getElementById(newPassword).readOnly = false;
+    document.getElementById(retypePassword).readOnly = false
+}
+else{
+    document.getElementById(alertbtn).classList.add('btn')
+    document.getElementById(alertbtn).classList.add('btn-danger')
+    document.getElementById(alertbtn).classList.add('bi')
+    document.getElementById(alertbtn).classList.add('bi-patch-check')
+    document.getElementById(newPassword).readOnly = true;
+    document.getElementById(retypePassword).readOnly = true
+}
+
+}
+
+                    
+async function verifyOtp(dofunc){
+    const result = await verifyOTP(document.getElementById("idverify_Email").value,document.getElementById("id_otp").value)
     if (result.verified && dofunc=='reset'){
          
         const myElement = document.getElementById("openResetModal");

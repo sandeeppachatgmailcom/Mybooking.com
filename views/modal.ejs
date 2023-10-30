@@ -38,49 +38,59 @@
         </div>
     </div>
 </form>
-    <div class="modal fade modal-lg mr-2" id="resetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">       
-        <div class="modal-dialog modal-lg"> <!-- Add modal-lg class to the modal-dialog -->
-            <div class="modal-content" style="background-color: rgba(255, 250, 245, 0.738); height: 100%; width: 600px;"> <!-- Adjust height and width as needed -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-
-                    </button>
-                </div>
-                <div class="modal-body">
-                   <div class="container-fluid border border-light align-item-centre ">
-                    <label for="">Change Password</label>
-                    
-                    <div class="input-group mb-3">
-                        <span class="input-group-text col-4" id="basic-addon1">email/Mobile</span>
-                        <input type="text" id="idVerifyEmail-Phone" class="form-control" onchange="verifyEmail('idVerifyEmail-Phone','Signup_Email_Btn','/VerifyEmail')" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                        <button id="Signup_Email_Btn" class="btn"></button>
-                    </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-4" id="basic-addon1">old Password</span>
-                            <input id="idCurrentPassword" type="password" onchange="verifyPasswordBackend('idVerifyEmail-Phone' ,'idCurrentPassword','idVerifieOldPassword')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                            <button id="idVerifieOldPassword" class="btn"></button>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-4" id="basic-addon1">New Password</span>
-                            <input id="idNewPasswordtext"  type="password" onchange="verifyPassword('idNewPasswordtext','idNewPasswordbtn') " class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                            <button id="idNewPasswordbtn" class="btn"></button>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text col-4" id="basic-addon1">retype Password</span>
-                            <input id="idRetypePasswordtext" type="password" onchange="matchPassword('idNewPasswordtext','idRetypePasswordtext','idRetypePasswordbtn')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                            <button id="idRetypePasswordbtn" class="btn"></button>
-                        </div>                          
-                   </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button"  onclick="changeaPassword()"  class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#"> Submit </button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
-                </div>
-            </div>
+<div class="modal fade modal-lg" id="resetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="background-color: rgba(255, 250, 245, 0.738);">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <label for="">Change Password</label>
+  
+            <div class="input-group mb-3   ">
+              <span class="input-group-text col-4 " id="basic-addon1">email/Mobile</span>
+              <input type="text" id="idVerifyEmail-Phone" class="form-control" onchange="verifyEmail('idVerifyEmail-Phone','Signup_Email_Btn','/VerifyEmail')" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+              <button id="Signup_Email_Btn" class="btn"></button>
+            </div>
+  
+            <div class="input-group mb-3" id="idValidateUserWithPassword" >
+              <span class="input-group-text col-4 " id="idResetPassword">Old Password</span>
+              <input id="idCurrentPassword" type="password" onchange="validateUserwithPassword('idVerifyEmail-Phone' ,'idCurrentPassword','idVerifieOldPassword','idNewPasswordtext','idRetypePasswordtext')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2">
+              <button id="idVerifieOldPassword" class="btn"></button>
+            </div>
+  
+            <div class="input-group mb-3" hidden id="idDivValidatewithOtp" >
+              <span class="input-group-text col-4  " id="idDivTryWithOTP">OTP</span>
+              <input id="idnewOtp" type="password" onchange="validateuserUsingOtp('idVerifyEmail-Phone','idnewOtp','idnewOtpBtn','idNewPasswordtext','idRetypePasswordtext')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon3">
+              <button id="idnewOtpBtn" class="btn"></button>
+            </div>
+
+
+
+            <div class="input-group mb-3" id="idDivTryWithOtp">
+                <span class="input-group-text col-4  " id="basic-addon3">New Password</span>
+                <input id="idNewPasswordtext" readonly type="password" onchange="verifyPassword('idNewPasswordtext','idNewPasswordbtn')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon3">
+                <button id="idNewPasswordbtn" class="btn"></button>
+              </div>
+  
+            <div class="input-group mb-3"id="idDivRetypePassword" >
+              <span class="input-group-text col-4  " id="basic-addon4">Retype Password</span>
+              <input id="idRetypePasswordtext" readonly type="password" onchange="matchPassword('idNewPasswordtext','idRetypePasswordtext','idRetypePasswordbtn')" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon4">
+              <button id="idRetypePasswordbtn" class="btn"></button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" onclick="tryOtp( 'idValidateUserWithPassword','idDivValidatewithOtp','idVerifyEmail-Phone','idbtResendOtp')" id="idbtResendOtp"    class="btn btn-light">try OTP </button>
+          <button type="button" onclick="changeaPassword('idVerifyEmail-Phone','idNewPasswordtext')" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#">Submit</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
     </div>
+  </div>
+  
 <form   action="/authenticate/custLogin" method="post">
     <div class="modal fade mr-2" id="customerLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog "> <!-- Change modal-lg to modal-xl for an extra-large modal -->
@@ -193,9 +203,6 @@
     </div>
   </div>
 
-
-
-
 <!-- OTP Modal -->
 <div class="modal fade btn" id="idEnterOtp" style="background-color: rgba(128, 109, 0, 0.408);" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg " >
@@ -226,22 +233,18 @@
                             <button class="border-0 rounded-start col-4 " required>OTP</button>
                             <input autocomplete="new-password"    id="id_otp"
                             type="text" class="form-control" name="password" placeholder="password">
+                            <button id=" " class="btn"></button>
                     </div>
             
                 </div>
-                <div class=" d-flex">
-                    <div class="  d-flex flex-row col-8">
+                <div class="container-fluid d-flex flex-wrap  ">
+                    <div class="container-fluid  d-flex flex-row  ">
                         <button id="Bt_Save_Signup"   type="button"
-                            class="btn btn-outline-success col-4  bi bi-cursor-fill" onclick="verifyOtp('validate')"  value="signup"> SUBMIT </button>
-                        <button id="Bt_resendOtp"   type="button" onclick="resendOtp('idverify_Email')"
-                            class="btn btn-danger col-4 "> SEND OTP </button>
-                        
-                        </div>
-                    <div class=" container-fluid d-flex flex-row-reverse col-4">
-                        <button id="Bt_signinOtp"  data-bs-toggle="modal" data-bs-target="#customerLogin" type="button"
-                        class="btn btn-primary  bi bi-envelope-check-fill"> LOG-IN  </button>
-                        <button id="openResetModal"  data-bs-toggle="modal" data-bs-target="#resetPasswordafterOtp" style="display: none;" type="button"
-                        class="btn btn-outline-warning bi bi-x-square"> LOG-IN  </button>
+                            class="btn btn-success  bi bi-cursor-fill" onclick="verifyOtp('validate')"  value="signup"> SUBMIT </button>
+                        <button id="Bt_resendOtp"   type="button" onclick="resendOtp('idverify_Email','Bt_resendOtp')"
+                            class="btn btn-danger "> SEND OTP </button>
+                        <button id="Bt_signinOtp"  data-bs-toggle="modal" data-bs-target="#customerLogin" type="button" class="btn btn-primary  bi bi-envelope-check-fill"> LOG-IN  </button>
+                        <button id="openResetModal"  data-bs-toggle="modal" data-bs-target="#resetPasswordafterOtp" style="display: none;" type="button" class="btn btn-warning bi bi-x-square"> LOG-IN  </button>
                    </div>
                 </div>
                 <br>
@@ -252,10 +255,6 @@
     </div>
   </div> 
  
-     
- 
-
-
 </body>
 </html>
 <!-- reset Password After Otp Verification -->

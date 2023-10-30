@@ -446,7 +446,8 @@ async function verifyandupdate() {
         Active: false,
         isLoggedIn: false
     }
-    if (!document.getElementById('Signup_name_text').value) {
+    console.log( email,'email',  phone ,'phone', user,'user', (document.getElementById('Signup_name_text').value))
+if (!document.getElementById('Signup_name_text').value) {
         document.getElementById('Signup_name_text').style.borderColor = 'red';
         document.getElementById('IdInfoText').innerText='All fields are Mandatory'
     }

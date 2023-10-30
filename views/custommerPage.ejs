@@ -8,40 +8,29 @@
 
 
 
-          <div class="container position-relative" >
+          <div class="container-fluid position-relative" >
             <div class=" container-fluid fixed" data-aos="fade-left" >
                <br><br><br><br><br><br><br>
-                <div  >
-                  <h1 id="idlaunchPageText" class="text-light" style="font-size: 60px; font-family: poppins;" >Search your favorite desination </h1>
-                  <div class="  container-fluid w-100 col-11 rounded border " style="  background-color:rgba(186, 90, 21, 0.748); height: 100px;" >
-                    <form action="/custom/customSearch" method="post">
-                            <!-- Main Search box Start here -->
-                           <h5 class="col-2 text-light ">Location </h5>
-                            <div class="container d-flex ">
-                              <select name="ditrictName" type="text" data-hotels="<%= JSON.stringify(generalData) %>"
-                                class=" col-10 btn w-100 text-light fw-lighter" id="idSearchText" onchange="">
-                                <option style="background-color:rgba(186, 90, 21, 0.748); font-size: large;"
-                                  class="col-10 SearchTextBox text-light fw-LIGHTER" value=""> All Cities </option>
-                                  <% district.forEach(element=> { %>
-                                  <option style="background-color:rgba(186, 90, 21, 0.748); height: 100px;"
-                                    class=" col-12 btn w-100 text-light fw-lighter" value="<%=element%>">
-                                    <%=element%>
-                                  </option>
-                                  <% }) %>
-                              </select>
-                              <button class="col-2 btn text-light bi bi-search">
-                                FIND
-                              </button>
-                            </div>
-                            
-                             
-                              
-                     
-                  </form>
-                </div>  
-   
-  
-                  </div>
+                <div class="container-fluid"  >
+                    <h1 id="idlaunchPageText" class="text-light col-11" style="font-size: 60px; font-family: poppins;" >Search your favorite desination </h1>
+                    <div class="  container-fluid   rounded border " style="  background-color:rgba(186, 90, 21, 0.748); height: 100px;" >
+                        <form action="/custom/customSearch" method="post">
+                                <div class="container-fluid btn d-flex  ">
+                                  <h6 class="col-2 text-light ">Location </h6>
+                                  <select name="ditrictName" type="text" data-hotels="<%= JSON.stringify(generalData) %>" class="col-8  btn text-light fw-lighter" id="idSearchText" onchange="">
+                                    <option style="background-color:rgba(186, 90, 21, 0.748); font-size: large;" class="col-5 SearchTextBox text-light fw-LIGHTER" value=""> All Cities </option>
+                                      <% district.forEach(element=> { %>
+                                      <option style="background-color:rgba(186, 90, 21, 0.748); height: 100px;"class=" col-5 btn w-100 text-light fw-lighter" value="<%=element%>">
+                                        <%=element%>
+                                      </option>
+                                      <% }) %>
+                                  </select>
+                                  <button class="col-2 btn text-light bi bi-search">
+                                    FIND
+                                  </button>
+                                </div>
+                      </form>
+                    </div>
                 
                   
               </div>

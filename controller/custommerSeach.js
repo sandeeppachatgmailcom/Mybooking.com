@@ -68,7 +68,7 @@ router.post('/confirmBooking',(req,res)=>{
 router.post('/customSearch',async (req,res)=>{
     let user = await human.HumanResource.findOne({activeSession:req.sessionID})
     if (!user)
-    user = {};
+    user = '';
     const generalData = await companies.SearchCompany('')
     const tariff = await tariffs.loadtariff('')
     let district = new Set();
@@ -92,7 +92,7 @@ router.get('/customSearch',async (req,res)=>{
       
     let user = await human.HumanResource.findOne({activeSession:req.sessionID})
     if (!user)
-    user = {};
+    user = '';
     const generalData = await companies.SearchCompany('')
     const tariff = await tariffs.loadtariff('')
     let district = new Set();

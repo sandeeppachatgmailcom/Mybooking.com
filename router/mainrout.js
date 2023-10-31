@@ -1,29 +1,47 @@
 const express = require('express')
 const router = express.Router(); 
 const access = require('../model/formAccess') 
-const rooms = require('../controller/rooms')
+
 const multer = require('multer') 
-const roomcat = require('../controller/tariff')
+
 const verifyAccess = require('../middleware/userAccess')
-const CheckinPlan = require('../controller/checkinPlan')
-const frontDesk = require('../controller/frontDesk')
-const hbank = require('../controller/human') 
-const floorMaster = require('../controller/floorMaster')
-const floorMap = require('../controller/floorMap') 
-const userAuthentic = require('../controller/userauthentication')
-const userfacilty = require('../controller/facility')
-const DocumentUpload = require('../controller/DocumentUpload')
-const company = require('../controller/company')
+
+
+
+
+
+
+
+
+
 const companies = require('../model/company')
 const tariffs = require('../model/tariff')
-const customSearch = require('../controller/custommerSeach')
-const hotelshomePage = require('../controller/hotelHomePage')
+
 const clearCache = require('../middleware/userAccess')
-const reservation = require('../controller/reservation')
-const personalProfile = require('../controller/userprofile')
-const admin = require('../controller/admin')
-const ImageDoc = require('../controller/documentMaster')
+
+
+const ImageDoc = require('../router/documentMaster')
 const Hbank = require('../model/humanbank')
+
+
+
+
+const userAuthentic = require('../router/userauthentication')
+const personalProfile = require('../router/userprofile')
+const frontDesk = require('../router/frontDesk')
+const rooms = require('../router/rooms')
+const hbank = require('../router/human') 
+const floorMaster = require('../router/floorMaster')
+const roomcat = require('../router/tariff')
+const CheckinPlan = require('../router/checkinPlan')
+const floorMap = require('../router/floorMap') 
+const userfacilty = require('../router/facility')
+const DocumentUpload = require('../router/DocumentUpload')
+const company = require('../router/company')
+const customSearch = require('../router/custommerSeach')
+const hotelshomePage = require('../router/hotelHomePage')
+const reservation = require('../router/reservation')
+const admin = require('../router/admin')
 router.use(clearCache.clearCache);
 
 
@@ -33,14 +51,14 @@ router.use(clearCache.clearCache);
 router.use('/checkin',frontDesk)
 router.use('/frontOffice',frontDesk)
 router.use('/rooms',rooms)
+router.use('/authenticate',userAuthentic)
+router.use('/admincontroller',userAuthentic)
 router.use('/Human',hbank)
 router.use('/floorMaster',floorMaster)
 router.use('/roomType',roomcat)
 router.use('/checkinplan',CheckinPlan)
 router.use('/floorMap',floorMap)
-router.use('/authenticate',userAuthentic)
 router.use('/facilty',userfacilty)
-router.use('/admincontroller',userAuthentic)
 router.use('/DocumentUpload',DocumentUpload)
 router.use('/Company',company)
 router.use('/custom',customSearch)
@@ -49,6 +67,7 @@ router.use('/hotel',hotelshomePage)
 router.use('/reservation',reservation)
 router.use('/user',personalProfile)
 router.use('/admin',admin)
+
 router.use('/imageDoc',ImageDoc)
  
 

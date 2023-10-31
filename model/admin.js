@@ -46,7 +46,6 @@ email: company.email ,
 contactNumber:company.contactNumber,
 website:company.website, 
 Banner:company.Banner}
-
 }
     const save = await companies.updateOne({companyindex:company.companyindex},{$set:data},{upsert:true}) 
     console.log(save);
@@ -84,4 +83,4 @@ async function loadComapny(company){
     }
      
 
-module.exports ={companies,loadComapny,deleteComapn,crateComapny}
+module.exports ={companies,loadComapny,deleteComapny,crateComapny}

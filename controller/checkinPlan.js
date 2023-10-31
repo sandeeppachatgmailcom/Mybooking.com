@@ -8,12 +8,12 @@ const session = require('express-session');
 const { render } = require('ejs');
 const CheckinPlan = require('../model/planMaster')
 const adminController = require('../controller/adminController')
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
     res.redirect('/admin')
-})
+} 
 
 
-router.post( '/saveCheckinplan',async(req,res)=>{
+const postsaveCheckinplan = async(req,res)=>{
     
     
     if (!req.body.planIndex){req.body.planIndex=await adminController.getIndex('CheckinPlan')}
@@ -35,14 +35,14 @@ router.post( '/saveCheckinplan',async(req,res)=>{
     let result = await CheckinPlan.saveCheckinPlan(data) ;
     res.json(result);
 
-})
-router.get('/plan', async (req,res)=>{
+} 
+const getplan = async (req,res)=>{
     const plans = await CheckinPlan.LoadPlan();
     res.render('checkinPlans',{plans})
-})
-router.post('/deletePlan', async (req,res)=>{
+} 
+const postdeletePlan = async (req,res)=>{
     console.log(req.body);
     const result = await CheckinPlan.deleteCheckinPlan(req.body);
     res.json(result)
-})
-module.exports = router
+} 
+module.exports = {getRoot,postsaveCheckinplan,getplan,postdeletePlan}

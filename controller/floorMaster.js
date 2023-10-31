@@ -7,10 +7,10 @@ const tariffmaster = require('../model/tariff')
 const frontoffice = require('../model/checkIn')
 const floor =  require('../model/floor')
 const token = require('../middleware/jwt')
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
     res.redirect('/admin')
-})
-router.post('/loadfloorbypagenumber',async (req, res) => {
+} 
+const postloadfloorbypagenumber = async (req, res) => {
     let pagenumber = req.body.index;
     const perpage = 2;
     const data = await floor.floors.find().countDocuments()
@@ -25,9 +25,8 @@ router.post('/loadfloorbypagenumber',async (req, res) => {
         return Math.ceil(tcount / perpage);
     })
     res.render('floor', { data, pagecount })
-})
- 
-router.post('/savefloor',async (req, res) => {
+} 
+const postsavefloor = async (req, res) => {
     let index = ''
     if (req.body.floorindex === '') { index = await getIndex('floor') }
     else index = req.body.floorindex;
@@ -50,9 +49,8 @@ router.post('/savefloor',async (req, res) => {
             }
             if(isExit)   saved = { result: 'Updated' }
             res.json(saved)
-        }
-        )
-router.post('/deleteFloor',async (req, res) => {
+}
+const postdeleteFloor = async (req, res) => {
     const floorindex = req.body.floorindex;
      
     let result = await floor.floors.deleteOne({ floorindex: floorindex });
@@ -64,13 +62,7 @@ router.post('/deleteFloor',async (req, res) => {
     }
     res.json(result)
 }
- )
-// router.post('/loadfloorbypagenumber',controller.loadfloorbypagenumber)
-// router.post('/savefloor',controller.postSaveFloor)
-// router.post('/deleteFloor',controller.postdeleteFloor)
-//router.post('/search',controller.postsearch) 
-//router.get('/floors',controller.getfloor)
-router.post('/search',async  (req,res)=>{
+const postsearch = async  (req,res)=>{
 console.log('backend reached for  file search');
     try {
         const data = await floor.floors.find({$or:[{floorname:{$regex:`${req.body.searchvalue}`,$options:'i'}}]})
@@ -82,10 +74,8 @@ console.log('backend reached for  file search');
         res.render('floor',{data,pagecount})
     } catch (error) {
     }
-})
-
-
-router.get('/floors',token.verifyToken ,async (req, res) => {
+} 
+const getfloors = async (req, res) => {
     let docCount = 0;
     let pagenumber = 1
     const perpage = 10;
@@ -105,7 +95,7 @@ router.get('/floors',token.verifyToken ,async (req, res) => {
         }
         )
     res.render('floor', { data, pagecount })
-})
+} 
 
 
-module.exports = router;
+module.exports = {getRoot,postloadfloorbypagenumber,postsavefloor,postdeleteFloor,postsearch,getfloors};

@@ -10,13 +10,13 @@ const { render } = require('ejs');
 const HBank = require('../model/humanbank');
 const DBcollections = require('../model/dbcollections');
 const tariffmaster = require('../model/tariff')
-const controller = require('./adminController')
+const controller = require('../controller/adminController')
 const checkInPlan = require('../model/planMaster')
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
     res.redirect('/admin')
-})
+} 
 
-router.get('/tariff',async (req, res) => {
+const gettariff = async (req, res) => {
     try {
         const chkplans = await checkInPlan.LoadPlan()
         const data = await tariffmaster.loadtariff('');
@@ -25,16 +25,16 @@ router.get('/tariff',async (req, res) => {
         console.error("Error getting tariff data:", error);
         res.status(500).send("Internal Server Error");
     }
-})
+} 
 
-router.post('/tariffsearch',async (req,res)=>{
+const posttariffsearch = async (req,res)=>{
     const chkplans = await checkInPlan.LoadPlan()
      const data = await tariffmaster.loadtariff(req.body.searchvalue)
      console.log(req.body.searchvalue)
      res.render('tariff', { data,chkplans });
-})
+} 
 
-router.post('/saveCategory',async (req,res)=>{
+const postsaveCategory = async (req,res)=>{
     
     console.log(req.body.tariffName);   
     let result =  await tariffmaster.savecategory(
@@ -54,12 +54,8 @@ router.post('/saveCategory',async (req,res)=>{
         if (result.acknowledged){result = { Saved:true }}
         else(result = {Saved:false}) 
         res.json(result)
-})
- 
- 
-
-
-router.post('/deleteTariff',async (req,res)=>{
+} 
+const postdeleteTariff=async (req,res)=>{
     console.log(req.body.tariffIndex)
     let result = await (tariffmaster.tariff.updateOne({tariffIndex:req.body.tariffIndex},{$set:{deleted:true}}))
     console.log(result.acknowledged);
@@ -71,7 +67,7 @@ router.post('/deleteTariff',async (req,res)=>{
         result={deleted:false}
     }
     res.json(result)
-})
+} 
 
 
-module.exports = router
+module.exports = {getRoot,gettariff,posttariffsearch,postsaveCategory,postdeleteTariff}

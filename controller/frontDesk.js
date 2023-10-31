@@ -9,32 +9,26 @@ const frontoffice = require('../model/checkIn')
 console.log('I reched front desk router')
  
 
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
     res.redirect('/')
-})
-
-router.get('/',async (req,res)=>{
+} 
+const getModuleRoute = async (req,res)=>{
     const saveCheckIn =await frontDesk.getCheckinWithAllDetails(req.body);
     const plan = await checkinPlan.LoadPlan('');
     const tariff = await tariffmaster.loadtariff('');
     const rooms = await Rooms.loadrooms('');
     res.render('checkin',{saveCheckIn,plan,tariff,rooms});
-});
-
-router.post('/loadCheckin',async (req,res)=>{
+} ;
+const postloadCheckin = async (req,res)=>{
     console.log(req.body,'API: /loadCheckin');
     //const result = await frontoffice.SearchCheckin(req.body );
     const result = await frontoffice.getCheckinWithAllDetails(req.body)
     console.log(result);
     res.json(result);
-})
-
-router.post('/SaveCheckin',async(req,resp)=>{
+} 
+const postSaveCheckin = async(req,resp)=>{
 console.log(req.body,'API:/SaveCheckin');
 const result = await frontoffice.saveCheckin(req.body)
 resp.json(result)
-} )
-
-
-
-module.exports= router
+}  
+module.exports= {getRoot,getModuleRoute,postloadCheckin,postSaveCheckin}

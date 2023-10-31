@@ -2,11 +2,10 @@ const express = require('express')
 const router = express.Router()
 const imageDoc = require('../model/documents')
 const midware = require('../middleware/multer') 
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
     res.redirect('/')
-})
-
-router.post('/upload', midware.upload.array("currentImage", 3),async (req, res) => {
+} 
+const postupload = async (req, res) => {
     console.log('Reached image router ');
     let imageArray = [];
     for (let i = 0; i < req.files.length; i++) {
@@ -18,10 +17,8 @@ router.post('/upload', midware.upload.array("currentImage", 3),async (req, res) 
     console.log(saveImage,'before responce');
     res.json(saveImage)
     
-})
-
-
-router.post('/uploadImage', midware.upload.array("roomiMages", 3), (req, res) => {
+} 
+const postuploadImage= (req, res) => {
     console.log('Reached image router ');
     let imageArray = [];
     for (let i = 0; i < req.files.length; i++) {
@@ -29,8 +26,8 @@ router.post('/uploadImage', midware.upload.array("roomiMages", 3), (req, res) =>
     }
     console.log(imageArray[0]);
     res.json(imageArray[0])
-})
+} 
 
-module.exports = router;
+module.exports ={getRoot,postupload,postuploadImage};
 
 

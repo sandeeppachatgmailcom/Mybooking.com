@@ -7,12 +7,12 @@ const Razorpaytrans = require('../controller/razorPay')
 const userBank = require('../model/humanbank');
 const { LogarithmicScale } = require('chart.js');
 
-
-router.get('/',(req,res)=>{
+const getprofile = (req,res)=>{
     res.redirect('/')
-})
+}
 
-router.post('/cancelBooking',async (req,res)=>{
+
+const cancelBooking = async (req,res)=>{
     let count = await payments.payment.find({paymentReferance:req.body.bookingID,transactionReferanceNumber:{$ne:null}}).countDocuments();
     console.log(count); 
     if(count){ 
@@ -69,8 +69,8 @@ router.post('/cancelBooking',async (req,res)=>{
         res.json(status)
     }
 
-})
-router.get('/getPaymentHistory',async (req,res)=>{
+}
+const getPaymentHistory = async (req,res)=>{
     const user =await userBank.findUser(req.sessionID);
     
     if(!user) {
@@ -89,9 +89,9 @@ router.get('/getPaymentHistory',async (req,res)=>{
     
     res.render('custommerHomePage',{user,bookingDetails,paymentHistory})
 
-})
+}
 
-router.get('/loadProfile',async (req,res)=>{
+const loadProfile = async (req,res)=>{
     const user =await userBank.findUser(req.sessionID);
     console.log(user)
     if(!user) {
@@ -103,5 +103,5 @@ router.get('/loadProfile',async (req,res)=>{
     
     res.render('custommerHomePage',{user,bookingDetails,paymentHistory})
 
-})
-module.exports = router
+}
+module.exports = {getprofile,cancelBooking,getPaymentHistory,loadProfile}

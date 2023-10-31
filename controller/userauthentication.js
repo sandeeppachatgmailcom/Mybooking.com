@@ -18,25 +18,22 @@ const randomString = require('randomstring')
 const validation = require('../model/otpvalidation')
 const email = require('../controller/emailService')
 const server = 'http://localhost:5200/Images/';
-router.get('/',(req,res)=>{
-    res.redirect('/')
-})
 
-router.post('/hotelLogin',async (req,res)=>{
+const getRoot = (req,res)=>{
+    res.redirect('/')
+} 
+const posthotelLogin = async (req,res)=>{
     req.body.session = req.sessionID; 
     const result =await HBank.verifyUser(req.body);
     console.log(result);
     result.path = '/vedurehomepage/loadhomepage'
     res.json(result)
-})
-
-
+} 
 async function findUser(sessionID) {
     const activeUser = await ActiveID.UserLog.findOne({ sessionId: sessionID, loggedOut: false }, { username: 1, _id: 0 })
     
     return activeUser
 }
-
 async function userSessionAuthentication(sessionID, username, password) {
     const SessionExist = await userlog.UserLog.findOne({ sessionId: sessionID });
     if (SessionExist) {
@@ -51,8 +48,7 @@ async function userSessionAuthentication(sessionID, username, password) {
     else {
     }
 }
-
-router.post('/custFetchLogin',async (req,res)=>{
+const postcustFetchLogin = async (req,res)=>{
     req.body.session = req.sessionID;
 
     const verified =await HBank.verifyUser(req.body)
@@ -69,17 +65,8 @@ router.post('/custFetchLogin',async (req,res)=>{
     }
     res.json(verified)
     
-})
-
-
-
-
-
-
-
-
-
-router.post('/custLogin',async (req,res)=>{
+}
+const postcustLogin = async (req,res)=>{
     req.body.session = req.sessionID;
 
     const verified =await HBank.verifyUser(req.body)
@@ -113,9 +100,8 @@ router.post('/custLogin',async (req,res)=>{
 }
  
 else res.redirect('/')
-})
-
-router.get('/custLogin',async (req,res)=>{
+} 
+const getcustLogin = async (req,res)=>{
     req.body.session = req.sessionID;
 
     const verified =await HBank.verifyUser(req.body)
@@ -140,11 +126,8 @@ router.get('/custLogin',async (req,res)=>{
      "roomtypes.SpecialRent":{$gte:req.body.budgetStart},
      "roomtypes.SpecialRent":{$lte:req.body.budgetEnd}})
     res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
-})
-
-
-
-router.post('/OtpAuthentication', async (req, res) => {
+} 
+const postOtpAuthentication = async (req, res) => {
     
     let result = await OTPValidate.validateOtp(req.body.email, req.body.otp);
     if ((result.modifiedCount + result.upsertedCount) > 0) { result = { Verified: true } }
@@ -152,9 +135,8 @@ router.post('/OtpAuthentication', async (req, res) => {
     
     res.json(result)
      
-})
-
-router.post('/logout', async (req, res) => {
+} 
+const postlogout =  async (req, res) => {
     req.body.session = req.sessionID
     const source = req.get('Referer').split('/')[3];  
     console.log(source,'sourcesourcesourcesource');
@@ -180,16 +162,13 @@ router.post('/logout', async (req, res) => {
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     res.json(logout)
-})
-
-router.post('/findUser', async (req, res) => {
+} 
+const postfindUser = async (req, res) => {
     const user = await findUser(req.sessionID);
     
     res.json(user)
-})
-
-
-router.post('/vendurelogin' , async (req, res) => {
+} 
+const postvendurelogin = async (req, res) => {
     const userlogrecord = {
         username: req.body.Username,
         sessionId: req.sessionID,  
@@ -212,9 +191,8 @@ router.post('/vendurelogin' , async (req, res) => {
     res.cookie('username', req.body.userName)
     res.json(reply)
      
-})
-
-router.post('/login' , async (req, res) => {
+} 
+const postlogin= async (req, res) => {
     
     const userlogrecord = {
         username: req.body.Username,
@@ -235,15 +213,15 @@ router.post('/login' , async (req, res) => {
     res.cookie('userName', req.body.userName)
     res.json(result)
      
-})
-router.post('/verifyUsenameWithPassword',async (req,res)=>{
+} 
+const postverifyUsenameWithPassword =async (req,res)=>{
     req.body.session = req.sessionID;
     req.body.path= req.path
     console.log(req.path)
     const result =await HBank.verifyUser(req.body)
     res.json(result)
-})
-router.post('/changePassword',async (req,res)=>{
+} 
+const postchangePassword = async (req,res)=>{
     const result =await HBank.changePassword(req.body);
     console.log(result); 
     let responseData = false;
@@ -256,8 +234,8 @@ router.post('/changePassword',async (req,res)=>{
      }
      res.json(responseData);
     
-})
-router.post('/VerifyEmail',async(req,res)=>{
+} 
+const postVerifyEmail =async(req,res)=>{
      console.log(req.path);
      const result = await HBank.HumanResource.findOne({email:req.body.email})
      let responseData = false;
@@ -275,8 +253,8 @@ router.post('/VerifyEmail',async(req,res)=>{
      }
      console.log(responseData);
      res.json(responseData);
-})
- router.post('/verifyPhone', async (req,res)=>{
+} 
+const postverifyPhone= async (req,res)=>{
        
       const result = await HBank.HumanResource.findOne({contactNumber:req.body.phone})
       let responseData = false;
@@ -288,8 +266,8 @@ router.post('/VerifyEmail',async(req,res)=>{
       }
       res.json(responseData);
  
- })
- router.post('/verifyUser', async (req,res)=>{
+ } 
+const postverifyUser= async (req,res)=>{
      const result = await HBank.HumanResource.findOne({username:req.body.username})
       
      let responseData = false;
@@ -302,8 +280,8 @@ router.post('/VerifyEmail',async(req,res)=>{
       res.json(responseData);
  
  
- })
- router.post('/authenticatelogin',  async(req,res)=>{
+ } 
+const postauthenticatelogin=  async(req,res)=>{
     
    const result = await HBank.HumanResource.findOne({username:req.body.username , password:req.body.password})
      
@@ -313,8 +291,8 @@ router.post('/VerifyEmail',async(req,res)=>{
     else{
        res.json({verified:false})
     }
- })
- router.post('/signup',async (req, res) => {
+ } 
+const postsignup = async (req, res) => {
    
     try {
         let transporter =await nodeMailer.createTransport({
@@ -379,15 +357,15 @@ router.post('/VerifyEmail',async(req,res)=>{
     } catch (error) {
         res.status(500).json({ error: 'An error occurred' });
     }
-})
-router.get('/signup', (req, res) => {
+} 
+const getsignup =  (req, res) => {
     res.render('signup');
-})
-router.post('/loadPincode',async (req,res)=>{
+} 
+const postloadPincode =  async (req,res)=>{
 const result =await pincode.loadPincode(req.body);
 res.json(result)
-})
-router.post('/loadUserCompany',async (req,res)=>{
+} 
+const postloadUserCompany = async (req,res)=>{
         
     const result =await HBank.SearchHumanbyUsername(req.body)
     
@@ -395,8 +373,8 @@ router.post('/loadUserCompany',async (req,res)=>{
         
     const companyList =await companies.loadHuman(mobile);
     res.json(companyList);
-})
-router.post('/confirmOtp',async (req,res)=>{
+} 
+const postconfirmOtp = async (req,res)=>{
     const result =await OTPValidate.validateOtp(req.body.email,req.body.otp);
     if(result.modifiedCount){
     res.json({verified:true});       
@@ -405,8 +383,8 @@ router.post('/confirmOtp',async (req,res)=>{
         res.json({verified:false});       
     }
     
-})
-router.post('/SetOtpExpired',async (req,res)=>{
+} 
+const postSetOtpExpired = async (req,res)=>{
     const result =await OTPValidate.makeOTPExpired(req.body.email);
     if(result.modifiedCount){
     res.json({expired:true});       
@@ -415,8 +393,8 @@ router.post('/SetOtpExpired',async (req,res)=>{
         res.json({expired:false});       
     }
     
-})
-router.post('/resendOtp',async (req,res)=>{
+} 
+const postresendOtp = async (req,res)=>{
     console.log('reached here');
     const result =await OTPValidate.resendOtp(req.body.email,res.sessionID);
     console.log(result);
@@ -427,6 +405,9 @@ router.post('/resendOtp',async (req,res)=>{
         res.json({created:false});       
     }
     
-})
+} 
 
-module.exports = router;
+module.exports = {posthotelLogin,postcustFetchLogin,postresendOtp,postSetOtpExpired,postconfirmOtp,postloadUserCompany,
+    postloadPincode  ,getsignup,postsignup,postauthenticatelogin,postverifyUser,postverifyPhone,postVerifyEmail,
+    postchangePassword,postverifyUsenameWithPassword, postlogin,postvendurelogin,postfindUser,postlogout,postOtpAuthentication
+    ,getcustLogin,postcustLogin,userSessionAuthentication,getRoot};

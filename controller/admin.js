@@ -6,19 +6,17 @@ const reserv = require('../functions/reservation')
 const fntcompany = require('../functions/company')
 const utils = require('../functions/commonUtils')
 
-router.post('/activateCompany',async (req,res)=>{
+const postactivateCompany = async (req,res)=>{
     const status =await  fntcompany.changeCompanyActiveNot(req.body)    
     res.json(status)
-})
+} 
 
 
-router.get('/',async (req,res)=>{
+const getRoot = async (req,res)=>{
    
     res.render('adminlogin')
-})
-module.exports = router
-
-router.post('/adminLogin',async (req,res)=>{
+} 
+const postadminLogin = async (req,res)=>{
     req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)   
     if(result.verified){
@@ -39,9 +37,8 @@ router.post('/adminLogin',async (req,res)=>{
         res.json(result)
     }
 
-})
-
-router.post('/disableUser',async (req,res)=>{
+}  
+const postdisableUser = async (req,res)=>{
     const active =await  HBank.HumanResource.findOne({hrId:req.body.hrId},{Active:1,_id:0})
     console.log(active);
     let result ={
@@ -59,10 +56,8 @@ router.post('/disableUser',async (req,res)=>{
         result.message='user activated'
     }
     res.json( result)
-})
-
-
-router.get('/dashboard',async (req,res)=>{
+} 
+const getdashboard = async (req,res)=>{
     req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)  
     const activeUsers =  await  HBank.HumanResource.find({deleted:false},{hrId:1,_id:0,firstName:1,email:1,contactNumber:1,Active:1})  
@@ -108,4 +103,5 @@ router.get('/dashboard',async (req,res)=>{
     }
 
     
-})
+} 
+module.exports = {postactivateCompany,getRoot,postadminLogin ,postdisableUser,getdashboard}

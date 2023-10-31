@@ -7,23 +7,23 @@ const floors = require('../model/floor')
 
 const verifyAccess = require('../middleware/userAccess')
 
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
     res.redirect('/admin')
-})
+} 
 
-router.get('/floorMap', verifyAccess.VerifyAccess, async (req, res) => {
+const getfloorMap = async (req, res) => {
     let rooms = await department.getRoomsWithTariffDetails();
     let tariff = await tarifftype.loadtariff('')
     let floor = await floors.loadAllFloor();
     res.render('floorMap', { rooms, tariff,floor })
-})
+} 
 
-router.post('/AggregatePage', async (req, res) => {
+const postAggregatePage = async (req, res) => {
     
     let result = await getRoomsWithAllDetails(req.body)
      
     res.json(result);
-})
+} 
 
 async function getRoomsWithAllDetails(DataObj) {
 
@@ -70,4 +70,4 @@ async function getRoomsWithAllDetails(DataObj) {
         console.error(error);
     }
 }
-module.exports = router
+module.exports = {getRoot,getfloorMap,postAggregatePage,getRoomsWithAllDetails}

@@ -6,10 +6,10 @@ const checkin = require('../model/checkIn')
 const paymentModel = require('../model/payments') 
 const occupancy = require('../model/occupancydetails')
 const Razorpaytrans = require('../controller/razorPay')
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
   res.redirect('/')
-})
-router.post('/savereservation', async (req, res) => {
+} 
+const postsavereservation =  async (req, res) => {
   const userDetails = await hbank.HumanResource.findOne({ activeSession: req.sessionID })
   req.body.custId = userDetails.hrId
   if (userDetails.country != 'India') req.body.Foreigner = true
@@ -55,9 +55,9 @@ router.post('/savereservation', async (req, res) => {
   const order = await Razorpaytrans.RazorCreateOrder(totalAmount,result.reference)
   
   res.json({ success: true, order, totalAmount,result })
-})
+} 
 
-router.post('/confirmPayment', async (req, res) => {
+const postconfirmPayment = async (req, res) => {
    
    
    
@@ -99,10 +99,6 @@ router.post('/confirmPayment', async (req, res) => {
     res.json({ status: false });
   }
 }
-
-
-
-)
-
-module.exports = router;
+ 
+module.exports = {getRoot,postsavereservation,postconfirmPayment};
  

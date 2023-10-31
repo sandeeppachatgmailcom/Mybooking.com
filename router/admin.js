@@ -1,0 +1,15 @@
+const express = require('express') 
+const router  = express.Router()
+const HBank = require('../model/humanbank')
+const checkin = require('../model/checkIn')
+const reserv = require('../functions/reservation')
+const fntcompany = require('../functions/company')
+const utils = require('../functions/commonUtils')
+const admin = require('../controller/admin')
+
+router.post('/activateCompany',admin.postactivateCompany)
+router.get('/',admin.getRoot)
+router.post('/adminLogin',admin.postadminLogin)
+router.post('/disableUser',admin.postdisableUser)
+router.get('/dashboard',admin.getdashboard)
+module.exports = router

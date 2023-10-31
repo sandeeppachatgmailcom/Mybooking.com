@@ -8,12 +8,12 @@ const ejs = require('ejs')
 const human = require('../model/humanbank')
 const controller = require('../controller/adminController')
 const ftnReservation = require('../controller/ftnReservation');
- 
 const payments = require('../model/payments')
-router.get('/',(req,res)=>{
+
+const getRoot = (req,res)=>{
     res.redirect('/')
-})   
-router.post('/viewReservation',async (req,res)=>{
+} 
+const postviewReservation = async (req,res)=>{
     
     console.log(req.body.bookingDetails);
     let temp = req.body.bookingDetails.split(',');
@@ -48,9 +48,9 @@ if(user){
     res.render('confirmReservation',{user,company,checkinplan,tariffplans,BookingSummary})
 } 
 else  {res.redirect('/')}     
-})
+} 
  
-router.post('/confirmBooking',(req,res)=>{
+const postconfirmBooking = (req,res)=>{
     res.json(req.body);
     let temp = req.body.bookingDetails.split(',');
     const BookingSummary={
@@ -63,9 +63,9 @@ router.post('/confirmBooking',(req,res)=>{
 }
 
  
-})
+} 
 
-router.post('/customSearch',async (req,res)=>{
+const postcustomSearch = async (req,res)=>{
     let user = await human.HumanResource.findOne({activeSession:req.sessionID})
     if (!user)
     user = '';
@@ -86,9 +86,9 @@ router.post('/customSearch',async (req,res)=>{
     
     
    
-})
+} 
 
-router.get('/customSearch',async (req,res)=>{
+const getcustomSearch = async (req,res)=>{
       
     let user = await human.HumanResource.findOne({activeSession:req.sessionID})
     if (!user)
@@ -117,8 +117,7 @@ router.get('/customSearch',async (req,res)=>{
         
      let result = await companies.company.find({district:{ $regex: `^${req.body.ditrictName}`, $options: 'i' },deleted:false,Active:true})
         res.render('detailedSearch',{user,result,generalData,tariff,district,inputData} )
- })
-
+ } 
 router.use('/TariffSearch',async (req,res)=>{
     
     const generalData = await companies.SearchCompany('')
@@ -145,8 +144,7 @@ router.use('/loadPlans',async(req,res)=>{
     
     res.json(plans);
 })
-
-router.post('/loadHotelDetails', async (req, res) => {
+const postloadHotelDetails =  async (req, res) => {
     const totalRoomSummary = await ftnReservation.getRoomAvailalability(req.body.hotelId);
     const reservationSummary = await ftnReservation.getReservationDateWise(req.body.StartDate, req.body.EndDate, req.body.hotelId,totalRoomSummary );
      console.log(totalRoomSummary,reservationSummary);
@@ -154,9 +152,9 @@ router.post('/loadHotelDetails', async (req, res) => {
     let result  = await companies.SearchbyCompanyByAny(req.body);
     result.roomtypes =  reservationSummary.roosObj
     res.json(result);
-});
+} 
 
-router.get('/Home',async (req,res)=>{
+const getHome = async (req,res)=>{
     let user = await human.HumanResource.findOne({activeSession:req.sessionID})
      
     if(!user) {
@@ -216,7 +214,7 @@ router.get('/Home',async (req,res)=>{
      
 
     res.render('custommerHomePage',{user,bookingDetails,paymentHistory})
-})
+} 
 
 
-module.exports = router;
+module.exports = {getHome,postloadHotelDetails,getcustomSearch, postcustomSearch,postconfirmBooking,postviewReservation,getRoot };

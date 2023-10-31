@@ -16,11 +16,11 @@ const fntReservation = require('../functions/reservation')
 
 
 
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
   res.render('login')
-})
+} 
 
-router.post('/addoccupancy',async (req,res)=>{
+const postaddoccupancy = async (req,res)=>{
   req.body.session = req.sessionID;
   const verify = await HBank.verifyUser(req.body)
   console.log(req.body.bookingID,'req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body');
@@ -34,14 +34,14 @@ router.post('/addoccupancy',async (req,res)=>{
   else {
     res.redirect('/hotel')
   }
-})
-router.post('/unlinkRoom',async (req,res)=>{
+} 
+const postunlinkRoom = async (req,res)=>{
   
   const unlinkBooking  = await fntReservation.unlinkBooking(req.body)  
   res.json(unlinkBooking)
-}) 
+} 
 
-router.post('/updateReservationWithRoom',async (req,res)=>{
+const postupdateReservationWithRoom = async (req,res)=>{
   const dailydetails = await dailyoccupancy.occupancy.updateMany({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   
   const checkinSummary = await reception.checkinDetails.updateOne({occupancyIndex:req.body.occupancyIndex},{$set:{roomIndex:req.body.roomIndex}})   
   console.log(dailydetails,'dailydetails',checkinSummary,'checkinSummary')
@@ -53,9 +53,9 @@ router.post('/updateReservationWithRoom',async (req,res)=>{
     })   
   }
   
-})
+} 
 
-router.post('/loadAvailableRooms',async (req,res)=>{
+const postloadAvailableRooms = async (req,res)=>{
   
   let allRooms = await rooms.loadroomByCompanyId(req.body.companiIndex);
   
@@ -89,12 +89,8 @@ router.post('/loadAvailableRooms',async (req,res)=>{
   }
   console.log(room,'room');
   res.json(room)
-})
-
-
-
-
-router.get('/loadhomepage', async (req, res) => {
+} 
+const getloadhomepage =  async (req, res) => {
    
     const inputs = req.body;
      
@@ -178,10 +174,8 @@ router.get('/loadhomepage', async (req, res) => {
     
   
 
-});
-
-
-router.post('/loadhomepage', async (req, res) => {
+}
+const postloadhomepage =  async (req, res) => {
   try {
     const inputs = req.body;
     const userlogrecord = {
@@ -275,9 +269,8 @@ router.post('/loadhomepage', async (req, res) => {
     res.status(500).json({ error: 'An error occurred' });
   }
 
-});
-
-router.post('/saveTariff', async (req, res) => {
+} 
+const postsaveTariff = async (req, res) => {
   const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false });
   const profile = await companies.company.findOne({email:user.email});
   const newRoomType = {
@@ -339,9 +332,8 @@ router.post('/saveTariff', async (req, res) => {
       response = { matched: true };
     }
     res.json(response);
-});
-
-router.post('/disableTariff',async (req,res)=>{
+} 
+const postdisableTariff = async (req,res)=>{
   const result = await companies.company.updateOne(
     {CompanyID:req.body.CompanyID,
       'roomtypes.tariffIndex': req.body.tariffIndex
@@ -359,9 +351,8 @@ router.post('/disableTariff',async (req,res)=>{
  else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
  res.json(responce)
   
-})
-
-router.post('/enableTariff',async (req,res)=>{
+} 
+const postenableTariff = async (req,res)=>{
   const result = await companies.company.updateOne(
     {CompanyID:req.body.CompanyID,
       'roomtypes.tariffIndex': req.body.tariffIndex
@@ -376,10 +367,8 @@ router.post('/enableTariff',async (req,res)=>{
  else if(result.upsertedCount>0) responce={saved:true}
  else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
  res.json(responce)
-})
-
-
-router.post('/deletetariffPermanent',async (req,res)=>{
+} 
+const postdeletetariffPermanent = async (req,res)=>{
 
   const result = await companies.company.updateOne(
     {CompanyID:req.body.CompanyID,
@@ -397,21 +386,18 @@ router.post('/deletetariffPermanent',async (req,res)=>{
  else if(result.upsertedCount>0) responce={saved:true}
  else if(!result.upsertedCount && result.matchedCount && result.modifiedCount ) responce={matched:true} 
  res.json(responce)
-})
-
-router.post('/savePlanToCompanies',async(req,res)=>{
+} 
+const postsavePlanToCompanies = async(req,res)=>{
    
    
     const addToComp = await companies.insertNewCheckinPlan(req.body)
    res.json(addToComp)
-})
-router.post('/activatePlan',async (req,res)=>{
+} 
+const postactivatePlan = async (req,res)=>{
   const result = await companies.activateCheckinplan(req.body);
   res.json(result);
-})
-
-
-router.get('/loadtariff', async (req, res) => {
+} 
+const getloadtariff  = async (req, res) => {
 
     const inputs = req.body;
     const userlogrecord = {
@@ -485,8 +471,9 @@ router.get('/loadtariff', async (req, res) => {
     
   
 
-});
+} ;
 
 
 
-module.exports = router;
+module.exports = {getRoot,postaddoccupancy,postunlinkRoom,postupdateReservationWithRoom,postloadAvailableRooms ,getloadhomepage,postloadhomepage,postsaveTariff
+,postdisableTariff,postdeletetariffPermanent,postsavePlanToCompanies,postactivatePlan,getloadtariff,postenableTariff};

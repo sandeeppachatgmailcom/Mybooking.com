@@ -12,16 +12,16 @@ const HBank = require('../model/humanbank')
 const tariff = require('../model/tariff')
 const checkinPlans = require('../model/planMaster')
 const rooms = require('../model/rooms')
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
   res.redirect('/hotel')
-})
-router.post('/loadcustommer',async (req,res)=>{
+} 
+const postloadcustommer = async (req,res)=>{
     
     const result = await company.loadcompany('');
     
     res.json(result);
-})
-router.post('/switchRoomStatus',async (req,res)=>{
+} 
+const postswitchRoomStatus = async (req,res)=>{
   let result = await rooms.depart.findOne({roomIndex:req.body.roomIndex},{blocked:1,_id:0})
   if(result.blocked){
        await rooms.depart.updateOne({roomIndex:req.body.roomIndex},{$set:{blocked:false}})
@@ -32,8 +32,8 @@ router.post('/switchRoomStatus',async (req,res)=>{
   const reply = await rooms.depart.findOne({roomIndex:req.body.roomIndex},{blocked:1,_id:0})
   
   res.json(reply);
-})
-router.get('/loadTariff',async (req,res)=>{
+} 
+const getloadTariff = async (req,res)=>{
     req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)  
     const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false },{password:0});
@@ -79,9 +79,9 @@ router.get('/loadTariff',async (req,res)=>{
         res.redirect('/')
       }  
   
-})
+} 
 
-router.get('/loadPlan',async (req,res)=>{
+const getloadPlan = async (req,res)=>{
     req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)  
     const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false },{password:0});
@@ -129,9 +129,9 @@ router.get('/loadPlan',async (req,res)=>{
       }  
   
 
-    })
+    }  
 
-router.get('/loadRoom',async (req,res)=>{
+const getloadRoom = async (req,res)=>{
     req.body.session = req.sessionID;
     const result =await HBank.verifyUser(req.body)  
     const user = await HBank.HumanResource.findOne({activeSession: req.sessionID, deleted: false },{password:0});
@@ -162,9 +162,9 @@ router.get('/loadRoom',async (req,res)=>{
       }  
   
 
-    })
+    } 
 // /Company
-router.get('/Company',async(req,res)=>{
+const getCompany = async(req,res)=>{
     let data = await companies.SearchCompany('');
     let count = data.length;
     count = Math.floor(count/10);
@@ -173,9 +173,9 @@ router.get('/Company',async(req,res)=>{
      
     res.render('companies',{data,count,pincode});
 
-})
+} 
 
-router.post('/SaveCompany',multer.upload.array("roomiMages",3),async (req,res)=>{
+const postSaveCompany =  async (req,res)=>{
      
     let imgArray = [];
     for (let i = 0; i < req.files.length; i++) {
@@ -186,17 +186,18 @@ router.post('/SaveCompany',multer.upload.array("roomiMages",3),async (req,res)=>
     if((result.modifiedCount + result.upsertedCount)>0){result = {saved:true}}
     else {result={saved:false}}
     res.json(result)
-    })
+    } 
 
-router.post('/searchCompany', async (req,res)=>{
+const postsearchCompany =async (req,res)=>{
     let data = await companies.SearchCompany(req.body.searchvalue);
     res.render('human',{data});
-} )
-router.post('/DeleteCompany', async (req, res) => {
+}  
+const postDeleteCompany =  async (req, res) => {
     let result = await companies.deleteCompany(req.body.hrId)
     if ((result.modifiedCount + result.upsertedCount) > 0) { result = { deleted: true } }
     else { result = { deleted: false } }
     res.json(result)
-})
+} 
 
-module.exports=router;
+module.exports={postloadcustommer,getRoot,postswitchRoomStatus,getloadTariff,getloadPlan,
+  getloadRoom,getCompany,postSaveCompany,postsearchCompany,postDeleteCompany};

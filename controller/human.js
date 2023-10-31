@@ -14,21 +14,20 @@ const frontoffice = require('../model/checkIn')
 const floor = require('../model/floor')
 const rooms = require('../model/rooms')
 const adminController = require('../controller/adminController')
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
     res.redirect('/admin')
-})
-router.post('/loadcustommer',async (req,res)=>{
+} 
+const postloadcustommer = async (req,res)=>{
     console.log(req.body);
     const result = await HBank.loadHuman('');
     console.log(result);
     res.json(result);
-})
- 
-router.get('/human',async(req,res)=>{
+} 
+const gethuman = async(req,res)=>{
     let data = await HBank.SearchHuman('');
     res.render('human',{data});
-})
-router.post('/SaveHuman',async (req,res)=>{
+} 
+const postSaveHuman = async (req,res)=>{
     req.body.session=req.sessionID;
     let result =await HBank.saveHuman(req.body) ; 
     if((result.modifiedCount )>0){
@@ -42,17 +41,16 @@ router.post('/SaveHuman',async (req,res)=>{
         result={saved:false}
         result.message= 'Something went wrong please try again!!'}
     res.json(result)
-    })
-    
-router.post('/searchHuman', async (req,res)=>{
+} 
+const postsearchHuman = async (req,res)=>{
     let data = await HBank.SearchHuman(req.body.searchvalue);
     res.render('human',{data});
-} )
-router.post('/DeleteHuman', async (req, res) => {
+}  
+const postDeleteHuman = async (req, res) => {
     let result = await HBank.deleteHuman(req.body.hrId)
     if ((result.modifiedCount + result.upsertedCount) > 0) { result = { deleted: true } }
     else { result = { deleted: false } }
     res.json(result)
-})
+} 
 
-module.exports=router;
+module.exports={getRoot,postloadcustommer,postDeleteHuman,postsearchHuman,postSaveHuman,gethuman};

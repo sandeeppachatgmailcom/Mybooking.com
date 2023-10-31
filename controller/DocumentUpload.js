@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router();
 const midware = require('../middleware/multer')
-router.get('/',(req,res)=>{
+const getRoot = (req,res)=>{
     res.redirect('/')
-})
+} 
 
 
 
-router.post('/uploadImage', midware.upload.array("roomiMages", 3), (req, res) => {
+const postuploadImage=  (req, res) => {
     console.log('Reached image router ');
     let imageArray = [];
     for (let i = 0; i < req.files.length; i++) {
@@ -15,6 +15,6 @@ router.post('/uploadImage', midware.upload.array("roomiMages", 3), (req, res) =>
     }
     console.log(imageArray[0]);
     res.json(imageArray[0])
-})
+} 
 
-module.exports = router;
+module.exports = {getRoot,postuploadImage};

@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router();
-const checkin = require('../model/checkIn')
-const payments = require('../model/payments')
-const company = require('../model/company')
+const checkin = require('../functions/checkIn')
+const payments = require('../functions/payments')
+const company = require('../functions/company')
 const Razorpaytrans = require('../controller/razorPay')
-const userBank = require('../model/humanbank');
+const userBank = require('../functions/humanbank');
 const { LogarithmicScale } = require('chart.js');
 
 const getprofile = (req,res)=>{

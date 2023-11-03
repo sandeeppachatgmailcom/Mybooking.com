@@ -1,11 +1,11 @@
 
 const express = require('express')
 const router = express.Router();
-const frontDesk = require('../model/checkIn')
-const checkinPlan = require('../model/planMaster')
-const Rooms = require('../model/rooms')
-const tariffmaster = require('../model/tariff')
-const frontoffice = require('../model/checkIn')
+const frontDesk = require('../functions/checkIn')
+const checkinPlan = require('../functions/planMaster')
+const Rooms = require('../functions/rooms')
+const tariffmaster = require('../functions/tariff')
+const frontoffice = require('../functions/checkIn')
 console.log('I reched front desk router')
  
 

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const imageDoc = require('../model/documents')
+const imageDoc = require('../functions/documents')
 const midware = require('../middleware/multer') 
 const getRoot = (req,res)=>{
     res.redirect('/')

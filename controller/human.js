@@ -8,11 +8,11 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 const { render } = require('ejs');
-const HBank = require('../model/humanbank');
+const HBank = require('../functions/humanbank');
 const DBcollections = require('../model/dbcollections');
-const frontoffice = require('../model/checkIn') 
-const floor = require('../model/floor')
-const rooms = require('../model/rooms')
+const frontoffice = require('../functions/checkIn') 
+const floor = require('../functions/floor')
+const rooms = require('../functions/rooms')
 const adminController = require('../controller/adminController')
 const getRoot = (req,res)=>{
     res.redirect('/admin')

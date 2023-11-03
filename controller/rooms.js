@@ -1,5 +1,5 @@
-const floor = require('../model/floor')
-const rooms = require('../model/rooms')
+const floor = require('../functions/floor')
+const rooms = require('../functions/rooms')
 const modeltariff = require('../model/tariff')
 
 const getroot = (req,res)=>{

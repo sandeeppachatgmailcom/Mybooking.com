@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router();
-const frontDesk = require('../model/checkIn')
-const checkinPlan = require('../model/planMaster')
-const Rooms = require('../model/rooms')
-const tariffmaster = require('../model/tariff')
-const frontoffice = require('../model/checkIn')
-const floor =  require('../model/floor')
+const frontDesk = require('../functions/checkIn')
+const checkinPlan = require('../functions/planMaster')
+const Rooms = require('../functions/rooms')
+const tariffmaster = require('../functions/tariff')
+const frontoffice = require('../functions/checkIn')
+const floor =  require('../functions/floor')
 const token = require('../middleware/jwt')
 const getRoot = (req,res)=>{
     res.redirect('/admin')

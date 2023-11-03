@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router();
 const midware = require('../middleware/multer')
-const companies = require('../model/company')
-const tariffs = require('../model/tariff')
-const checkinplans = require('../model/planMaster')
+const companies = require('../functions/company')
+const tariffs = require('../functions/tariff')
+const checkinplans = require('../functions/planMaster')
 const ejs = require('ejs')
-const human = require('../model/humanbank')
+const human = require('../functions/humanbank')
 const controller = require('../controller/adminController')
 const ftnReservation = require('../controller/ftnReservation');
-const payments = require('../model/payments')
+const payments = require('../functions/payments')
 
 const getRoot = (req,res)=>{
     res.redirect('/')

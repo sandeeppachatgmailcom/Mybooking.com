@@ -15,28 +15,8 @@ const newSeries = new mongoose.Schema({
 
 // Compile the Mongoose model
 const voucherSerial = mongoose.model('voucherSerial',newSeries);
-$inc: { nextIndex: 1 }
 
 
-async function getVoucherNumber (reqObj){
-  const NewCompany= {
-    activeYear: true,
-    bookName: reqObj.bookName,
-    companyID: reqObj.companyID,
-    deleted: false,
-    __v: 0,
-    financialYear: "2324",
-    nextIndex: 100001,
-    prefix: "JV"
-  }
-    let result =await voucherSerial.findOneAndUpdate({bookName:reqObj.bookName,companyID:reqObj.companyID,activeYear:true,deleted:false },{$inc:{nextIndex:1}},{upsert:true})
-    if(!result) {  await voucherSerial.insertOne({$inc:{nextIndex:1}})
-    result =await voucherSerial.findOneAndUpdate({bookName:reqObj.bookName,companyID:reqObj.companyID,activeYear:true,deleted:false },{$inc:{nextIndex:1}},{upsert:true})
-  }
-  console.log(result);
-    const serialNumber = result.prefix+result.financialYear+result.nextIndex;
-return serialNumber; 
-}
-// Export the model
-module.exports = { voucherSerial,getVoucherNumber };
+ 
+module.exports = { voucherSerial  };
 

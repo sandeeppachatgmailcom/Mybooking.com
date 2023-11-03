@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router()
-const facilty = require('../model/facilty')
+const facilty = require('../functions/facilty')
 
 const getRoot = (req,res)=>{
    res.redirect('/admin')

@@ -1,10 +1,10 @@
-const occupancies =  require('../model/occupancydetails')
-const rooms = require ('../model/rooms') 
+const occupancies =  require('../functions/occupancydetails')
+const rooms = require ('../functions/rooms') 
 const express = require('express')
 const mongoose = require('mongoose');
 const adminController = require('../controller/adminController')
-const company = require('../model/company')
-const frontOffice = require('../model/checkIn') 
+const company = require('../functions/company')
+const frontOffice = require('../functions/checkIn') 
 
 async function getReservationDateWise(fromTime, endTime, companyID, roosObj) {
   const startDate = new Date(fromTime);

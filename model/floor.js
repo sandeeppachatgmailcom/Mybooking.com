@@ -11,9 +11,5 @@ const floor =new mongoose.Schema({
     username: { type: String, required: true },
   });
   const floors = db.model('floor',floor);
-  
-  async function loadAllFloor(){
-    let result =  await floors.find()
-    return result; 
-  }
-  module.exports = {floors,loadAllFloor}
+   
+  module.exports = {floors }

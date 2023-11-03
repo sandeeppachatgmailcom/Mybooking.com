@@ -1,6 +1,6 @@
-const DBcollections = require('../model/dbcollections');
+
 const bcrypt = require('bcrypt')
-const serialNumbers = require('../model/serialNumbers')
+const serialNumbers = require('../functions/serialNumbers')
 
 
 
@@ -24,6 +24,7 @@ async function comparePassword(newPassword,hashedPassword) {
 }
     
 async function getIndex(CollName) {
+    $inc: { nextIndex: 1 }
     let result = await serialNumbers.serialNumbers.findOne({ tableName: CollName });
      console.log(result,CollName);
     await serialNumbers.serialNumbers.updateOne({ tableName: CollName }, { $inc: {nextIndex:1} })

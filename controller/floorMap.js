@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const department = require('../model/rooms')
-const tarifftype = require('../model/tariff')
-const roomsDetails = require('../model/rooms')
-const floors = require('../model/floor')
+const department = require('../functions/rooms')
+const tarifftype = require('../functions/tariff')
+const roomsDetails = require('../functions/rooms')
+const floors = require('../functions/floor')
 
 const verifyAccess = require('../middleware/userAccess')
 

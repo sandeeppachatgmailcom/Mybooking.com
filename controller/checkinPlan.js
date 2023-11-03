@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 const { render } = require('ejs');
-const CheckinPlan = require('../model/planMaster')
+const CheckinPlan = require('../functions/planMaster')
 const adminController = require('../controller/adminController')
 const getRoot = (req,res)=>{
     res.redirect('/admin')

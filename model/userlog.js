@@ -14,12 +14,6 @@ const userLogSchema = new mongoose.Schema({
 
 
 const UserLog = db.model('userlog', userLogSchema);
-
-async function logout(username){
-    let logout =await  UserLog.updateMany({username:username},{$set:{loggedOut:true}})
-    if(logout.modifiedCount>=0) {logout ={logout:true}} else {logout ={logout:false}}  
-    console.log(logout)
-    return logout;
-}
-module.exports = { UserLog,logout };
+ 
+module.exports = { UserLog };
 

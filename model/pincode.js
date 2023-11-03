@@ -20,9 +20,5 @@ const newPincode = mongoose.Schema({
   })
 
   const pincode = db.model('pincode',newPincode);
-  async function loadPincode(pincodeobj){
-    console.log(pincodeobj,'pincode reached vbacked ');
-    const result = await pincode.find({pincode:pincodeobj.pincode});
-    return result;
-  }
-  module.exports = {pincode,loadPincode}
+   
+  module.exports = {pincode }

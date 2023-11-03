@@ -1,17 +1,12 @@
-//const userModel = require('../Model/userModel')
-const cookie = require('cookie-parser');
-
-const { Document } = require('mongoose');
-const memoryCache = require('memory-cache');
-const multer = require('../middleware/multer') 
+  
 const express = require('express');
 const router = express.Router();
-const companies = require('../model/company') 
-const pincodes = require('../model/pincode') 
-const HBank = require('../model/humanbank') 
-const tariff = require('../model/tariff')
-const checkinPlans = require('../model/planMaster')
-const rooms = require('../model/rooms')
+const companies = require('../functions/company') 
+const pincodes = require('../functions/pincode') 
+const HBank = require('../functions/humanbank') 
+const tariff = require('../functions/tariff')
+const checkinPlans = require('../functions/planMaster')
+const rooms = require('../functions/rooms')
 const getRoot = (req,res)=>{
   res.redirect('/hotel')
 } 
@@ -163,7 +158,6 @@ const getloadRoom = async (req,res)=>{
   
 
     } 
-// /Company
 const getCompany = async(req,res)=>{
     let data = await companies.SearchCompany('');
     let count = data.length;
@@ -199,5 +193,10 @@ const postDeleteCompany =  async (req, res) => {
     res.json(result)
 } 
 
+const loadActivecompanies = async ()=>{
+  const comp = await companies.company.find({deleted:false}).skip(1).limit(7)
+  console.log(comp,'comp');
+  return comp;
+}
 module.exports={postloadcustommer,getRoot,postswitchRoomStatus,getloadTariff,getloadPlan,
-  getloadRoom,getCompany,postSaveCompany,postsearchCompany,postDeleteCompany};
+  getloadRoom,getCompany,postSaveCompany,postsearchCompany,postDeleteCompany,loadActivecompanies};

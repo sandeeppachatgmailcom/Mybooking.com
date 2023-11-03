@@ -5,14 +5,14 @@ const multer = require("multer")
 const express = require('express');
 const session = require('express-session');
 const { render } = require('ejs');
-const HBank = require('../model/humanbank');
-const DBcollections = require('../model/DBcollections');
-const floor = require('../model/floor')
+const HBank = require('../functions/humanbank');
+const DBcollections = require('../functions/DBcollections');
+const floor = require('../functions/floor')
 const department = require('../controller/rooms')
 const tariff = require('../controller/tariff')
-const rooms = require('../model/rooms')
-const human = require('../model/humanbank')
-const modeltariff = require('../model/tariff')
+const rooms = require('../functions/rooms')
+const human = require('../functions/humanbank')
+const modeltariff = require('../functions/tariff')
 
 const userlog = require('../controller/userauthentication')
 

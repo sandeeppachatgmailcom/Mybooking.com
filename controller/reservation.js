@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router();
-const hbank = require('../model/humanbank')
-const company = require('../model/company')
-const checkin = require('../model/checkIn')
-const paymentModel = require('../model/payments') 
-const occupancy = require('../model/occupancydetails')
+const hbank = require('../functions/humanbank')
+const company = require('../functions/company')
+const checkin = require('../functions/checkIn')
+const paymentModel = require('../functions/payments') 
+const occupancy = require('../functions/occupancydetails')
 const Razorpaytrans = require('../controller/razorPay')
 const getRoot = (req,res)=>{
   res.redirect('/')

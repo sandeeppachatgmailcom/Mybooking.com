@@ -12,7 +12,8 @@
         font-family: Poppins;
     }
   </style> 
-<nav class="navbar navbar-expand-lg" style="background-color: rgba(43, 59, 43, 0.796);">
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg" style="background-color: rgba(43, 59, 43, 0.796);">
     <div class="container-fluid">
         <small class="text text-light">
             <span class="navbar-brand text text-light" style="font-size: 50px;" href="#!">Book My Trip</span>
@@ -23,47 +24,30 @@
     <button class="navbar-toggler bi bi-menu-button-wide-fill" type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation">
       <% } else { %> 
          
-          <a type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#customerLogin" style="background-color: rgb(98, 111, 98);" class="btn btn-success"> LOGIN </a>
-        
-       
-    
+          <a type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#customerLogin" style="background-color: rgb(98, 111, 98);" class="btn btn-success me-3"> LOGIN </a>
     <% } %>
     </button>
     
         
             <% if (user) { %>
-              
               <div class="collapse navbar-collapse" id="navbarNav1">
-              <ul class="navbar-nav">
-                <!-- Example single danger button -->
-                <li class="nav-item ">
-                    <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-house-up-fill w-100 h-100" href="/authenticate/custLogin">HOME</a>
-                </li>
-                <li class="nav-item">
-                    <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-power w-100 h-100" href="#">LOGOUT</a>
-                </li>
-                <li class="nav-item">
-                    <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-person-square w-100 h-100" href="/custom/Home">PROFILE</a>
-                </li>
-                <li class="nav-item">
-                    <div class="btn-group h-100">
-                        <button type="button" class="btn btn-warning dropdown-toggle col-12 h-100" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <%=user.firstName%>
-                        </button>
-                        <div class="dropdown-menu btn border-0 col-12">
-                            <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-1 btn-warning btn bi bi-person-square w-100 h-100" data-bs-toggle="modal" data-bs-target="#VendureLogin">PARTNER LOGIN</a>
-                            <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-1 btn btn-warning bi bi-person-square w-100 h-100" data-bs-toggle="modal" data-bs-target="#exampleModal">STAFF LOGIN</a>
-                        </div>
-                    </div>
-                </li>
-              </ul>
+                <ul class="navbar-nav">
+                  <!-- Example single danger button -->
+                    <li class="nav-item ">
+                        <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-house-up-fill w-100 h-100" href="/authenticate/custLogin">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-person-fill w-100 h-100" href="/custom/Home" style="text-transform: uppercase;" ><%=user.firstName%></a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-power w-100 h-100" href="#">LOGOUT</a>
+                    </li>
+                </ul>
             </div>
-           
-               
-            
             <% } %>
         
     
 </nav>
-<body>
-    <%- include('footer') %>
+
+</div><body>
+    

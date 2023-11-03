@@ -18,30 +18,5 @@ const newPlan =mongose.Schema( {
 })
 
 const CheckinPlan = db.model('CheckinPlan',newPlan);
-
-async function  LoadPlan(){
-       result = await CheckinPlan.find({deleted:false})
-  
-return result;} 
-async function  LoadPlanByID(planId){
-    result = await CheckinPlan.findOne({ planIndex:planId})
-    console.log(result);
-return result;} 
-
-
-async function  saveCheckinPlan (data){
-    let result = await CheckinPlan.updateOne({planIndex:data.planIndex},{$set:data},{upsert:true}) 
-    if ((result.modifiedCount + result.upsertedCount) > 0) { result = { saved: true } }
-    else { result = { saved: false } }
-    return result;
-} 
-
-async function  deleteCheckinPlan (data){
-    if (!data.planIndex){data.planIndex = await adminController.getIndex('CheckinPlan') }
-    
-    let  result = await CheckinPlan.updateOne({planIndex:data.planIndex},{$set:{deleted:true}}) 
-    if ((result.modifiedCount + result.upsertedCount) >= 0) { result = { deleted: true } }
-    else { result = { deleted: false } }
-    return result;
-} 
-module.exports={CheckinPlan,LoadPlan,saveCheckinPlan,deleteCheckinPlan,LoadPlanByID}
+ 
+module.exports={CheckinPlan }

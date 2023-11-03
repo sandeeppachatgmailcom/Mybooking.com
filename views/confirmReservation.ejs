@@ -1,9 +1,9 @@
 <%- include('header') %>
 <%- include('MenuBarCustomer') %>
-<div class="container-fluid">
+<div class="container-flex">
 
-    <div class="container-fluid d-flex flex-wrap col-sm-12 p-1">
-        <div class="container-fluid col-lg-2 col-md-4 col-sm-12 border border-warning">
+    <div class="container-flex d-flex flex-wrap col-sm-12 p-1">
+        <div class="container-flex col-lg-2 col-md-4 col-sm-12 border border-warning">
             <div class="container-fluid border m-1 rounded">
                 <small> <%= user.firstName %></small>  <br>
                 <small> <%= user.contactNumber %></small> <br>
@@ -18,7 +18,7 @@
 
             </div>
         </div>
-        <div class="container-fluid col-lg-8 col-md-8 col-sm-12 d-flex border border-warning">
+        <div class="container-flex col-lg-8 col-md-8 col-sm-12 d-flex border border-warning">
          <div class="container-fluid col-lg-12 col-md-8    ">
                 <div class="container-fluid ">
                     <h3 style="text-transform: uppercase;" ><%= tariffplans[0].tariffName %></h3>
@@ -183,7 +183,7 @@
         </div>
 
         
-        <div class="container-fluid col-lg-2 col-md-4 col-sm-12 d-flex border border-warning">
+        <div class="container-flex col-lg-2 col-md-4 col-sm-12 d-flex border border-warning">
             <div class="container-fluid col-12   border border-warning" id="">
                 <% checkinplan.forEach(element => { %>
                    <% if (element.isActive) { %>

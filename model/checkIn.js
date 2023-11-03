@@ -3,7 +3,7 @@ const db = require('./mongoose');
 const controller = require('../controller/adminController')
 const humanBank = require('../model/humanbank')
 const tariff = require('../model/tariff')
-
+// nothing to commitgit stat
 const Newcheckin = new mongoose.Schema({
   frontDeskTransid: { type: String, requfrontDeskTransidired: true, unique: true },
   checkinReferance: { type: String },

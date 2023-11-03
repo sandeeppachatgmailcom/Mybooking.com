@@ -6,7 +6,7 @@
       
 
       
-        <div class="container-fluid  "   style="height:730px;  background-position: center; background-size: cover;"> 
+        <div class="container-fluid"   style="height:730px;  background-position: center; background-size: cover;"> 
             <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" style="height:730px" >
                   <div class="carousel-inner h-100 bg-secondary">
                     <% comp.forEach((element,index) => { %>
@@ -15,7 +15,7 @@
                         
                         <div class="container-fluid w-100 col-lg-6 col-sm-12  rounded border flex-wrap" style="background-color:rgba(186, 90, 21, 0.748); height: 100px;" >
                              
-                            <form id="<%= element.CompanyID %>" action="/custom/customSearch" method="post"></form>
+                            <form id="<%= element.CompanyID %>" action="/custom/customSearch" method="post"> 
                             <div class="container-fluid col-12 btn d-flex">
                                 <h6 class="col-2 text-light ">Location </h6>
                                     <select class="col-8  btn text-light fw-lighter"  name="ditrictName" type="text" data-hotels="<%= JSON.stringify(generalData) %>" id="idSearchText" >
@@ -37,7 +37,7 @@
                       <% } else { %>
                         <div class="carousel-item h-100 d-flex flex-column justify-content-center align-items-start h-100" style=" background-image: url('<%= element.image1 %>'); background-position: center; background-size: cover;">
                           <div class="container-fluid w-100 col-lg-6 col-sm-12 rounded border " style="background-color:rgba(186, 90, 21, 0.748); height: 100px;" >
-                            <form id="<%= element.CompanyID %>" action="/custom/customSearch"  method="post"></form>
+                            <form id="<%= element.CompanyID %>" action="/custom/customSearch"  method="post">  
                             <div class="container-fluid col-12 btn d-flex">
                                 <h6 class="col-2 text-light ">Location </h6>
                                     <select class="col-8  btn text-light fw-lighter"  name="ditrictName" type="text" data-hotels="<%= JSON.stringify(generalData) %>" id="idSearchText" >
@@ -61,7 +61,6 @@
                   </div>
                   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <h1 class="text-light bottom" ><%= user %></h1>
                     <span class="visually-hidden">Previous</span>
                   </button>
                   
@@ -75,7 +74,7 @@
 
       
 
-
+        <%- include('footer') %>
     <script src="/Script/Script_Signup.js"> </script>
     <script src="/Script/customerSearch.js"> </script>
     <script src="js/bootstrap.bundle.min.js"></script>

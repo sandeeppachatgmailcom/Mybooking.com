@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-//const dbURI = "mongodb+srv://sandeeppachat:w6yGtOSj60IeUvXk@cluster0.s4hqvyg.mongodb.net/?retryWrites=true&w=majority"
+const dbURI = "mongodb+srv://sandeeppachat:w6yGtOSj60IeUvXk@cluster0.s4hqvyg.mongodb.net/?retryWrites=true&w=majority"
  
- let dbURI="mongodb://127.0.0.1:27017/HOST"
+ //let dbURI="mongodb://127.0.0.1:27017/HOST"
 // mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 //     .then(() => {
 //         console.log('DB Is Connected');

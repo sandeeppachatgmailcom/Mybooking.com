@@ -93,39 +93,45 @@
   
 <form   action="/authenticate/custLogin" method="post">
     <div class="modal fade mr-2" id="customerLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog "> <!-- Change modal-lg to modal-xl for an extra-large modal -->
-            <div class="modal-content" style="background-color: rgba(72, 93, 74, 0.84); width:400px;">
-            <div class="modal-header">
-                <h5 class="modal-title txt text-light" id="exampleModalLabel">Sign in</h5> <br>
-               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div> 
-            <div class="modal-body ">
-                <div class="container-fluid  col-12">
-                    <small class="modal-title txt text-warning" id="exampleModalLabelHead"></small> <br>
-                    <small class="txt text-light">Email</small>
+        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Use "modal-lg" or "modal-xl" for an extra-large modal -->
+            <div class="modal-content" style="background-color: rgba(72, 93, 74, 0.84); width: 100%;">
+                <div class="modal-header">
+                    <h5 class="modal-title txt text-light text-md" id="exampleModalLabel">Sign in</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="container-fluid  col-12 input-group ">
-                    <button class="btn-light btn bi bi-envelope-at-fill col-4" >Email</button>
-                    <input type="email" name="userName" id="idUserNameCustomer" class="btn btn-light col-8" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <small class="modal-title txt text-warning text-md" id="exampleModalLabelHead"></small>
+                        <small class="txt text-light">Email</small>
+                    </div>
+                    <div class="container-fluid row ">
+                        <div class="container-flex d-flex col-12 input-group">
+                            <button class="btn-light btn col-4 bi bi-envelope-at-fill">Email</button>
+                        
+                            <input type="email" name="userName" id="idUserNameCustomer" class="col-8 btn btn-light" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <small class="txt text-light">Password</small>
+                    </div>
+                    <div class="container-fluid row">
+                        <div class="col-md-4 col-12 m-0 input-group">
+                            <button class="col-4 btn btn-light bi bi-key">Password</button>
+                         
+                            <input type="password" name="password" id="idUserPasswordcustomer" class="col-8 btn btn-light" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
                 </div>
-                <div class="container-fluid col-12">
-                    <small class="txt text-light">Password</small>
-                </div>
-                <div class="container-fluid col-12 input-group  ">
-                    <button class="btn btn-light col-4 bi bi-key col-4" >Password</button> 
-                    <input type="password" name="password" id="idUserPasswordcustomer" class="btn btn-light col-8" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-secondary d-md-none" data-bs-toggle="modal" data-bs-target="#resetPassword">ChangePassword</a>
+                    <a data-bs-toggle="modal" data-bs-target="#resetPassword" class="d-none d-md-block">ChangePassword</a>
+                    <button type="button" onclick="signinCustomer('exampleModalLabelHead')" class="btn btn-success">Sign in</button>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#customerRegister">Signup</button>
                 </div>
             </div>
-            <div class="modal-footer">
-            <a type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#resetPassword">ChangePassword</a>
-            <a data-bs-toggle="modal" data-bs-target="#resetPassword"  >ChangePassword</a>
-            <button type="button" onclick="signinCustomer('exampleModalLabelHead')" class="btn btn-success">Sign in </button>
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#customerRegister">Signup </button>
-            
-            </div>
-        </div>
         </div>
     </div>
+    
 </form> 
 
 <!-- Modal -->

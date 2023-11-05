@@ -712,8 +712,9 @@ function convertToHTMLDatetimeFormat(inputDateTime) {
     const mobile = document.getElementById().value ; 
   }
 
+  if(document.getElementById('idpincode')){
   window.addEventListener('load', loadPincode()); 
-async function loadPincode() {
+    async function loadPincode() {
      
     const data = {
         pincode: document.getElementById('idpincode').value
@@ -805,4 +806,4 @@ async function loadPincode() {
         console.error(err);
     }
 }
-  
+} 

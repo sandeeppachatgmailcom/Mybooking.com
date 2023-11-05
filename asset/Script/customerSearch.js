@@ -139,25 +139,25 @@ function readmore() {
 
 
  
-  document.addEventListener("DOMContentLoaded", function () {
-    // Get the current date and time in the format "YYYY-MM-DDTHH:MM"
-    const currentDate = new Date().toISOString().slice(0, 16);
+  // document.addEventListener("DOMContentLoaded", function () {
+  //   // Get the current date and time in the format "YYYY-MM-DDTHH:MM"
+  //   const currentDate = new Date().toISOString().slice(0, 16);
 
-    // Set the value of the input with id "idStartDate" to the current date and time
-    // document.getElementById("idStartDate").value = currentDate;
-    document.getElementById("idStartDate").min = currentDate;
-    // console.log(document.getElementById("idStartDate").value)
-    // console.log(document.getElementById("idEndDate").value);
-    document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
-    if(document.getElementById("idEndDate").value< document.getElementById("idStartDate").value){
-    document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;}
+  //   // Set the value of the input with id "idStartDate" to the current date and time
+  //   // document.getElementById("idStartDate").value = currentDate;
+  //   document.getElementById("idStartDate").min = currentDate;
+  //   // console.log(document.getElementById("idStartDate").value)
+  //   // console.log(document.getElementById("idEndDate").value);
+  //   document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
+  //   if(document.getElementById("idEndDate").value< document.getElementById("idStartDate").value){
+  //   document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;}
 
-  });
+  // });
  
-  document.getElementById("idStartDate").addEventListener("change",function (){
-  document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;
-  document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
-  })
+  // document.getElementById("idStartDate").addEventListener("change",function (){
+  // document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;
+  // document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
+  // })
 
   async function loadHotelBasedResult(companyID){
     
@@ -185,7 +185,7 @@ function readmore() {
   console.log(tariffDetails,'tariffDetails');
 
   document.getElementById("idTariffDetails").innerHTML = `
-  <div class="container-fluid" >
+  <div class="container-flex" >
     <div class="container-fluid d-flex flex-wrap border btn "  >
       <div class="col-12 col-sm-4 col-md-4" style="height:400px;">
           <img src="${result.image1}" class="card-img-top w-100 p-1 h-100" alt="...">
@@ -200,7 +200,7 @@ function readmore() {
     <div class="container-fluid d-flex justify-content-evenly border btn" >
          <h6 class="card-title" style="text-transform: uppercase;">${result.firstName}</h6> 
     </div>     
-    <div class="container-fluid d-flex" id="idprinttariffcard" style="flex-wrap:wrap" >
+    <div class="container-flex d-flex flex-wrap w-100" id="idprinttariffcard" >
     </div>
   </div>`
   
@@ -232,86 +232,51 @@ if(i.isActive){
 let bodycolorclass = 'btn-cyan-700'
 if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.SpecialRent<= Number(document.getElementById("idBudgetEnd").value)))
 {
-  bodycolorclass = ' rgba(52, 152, 219, 0.853)'
+  bodycolorclass = ' rgb(255,255,255)'
 }
 else {
-   bodycolorclass = 'rgba(224, 224, 224)'
+   bodycolorclass = 'rgb(86,99,86)'
 
 }
 if(! i.totalRoom) i.totalRoom=1;
   
   innerhtml+=`
-  <div class="card" p-2 style="width: 21rem; ">
+  <div class="card container-flex col-lg-3 col-sm-12 p-1 "  style="background-color:${bodycolorclass}"  >
     <form id="idFormViewReservation" action="/custom/viewReservation" method="post">
       <div onClick="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}', ${diffDays})"
-          class="card-body " style="background-color:${bodycolorclass}">
-  
-          <h6 style="text-transform: uppercase;" class="card-title">${i.tariffName} : ${i.SpecialRent}/-
-          <h6 class="card-title" style="text-transform: uppercase;">${i.totalRoom-i.reservationCount} rooms available  </h6> 
-         
-              <small>(2pax)</small> <small > Extra pax:${i.extraPerson}/-</small> </h6>
-          <select id="idCheckinPlan" class="input-group-text text-light btn col-2" name="roomCategoryID">
+          class="card-body " >
+          <div class = "btn text-primary " style="height: 30px; wrap:nowrap ; overflow:hidden"  onClick="drilldown('iDtariffDiscript${i.tariffIndex}','30')" id="iDtariffDiscript${i.tariffIndex}" class="container-flex card-title">${i.tariffName} : ${i.SpecialRent}/- (2pax)  <br>         <small class="card-text btn   "   >${i.Discription}</small>  </div>
+          
+          <small > [${i.totalRoom-i.reservationCount} rooms available ] Extra pax:${i.extraPerson}/-</small>
+              <select id="idCheckinPlan" hidden class="input-group-text  btn col-2" name="roomCategoryID">
               <option value="0">none</option>
-  
-          </select>
-          <div class="d-flex">
-              </button>
-          </div>
-          <h4   class="card-title ">Total Amount:<small id="idTotalamount${i.tariffIndex}"> </small> </h4>
-          <div style="height: 80px; wrap:nowrap ; overflow:hidden"   id="iDtariffDiscript${i.tariffIndex}">
-              
-              <p class="card-text btn"   onClick="drilldown('iDtariffDiscript${i.tariffIndex}','80')">${i.Discription}</p>
-          </div>
-          <div class="continer-flex">
-              <div class="input-group d-flex ">
-                  <div class="input-group-prepend col-4  ">
-                      <span class="input-group-text col-12" id="basic-addon1"> Room</span>
-                  </div>
+              </select>
+          
+          <h6   class="card-title ">Total Amount:<small id="idTotalamount${i.tariffIndex}"> </small> </h6>
+          <small class="" id="idarrivaldate${i.tariffIndex}">  Arrival :${data.StartDate.split('T')[0]} @${data.StartDate.split('T')[1]} </small> <br>
+          <small class="" id="idDepartureDate${i.tariffIndex}">  Departure :${data.EndDate.split('T')[0]} @${data.EndDate.split('T')[1]} </small> <br>
+          <small>  Days :</small> <small class="" id="iddaycount${i.tariffIndex}">${diffDays}</small> <br>
+          
+          <div class="container-flex d-flex  col-12 p-0 m-0  ">
+               
+                  <small class="btn col-3" style="font-size:15px"  id="basic-addon1"> Room</small>
                   <input type="Number" name="roomCount" value="${parseInt(data.RoomCount)}"
-                      onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
-                      max="${i.totalRoom}" id="idTotalRoomReq${i.tariffIndex}" class="form-control" placeholder="Username"
-                      aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group d-flex ">
-                  <div class="input-group-prepend col-4  ">
-                      <span  class="input-group-text col-12" id="basic-addon1"> Guest</span>
-                  </div>
-                  <input name="guestCount" type="Number" value="${parseInt(data.GuestCount)}"
+                  onChange="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
+                  max="${i.totalRoom}" id="idTotalRoomReq${i.tariffIndex}" class="form-control col-3" >
+              
+                   <small  class="btn col-3" id="basic-addon1" style="font-size:15px"> Guest</small>
+                   <input name="guestCount" type="Number" value="${parseInt(data.GuestCount)}"
                       onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
-                      class="form-control" id="idTotalGuestOccs${i.tariffIndex}" placeholder="Username"
+                      class="form-control col-3 " id="idTotalGuestOccs${i.tariffIndex}" placeholder="Username"
                       aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-    
-              <div class="input-group d-flex ">
-                  <div class="input-group-prepend col-4 ">
-                      <span class="input-group-text col-12" id="basic-addon1">Days </span>
-                  </div>
-                  <input type="Number" class="form-control" readOnly="true"
-                      onkeypress="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}')"
-                      value="${diffDays}" id="iddaycount${i.tariffIndex}" placeholder="Username" aria-label="Username"
-                      aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group d-flex ">
-                  <div class="input-group-prepend col-4  ">
-                      <span class="input-group-text col-12" id="basic-addon1">arrival </span>
-                  </div>
-                  <input type="datetime-local" onChange="updateCustommerDays('${i.tariffIndex}')" class="form-control"
-                      readOnly="true" id="idarrivaldate${i.tariffIndex}" value="${data.StartDate}" placeholder="Username"
-                      aria-label="Username" aria-describedby="basic-addon1">
-              </div>
-              <div class="input-group d-flex ">
-                  <div class="input-group-prepend col-4  ">
-                      <span class="input-group-text col-12" id="basic-addon1">Depart </span>
-                  </div>
-                  <input type="datetime-local" class="form-control" onChange="updateCustommerDays('${i.tariffIndex}')"
-                      readOnly="true" id="idDepartureDate${i.tariffIndex}" value="${data.EndDate}" placeholder="Username"
-                      aria-label="Username" aria-describedby="basic-addon1">
-              </div>
           </div>
-          <button class="btn btn-success" name="boxokingDetails" onClick="verifyUserbeforeConfirm()"
-              value="${result.CompanyID},${i.tariffIndex},${data.StartDate},${data.EndDate},${diffDays}"
-              type="button">Book Now </button>
-              <button class="btn btn-success" name="bookingDetails" id="idconfirmReservationsbutton"  hidden
+          <div class=" container-flex">
+                  <button class="btn btn-warning col-12" name="boxokingDetails" onClick="verifyUserbeforeConfirm()"
+                  value="${result.CompanyID},${i.tariffIndex},${data.StartDate},${data.EndDate},${diffDays}"
+                  type="button">Book Now </button>
+        
+              </div>
+              <button class="btn btn-warning" name="bookingDetails" id="idconfirmReservationsbutton"  hidden
               value="${result.CompanyID},${i.tariffIndex},${data.StartDate},${data.EndDate},${diffDays}"
               type="submit">Book Now </button>
       </div>
@@ -353,18 +318,20 @@ async function confirmReservation(inputString){
  function calculateTotal(SpecialRent,extraPax,tariffcode){
   const totalPax =parseInt(document.getElementById("idTotalGuestOccs"+tariffcode).value);
   const totalRoom =parseInt(document.getElementById("idTotalRoomReq"+tariffcode).value);
-  const days = parseInt(document.getElementById("iddaycount"+tariffcode).value);
+  const days = parseInt(document.getElementById("iddaycount"+tariffcode).textContent);
+   
   const totalRoomCapacity = 5*totalRoom  
   const allowedPax = totalRoom * 2;
   let  additionalPax = totalPax -allowedPax;
   if (additionalPax<0) additionalPax =0;
   const totalAmpunt = ((totalRoom*SpecialRent)+(additionalPax*extraPax))*days;
+  console.log((totalRoom*SpecialRent),(additionalPax*extraPax)),days,'new test';
   if(totalPax>totalRoomCapacity) {document.getElementById("idTotalGuestOccs"+tariffcode).style.color = 'red';
   document.getElementById("idTotalGuestOccs"+tariffcode).max=totalRoomCapacity
 }
   else  document.getElementById("idTotalGuestOccs"+tariffcode).style.color = 'black'
   document.getElementById("idTotalamount"+tariffcode).innerText =totalAmpunt 
-  console.log(totalPax,'totalPax',totalRoom,'totalRoom', SpecialRent,'SpecialRent',extraPax,'extraPax',allowedPax,'allowedPax',additionalPax,'additionalPax',totalAmpunt,'totalAmpunt'); 
+  //console.log(totalPax,'totalPax',totalRoom,'totalRoom', SpecialRent,'SpecialRent',extraPax,'extraPax',allowedPax,'allowedPax',additionalPax,'additionalPax',totalAmpunt,'totalAmpunt'); 
  }
 
 function calculateDays(startDate,endDate){

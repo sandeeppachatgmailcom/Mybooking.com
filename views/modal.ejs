@@ -93,7 +93,7 @@
   
 <form   action="/authenticate/custLogin" method="post">
     <div class="modal fade mr-2" id="customerLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Use "modal-lg" or "modal-xl" for an extra-large modal -->
+        <div class="modal-dialog modal-dialog-centered modal-md"> <!-- Use "modal-lg" or "modal-xl" for an extra-large modal -->
             <div class="modal-content" style="background-color: rgba(72, 93, 74, 0.84); width: 100%;">
                 <div class="modal-header">
                     <h5 class="modal-title txt text-light text-md" id="exampleModalLabel">Sign in</h5>
@@ -131,11 +131,10 @@
             </div>
         </div>
     </div>
-    
 </form> 
 
 <!-- Modal -->
-<div class="modal fade btn" id="customerRegister" style="  background-color: rgba(128, 109, 0, 0.408);" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade " id="customerRegister" style="  background-color: rgba(128, 109, 0, 0.408);" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg " >
       <div class="modal-content"  >
         <div class="modal-header">
@@ -156,7 +155,7 @@
                     <!-- ************ -->
                     <div class="container-fluid border-light d-flex rounded mb-3">
                          
-                        <button class="border-0 rounded-start col-4" id="Signup_input_group_text">Email</button>
+                        <button class="border-0 rounded-start col-4" id="idCreateSignup_input_group_text">Email</button>
                         <input id="Signup_Email_text" type="email" onchange="verifyEmail('Signup_Email_text','Signup_Email_Bt','/new');" class="form-control" name="email" placeholder="Email" required>
                         <button id="Signup_Email_Bt" type="button" class="btn btn-outline-success bi bi-search"
                             onclick="verifyEmail('Signup_Email_text','Signup_Email_Bt','/new');"></button>
@@ -225,7 +224,7 @@
                     <!-- ************ -->
                     <div class="container-fluid border-light d-flex rounded mb-3">
                          
-                        <button class="border-0 rounded-start col-4" id="Signup_input_group_text">Email</button>
+                        <button class="border-0 rounded-start col-4" id="idVerifySignup_input_group_text">Email</button>
                         <input id="idverify_Email" type="email" onchange="verifyEmail('idverify_Email','idSignup_Email_Btn10','/VerifyEmail')"    class="form-control " name="email" placeholder="Email" required>
                         <button id="idSignup_Email_Btn10" class="btn"></button>
             
@@ -242,7 +241,7 @@
                 </div>
                 <div class="container-fluid d-flex flex-wrap  ">
                     <div class="container-fluid  d-flex flex-row  ">
-                        <button id="Bt_Save_Signup"   type="button"
+                        <button id="idOtpBt_Save_Signup"   type="button"
                             class="btn btn-success  bi bi-cursor-fill" onclick="verifyOtp('validate')"  value="signup"> SUBMIT </button>
                         <button id="Bt_resendOtp"   type="button" onclick="resendOtp('idverify_Email','Bt_resendOtp')"
                             class="btn btn-danger "> SEND OTP </button>
@@ -304,6 +303,41 @@
 <!-- Signup -->
   
 <!-- End signup -->
+
+
+
+<!-- Vertically centered modal -->
+<!-- Button trigger modal -->
+<button type= "button" id="idOpenProgressbar" hidden class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#idShowProgressModal">
+    Launch static backdrop modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade " style="background-color: transparent;" id="idShowProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog " style="background-color: transparent;">
+      <div class="modal-content" style="background-color: transparent;">
+        <!-- <div class="modal-header" style="background-color: transparent;"> -->
+          <h1 class="modal-title fs-5" id="staticBackdropLabel" style="background-color: transparent;"> </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- </div> -->
+        <div class="modal-body" style="background-color: transparent;">
+            <div class="container text-center mt-5">
+                <h1 class="text-light" >Please wait, your request is processing </h1>
+                <!-- Progress Spinner -->
+                <div class="spinner-border text-light" role="status" style="background-color: transparent;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="modal-footer" style="background-color: transparent;"> -->
+          
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+
+
+
 <script src=" /Script/modal.js"> </script>
 <script src="/Script/Script_Signup.js"> </script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

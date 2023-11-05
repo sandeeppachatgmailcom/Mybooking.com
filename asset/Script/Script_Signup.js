@@ -165,14 +165,14 @@ async function verifyPasswordBackend(inputusername ,input_Field,outputfield){
             
              
         }
-        console.log(result);
+         
         return result.verified; 
      
    
 
 }  
 async function verifyEmail(Email_Field,outputfield,path) {
-    console.log(Email_Field,outputfield) ;
+     
     const email = document.getElementById(Email_Field).value;
     if (email.length == 0) {
         document.getElementById(Email_Field).focus();
@@ -180,7 +180,6 @@ async function verifyEmail(Email_Field,outputfield,path) {
     }
     const data = { email: email,
                     path:path }
-    
     let result = await fetch('/authenticate/VerifyEmail', {
         method: 'post',
         headers: {
@@ -198,7 +197,7 @@ async function verifyEmail(Email_Field,outputfield,path) {
     let signuptxt = document.getElementById('Signup_Email_text');
     
     if (result.verified) {
-        console.log(result.verified,document.getElementById(outputfield).classList.length);
+         
         while (document.getElementById(outputfield).classList.length > 0) {
             document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
            
@@ -208,11 +207,11 @@ async function verifyEmail(Email_Field,outputfield,path) {
         document.getElementById(outputfield).classList.add('btn-danger')
         document.getElementById(outputfield).classList.add('bi')
         document.getElementById(outputfield).classList.add('bi-patch-check')
-        console.log(result.verified,document.getElementById(outputfield).classList.length);
+         
         alert("The email you entered is already Exist")
     }
     else {
-        console.log(result.verified);
+         
         while (document.getElementById(outputfield).classList.length > 0) {
             document.getElementById(outputfield).classList.remove(document.getElementById(outputfield).classList.item(0));
         }
@@ -271,6 +270,7 @@ async function verifyphone(phone) {
         document.getElementById('Signup_phone_Bt').classList.add('bi-patch-check')
         signuptxt.setAttribute("readonly", "true");
     }
+    console.log(result.verified);
     return result.verified
 }
 
@@ -308,7 +308,7 @@ data = {
     username :userName,
     password:NewPassword 
 }
-console.log(userName,NewPassword,confirmuserName,confirmNewPassword,confirmmatchPassword);
+ 
 if(!confirmuserName&&confirmNewPassword&&confirmmatchPassword ){
     const result =await fetch('/authenticate/changePassword',{method:'post',headers:{"Content-type":"Application/json"},body:JSON.stringify(data)})
     .then(res=>{
@@ -317,7 +317,7 @@ if(!confirmuserName&&confirmNewPassword&&confirmmatchPassword ){
     .catch((err)=>{
         console.log(err)
     })
-    console.log(result);
+     
     if(result.updated){
         swal({
             title: "success",
@@ -358,7 +358,7 @@ if( userName&&NewPassword ){
     .catch((err)=>{
         console.log(err)
     })
-    console.log(result);
+     
     if(result.updated){
         swal({
             title: "success",
@@ -479,7 +479,8 @@ async function verifyUser(username) {
 async function verifyandupdate() {
     let email=true;
     let phone=true;
-     
+    document.getElementById('idShowProgressModal').hidden = false
+    
     let password=true;
 
      setTimeout(async () => { email =  await verifyEmail('Signup_Email_text','Signup_Email_Bt') }, 50);
@@ -498,13 +499,13 @@ async function verifyandupdate() {
         Active: false,
         isLoggedIn: false
     }
-    console.log( email,'email',  phone ,'phone', user,'user', (document.getElementById('Signup_name_text').value))
-if (!document.getElementById('Signup_name_text').value) {
+    if (!document.getElementById('Signup_name_text').value) {
         document.getElementById('Signup_name_text').style.borderColor = 'red';
         document.getElementById('IdInfoText').innerText='All fields are Mandatory'
     }
-    if(!email&&phone&&(document.getElementById('Signup_name_text').value)){
-         
+    console.log(email,phone,(document.getElementById('Signup_name_text').value));
+    if(!email&&!phone&&(document.getElementById('Signup_name_text').value)){
+        console.log(data);
         setTimeout(async () => {
             let result = await fetch('/authenticate/signup', {
                 method: 'post',
@@ -518,11 +519,14 @@ if (!document.getElementById('Signup_name_text').value) {
                 }
                 )
                 .catch()
+                
+            console.log(result);    
+            document.getElementById('idShowProgressModal').hidden = true
             if (result.saved) {
+                 
                 document.getElementById("Bt_verifyOtp").hidden = false;
                 document.getElementById("Bt_verifyOtp").click();
                 document.getElementById("Bt_verifyOtp").hidden = true;
-                
                 document.getElementById("idverify_Email").value = data.email; 
                 document.getElementById("idverify_Email").disabled = true;
                 executeOtpTimer("Bt_resendOtp");
@@ -561,10 +565,11 @@ function AnimatedTextforhotelLogin(name){
     animation ();
 
 }
+if(document.getElementById('Signup_name_text')){
 document.getElementById('Signup_name_text').addEventListener('change',()=>{
     if (!document.getElementById('Signup_name_text').value) document.getElementById('Signup_name_text').style.borderColor = "red"
     else document.getElementById('Signup_name_text').style.borderColor = "grey"
-})
+})}
 
 async function vedurelogin( email,password){
 const data = {
@@ -606,7 +611,7 @@ else{
         data ={
             email:document.getElementById("idverify_Email").value
         }
-        console.log(data);
+         
         const result =await fetch('/authenticate/SetOtpExpired',{method:'post',headers:{"content-Type":"Application/json"},body:JSON.stringify(data)})
         .then(res=>{
             return res.json()
@@ -614,7 +619,7 @@ else{
         .catch(err=>{
             console.log(err)
         })
-        console.log(result);
+        
         if(result.expired){
             swal({
                 title: "Expired",

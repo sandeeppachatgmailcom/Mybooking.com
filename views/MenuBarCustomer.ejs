@@ -13,39 +13,44 @@
     }
   </style> 
 <div class="container-flex">
-  <nav class="navbar navbar-expand-lg" style="background-color: rgba(43, 59, 43, 0.796);">
-    <div class="container-fluid">
-        <small class="text text-light">
-            <span class="navbar-brand text text-light" style="font-size: 50px;" href="#!">Book My Trip</span>
-            Navigate Luxury, Book with Ease.
-        </small>
+  <nav class="navbar navbar-expand-lg justify-content-between " style="background-color: rgba(43, 59, 43, 0.796);">
+    <div class="container-flex text-left col-10 col-lg-6 ">
+        <small class="text text-light" style="font-size: 30px;" > Book My Trip </small> <br>
+        <small class="text text-light"  >    Navigate Luxury, Book with Ease.     </small>
     </div>
-    <% if (user) { %>
-    <button class="navbar-toggler bi bi-menu-button-wide-fill" type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation">
-      <% } else { %> 
-         
-          <a type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#customerLogin" style="background-color: rgb(98, 111, 98);" class="btn btn-success me-3"> LOGIN </a>
-    <% } %>
-    </button>
-    
+    <div class="container-flex  d-flex">
+      <% if (user) { %>
+        <button class="navbar-toggler text-light bi bi-list" type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation">
+          <% } else { %> 
+             
+              <a type="button" id="idUserName" data-bs-toggle="modal" data-bs-target="#customerLogin" style="background-color: rgb(98, 111, 98);" class="btn btn-success me-3"> LOGIN </a>
+        <% } %>
+        </button>
         
-            <% if (user) { %>
-              <div class="collapse navbar-collapse" id="navbarNav1">
-                <ul class="navbar-nav">
-                  <!-- Example single danger button -->
-                    <li class="nav-item ">
-                        <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-house-up-fill w-100 h-100" href="/authenticate/custLogin">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-person-fill w-100 h-100" href="/custom/Home" style="text-transform: uppercase;" ><%=user.firstName%></a>
-                    </li>
-                    <li class="nav-item">
-                        <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-1 btn text-light bi bi-power w-100 h-100" href="#">LOGOUT</a>
-                    </li>
-                </ul>
-            </div>
-            <% } %>
+            
+        <% if (user) { %>
+          <div class="collapse navbar-collapse " id="navbarNav1">
+            <ul class="navbar-nav align-items-start ">
+              <!-- Example single danger button -->
+                <li class="nav-item  container-flex d-flex   ">
+                    
+                    <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-2 btn text-light w-100 h-100" href="/authenticate/custLogin">HOME</a>
+                    <button class="btn bi bi-house-up-fill text-warning"></button>
+                  </li>
+                <li class="nav-item  container-flex d-flex">
+                    <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="p-2 btn text-light w-100 h-100" href="/custom/Home" style="text-transform: uppercase;" ><%=user.firstName%></a>
+                    <a id="idloggedusermenubar" type="button" value="<%=user.firstName%>" class="btn bi bi-person-fill text-warning" href="/custom/Home" style="text-transform: uppercase;" > </a>
+                    
+                  </li>
+                <li class="nav-item  container-flex d-flex">
+                    <a id="idloggedusermenubar" type="button" onclick="logout()" value="<%=user.firstName%>" class="p-2 btn text-light  w-100 h-100" href="#">LOGOUT</a>
+                    <button class="btn bi bi-power text-warning"onclick="logout()" ></button>
+                </li>
+            </ul>
+        </div>
+        <% } %>
         
+    </div>    
     
 </nav>
 

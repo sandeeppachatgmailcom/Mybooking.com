@@ -1,6 +1,7 @@
 const OtpAuther= require('../model/otpvalidation');
 const nodeMailer = require('nodemailer')
 const randomString = require('randomstring') 
+const Hbank = require('../functions/humanbank')
  
 
 
@@ -47,6 +48,7 @@ async function validateOtp(Email,Otppassword){
     const result = await OtpAuther.Otp.updateOne(
         { authorisationname: Email, otp: Otppassword },
         { $set: { verified: true } });
+    const activateUser = await Hbank.HumanResource.updateOne({email:Email},{$set:{Active:true}})    
     console.log(result,'otp')
     return result;
 } 

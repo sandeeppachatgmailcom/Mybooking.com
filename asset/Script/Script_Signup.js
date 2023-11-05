@@ -209,6 +209,7 @@ async function verifyEmail(Email_Field,outputfield,path) {
         document.getElementById(outputfield).classList.add('bi')
         document.getElementById(outputfield).classList.add('bi-patch-check')
         console.log(result.verified,document.getElementById(outputfield).classList.length);
+        alert("The email you entered is already Exist")
     }
     else {
         console.log(result.verified);
@@ -257,6 +258,7 @@ async function verifyphone(phone) {
         document.getElementById('Signup_phone_Bt').classList.add('btn-danger')
         document.getElementById('Signup_phone_Bt').classList.add('bi')
         document.getElementById('Signup_phone_Bt').classList.add('bi-search')
+        alert("The number you entered is already Exist")
     }
     else {
         
@@ -477,12 +479,12 @@ async function verifyUser(username) {
 async function verifyandupdate() {
     let email=true;
     let phone=true;
-    let user=true;
+     
     let password=true;
 
      setTimeout(async () => { email =  await verifyEmail('Signup_Email_text','Signup_Email_Bt') }, 50);
      setTimeout(async () => { phone =await verifyphone('Signup_Email_Phone') }, 150);
-     setTimeout(async() => { user = await verifyUser('Signup_User_Name') }, 250);
+     
      setTimeout(async() => {
     let verified ;
     
@@ -501,7 +503,7 @@ if (!document.getElementById('Signup_name_text').value) {
         document.getElementById('Signup_name_text').style.borderColor = 'red';
         document.getElementById('IdInfoText').innerText='All fields are Mandatory'
     }
-    if(!email&&phone&&user&&(document.getElementById('Signup_name_text').value)){
+    if(!email&&phone&&(document.getElementById('Signup_name_text').value)){
          
         setTimeout(async () => {
             let result = await fetch('/authenticate/signup', {
@@ -517,7 +519,10 @@ if (!document.getElementById('Signup_name_text').value) {
                 )
                 .catch()
             if (result.saved) {
+                document.getElementById("Bt_verifyOtp").hidden = false;
                 document.getElementById("Bt_verifyOtp").click();
+                document.getElementById("Bt_verifyOtp").hidden = true;
+                
                 document.getElementById("idverify_Email").value = data.email; 
                 document.getElementById("idverify_Email").disabled = true;
                 executeOtpTimer("Bt_resendOtp");
@@ -556,8 +561,10 @@ function AnimatedTextforhotelLogin(name){
     animation ();
 
 }
-
-
+document.getElementById('Signup_name_text').addEventListener('change',()=>{
+    if (!document.getElementById('Signup_name_text').value) document.getElementById('Signup_name_text').style.borderColor = "red"
+    else document.getElementById('Signup_name_text').style.borderColor = "grey"
+})
 
 async function vedurelogin( email,password){
 const data = {

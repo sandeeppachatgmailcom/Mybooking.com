@@ -237,7 +237,7 @@ const postchangePassword = async (req,res)=>{
 } 
 const postVerifyEmail =async(req,res)=>{
      console.log(req.path);
-     const result = await HBank.HumanResource.findOne({email:req.body.email})
+     const result = await HBank.HumanResource.findOne({email:req.body.email,Active:true})
      let responseData = false;
      if(result){
          if(req.body.path=='/VerifyEmail'){

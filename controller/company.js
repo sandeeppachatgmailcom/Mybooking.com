@@ -163,7 +163,7 @@ const getCompany = async(req,res)=>{
   let user=''
   const verify = await HBank.verifyUser(req.body)
   if(verify.verified){
-     user =verify.user;
+     user =verify.userdetails;
      
   }
   else {

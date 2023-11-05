@@ -232,7 +232,7 @@ if(i.isActive){
 let bodycolorclass = 'btn-cyan-700'
 if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.SpecialRent<= Number(document.getElementById("idBudgetEnd").value)))
 {
-  bodycolorclass = ' rgb(255,255,255)'
+  bodycolorclass = ' rgb(0,0,0,.029)'
 }
 else {
    bodycolorclass = 'rgb(86,99,86)'
@@ -245,14 +245,12 @@ if(! i.totalRoom) i.totalRoom=1;
     <form id="idFormViewReservation" action="/custom/viewReservation" method="post">
       <div onClick="calculateTotal(${i.SpecialRent},${i.extraPerson},'${i.tariffIndex}', ${diffDays})"
           class="card-body " >
-          <div class = "btn text-primary " style="height: 30px; wrap:nowrap ; overflow:hidden"  onClick="drilldown('iDtariffDiscript${i.tariffIndex}','30')" id="iDtariffDiscript${i.tariffIndex}" class="container-flex card-title">${i.tariffName} : ${i.SpecialRent}/- (2pax)  <br>         <small class="card-text btn   "   >${i.Discription}</small>  </div>
+          <div class = "btn text-primary " style="height: 30px; wrap:nowrap ; overflow:hidden"  onClick="drilldown('iDtariffDiscript${i.tariffIndex}','30')" id="iDtariffDiscript${i.tariffIndex}" class="container-flex card-title">${i.tariffName} : ${i.SpecialRent}/- (2pax)  <br>         <small class="card-text btn   "   >${i.Discription}</small>  </div> <br>
           
-          <small > [${i.totalRoom-i.reservationCount} rooms available ] Extra pax:${i.extraPerson}/-</small>
+          <small > ${i.totalRoom-i.reservationCount} rooms available, Extra pax:${i.extraPerson}/-</small><br>
               <select id="idCheckinPlan" hidden class="input-group-text  btn col-2" name="roomCategoryID">
               <option value="0">none</option>
               </select>
-          
-          <h6   class="card-title ">Total Amount:<small id="idTotalamount${i.tariffIndex}"> </small> </h6>
           <small class="" id="idarrivaldate${i.tariffIndex}">  Arrival :${data.StartDate.split('T')[0]} @${data.StartDate.split('T')[1]} </small> <br>
           <small class="" id="idDepartureDate${i.tariffIndex}">  Departure :${data.EndDate.split('T')[0]} @${data.EndDate.split('T')[1]} </small> <br>
           <small>  Days :</small> <small class="" id="iddaycount${i.tariffIndex}">${diffDays}</small> <br>
@@ -271,7 +269,8 @@ if(! i.totalRoom) i.totalRoom=1;
                       aria-label="Username" aria-describedby="basic-addon1">
           </div>
           <div class=" container-flex">
-                  <button class="btn btn-warning col-12" name="boxokingDetails" onClick="verifyUserbeforeConfirm()"
+          <h6   class="card-title ">Total Amount:<small id="idTotalamount${i.tariffIndex}"> </small> </h6>        
+          <button class="btn btn-warning col-12" name="boxokingDetails" onClick="verifyUserbeforeConfirm()"
                   value="${result.CompanyID},${i.tariffIndex},${data.StartDate},${data.EndDate},${diffDays}"
                   type="button">Book Now </button>
         

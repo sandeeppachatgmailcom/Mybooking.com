@@ -39,7 +39,7 @@ async function saveHuman(NewHumanObj) {
         wallPappper:'/Images/'+NewHumanObj.hrId+'wallPappper' 
     }
      
-    const result = await ModelHumanResource.HumanResource.updateOne({ hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })
+    const result = await ModelHumanResource.HumanResource.updateOne({hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })
     return result;
 }
 

@@ -1,10 +1,11 @@
  
 
-async function saveImagetoCollection(inputString,){
+async function saveImagetoCollection(inputString){
     const temp = inputString.split(" ");
+
     imageInput =document.getElementById(temp[2]); 
     const saveButton =document.getElementById(temp[3]); 
-    console.log(temp) 
+    console.log(temp,'TEMPIMAGE') 
     let imageForm = new FormData();
     imageForm.append("ImageRecordIndex",temp[0])
     imageForm.append("imageField",temp[1])

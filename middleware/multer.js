@@ -13,10 +13,13 @@ const storage = multer.diskStorage({
     cb(null, 'asset/Images'); // Destination directory for uploaded files
   },
   filename: (req, file, cb) => {
-    const fileUrl = req.body.imageField;
-    const parsedUrl = new URL(req.body.imageField);
-    const fileName = path.basename(parsedUrl.pathname);
     
+    const fileUrl = req.body.imageField;
+    console.log(req.headers.origin,'reqreqreqreqreqreqreqreqreqreqreq');
+    const baseUrl = req.headers.origin 
+    const parsedUrl = new URL(req.body.imageField,baseUrl);
+    const fileName = path.basename(parsedUrl.pathname);
+    console.log(parsedUrl,'parsedUrl',fileName,'fileName', req.body.imageField);
     const directory = path.join('asset/Images', fileName);
     console.log(directory,parsedUrl,'parsedUrl',fileName,'fileName');
     fs.unlink(directory, (err) => {

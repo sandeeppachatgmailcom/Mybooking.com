@@ -35,8 +35,8 @@ async function saveHuman(NewHumanObj) {
         createduser: NewHumanObj.createduser,
         systemUser: NewHumanObj.systemUser,
         activeSession:NewHumanObj.session,
-        profilePicture:'/images'+NewHumanObj.hrId+'profilePicture',
-        wallPappper:'/images'+NewHumanObj.hrId+'wallPappper' 
+        profilePicture:'/images/'+NewHumanObj.hrId+'profilePicture',
+        wallPappper:'/images/'+NewHumanObj.hrId+'wallPappper' 
     }
      
     const result = await ModelHumanResource.HumanResource.updateOne({ hrId: NewHumanObj.hrId }, { $set: data }, { upsert: true })
@@ -58,7 +58,7 @@ async function verifyUser(userObject){
         userObject.session="noactivesession"
     }
     const user = await ModelHumanResource.HumanResource.findOne({activeSession:userObject.session},{password:0,_id:0})
-    console.log(user,'userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr'); 
+     
     if(user){
         user.companyID = await company.company.findOne({email:user.email},{CompanyID:1,Active:1 ,_id:0})
         if(!user.companyID)user.companyID = {}

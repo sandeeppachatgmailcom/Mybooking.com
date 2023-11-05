@@ -8,6 +8,7 @@ const session = require('express-session');
 const { render } = require('ejs');
 const CheckinPlan = require('../functions/planMaster')
 const adminController = require('../controller/adminController')
+HBank = require('../functions/humanbank')
 const getRoot = (req,res)=>{
     res.redirect('/admin')
 } 
@@ -37,8 +38,19 @@ const postsaveCheckinplan = async(req,res)=>{
 
 } 
 const getplan = async (req,res)=>{
+    req.body.session = req.sessionID;
+    let user = ''
+    const verify = await HBank.verifyUser(req.body)
+    if (verify.verified) {
+        user = verify.user;
+
+    }
+    else {
+        res.redirect('/admin')
+    }
+
     const plans = await CheckinPlan.LoadPlan();
-    res.render('checkinPlans',{plans})
+    res.render('checkinPlans',{plans,user})
 } 
 const postdeletePlan = async (req,res)=>{
     console.log(req.body);

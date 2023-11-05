@@ -23,7 +23,6 @@ const getRoot = (req,res)=>{
 const postaddoccupancy = async (req,res)=>{
   req.body.session = req.sessionID;
   const verify = await HBank.verifyUser(req.body)
-  console.log(req.body.bookingID,'req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body');
   if(verify.verified){
     let  bookingDetails = await fntReservation.getReservationBybookingID(req.body.bookingID) 
     console.log(bookingDetails)

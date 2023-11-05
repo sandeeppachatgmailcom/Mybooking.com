@@ -11,6 +11,17 @@ const getRoot = (req,res)=>{
     res.redirect('/admin')
 } 
 const postloadfloorbypagenumber = async (req, res) => {
+    req.body.session = req.sessionID;
+    let user = ''
+    const verify = await HBank.verifyUser(req.body)
+    if (verify.verified) {
+        user = verify.user;
+
+    }
+    else {
+        res.redirect('/admin')
+    }
+
     let pagenumber = req.body.index;
     const perpage = 2;
     const data = await floor.floors.find().countDocuments()
@@ -24,7 +35,7 @@ const postloadfloorbypagenumber = async (req, res) => {
         .then(tcount => {
         return Math.ceil(tcount / perpage);
     })
-    res.render('floor', { data, pagecount })
+    res.render('floor', { data, pagecount,user })
 } 
 const postsavefloor = async (req, res) => {
     let index = ''
@@ -65,17 +76,39 @@ const postdeleteFloor = async (req, res) => {
 const postsearch = async  (req,res)=>{
 console.log('backend reached for  file search');
     try {
+        req.body.session = req.sessionID;
+        let user = ''
+        const verify = await HBank.verifyUser(req.body)
+        if (verify.verified) {
+            user = verify.user;
+
+        }
+        else {
+            res.redirect('/admin')
+        }
+
         const data = await floor.floors.find({$or:[{floorname:{$regex:`${req.body.searchvalue}`,$options:'i'}}]})
         console.log(data);
         const perpage = 10;
         const pagecount = await floor.floors.find({$or:[{floorname:{$regex:`${req.body.searchvalue}`,$options:'i'}}]})
         .countDocuments()
         .then(tcount => {return Math.ceil(tcount / perpage)})
-        res.render('floor',{data,pagecount})
+        res.render('floor',{data,pagecount,user})
     } catch (error) {
     }
 } 
 const getfloors = async (req, res) => {
+    req.body.session = req.sessionID;
+    let user = ''
+    const verify = await HBank.verifyUser(req.body)
+    if (verify.verified) {
+        user = verify.user;
+
+    }
+    else {
+        res.redirect('/admin')
+    }
+
     let docCount = 0;
     let pagenumber = 1
     const perpage = 10;
@@ -94,7 +127,7 @@ const getfloors = async (req, res) => {
             return Math.ceil(tcount / perpage);
         }
         )
-    res.render('floor', { data, pagecount })
+    res.render('floor', { data, pagecount,user })
 } 
 
 

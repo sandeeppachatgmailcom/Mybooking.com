@@ -24,8 +24,19 @@ const postloadcustommer = async (req,res)=>{
     res.json(result);
 } 
 const gethuman = async(req,res)=>{
+    req.body.session = req.sessionID;
+    let user = ''
+    const verify = await HBank.verifyUser(req.body)
+    if (verify.verified) {
+        user = verify.user;
+
+    }
+    else {
+        res.redirect('/admin')
+    }
+
     let data = await HBank.SearchHuman('');
-    res.render('human',{data});
+    res.render('human',{data,user});
 } 
 const postSaveHuman = async (req,res)=>{
     req.body.session=req.sessionID;
@@ -43,8 +54,19 @@ const postSaveHuman = async (req,res)=>{
     res.json(result)
 } 
 const postsearchHuman = async (req,res)=>{
+    req.body.session = req.sessionID;
+    let user = ''
+    const verify = await HBank.verifyUser(req.body)
+    if (verify.verified) {
+        user = verify.user;
+
+    }
+    else {
+        res.redirect('/admin')
+    }
+
     let data = await HBank.SearchHuman(req.body.searchvalue);
-    res.render('human',{data});
+    res.render('human',{data,user});
 }  
 const postDeleteHuman = async (req, res) => {
     let result = await HBank.deleteHuman(req.body.hrId)

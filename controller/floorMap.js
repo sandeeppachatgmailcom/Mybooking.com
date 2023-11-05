@@ -4,6 +4,7 @@ const department = require('../functions/rooms')
 const tarifftype = require('../functions/tariff')
 const roomsDetails = require('../functions/rooms')
 const floors = require('../functions/floor')
+const HBank = require('../functions/humanbank')
 
 const verifyAccess = require('../middleware/userAccess')
 
@@ -12,10 +13,20 @@ const getRoot = (req,res)=>{
 } 
 
 const getfloorMap = async (req, res) => {
+    req.body.session = req.sessionID;
+    let user = ''
+    const verify = await HBank.verifyUser(req.body)
+    if (verify.verified) {
+       user = verify.user;
+ 
+    }
+    else {
+       res.redirect('/admin')
+    }
     let rooms = await department.getRoomsWithTariffDetails();
     let tariff = await tarifftype.loadtariff('')
     let floor = await floors.loadAllFloor();
-    res.render('floorMap', { rooms, tariff,floor })
+    res.render('floorMap', { rooms, tariff,floor,user })
 } 
 
 const postAggregatePage = async (req, res) => {

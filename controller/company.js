@@ -159,13 +159,24 @@ const getloadRoom = async (req,res)=>{
 
     } 
 const getCompany = async(req,res)=>{
+  req.body.session = req.sessionID;
+  let user=''
+  const verify = await HBank.verifyUser(req.body)
+  if(verify.verified){
+     user =verify.user;
+     
+  }
+  else {
+    res.redirect('/admin')
+  }
+
     let data = await companies.SearchCompany('');
     let count = data.length;
     count = Math.floor(count/10);
     count++;
     let pincode =  await pincodes.loadPincode(req.body)
      
-    res.render('companies',{data,count,pincode});
+    res.render('companies',{data,count,pincode,user});
 
 } 
 

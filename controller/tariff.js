@@ -7,20 +7,31 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 const { render } = require('ejs');
-const HBank = require('../model/humanbank');
+const HBank = require('../functions/humanbank');
 const DBcollections = require('../model/dbcollections');
-const tariffmaster = require('../model/tariff')
+const tariffmaster = require('../functions/tariff')
 const controller = require('../controller/adminController')
-const checkInPlan = require('../model/planMaster')
+const checkInPlan = require('../functions/planMaster')
 const getRoot = (req,res)=>{
     res.redirect('/admin')
 } 
 
 const gettariff = async (req, res) => {
     try {
+        req.body.session = req.sessionID;
+        let user=''
+        const verify = await HBank.verifyUser(req.body)
+        if(verify.verified){
+            user =verify.user;
+            
+        }
+        else {
+            res.redirect('/admin')
+        }
+
         const chkplans = await checkInPlan.LoadPlan()
         const data = await tariffmaster.loadtariff('');
-        res.render('tariff', { data,chkplans });
+        res.render('tariff', { data,chkplans,user });
     } catch (error) {
         console.error("Error getting tariff data:", error);
         res.status(500).send("Internal Server Error");
@@ -28,10 +39,21 @@ const gettariff = async (req, res) => {
 } 
 
 const posttariffsearch = async (req,res)=>{
+    req.body.session = req.sessionID;
+    let user = ''
+    const verify = await HBank.verifyUser(req.body)
+    if (verify.verified) {
+        user = verify.user;
+
+    }
+    else {
+        res.redirect('/admin')
+    }
+
     const chkplans = await checkInPlan.LoadPlan()
      const data = await tariffmaster.loadtariff(req.body.searchvalue)
      console.log(req.body.searchvalue)
-     res.render('tariff', { data,chkplans });
+     res.render('tariff', { data,chkplans,user });
 } 
 
 const postsaveCategory = async (req,res)=>{

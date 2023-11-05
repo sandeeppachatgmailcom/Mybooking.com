@@ -15,7 +15,6 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     
     const fileUrl = req.body.imageField;
-    console.log(req.body,'reqreqreqreqreqreqreqreqreqreqreq');
     const baseUrl = req.headers.origin 
     const parsedUrl = new URL(req.body.imageField,baseUrl);
     const fileName = path.basename(parsedUrl.pathname);

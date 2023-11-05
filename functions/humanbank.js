@@ -22,7 +22,7 @@ async function saveHuman(NewHumanObj) {
         pincode: NewHumanObj.pincode,
         state: NewHumanObj.state,
         country: NewHumanObj.country,
-        Active: NewHumanObj.Active,
+        Active: true,
         isAdmin: NewHumanObj.isAdmin,
         married: NewHumanObj.married,
         isloggedIn: NewHumanObj.isloggedIn,

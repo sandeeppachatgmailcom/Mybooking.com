@@ -336,7 +336,7 @@ const postsignup = async (req, res) => {
             username: req.body.username,
             password:hashedPassword,
             isAdmin: req.body.isAdmin,
-            isActive: req.body.Active,
+            Active: req.body.Active,
             isloggedIn: req.body.isLoggedIn,
             deleted:false,
             profilePicture:server+hrid+'profilePicture',

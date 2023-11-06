@@ -1,5 +1,6 @@
  
 function loadHotel(SelectedValue,generalData ){
+  
   let innerHTML = '';
   const hotelSelect = document.getElementById("idSearchWithHotel"); 
   while (hotelSelect.options.length > 0) {
@@ -158,9 +159,10 @@ function readmore() {
   // document.getElementById("idEndDate").value = document.getElementById("idStartDate").value;
   // document.getElementById("idEndDate").min = document.getElementById("idStartDate").value;
   // })
+ 
 
   async function loadHotelBasedResult(companyID){
-    
+    await openModal()
     const data = {
       StartDate:document.getElementById("idStartDate").value,
       EndDate:document.getElementById("idEndDate").value,
@@ -178,6 +180,7 @@ function readmore() {
   }).catch(err=>{
     console.log(err);
   }) 
+  closeModal();
   let innerhtml =' ';
 
   let tariffDetails = result.roomtypes;  

@@ -479,7 +479,7 @@ async function verifyUser(username) {
 async function verifyandupdate() {
     let email=true;
     let phone=true;
-    document.getElementById('idShowProgressModal').hidden = false
+     
     
     let password=true;
 
@@ -504,7 +504,8 @@ async function verifyandupdate() {
         document.getElementById('IdInfoText').innerText='All fields are Mandatory'
     }
     console.log(email,phone,(document.getElementById('Signup_name_text').value));
-    if(!email&&phone&&(document.getElementById('Signup_name_text').value)){
+    if(!email&&!phone&&(document.getElementById('Signup_name_text').value)){
+        openModal()
         console.log(data);
         setTimeout(async () => {
             let result = await fetch('/authenticate/signup', {
@@ -520,8 +521,8 @@ async function verifyandupdate() {
                 )
                 .catch()
                 
-            console.log(result);    
-            document.getElementById('idShowProgressModal').hidden = true
+             
+            closeModal();
             if (result.saved) {
                  
                 document.getElementById("Bt_verifyOtp").hidden = false;
@@ -904,5 +905,21 @@ async function verifyOtp(dofunc){
     }
 }
 
+function openModal(){
+   let modal =new bootstrap.Modal(document.getElementById('idShowProgressModal'))
+    
+   modal.show();
+   console.log('going to open')
+   return
+}
 
+function closeModal(){
+    document.getElementById('idShowProgressModal').style.display = 'none';
+    document.querySelector('#idShowProgressModal .btn-close').click();
+    // let modal =new bootstrap.Modal(document.getElementById('idShowProgressModal')) 
+    // modal.hide();
+    console.log('going to close')
+    return
+}
 
+  

@@ -74,7 +74,7 @@ async function verifyUser(userObject){
             };
     }
     else{
-        
+        if(userObject.userName){
         let  verified = {
             verified:'',
             email:'',
@@ -117,12 +117,12 @@ async function verifyUser(userObject){
                         user: password.firstName,
                         userdetails:password,
                         userActive:password.Active ,
-                         
+                        
                         company:password.companyID,
                         companyActive:password.Active,
                         message:'Account is veryfied ,your profile is '+verified.userActive+'you have power to login'+company,
                         isAdmin:password.isAdmin,
-                         
+                        
                     }
                     return verified
                 }
@@ -153,9 +153,20 @@ async function verifyUser(userObject){
             otp: null,
             message:"not a valid user"
         }
+        }
+        else{
+            verified = {
+                verified: false,
+                email: '',
+                userdetails:'',
+                isAdmin:false,
+                message:'no user found '
+
+            }
+            return verified
+        }
     }
 }
-
 async function combiSearchHuman(searchValues) {
     const data = await ModelHumanResource.HumanResource.find({
         contactNumber: { $regex: `^${searchValues.contactNumber}`, $options: 'i' },

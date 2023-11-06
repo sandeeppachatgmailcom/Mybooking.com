@@ -62,6 +62,7 @@ async function verifyUser(userObject){
     if(user){
         user.companyID = await company.company.findOne({email:user.email},{CompanyID:1,Active:1 ,_id:0})
         if(!user.companyID)user.companyID = {}
+        console.log(user.companyID.Active,'user.companyID.Active')
             return {verified:true,
                 user:user.firstName,
                 userdetails:user,

@@ -238,7 +238,7 @@ if((i.SpecialRent>= Number(document.getElementById("idBudgetFrom").value)) &&(i.
   bodycolorclass = ' rgb(0,0,0,.029)'
 }
 else {
-   bodycolorclass = 'rgb(86,99,86)'
+   bodycolorclass = 'rgb(201,196,191)'
 
 }
 if(! i.totalRoom) i.totalRoom=1;

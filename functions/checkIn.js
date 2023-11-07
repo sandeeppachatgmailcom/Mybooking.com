@@ -3,7 +3,7 @@ const controller = require('../controller/adminController')
 const humanBank = require('../model/humanbank')
 const tariff = require('../model/tariff')
 const modelcheckIn  = require('../model/checkIn')
-
+// sandeep is Writing code here 
 async function saveCheckin(checkinobj) {
   if (!checkinobj.hrId) {
     checkinobj.hrId = await controller.getIndex('humanBank');

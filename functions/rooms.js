@@ -13,8 +13,7 @@ async function loadrooms(RoomNumber){
 
 async function SaveRooms(Roomobj,fileObj) {
         const files = fileObj;
-        
-        const imagePaths = fileObj.map((image) => 'http://localhost:5200/Images/'+image) ;
+        const imagePaths = fileObj.map((image) => image) ;
         
         timeStamp = Date.now();
         if (!Roomobj.roomIndex) Roomobj.roomIndex = await adminController.getIndex('DEPARTMENT');
